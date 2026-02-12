@@ -11,7 +11,7 @@
   "d1_databases": [
     {
       "binding": "DB",
-      "database_name": "hono-rest-template-db",
+      "database_name": "todo-react-hono-rpc-db",
       "database_id": "local",
       "migrations_dir": "drizzle"
     }
@@ -37,7 +37,7 @@
       "d1_databases": [
         {
           "binding": "DB",
-          "database_name": "hono-rest-template-db",
+          "database_name": "todo-react-hono-rpc-db",
           "database_id": "<your-d1-database-id>",
           "migrations_dir": "drizzle"
         }

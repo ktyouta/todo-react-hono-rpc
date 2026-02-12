@@ -14,6 +14,7 @@ type PropsType = {
     }>,
     clickLogin: (e?: React.BaseSyntheticEvent<object, any, any> | undefined) => Promise<void>,
     back(): void,
+    navigateSignup(): void,
 }
 
 export function Login(props: PropsType) {
@@ -25,6 +26,7 @@ export function Login(props: PropsType) {
         errors,
         clickLogin,
         back,
+        navigateSignup,
     } = props;
 
     return (
@@ -72,6 +74,14 @@ export function Login(props: PropsType) {
                         {errors.password?.message && (
                             <p className="text-red-500 text-xs mt-2">{errors.password.message}</p>
                         )}
+                    </div>
+                    <div>
+                        <span
+                            className='text-blue-700 cursor-pointer'
+                            onClick={navigateSignup}
+                        >
+                            アカウント作成はこちらから
+                        </span>
                     </div>
                     <div className="flex flex-col sm:flex-row gap-3 mt-4">
                         <button

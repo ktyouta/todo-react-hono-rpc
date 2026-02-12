@@ -1,7 +1,8 @@
 import { zValidator } from "@hono/zod-validator";
+import { eq } from "drizzle-orm";
 import { Hono } from "hono";
 import { setCookie } from "hono/cookie";
-import { API_ENDPOINT, HTTP_STATUS } from "../../../constant";
+import { API_ENDPOINT, FLG, HTTP_STATUS } from "../../../constant";
 import {
     AccessToken,
     FrontUserBirthday,
@@ -11,9 +12,8 @@ import {
     FrontUserSalt,
     Pepper,
     RefreshToken,
-    SeqKey,
-    SeqIssue,
 } from "../../../domain";
+import { frontUserLoginMaster, frontUserMaster, seqMaster } from "../../../infrastructure/db";
 import { userOperationGuardMiddleware } from "../../../middleware";
 import type { AppEnv } from "../../../type";
 import { formatZodErrors } from "../../../util";
@@ -33,7 +33,9 @@ const createFrontUser = new Hono<AppEnv>().post(
     userOperationGuardMiddleware,
     zValidator("json", CreateFrontUserSchema, (result, c) => {
         if (!result.success) {
-            return c.json({ message: "バリデーションエラー", data: formatZodErrors(result.error) }, HTTP_STATUS.UNPROCESSABLE_ENTITY);
+            const data = formatZodErrors(result.error);
+            const message = data.map((e) => e.message);
+            return c.json({ message, data }, HTTP_STATUS.UNPROCESSABLE_ENTITY);
         }
     }),
     async (c) => {
@@ -59,30 +61,52 @@ const createFrontUser = new Hono<AppEnv>().post(
             return c.json({ message: "既にユーザーが存在しています。" }, HTTP_STATUS.UNPROCESSABLE_ENTITY);
         }
 
-        // トランザクション: ID採番 + ログイン情報挿入 + ユーザー情報挿入
-        const keyModel = new SeqKey(SEQ_KEY);
-        const { userEntity, frontUserId } = await db.transaction(async (tx) => {
-            const txRepo = new CreateFrontUserRepository(tx);
+        // ID採番: seq_master から次のIDを取得
+        const seqResult = await db
+            .select()
+            .from(seqMaster)
+            .where(eq(seqMaster.key, SEQ_KEY));
 
-            // ユーザーIDを採番
-            const newId = await SeqIssue.get(keyModel, tx);
-            const userId = FrontUserId.of(newId);
+        if (seqResult.length === 0) {
+            return c.json({ message: "シーケンスが初期化されていません。" }, HTTP_STATUS.INTERNAL_SERVER_ERROR);
+        }
 
-            // ログイン情報を挿入
-            const loginUserEntity = new FrontUserLoginEntity(
-                userId,
-                userName,
-                userPassword,
-                salt
-            );
-            await txRepo.insertFrontLoginUser(loginUserEntity);
+        const nextId = seqResult[0].nextId;
+        const frontUserId = FrontUserId.of(nextId);
 
-            // ユーザー情報を挿入
-            const entity = new FrontUserEntity(userId, userName, userBirthday);
-            await txRepo.insertFrontUser(entity);
+        // エンティティを生成
+        const loginUserEntity = new FrontUserLoginEntity(
+            frontUserId,
+            userName,
+            userPassword,
+            salt
+        );
+        const userEntity = new FrontUserEntity(frontUserId, userName, userBirthday);
 
-            return { userEntity: entity, frontUserId: userId };
-        });
+        // seq更新 + ログイン情報挿入 + ユーザー情報挿入（batch で atomic 実行）
+        const now = new Date().toISOString();
+        await db.batch([
+            db.update(seqMaster)
+                .set({ nextId: nextId + 1, updatedAt: now })
+                .where(eq(seqMaster.key, SEQ_KEY)),
+            db.insert(frontUserLoginMaster).values({
+                id: loginUserEntity.frontUserId,
+                name: loginUserEntity.frontUserName,
+                password: loginUserEntity.frontUserPassword,
+                salt: loginUserEntity.salt,
+                deleteFlg: FLG.OFF,
+                createdAt: now,
+                updatedAt: now,
+            }),
+            db.insert(frontUserMaster).values({
+                id: userEntity.frontUserId,
+                name: userEntity.frontUserName,
+                birthday: userEntity.frontUserBirthday,
+                deleteFlg: FLG.OFF,
+                createdAt: now,
+                updatedAt: now,
+            }),
+        ]);
 
         // トークンを発行
         const accessToken = await AccessToken.create(frontUserId, config);
@@ -101,3 +125,4 @@ const createFrontUser = new Hono<AppEnv>().post(
 );
 
 export { createFrontUser };
+

@@ -1,6 +1,6 @@
-# React + Hono RPC Template
+# React + Hono RPC
 
-JWT 認証付きのフルスタックテンプレート。React フロントエンドと Hono バックエンドを Hono RPC で型安全に連携する。
+React + Hono + RPC を使用したtodoアプリ
 
 ## 技術スタック
 
@@ -264,5 +264,5 @@ const data = await res.json();
 | 設定 | ファイル | 現在の値 | 変更箇所 |
 |---|---|---|---|
 | ワーカー名 | `backend/wrangler.jsonc` | `react-hono-rpc` | `"name"` フィールド |
-| DB 名 | `backend/wrangler.jsonc` | `hono-rest-template-db` | `"database_name"`（デフォルト + production の両方） |
-| DB 名 | `backend/package.json` | `hono-rest-template-db` | `db:migrate:*` / `db:seed:*` スクリプト内 |
+| DB 名 | `backend/wrangler.jsonc` | `todo-react-hono-rpc-db` | `"database_name"`（デフォルト + production の両方） |
+| DB 名 | `backend/package.json` | `todo-react-hono-rpc-db` | `db:migrate:*` / `db:seed:*` スクリプト内 |

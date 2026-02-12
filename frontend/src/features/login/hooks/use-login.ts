@@ -70,6 +70,13 @@ export function useLogin() {
         appGoBack(paths.home.path);
     }
 
+    /**
+     * サインアップ画面に遷移
+     */
+    function navigateSignup() {
+        appNavigate(paths.signup.path);
+    }
+
     return {
         errMessage,
         isLoading: postMutation.isPending,
@@ -79,5 +86,6 @@ export function useLogin() {
         loginUser,
         back,
         redirectTo,
+        navigateSignup,
     }
 }

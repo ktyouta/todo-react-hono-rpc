@@ -15,7 +15,7 @@ export function GuestRoute(props: PropsType) {
     if (loginUser) {
         return (
             <Navigate
-                to={paths.home.path}
+                to={paths.todo.path}
                 replace
             />
         );

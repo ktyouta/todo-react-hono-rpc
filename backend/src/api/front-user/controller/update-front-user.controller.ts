@@ -1,14 +1,16 @@
 import { UserIdParamSchema } from "../../../schema";
 import { zValidator } from "@hono/zod-validator";
+import { and, eq } from "drizzle-orm";
 import { Hono } from "hono";
 import { setCookie } from "hono/cookie";
-import { API_ENDPOINT, HTTP_STATUS } from "../../../constant";
+import { API_ENDPOINT, FLG, HTTP_STATUS } from "../../../constant";
 import {
     FrontUserBirthday,
     FrontUserId,
     FrontUserName,
     RefreshToken,
 } from "../../../domain";
+import { frontUserLoginMaster, frontUserMaster } from "../../../infrastructure/db";
 import { authMiddleware, userOperationGuardMiddleware } from "../../../middleware";
 import type { AppEnv } from "../../../type";
 import { formatZodErrors } from "../../../util";
@@ -44,33 +46,40 @@ const updateFrontUser = new Hono<AppEnv>().patch(
         const userName = new FrontUserName(body.name);
         const userBirthday = new FrontUserBirthday(body.birthday);
 
-        // トランザクション: 重複チェック + ログイン情報更新 + ユーザー情報更新
-        const updated = await db.transaction(async (tx) => {
-            const txRepo = new UpdateFrontUserRepository(tx);
-
-            // ユーザー名重複チェック（自身を除く）
-            if (await txRepo.checkUserNameExists(frontUserId, userName)) {
-                return { duplicate: true as const };
-            }
-
-            // ログイン情報を更新
-            await txRepo.updateFrontLoginUser(frontUserId, userName.value);
-
-            // ユーザー情報を更新
-            const result = await txRepo.updateFrontUser(
-                frontUserId,
-                userName.value,
-                userBirthday.value
-            );
-
-            return { duplicate: false as const, user: result };
-        });
-
-        if (updated.duplicate) {
+        // ユーザー名重複チェック（自身を除く）
+        const repository = new UpdateFrontUserRepository(db);
+        if (await repository.checkUserNameExists(frontUserId, userName)) {
             return c.json({ message: "既にユーザーが存在しています。" }, HTTP_STATUS.UNPROCESSABLE_ENTITY);
         }
 
-        if (!updated.user) {
+        // ログイン情報更新 + ユーザー情報更新（batch で atomic 実行）
+        const now = new Date().toISOString();
+        const [, updateResult] = await db.batch([
+            db.update(frontUserLoginMaster)
+                .set({ name: userName.value, updatedAt: now })
+                .where(
+                    and(
+                        eq(frontUserLoginMaster.id, frontUserId.value),
+                        eq(frontUserLoginMaster.deleteFlg, FLG.OFF)
+                    )
+                ),
+            db.update(frontUserMaster)
+                .set({
+                    name: userName.value,
+                    birthday: userBirthday.value,
+                    updatedAt: now,
+                })
+                .where(
+                    and(
+                        eq(frontUserMaster.id, frontUserId.value),
+                        eq(frontUserMaster.deleteFlg, FLG.OFF)
+                    )
+                )
+                .returning(),
+        ]);
+        const updated = updateResult[0];
+
+        if (!updated) {
             return c.json({ message: "ユーザーが見つかりません。" }, HTTP_STATUS.NOT_FOUND);
         }
 
@@ -78,9 +87,9 @@ const updateFrontUser = new Hono<AppEnv>().patch(
         const refreshToken = await RefreshToken.create(frontUserId, config);
 
         const responseDto = new UpdateFrontUserResponseDto(
-            updated.user.id,
-            updated.user.name,
-            updated.user.birthday
+            updated.id,
+            updated.name,
+            updated.birthday
         );
 
         // リフレッシュトークンをCookieに設定

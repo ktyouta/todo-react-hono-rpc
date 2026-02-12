@@ -11,6 +11,9 @@ export const paths = {
         path: '/mypage',
         getHref: () => paths.mypage.path,
     },
+    todo: {
+        path: 'todo'
+    },
     login: {
         path: '/login',
         getHref: (redirectTo?: string) => `${paths.login.path}${redirectTo ? `?redirectTo=${encodeURIComponent(redirectTo)}` : ``}`,

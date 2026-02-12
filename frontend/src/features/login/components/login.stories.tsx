@@ -33,6 +33,9 @@ export const Default: Story = {
                 back={() => {
                     alert("戻るボタンが押されました");
                 }}
+                navigateSignup={() => {
+                    alert("アカウント作成はこちらからが押されました");
+                }}
             />
         );
     },

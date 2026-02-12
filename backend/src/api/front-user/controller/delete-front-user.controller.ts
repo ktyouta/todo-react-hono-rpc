@@ -1,13 +1,14 @@
 import { UserIdParamSchema } from "../../../schema";
 import { zValidator } from "@hono/zod-validator";
+import { and, eq } from "drizzle-orm";
 import { Hono } from "hono";
 import { setCookie } from "hono/cookie";
-import { API_ENDPOINT, HTTP_STATUS } from "../../../constant";
+import { API_ENDPOINT, FLG, HTTP_STATUS } from "../../../constant";
 import { FrontUserId, RefreshToken } from "../../../domain";
+import { frontUserLoginMaster, frontUserMaster } from "../../../infrastructure/db";
 import { authMiddleware, userOperationGuardMiddleware } from "../../../middleware";
 import type { AppEnv } from "../../../type";
 import { formatZodErrors } from "../../../util";
-import { DeleteFrontUserRepository } from "../repository";
 
 /**
  * ユーザー削除
@@ -28,16 +29,28 @@ const deleteFrontUser = new Hono<AppEnv>().delete(
         const config = c.get('envConfig');
         const frontUserId = FrontUserId.of(userId);
 
-        // トランザクション: ログイン情報削除 + ユーザー情報削除
-        const deleted = await db.transaction(async (tx) => {
-            const txRepo = new DeleteFrontUserRepository(tx);
-
-            // ログイン情報を削除
-            await txRepo.deleteFrontLoginUser(frontUserId);
-
-            // ユーザー情報を削除
-            return await txRepo.deleteFrontUser(frontUserId);
-        });
+        // ログイン情報削除 + ユーザー情報削除（batch で atomic 実行）
+        const now = new Date().toISOString();
+        const [, deleteResult] = await db.batch([
+            db.update(frontUserLoginMaster)
+                .set({ deleteFlg: FLG.ON, updatedAt: now })
+                .where(
+                    and(
+                        eq(frontUserLoginMaster.id, frontUserId.value),
+                        eq(frontUserLoginMaster.deleteFlg, FLG.OFF)
+                    )
+                ),
+            db.update(frontUserMaster)
+                .set({ deleteFlg: FLG.ON, updatedAt: now })
+                .where(
+                    and(
+                        eq(frontUserMaster.id, frontUserId.value),
+                        eq(frontUserMaster.deleteFlg, FLG.OFF)
+                    )
+                )
+                .returning(),
+        ]);
+        const deleted = deleteResult.length > 0;
 
         if (!deleted) {
             return c.json({ message: "ユーザーが見つかりません。" }, HTTP_STATUS.NOT_FOUND);
