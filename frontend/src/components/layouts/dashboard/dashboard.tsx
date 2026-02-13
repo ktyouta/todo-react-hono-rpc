@@ -12,12 +12,12 @@ type PropsType = {
 export function Dashboard(props: PropsType) {
 
     return (
-        <div className='w-full'>
+        <div className='w-full min-h-screen flex flex-col'>
             <div className='h-[50px] bg-slate-500'>
                 header
             </div>
-            <div className='flex'>
-                <nav className='w-60 bg-blue-400 flex flex-col items-center'>
+            <div className='flex flex-1'>
+                <nav className='w-[280px] bg-blue-400 flex flex-col items-center'>
                     {
                         props.navigationList.map((e) => {
                             return (
@@ -32,7 +32,7 @@ export function Dashboard(props: PropsType) {
                         })
                     }
                 </nav>
-                <div className='flex-1'>
+                <div className='flex-1 flex flex-col'>
                     {props.children}
                 </div>
             </div>

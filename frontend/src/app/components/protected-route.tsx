@@ -3,11 +3,11 @@ import React, { ReactNode } from "react";
 import { Navigate, useLocation } from "react-router-dom";
 import { LoginUserContext } from "./login-user-provider";
 
-type PropsType = {
+type ProptType = {
     children: ReactNode;
 }
 
-export function ProtectedRoute(props: PropsType) {
+export function ProtectedRoute(props: ProptType) {
 
     // ログインユーザー情報
     const loginUser = LoginUserContext.useCtx();
