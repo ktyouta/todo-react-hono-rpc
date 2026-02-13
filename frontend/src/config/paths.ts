@@ -3,16 +3,8 @@ export const paths = {
         path: '/',
         getHref: () => paths.home.path,
     },
-    sample: {
-        path: '/sample',
-        getHref: () => paths.sample.path,
-    },
-    mypage: {
-        path: '/mypage',
-        getHref: () => paths.mypage.path,
-    },
     todo: {
-        path: 'todo'
+        path: '/todo'
     },
     login: {
         path: '/login',
