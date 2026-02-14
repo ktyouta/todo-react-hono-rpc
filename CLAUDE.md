@@ -106,6 +106,10 @@ React + Hono + RPC を用いたフロントエンド・バックエンド統合�
   * `rpc-client.ts` → `refresh-handler.ts` → `rpc-client.ts` の循環参照を避けるため
 * 新しい API エンドポイントを追加する際は `rpc` を使うこと
 
+### アイコン
+
+* アイコンは `react-icons` を使用する（インライン SVG を直接記述しない）
+
 ### sample 機能
 
 * `features/sample/` はテンプレートのリファレンス実装（Container / Presentational パターンの参考）

@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { HiOutlineCog6Tooth, HiOutlineClipboardDocumentList, HiOutlineHome } from 'react-icons/hi2';
 import { MemoryRouter } from 'react-router-dom';
 import { Dashboard } from './dashboard';
 
@@ -15,6 +16,12 @@ const meta: Meta<typeof Dashboard> = {
     parameters: {
         layout: 'fullscreen',
     },
+    args: {
+        loginUser: { id: 1, name: 'テストユーザー', birthday: '2000/01/01' },
+        moveUserInfoUpdate: () => { },
+        movePasswordUpdate: () => { },
+        logout: () => { },
+    },
 };
 
 export default meta;
@@ -26,15 +33,19 @@ export const Default: Story = {
         navigationList: [
             {
                 name: 'ホーム',
-                icon: (
-                    <svg xmlns='http://www.w3.org/2000/svg' className='h-5 w-5' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
-                        <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-4 0a1 1 0 01-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 01-1 1h-2z' />
-                    </svg>
-                ),
+                icon: <HiOutlineHome className='h-5 w-5' />,
                 path: '/',
             },
-            { name: 'Todo', path: '/todo' },
-            { name: '設定', path: '/settings' },
+            {
+                name: 'Todo',
+                icon: <HiOutlineClipboardDocumentList className='h-5 w-5' />,
+                path: '/todo',
+            },
+            {
+                name: '設定',
+                icon: <HiOutlineCog6Tooth className='h-5 w-5' />,
+                path: '/settings',
+            },
         ],
         children: <div className="p-4">メインコンテンツ</div>,
     },

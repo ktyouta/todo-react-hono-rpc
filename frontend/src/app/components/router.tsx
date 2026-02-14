@@ -36,16 +36,21 @@ const routerList = [
     },
     {
         element: (
-            <ProtectedRoute>
-                <DashboardContainer />
-            </ProtectedRoute>
+            <ProtectedRoute />
         ),
         children: [
             {
-                path: paths.todo.path,
                 element: (
-                    <Todo />
-                )
+                    <DashboardContainer />
+                ),
+                children: [
+                    {
+                        path: paths.todo.path,
+                        element: (
+                            <Todo />
+                        )
+                    },
+                ]
             },
             {
                 path: paths.updateUser.path,
