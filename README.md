@@ -42,7 +42,7 @@ react-hono-rpc-template/
 ├── frontend/                 # React フロントエンド（Vite）
 │   ├── src/
 │   │   ├── components/       # 共通 UI コンポーネント
-│   │   ├── features/         # 機能別モジュール（home, login, sample 等）
+│   │   ├── features/         # 機能別モジュール（home, login 等）
 │   │   ├── lib/              # RPC クライアント等
 │   │   └── testing/          # テストセットアップ
 │   └── .storybook/           # Storybook 設定

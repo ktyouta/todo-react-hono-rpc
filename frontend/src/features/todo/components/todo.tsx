@@ -1,10 +1,15 @@
+import { Table } from "@/components";
+
 export function Todo() {
 
     return (
         <div
-            className="w-full h-full"
+            className="w-full min-h-full"
         >
-            todo
+            <Table
+                data={[]}
+                columns={[]}
+            />
         </div>
     );
 }

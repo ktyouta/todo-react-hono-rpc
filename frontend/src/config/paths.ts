@@ -6,6 +6,9 @@ export const paths = {
     todo: {
         path: '/todo'
     },
+    todoCreate: {
+        path: 'todo-create'
+    },
     login: {
         path: '/login',
         getHref: (redirectTo?: string) => `${paths.login.path}${redirectTo ? `?redirectTo=${encodeURIComponent(redirectTo)}` : ``}`,

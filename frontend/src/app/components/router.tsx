@@ -2,6 +2,7 @@ import { NotFound } from '@/components';
 import { paths } from '@/config/paths';
 import { LoginContainer } from '@/features/login/components/login-container';
 import { SignupContainer } from '@/features/signup/components/signup-container';
+import { TodoCreate } from '@/features/todo-create/components/todo-create';
 import { Todo } from '@/features/todo/components/todo';
 import { UpdatePasswordContainer } from '@/features/updatepassword/components/update-password-container';
 import { UpdateUserContainer } from '@/features/updateuser/components/update-user-container';
@@ -50,6 +51,12 @@ const routerList = [
                             <Todo />
                         )
                     },
+                    {
+                        path: paths.todoCreate.path,
+                        element: (
+                            <TodoCreate />
+                        )
+                    }
                 ]
             },
             {

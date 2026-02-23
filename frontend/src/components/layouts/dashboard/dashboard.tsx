@@ -46,7 +46,7 @@ export function Dashboard(props: PropsType) {
                                 className={({ isActive }) =>
                                     `flex items-center ${isSidebarOpen ? '' : 'justify-center'} px-6 py-4 text-sm font-medium transition-colors whitespace-nowrap 
                                 ${isActive
-                                        ? 'bg-white/20 text-white border-l-[3px] border-white'
+                                        ? 'bg-white/20 text-white shadow-[inset_3px_0px_0px_white]'
                                         : 'text-white/80 hover:bg-white/10 hover:text-white'
                                     }`
                                 }
