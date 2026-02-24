@@ -60,7 +60,7 @@ export function Dashboard(props: PropsType) {
             </nav>
             <div className='flex flex-col flex-1'>
                 {/* ヘッダー */}
-                <header className='h-14 bg-white border-b border-gray-200 flex items-center pl-6 pr-[50px]'>
+                <header className='h-14 bg-white border-b border-gray-200 flex items-center pl-6 pr-[70px]'>
                     <span className='text-[26px] font-bold text-gray-800 tracking-wide inline-block flex-1'>
                         Todoリスト
                     </span>
@@ -71,7 +71,7 @@ export function Dashboard(props: PropsType) {
                         <span className='mr-[10px] text-[18px] cursor-pointer'>
                             {props.loginUser.name}
                         </span>
-                        <HiOutlineUserCircle className="size-8 cursor-pointer mr-[6px]" />
+                        <HiOutlineUserCircle className="size-8 cursor-pointer mr-[12px]" />
                         <IoTriangle className={`size-4 cursor-pointer ${isUserMenuOpen ? 'rotate-0' : 'rotate-180'}`} />
                         {/* ユーザーメニュー */}
                         {
