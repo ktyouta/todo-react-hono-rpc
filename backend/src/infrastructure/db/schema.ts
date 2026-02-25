@@ -59,3 +59,19 @@ export const seqMaster = sqliteTable("seq_master", {
 
 export type SeqMaster = typeof seqMaster.$inferSelect;
 export type NewSeqMaster = typeof seqMaster.$inferInsert;
+
+/**
+ * タスクテーブルスキーマ
+ */
+export const taskTransaction = sqliteTable("task_transaction", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  title: text("title").notNull(),
+  content: text("content"),
+  userId: integer("user_id"),
+  deleteFlg: text("delete_flg").notNull().default("0"),
+  createdAt: text("created_at").notNull(),
+  updatedAt: text("updated_at").notNull(),
+});
+
+export type TaskTransaction = typeof taskTransaction.$inferSelect;
+export type NewTaskTransaction = typeof taskTransaction.$inferInsert;
