@@ -11,6 +11,7 @@ const testConfig: EnvConfig = {
     pepper: "test-pepper",
     corsOrigin: ["http://localhost:5173"],
     isProduction: false,
+    allowUserOperation: true,
 };
 
 describe("RefreshToken", () => {
