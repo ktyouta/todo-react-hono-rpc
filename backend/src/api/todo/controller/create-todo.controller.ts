@@ -7,7 +7,8 @@ import { API_ENDPOINT, FLG, HTTP_STATUS } from "../../../constant";
 import { authMiddleware, userOperationGuardMiddleware } from "../../../middleware";
 import type { AppEnv } from "../../../type";
 import { formatZodErrors } from "../../../util";
-import { TaskEntity } from "../entity/task-entity";
+import { CreateFrontUserResponseDto } from "../dto";
+import { TaskEntity } from "../entity/task.entity";
 import { CreateTodoSchema } from "../schema";
 
 
@@ -15,7 +16,7 @@ import { CreateTodoSchema } from "../schema";
  * タスク作成
  * @route POST /api/v1/todo
  */
-const createFrontUser = new Hono<AppEnv>().post(
+const createTodo = new Hono<AppEnv>().post(
     API_ENDPOINT.TODO,
     userOperationGuardMiddleware,
     authMiddleware,
@@ -47,9 +48,10 @@ const createFrontUser = new Hono<AppEnv>().post(
             }),
         ]);
 
-        return c.json({ message: "タスクを追加しました。" }, HTTP_STATUS.CREATED);
+        const response = new CreateFrontUserResponseDto(taskEntity);
+        return c.json({ message: "タスクを追加しました。", data: response.value }, HTTP_STATUS.CREATED);
     }
 );
 
-export { createFrontUser };
+export { createTodo };
 

@@ -1,6 +1,7 @@
 import { Context, Hono } from "hono";
 import { cors } from "hono/cors";
 import { frontUser, frontUserLogin, frontUserLogout, frontUserPassword, health, refresh, sample, verify } from "./api";
+import { createTodo } from "./api/todo";
 import {
   accessLogMiddleware,
   createDbClientMiddleware,
@@ -50,7 +51,8 @@ const routes = app
   .route("/", refresh)
   .route("/", verify)
   .route("/", frontUserLogout)
-  .route("/", frontUserPassword);
+  .route("/", frontUserPassword)
+  .route("/", createTodo)
 
 // RPC用の型エクスポート
 export type AppType = typeof routes;
