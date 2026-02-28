@@ -122,12 +122,14 @@ type TableColumn<Entry> = {
   title: string;
   field: keyof Entry;
   Cell?({ entry }: { entry: Entry }): React.ReactElement;
+  className?: string;
 };
 
 export type TableProps<Entry> = {
   data: Entry[];
   columns: TableColumn<Entry>[];
   className?: string;
+  rowClassName?: string;
   onRowClick?: (entry: Entry) => void;
 };
 
@@ -135,6 +137,7 @@ export function Table<Entry extends BaseEntity>({
   data,
   columns,
   className,
+  rowClassName,
   onRowClick,
 }: TableProps<Entry>) {
   if (!data?.length) {
@@ -151,17 +154,22 @@ export function Table<Entry extends BaseEntity>({
       <TableHeader>
         <TableRow>
           {columns.map((column, index) => (
-            <TableHead key={column.title + index}>{column.title}</TableHead>
+            <TableHead key={column.title + index} className={column.className}>{column.title}</TableHead>
           ))}
         </TableRow>
       </TableHeader>
       <TableBody>
         {data.map((entry, entryIndex) => (
           <TableRow key={entry?.id || entryIndex}
-            onClick={onRowClick ? () => onRowClick(entry) : undefined}
+            className={rowClassName}
+            onClick={() => {
+              if (onRowClick) {
+                onRowClick(entry);
+              }
+            }}
           >
-            {columns.map(({ Cell, field, title }, columnIndex) => (
-              <TableCell key={title + columnIndex}>
+            {columns.map(({ Cell, field, title, className }, columnIndex) => (
+              <TableCell key={title + columnIndex} className={className}>
                 {Cell ? <Cell entry={entry} /> : `${entry[field]}`}
               </TableCell>
             ))}
