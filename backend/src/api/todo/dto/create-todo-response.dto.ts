@@ -11,7 +11,7 @@ export type CreateTodoResponseType = {
 /**
  * タスク作成レスポンスDTO
  */
-export class CreateFrontUserResponseDto {
+export class CreateTodoResponseDto {
   private readonly _value: CreateTodoResponseType;
 
   constructor(entity: TaskEntity) {

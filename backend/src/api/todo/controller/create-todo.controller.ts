@@ -7,7 +7,7 @@ import { API_ENDPOINT, FLG, HTTP_STATUS } from "../../../constant";
 import { authMiddleware, userOperationGuardMiddleware } from "../../../middleware";
 import type { AppEnv } from "../../../type";
 import { formatZodErrors } from "../../../util";
-import { CreateFrontUserResponseDto } from "../dto";
+import { CreateTodoResponseDto } from "../dto";
 import { TaskEntity } from "../entity/task.entity";
 import { CreateTodoSchema } from "../schema";
 
@@ -48,7 +48,7 @@ const createTodo = new Hono<AppEnv>().post(
             }),
         ]);
 
-        const response = new CreateFrontUserResponseDto(taskEntity);
+        const response = new CreateTodoResponseDto(taskEntity);
         return c.json({ message: "タスクを追加しました。", data: response.value }, HTTP_STATUS.CREATED);
     }
 );

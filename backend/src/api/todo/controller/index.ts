@@ -1,2 +1,2 @@
-export * from "./create-todo.controller";
+export * from "./todo.controller";
 
