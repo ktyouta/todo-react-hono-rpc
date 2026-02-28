@@ -1,8 +1,8 @@
 import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
-import { TaskContent } from "src/domain/task-content";
-import { TaskTitle } from "src/domain/task-title";
-import { taskTransaction } from "src/infrastructure";
+import { TaskContent } from "../../../domain/task-content";
+import { TaskTitle } from "../../../domain/task-title";
+import { taskTransaction } from "../../../infrastructure";
 import { API_ENDPOINT, FLG, HTTP_STATUS } from "../../../constant";
 import { authMiddleware, userOperationGuardMiddleware } from "../../../middleware";
 import type { AppEnv } from "../../../type";

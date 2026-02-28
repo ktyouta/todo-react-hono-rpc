@@ -1,4 +1,4 @@
-import { TaskTitle } from "src/domain";
+import { TaskTitle } from "../../src/domain";
 import { describe, expect, it } from "vitest";
 
 describe("TaskTitle", () => {

@@ -3,8 +3,8 @@ import * as React from 'react';
 import { HiOutlineArchiveBoxXMark } from 'react-icons/hi2';
 
 type BaseEntity = {
-  id: string;
-  createdAt: number;
+  id: string | number;
+  createdAt: string | number;
 };
 
 const TableElement = React.forwardRef<

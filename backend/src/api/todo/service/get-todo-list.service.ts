@@ -1,5 +1,5 @@
-import { FrontUserId } from "src/domain";
-import { TaskTransaction } from "src/infrastructure";
+import { FrontUserId } from "../../../domain";
+import { TaskTransaction } from "../../../infrastructure";
 import { IGetTodoListRepository } from "../repository/get-todo-list.repository.interface";
 
 /**

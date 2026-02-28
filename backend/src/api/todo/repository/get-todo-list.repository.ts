@@ -1,6 +1,6 @@
 import { and, eq } from "drizzle-orm";
-import { FLG } from "src/constant";
-import { FrontUserId } from "src/domain";
+import { FLG } from "../../../constant";
+import { FrontUserId } from "../../../domain";
 import type { Database, TaskTransaction } from "../../../infrastructure/db";
 import { taskTransaction } from "../../../infrastructure/db";
 import type { IGetTodoListRepository } from "./get-todo-list.repository.interface";

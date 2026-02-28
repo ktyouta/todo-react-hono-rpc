@@ -1,5 +1,5 @@
-import { TaskContent } from "src/domain/task-content";
-import { TaskTitle } from "src/domain/task-title";
+import { TaskContent } from "../../../domain/task-content";
+import { TaskTitle } from "../../../domain/task-title";
 
 /**
  * タスクエンティティ

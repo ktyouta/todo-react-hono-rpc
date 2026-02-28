@@ -1,4 +1,4 @@
-import { FrontUserId } from "src/domain";
+import { FrontUserId } from "../../../domain";
 import type { TaskTransaction } from "../../../infrastructure/db";
 
 /**
