@@ -1,4 +1,5 @@
 import { LoginUserType } from '@/app/api/verify';
+import { cn } from '@/utils/cn';
 import { ReactNode, useState } from 'react';
 import { HiOutlineUserCircle } from 'react-icons/hi2';
 import { IoTriangle } from "react-icons/io5";
@@ -20,15 +21,36 @@ type PropsType = {
 
 export function Dashboard(props: PropsType) {
 
-    // サイドバー開閉フラグ
-    const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+    // true=展開(w-60) / false=折りたたみ(w-20)
+    // lg未満: 展開時のみオーバーレイ表示。折りたたみ時はアイコン表示で常時表示。
+    // lg以上: flex レイアウト内で幅のみ変化（現行通り）
+    // サイドバー表示フラグ
+    const [isSidebarOpen, setIsSidebarOpen] = useState(window.innerWidth >= 1024);
     // ユーザーメニュー表示フラグ
     const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
 
     return (
         <div className='w-full min-h-screen flex bg-gray-100'>
-            {/* サイドバー */}
-            <nav className={`${isSidebarOpen ? 'w-60' : 'w-20'} bg-cyan-500 shadow-md flex flex-col pt-6 transition-all duration-300 overflow-hidden`}>
+
+            {/* オーバーレイ背景 (lg未満・サイドバー展開時のみ表示) */}
+            {isSidebarOpen && (
+                <div
+                    className="fixed inset-0 z-30 bg-black/40 lg:hidden"
+                    onClick={() => setIsSidebarOpen(false)}
+                />
+            )}
+
+            {/* サイドバー
+                lg未満: 常に fixed。閉じた状態=w-20(アイコン表示)、開いた状態=w-60(オーバーレイ)
+                lg以上: flex レイアウト内に常時表示。幅のみ変化。
+                ※ position を切り替えないため、幅の transition が常に滑らかに動作する
+            */}
+            <nav className={cn(
+                'flex flex-col pt-6 overflow-hidden bg-cyan-500 shadow-md transition-all duration-300',
+                'fixed inset-y-0 left-0 z-40',
+                'lg:relative lg:inset-auto lg:z-auto',
+                isSidebarOpen ? 'w-60' : 'w-20',
+            )}>
                 <button
                     onClick={() => setIsSidebarOpen(!isSidebarOpen)}
                     className={`flex items-center ${isSidebarOpen ? 'justify-end' : 'justify-center'} w-full px-6 py-3 text-white/80 hover:text-white mb-[45px]`}
@@ -37,28 +59,33 @@ export function Dashboard(props: PropsType) {
                     <LuMenu className='h-6 w-6' />
                 </button>
                 {
-                    // メニューリスト
-                    props.navigationList.map((e) => {
-                        return (
-                            <NavLink
-                                key={e.path}
-                                to={e.path}
-                                className={({ isActive }) =>
-                                    `flex items-center ${isSidebarOpen ? '' : 'justify-center'} px-6 py-4 text-sm font-medium transition-colors whitespace-nowrap 
+                    props.navigationList.map((e) => (
+                        <NavLink
+                            key={e.path}
+                            to={e.path}
+                            className={({ isActive }) =>
+                                `flex items-center ${isSidebarOpen ? '' : 'justify-center'} px-6 py-4 text-sm font-medium transition-colors whitespace-nowrap
                                 ${isActive
-                                        ? 'bg-white/20 text-white shadow-[inset_3px_0px_0px_white]'
-                                        : 'text-white/80 hover:bg-white/10 hover:text-white'
-                                    }`
-                                }
-                            >
-                                {e.icon && <span className={`shrink-0 ${isSidebarOpen ? 'mr-3' : ''}`}>{e.icon}</span>}
-                                <span className={`transition-opacity duration-300 text-[16px] ${isSidebarOpen ? 'block' : 'hidden'}`}>{e.name}</span>
-                            </NavLink>
-                        )
-                    })
+                                    ? 'bg-white/20 text-white shadow-[inset_3px_0px_0px_white]'
+                                    : 'text-white/80 hover:bg-white/10 hover:text-white'
+                                }`
+                            }
+                            onClick={() => {
+                                if (window.innerWidth < 1024) setIsSidebarOpen(false);
+                            }}
+                        >
+                            {e.icon && <span className={`shrink-0 ${isSidebarOpen ? 'mr-3' : ''}`}>{e.icon}</span>}
+                            <span className={`transition-opacity duration-300 text-[16px] ${isSidebarOpen ? 'block' : 'hidden'}`}>{e.name}</span>
+                        </NavLink>
+                    ))
                 }
             </nav>
-            <div className='flex flex-col flex-1'>
+
+            {/* メインエリア
+                lg未満: 固定サイドバー(w-20)の幅分を pl-20 で確保
+                lg以上: flex レイアウトが幅を管理するため pl は不要
+            */}
+            <div className='flex flex-col flex-1 min-w-0 pl-20 lg:pl-0'>
                 {/* ヘッダー */}
                 <header className='h-14 bg-white border-b border-gray-200 flex items-center pl-6 pr-[70px]'>
                     <span className='text-[26px] font-bold text-gray-800 tracking-wide inline-block flex-1'>
