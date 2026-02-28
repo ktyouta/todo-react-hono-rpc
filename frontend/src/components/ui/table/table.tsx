@@ -127,11 +127,15 @@ type TableColumn<Entry> = {
 export type TableProps<Entry> = {
   data: Entry[];
   columns: TableColumn<Entry>[];
+  className?: string;
+  onRowClick?: (entry: Entry) => void;
 };
 
 export function Table<Entry extends BaseEntity>({
   data,
   columns,
+  className,
+  onRowClick,
 }: TableProps<Entry>) {
   if (!data?.length) {
     return (
@@ -143,7 +147,7 @@ export function Table<Entry extends BaseEntity>({
   }
 
   return (
-    <TableElement>
+    <TableElement className={className}>
       <TableHeader>
         <TableRow>
           {columns.map((column, index) => (
@@ -153,7 +157,9 @@ export function Table<Entry extends BaseEntity>({
       </TableHeader>
       <TableBody>
         {data.map((entry, entryIndex) => (
-          <TableRow key={entry?.id || entryIndex}>
+          <TableRow key={entry?.id || entryIndex}
+            onClick={onRowClick ? () => onRowClick(entry) : undefined}
+          >
             {columns.map(({ Cell, field, title }, columnIndex) => (
               <TableCell key={title + columnIndex}>
                 {Cell ? <Cell entry={entry} /> : `${entry[field]}`}

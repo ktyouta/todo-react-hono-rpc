@@ -4,6 +4,7 @@ import { TaskListType } from "../api/get-todo-list";
 
 type PropsType = {
     taskList: TaskListType;
+    onRowClick: (entry: TaskListType[number]) => void;
 }
 
 const columns: TableProps<TaskListType[number]>['columns'] = [
@@ -19,6 +20,8 @@ export function TodoList(props: PropsType) {
             <Table
                 data={props.taskList}
                 columns={columns}
+                className="text-[17px]"
+                onRowClick={props.onRowClick}
             />
         </div>
     );

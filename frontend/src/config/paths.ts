@@ -6,6 +6,10 @@ export const paths = {
     todo: {
         path: '/todo'
     },
+    todoDetail: {
+        path: '/todo/:id',
+        getHref: (id: number) => `${paths.todo.path}/${id}`
+    },
     todoCreate: {
         path: 'todo-create'
     },
