@@ -1,16 +1,16 @@
 import { Table } from "@/components";
 import { TableProps } from "@/components/ui/table/table";
 import { HiOutlineArchiveBoxXMark } from "react-icons/hi2";
-import { TaskListType } from "../api/get-todo-list";
+import { TaskListReturnType } from "../api/get-todo-list";
 import { TodoCard } from "./todo-card";
 
 type PropsType = {
-    taskList: TaskListType;
-    onRowClick: (entry: TaskListType[number]) => void;
+    taskList: TaskListReturnType;
+    onRowClick: (entry: TaskListReturnType[number]) => void;
 }
 
 // テーブルカラム
-const columns: TableProps<TaskListType[number]>['columns'] = [
+const columns: TableProps<TaskListReturnType[number]>['columns'] = [
     { title: 'ID', field: 'id', className: 'w-[8%] whitespace-nowrap' },
     { title: 'タイトル', field: 'title' },
     { title: '登録日', field: 'createdAt', className: 'w-[13%] whitespace-nowrap hidden md:table-cell', Cell: ({ entry }) => <span>{entry.createdAt.slice(0, 10)}</span> },

@@ -1,21 +1,21 @@
 import { rpc } from "@/lib/rpc-client";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { InferResponseType } from "hono";
-import { todoKeys } from "./query-key";
+import { statusKeys } from "./query-key";
 
-const endpoint = rpc.api.v1.todo.$get;
+const endpoint = rpc.api.v1.status.$get;
 
-// タスク一覧
-export type TaskListReturnType = InferResponseType<typeof endpoint, 200>['data'];
+// ステータス
+export type StatusReturnType = InferResponseType<typeof endpoint, 200>['data'];
 
-export function useGetTodoList() {
+export function getStatus() {
 
     return useSuspenseQuery({
-        queryKey: todoKeys.lists(),
+        queryKey: statusKeys.all,
         queryFn: async () => {
             const res = await endpoint();
             if (!res.ok) {
-                throw Error(`タスク一覧の取得に失敗しました`);
+                throw Error(`ステータスの取得に失敗しました`);
             }
             return res.json();
         },

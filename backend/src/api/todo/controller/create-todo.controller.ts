@@ -1,9 +1,11 @@
 import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
+import { API_ENDPOINT, FLG, HTTP_STATUS } from "../../../constant";
+import { TaskStatus } from "../../../domain";
+import { TaskCategory } from "../../../domain/task-category";
 import { TaskContent } from "../../../domain/task-content";
 import { TaskTitle } from "../../../domain/task-title";
 import { taskTransaction } from "../../../infrastructure";
-import { API_ENDPOINT, FLG, HTTP_STATUS } from "../../../constant";
 import { authMiddleware, userOperationGuardMiddleware } from "../../../middleware";
 import type { AppEnv } from "../../../type";
 import { formatZodErrors } from "../../../util";
@@ -33,7 +35,9 @@ const createTodo = new Hono<AppEnv>().post(
 
         const taskTitle = new TaskTitle(body.title);
         const taskContent = new TaskContent(body.content);
-        const taskEntity = new TaskEntity(taskTitle, taskContent);
+        const taskCategory = new TaskCategory(body.category);
+        const taskStatus = new TaskStatus(body.status);
+        const taskEntity = new TaskEntity(taskTitle, taskContent, taskCategory, taskStatus);
         const userId = c.get("user")?.info.id;
         const now = new Date().toISOString();
 
@@ -41,8 +45,8 @@ const createTodo = new Hono<AppEnv>().post(
             db.insert(taskTransaction).values({
                 title: taskEntity.taskTitle,
                 content: taskEntity.taskContent,
-                categoryId: body.categoryId,
-                statusId: body.statusId,
+                categoryId: taskEntity.category,
+                statusId: taskEntity.status,
                 userId: userId,
                 deleteFlg: FLG.OFF,
                 createdAt: now,

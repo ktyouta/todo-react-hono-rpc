@@ -3,6 +3,17 @@ import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { TodoCreate } from './todo-create';
 
+const dummyCategoryList = [
+    { id: 1, name: 'タスク', sortOrder: 1, createdAt: '', updatedAt: '' },
+    { id: 2, name: 'メモ', sortOrder: 2, createdAt: '', updatedAt: '' },
+];
+
+const dummyStatusList = [
+    { id: 1, name: '未着手', sortOrder: 1, createdAt: '', updatedAt: '' },
+    { id: 2, name: '着手中', sortOrder: 2, createdAt: '', updatedAt: '' },
+    { id: 3, name: '完了', sortOrder: 3, createdAt: '', updatedAt: '' },
+];
+
 const meta: Meta<typeof TodoCreate> = {
     title: 'features/todo-create',
     component: TodoCreate,
@@ -36,6 +47,8 @@ export const Default: Story = {
                 clickCreate={async () => {
                     alert('作成ボタンが押されました');
                 }}
+                categoryList={dummyCategoryList}
+                statusList={dummyStatusList}
             />
         );
     },
@@ -67,6 +80,8 @@ export const WithValidationErrors: Story = {
                 register={register}
                 errors={errors}
                 clickCreate={async () => {}}
+                categoryList={dummyCategoryList}
+                statusList={dummyStatusList}
             />
         );
     },

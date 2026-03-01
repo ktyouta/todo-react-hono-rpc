@@ -1,6 +1,6 @@
 import { paths } from "@/config/paths";
 import { useAppNavigation } from "@/hooks/use-app-navigation";
-import { TaskListType, useGetTodoList } from "../api/get-todo-list";
+import { TaskListReturnType, useGetTodoList } from "../api/get-todo-list";
 
 export function useTodoList() {
 
@@ -13,7 +13,7 @@ export function useTodoList() {
      * テーブルの行クリックイベント
      * @param entry 
      */
-    function onRowClick(entry: TaskListType[number]) {
+    function onRowClick(entry: TaskListReturnType[number]) {
         appNavigate(`${paths.todoDetail.getHref(entry.id)}`);
     }
 

@@ -1,13 +1,17 @@
-import { FieldErrors, UseFormRegister } from "react-hook-form";
+import { getCategory } from "@/features/api/get-category";
+import { getStatus } from "@/features/api/get-status";
 import { toast } from "react-toastify";
 import { useCreateTodoMutation } from "../api/create-todo";
-import { TodoCreateRequestType } from "../types/todo-create-request-type";
 import { useTodoCreateForm } from "./use-todo-create.form";
 
 export function useTodoCreate() {
 
     // 入力フォーム用
     const { register, handleSubmit, formState: { errors }, reset } = useTodoCreateForm();
+    // ステータスリスト
+    const { data: status } = getStatus();
+    // カテゴリリスト
+    const { data: category } = getCategory();
     // タスク作成リクエスト
     const postMutation = useCreateTodoMutation({
         onSuccess: (response) => {
@@ -32,8 +36,8 @@ export function useTodoCreate() {
         postMutation.mutate({
             title: data.title,
             content: data.content,
-            categoryId: data.categoryId,
-            statusId: data.statusId,
+            category: data.categoryId,
+            status: data.statusId,
         });
     });
 
@@ -41,11 +45,7 @@ export function useTodoCreate() {
         register,
         errors,
         clickCreate,
+        statusList: status.data,
+        categoryList: category.data,
     };
 }
-
-export type UseTodoCreateReturn = {
-    register: UseFormRegister<TodoCreateRequestType>;
-    errors: FieldErrors<TodoCreateRequestType>;
-    clickCreate: () => void;
-};
