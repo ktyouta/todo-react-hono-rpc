@@ -1,6 +1,6 @@
 import { Context, Hono } from "hono";
 import { cors } from "hono/cors";
-import { frontUser, frontUserLogin, frontUserLogout, frontUserPassword, health, refresh, sample, todo, verify } from "./api";
+import { category, frontUser, frontUserLogin, frontUserLogout, frontUserPassword, health, refresh, sample, status, todo, verify } from "./api";
 import {
   accessLogMiddleware,
   createDbClientMiddleware,
@@ -51,6 +51,8 @@ const routes = app
   .route("/", verify)
   .route("/", frontUserLogout)
   .route("/", frontUserPassword)
+  .route("/", category)
+  .route("/", status)
   .route("/", todo)
 
 // RPC用の型エクスポート

@@ -41,6 +41,8 @@ const createTodo = new Hono<AppEnv>().post(
             db.insert(taskTransaction).values({
                 title: taskEntity.taskTitle,
                 content: taskEntity.taskContent,
+                categoryId: body.categoryId,
+                statusId: body.statusId,
                 userId: userId,
                 deleteFlg: FLG.OFF,
                 createdAt: now,

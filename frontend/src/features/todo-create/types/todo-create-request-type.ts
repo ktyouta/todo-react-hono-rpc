@@ -9,6 +9,8 @@ export const TodoCreateRequestSchema = z.object({
         .string()
         .min(1, "タスク内容を入力してください")
         .max(2000, "タスク内容は2000文字以内で入力してください"),
+    categoryId: z.number().int().min(1),
+    statusId: z.number().int().min(1),
 });
 
 export type TodoCreateRequestType = z.infer<typeof TodoCreateRequestSchema>;

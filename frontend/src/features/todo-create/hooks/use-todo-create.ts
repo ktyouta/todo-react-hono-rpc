@@ -15,6 +15,8 @@ export function useTodoCreate() {
             reset({
                 title: ``,
                 content: ``,
+                categoryId: 1,
+                statusId: 1,
             });
         },
         onError: (errMessage) => {
@@ -30,6 +32,8 @@ export function useTodoCreate() {
         postMutation.mutate({
             title: data.title,
             content: data.content,
+            categoryId: data.categoryId,
+            statusId: data.statusId,
         });
     });
 

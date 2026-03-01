@@ -19,10 +19,14 @@ export const Default: Story = {
         const { register, formState: { errors } } = useForm<{
             title: string;
             content: string;
+            categoryId: number;
+            statusId: number;
         }>({
             defaultValues: {
                 title: '',
                 content: '',
+                categoryId: 1,
+                statusId: 1,
             },
         });
         return (
@@ -42,10 +46,14 @@ export const WithValidationErrors: Story = {
         const { register, formState: { errors }, setError } = useForm<{
             title: string;
             content: string;
+            categoryId: number;
+            statusId: number;
         }>({
             defaultValues: {
                 title: '',
                 content: '',
+                categoryId: 1,
+                statusId: 1,
             },
         });
 

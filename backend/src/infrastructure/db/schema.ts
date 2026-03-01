@@ -61,12 +61,42 @@ export type SeqMaster = typeof seqMaster.$inferSelect;
 export type NewSeqMaster = typeof seqMaster.$inferInsert;
 
 /**
+ * カテゴリマスタ（種別）
+ */
+export const categoryMaster = sqliteTable("category_master", {
+  id: integer("id").primaryKey(),
+  name: text("name").notNull(),
+  sortOrder: integer("sort_order").notNull(),
+  createdAt: text("created_at").notNull(),
+  updatedAt: text("updated_at").notNull(),
+});
+
+export type CategoryMaster = typeof categoryMaster.$inferSelect;
+export type NewCategoryMaster = typeof categoryMaster.$inferInsert;
+
+/**
+ * ステータスマスタ
+ */
+export const statusMaster = sqliteTable("status_master", {
+  id: integer("id").primaryKey(),
+  name: text("name").notNull(),
+  sortOrder: integer("sort_order").notNull(),
+  createdAt: text("created_at").notNull(),
+  updatedAt: text("updated_at").notNull(),
+});
+
+export type StatusMaster = typeof statusMaster.$inferSelect;
+export type NewStatusMaster = typeof statusMaster.$inferInsert;
+
+/**
  * タスクテーブルスキーマ
  */
 export const taskTransaction = sqliteTable("task_transaction", {
   id: integer("id").primaryKey({ autoIncrement: true }),
   title: text("title").notNull(),
   content: text("content"),
+  categoryId: integer("category_id").notNull().default(1),
+  statusId: integer("status_id").notNull().default(1),
   userId: integer("user_id"),
   deleteFlg: text("delete_flg").notNull().default("0"),
   createdAt: text("created_at").notNull(),
