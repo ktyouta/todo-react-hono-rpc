@@ -1,4 +1,5 @@
 import { Button, Select, Textarea, Textbox } from "@/components";
+import { CATEGORY_ID } from "@/constants/master";
 import { CategoryReturnType } from "@/features/api/get-category";
 import { StatusReturnType } from "@/features/api/get-status";
 import { BaseSyntheticEvent } from "react";
@@ -11,6 +12,7 @@ type PropsType = {
     clickCreate: (e?: BaseSyntheticEvent<object, any, any> | undefined) => Promise<void>;
     statusList: StatusReturnType;
     categoryList: CategoryReturnType;
+    selectedCategoryId: number;
 }
 
 export function TodoCreate(props: PropsType) {
@@ -20,7 +22,8 @@ export function TodoCreate(props: PropsType) {
         errors,
         clickCreate,
         statusList,
-        categoryList } = props;
+        categoryList,
+        selectedCategoryId } = props;
 
     return (
         <div className="w-full min-h-full">
@@ -58,22 +61,25 @@ export function TodoCreate(props: PropsType) {
                         <p className="text-red-500 pl-1 mt-2">{errors.content.message}</p>
                     )}
                     <div className="flex flex-col sm:flex-row gap-[3%] mt-[25px]">
-                        <div className="flex flex-1 items-center gap-2">
-                            <span className="whitespace-nowrap">種別</span>
+                        <div className="flex flex-1 items-center gap-2 max-w-[48%]">
+                            <span className="whitespace-nowrap">カテゴリ</span>
                             <Select
                                 registration={register("categoryId", { valueAsNumber: true })}
                                 options={categoryList.map((c) => ({ value: String(c.id), label: c.name }))}
                                 className="flex-1 border border-[#c0c0c0] rounded px-3 py-2 bg-white text-[15px] focus:outline-none focus:border-[#888]"
                             />
                         </div>
-                        <div className="flex flex-1 items-center gap-2">
-                            <span className="whitespace-nowrap">ステータス</span>
-                            <Select
-                                registration={register("statusId", { valueAsNumber: true })}
-                                options={statusList.map((s) => ({ value: String(s.id), label: s.name }))}
-                                className="flex-1 border border-[#c0c0c0] rounded px-3 py-2 bg-white text-[15px] focus:outline-none focus:border-[#888]"
-                            />
-                        </div>
+                        {
+                            selectedCategoryId !== CATEGORY_ID.MEMO &&
+                            <div className="flex flex-1 items-center gap-2 max-w-[48%]">
+                                <span className="whitespace-nowrap">ステータス</span>
+                                <Select
+                                    registration={register("statusId", { valueAsNumber: true })}
+                                    options={statusList.map((s) => ({ value: String(s.id), label: s.name }))}
+                                    className="flex-1 border border-[#c0c0c0] rounded px-3 py-2 bg-white text-[15px] focus:outline-none focus:border-[#888]"
+                                />
+                            </div>
+                        }
                     </div>
                 </div>
             </div>

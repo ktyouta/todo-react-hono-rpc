@@ -1,5 +1,18 @@
 import { FrontUserId } from "../../../domain";
-import type { TaskTransaction } from "../../../infrastructure/db";
+
+export type TodoListItem = {
+  id: number;
+  title: string;
+  content: string | null;
+  categoryId: number;
+  categoryName: string;
+  statusId: number | null;
+  statusName: string;
+  userId: number | null;
+  deleteFlg: string;
+  createdAt: string;
+  updatedAt: string;
+};
 
 /**
  * タスク一覧取得リポジトリインターフェース
@@ -8,5 +21,5 @@ export interface IGetTodoListRepository {
   /**
    * 全件取得
    */
-  findAll(userId: FrontUserId): Promise<TaskTransaction[]>;
+  findAll(userId: FrontUserId): Promise<TodoListItem[]>;
 }

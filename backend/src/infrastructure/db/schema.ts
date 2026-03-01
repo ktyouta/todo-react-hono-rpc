@@ -96,7 +96,7 @@ export const taskTransaction = sqliteTable("task_transaction", {
   title: text("title").notNull(),
   content: text("content"),
   categoryId: integer("category_id").notNull().default(1),
-  statusId: integer("status_id").notNull().default(1),
+  statusId: integer("status_id"),
   userId: integer("user_id"),
   deleteFlg: text("delete_flg").notNull().default("0"),
   createdAt: text("created_at").notNull(),

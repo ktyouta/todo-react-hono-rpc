@@ -17,6 +17,14 @@ export function TodoCard({ entry, onClick }: PropsType) {
             </div>
             <div className="flex gap-6 mt-3 pt-3 border-t border-gray-100 text-xs">
                 <div>
+                    <span className="text-gray-400">種別</span>
+                    <span className="ml-1.5 text-gray-500">{entry.categoryName}</span>
+                </div>
+                <div>
+                    <span className="text-gray-400">ステータス</span>
+                    <span className="ml-1.5 text-gray-500">{entry.statusName}</span>
+                </div>
+                <div>
                     <span className="text-gray-400">登録日</span>
                     <span className="ml-1.5 text-gray-500">{entry.createdAt.slice(0, 10)}</span>
                 </div>

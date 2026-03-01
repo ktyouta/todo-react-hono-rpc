@@ -7,9 +7,14 @@ enum StatusType {
 export class TaskStatus {
 
     // ステータス
-    private readonly _value: StatusType;
+    private readonly _value: StatusType | null;
 
-    constructor(status: number) {
+    constructor(status: number | undefined) {
+
+        if (!status) {
+            this._value = null;
+            return;
+        }
 
         let value = status;
         if (!Object.values(StatusType).includes(value)) {

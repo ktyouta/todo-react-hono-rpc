@@ -1,3 +1,4 @@
+import { CATEGORY_ID } from "@/constants/master";
 import { getCategory } from "@/features/api/get-category";
 import { getStatus } from "@/features/api/get-status";
 import { toast } from "react-toastify";
@@ -7,7 +8,7 @@ import { useTodoCreateForm } from "./use-todo-create.form";
 export function useTodoCreate() {
 
     // 入力フォーム用
-    const { register, handleSubmit, formState: { errors }, reset } = useTodoCreateForm();
+    const { register, handleSubmit, formState: { errors }, reset, watch } = useTodoCreateForm();
     // ステータスリスト
     const { data: status } = getStatus();
     // カテゴリリスト
@@ -27,6 +28,8 @@ export function useTodoCreate() {
             toast.error(errMessage);
         }
     });
+    // 選択中のカテゴリID
+    const selectedCategoryId = watch("categoryId");
 
     /**
      * 作成ボタン押下
@@ -37,7 +40,7 @@ export function useTodoCreate() {
             title: data.title,
             content: data.content,
             category: data.categoryId,
-            status: data.statusId,
+            status: data.categoryId !== CATEGORY_ID.MEMO ? data.statusId : undefined,
         });
     });
 
@@ -47,5 +50,6 @@ export function useTodoCreate() {
         clickCreate,
         statusList: status.data,
         categoryList: category.data,
+        selectedCategoryId,
     };
 }

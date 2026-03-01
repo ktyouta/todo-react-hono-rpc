@@ -1,6 +1,5 @@
 import { FrontUserId } from "../../../domain";
-import { TaskTransaction } from "../../../infrastructure";
-import { IGetTodoListRepository } from "../repository/get-todo-list.repository.interface";
+import { IGetTodoListRepository, TodoListItem } from "../repository/get-todo-list.repository.interface";
 
 /**
  * タスク一覧取得サービス
@@ -11,7 +10,7 @@ export class GetTodoListService {
   /**
    * 全件取得
    */
-  async findAll(userId: FrontUserId): Promise<TaskTransaction[]> {
+  async findAll(userId: FrontUserId): Promise<TodoListItem[]> {
     const records = await this.repository.findAll(userId);
     return records;
   }

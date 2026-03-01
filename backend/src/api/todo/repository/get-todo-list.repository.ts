@@ -1,9 +1,9 @@
-import { and, eq } from "drizzle-orm";
+import { and, eq, sql } from "drizzle-orm";
 import { FLG } from "../../../constant";
 import { FrontUserId } from "../../../domain";
-import type { Database, TaskTransaction } from "../../../infrastructure/db";
-import { taskTransaction } from "../../../infrastructure/db";
-import type { IGetTodoListRepository } from "./get-todo-list.repository.interface";
+import type { Database } from "../../../infrastructure/db";
+import { categoryMaster, statusMaster, taskTransaction } from "../../../infrastructure/db";
+import type { IGetTodoListRepository, TodoListItem } from "./get-todo-list.repository.interface";
 
 /**
  * タスク一覧取得リポジトリ実装
@@ -14,10 +14,24 @@ export class GetTodoListRepository implements IGetTodoListRepository {
   /**
    * 全件取得
    */
-  async findAll(userId: FrontUserId): Promise<TaskTransaction[]> {
+  async findAll(userId: FrontUserId): Promise<TodoListItem[]> {
     return await this.db
-      .select()
+      .select({
+        id: taskTransaction.id,
+        title: taskTransaction.title,
+        content: taskTransaction.content,
+        categoryId: taskTransaction.categoryId,
+        categoryName: sql<string>`coalesce(${categoryMaster.name}, '')`,
+        statusId: taskTransaction.statusId,
+        statusName: sql<string>`coalesce(${statusMaster.name}, 'なし')`,
+        userId: taskTransaction.userId,
+        deleteFlg: taskTransaction.deleteFlg,
+        createdAt: taskTransaction.createdAt,
+        updatedAt: taskTransaction.updatedAt,
+      })
       .from(taskTransaction)
+      .leftJoin(categoryMaster, eq(taskTransaction.categoryId, categoryMaster.id))
+      .leftJoin(statusMaster, eq(taskTransaction.statusId, statusMaster.id))
       .where(
         and(
           eq(taskTransaction.deleteFlg, FLG.OFF),

@@ -31,7 +31,7 @@ export const Default: Story = {
             title: string;
             content: string;
             categoryId: number;
-            statusId: number;
+            statusId?: number;
         }>({
             defaultValues: {
                 title: '',
@@ -49,6 +49,7 @@ export const Default: Story = {
                 }}
                 categoryList={dummyCategoryList}
                 statusList={dummyStatusList}
+                selectedCategoryId={1}
             />
         );
     },
@@ -60,7 +61,7 @@ export const WithValidationErrors: Story = {
             title: string;
             content: string;
             categoryId: number;
-            statusId: number;
+            statusId?: number;
         }>({
             defaultValues: {
                 title: '',
@@ -79,9 +80,10 @@ export const WithValidationErrors: Story = {
             <TodoCreate
                 register={register}
                 errors={errors}
-                clickCreate={async () => {}}
+                clickCreate={async () => { }}
                 categoryList={dummyCategoryList}
                 statusList={dummyStatusList}
+                selectedCategoryId={1}
             />
         );
     },
