@@ -12,6 +12,7 @@ export const API_ENDPOINT = {
   LOGOUT: "/api/v1/frontuser-logout",
   FRONT_USER_PASSWORD: "/api/v1/frontuser-password/:userId",
   TODO: "/api/v1/todo",
+  TODO_ID: "/api/v1/todo/:id",
   CATEGORY: "/api/v1/category",
   STATUS: "/api/v1/status",
 } as const;
