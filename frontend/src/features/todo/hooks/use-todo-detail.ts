@@ -1,6 +1,9 @@
+import { zodResolver } from "@hookform/resolvers/zod";
+import { paths } from "@/config/paths";
 import { getCategory } from "@/features/api/get-category";
 import { getStatus } from "@/features/api/get-status";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { useAppNavigation } from "@/hooks/use-app-navigation";
+import { useSwitch } from "@/hooks/use-switch";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useGetTodo } from "../api/get-todo";
@@ -18,8 +21,12 @@ export function useTodoDetail() {
     const { data: status } = getStatus();
     // カテゴリリスト
     const { data: category } = getCategory();
+    // ルーティング用
+    const { appGoBack } = useAppNavigation();
     // 編集モード
     const [isEditMode, setIsEditMode] = useState(false);
+    // 削除確認ダイアログ
+    const deleteDialog = useSwitch();
     // タスク更新用
     const { register, handleSubmit, formState: { errors }, reset, watch } = useForm<TodoDetailEditType>({
         resolver: zodResolver(TodoDetailEditSchema),
@@ -34,6 +41,13 @@ export function useTodoDetail() {
     });
     // 選択中のカテゴリ
     const selectedCategoryId = watch("categoryId");
+
+    /**
+     * 一覧に戻る
+     */
+    function onClickBack() {
+        appGoBack(paths.todo.path);
+    }
 
     /**
      * 編集ボタン押下
@@ -63,14 +77,42 @@ export function useTodoDetail() {
         setIsEditMode(false);
     });
 
+    /**
+     * 削除確認ダイアログを開く
+     */
+    function onClickDelete() {
+        deleteDialog.on();
+    }
+
+    /**
+     * 削除確認ダイアログを閉じる
+     */
+    function onCancelDelete() {
+        deleteDialog.off();
+    }
+
+    /**
+     * 削除実行
+     */
+    function onConfirmDelete() {
+        // TODO: 削除API呼び出し
+        deleteDialog.off();
+        appGoBack(paths.todo.path);
+    }
+
     return {
         task,
         statusList: status.data,
         categoryList: category.data,
         isEditMode,
+        isDeleteDialogOpen: deleteDialog.flag,
+        onClickBack,
         onClickEdit,
         onClickCancel,
         clickSave,
+        onClickDelete,
+        onCancelDelete,
+        onConfirmDelete,
         register,
         errors,
         selectedCategoryId,
