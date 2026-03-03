@@ -3,7 +3,8 @@ import { paths } from '@/config/paths';
 import { LoginContainer } from '@/features/login/components/login-container';
 import { SignupContainer } from '@/features/signup/components/signup-container';
 import { TodoCreateContainer } from '@/features/todo-create/components/create-todo-container';
-import { Todo } from '@/features/todo/components/todo';
+import { TodoPage } from '@/features/todo/components/todo';
+import { TodoDetailPage } from '@/features/todo/components/todo-detail-page';
 import { TodoLayout } from '@/features/todo/components/todo-layout';
 import { UpdatePasswordContainer } from '@/features/updatepassword/components/update-password-container';
 import { UpdateUserContainer } from '@/features/updateuser/components/update-user-container';
@@ -54,15 +55,13 @@ const routerList = [
                             {
                                 path: paths.todo.path,
                                 element: (
-                                    <Todo />
+                                    <TodoPage />
                                 )
                             },
                             {
                                 path: paths.todoDetail.path,
                                 element: (
-                                    <div>
-                                        タスク詳細
-                                    </div>
+                                    <TodoDetailPage />
                                 )
                             }
                         ]

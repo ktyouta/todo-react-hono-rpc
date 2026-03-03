@@ -5,14 +5,14 @@ import { todoKeys } from "./query-key";
 
 const endpoint = rpc.api.v1.todo[':id'].$get;
 
-// タスク一覧
-export type TaskListReturnType = InferResponseType<typeof endpoint, 200>['data'];
+// タスク詳細
+export type TaskReturnType = InferResponseType<typeof endpoint, 200>['data'];
 
 type PropsType = {
     id: string;
 }
 
-export function useGetTodoList(props: PropsType) {
+export function useGetTodo(props: PropsType) {
 
     return useSuspenseQuery({
         queryKey: todoKeys.detail(props.id),

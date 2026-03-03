@@ -2,7 +2,7 @@ import { Loading } from "@/components";
 import { Suspense } from "react";
 import { TodoListContainer } from "./todo-list-container";
 
-export function Todo() {
+export function TodoPage() {
 
     return (
         <div className="w-full min-h-full">
