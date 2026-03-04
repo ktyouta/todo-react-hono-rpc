@@ -10,5 +10,6 @@ export * from "./refresh-token";
 export * from "./seq";
 export * from "./task-category";
 export * from "./task-content";
+export * from "./task-id";
 export * from "./task-status";
 export * from "./task-title";

@@ -1,4 +1,4 @@
-enum CategoryType {
+export enum CategoryType {
     task = 1,
     memo = 2,
 }

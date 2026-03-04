@@ -1,12 +1,15 @@
-import { zodResolver } from "@hookform/resolvers/zod";
 import { paths } from "@/config/paths";
+import { CATEGORY_ID } from "@/constants/master";
 import { getCategory } from "@/features/api/get-category";
 import { getStatus } from "@/features/api/get-status";
 import { useAppNavigation } from "@/hooks/use-app-navigation";
 import { useSwitch } from "@/hooks/use-switch";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 import { useGetTodo } from "../api/get-todo";
+import { useUpdateTodoMutation } from "../api/update-todo";
 import { TodoDetailEditSchema, TodoDetailEditType } from "../types/todo-detail-edit-type";
 import { useTaskId } from "./use-task-id";
 
@@ -41,6 +44,18 @@ export function useTodoDetail() {
     });
     // 選択中のカテゴリ
     const selectedCategoryId = watch("categoryId");
+    // タスク更新用ミューテーション
+    const updateTodoMutation = useUpdateTodoMutation({
+        id: taskId,
+        onSuccess: (response) => {
+            const message = response.message;
+            toast.success(message);
+            setIsEditMode(false);
+        },
+        onError: () => {
+            toast.error(`タスクの更新に失敗しました。時間をおいて再度お試しください。`);
+        },
+    });
 
     /**
      * 一覧に戻る
@@ -72,9 +87,13 @@ export function useTodoDetail() {
     /**
      * 保存ボタン押下
      */
-    const clickSave = handleSubmit((_data) => {
-        // TODO: 更新API呼び出し
-        setIsEditMode(false);
+    const clickSave = handleSubmit((data) => {
+        updateTodoMutation.mutate({
+            title: data.title,
+            content: data.content,
+            category: data.categoryId,
+            status: data.categoryId !== CATEGORY_ID.MEMO ? data.statusId : undefined,
+        });
     });
 
     /**

@@ -47,7 +47,7 @@ export function TodoDetail(props: PropsType) {
     } = props;
 
     return (
-        <div className="w-full min-h-full">
+        <div className="w-full min-h-full flex flex-col pb-7">
             {/* 一覧に戻る */}
             <div className="mb-4">
                 <button
@@ -98,7 +98,7 @@ export function TodoDetail(props: PropsType) {
             </div>
 
             {/* コンテンツ */}
-            <div className="w-full pt-[50px] text-[15px]">
+            <div className="w-full pt-[50px] text-[15px] flex-1">
                 <div className="w-full">
                     {isEditMode ? (
                         <>

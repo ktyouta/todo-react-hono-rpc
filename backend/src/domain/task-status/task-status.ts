@@ -1,4 +1,4 @@
-enum StatusType {
+export enum StatusType {
     notStarted = 1,
     inProgress = 2,
     completed = 3,

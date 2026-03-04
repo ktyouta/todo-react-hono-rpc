@@ -2,9 +2,9 @@ import { CategoryType, StatusType } from "../../../domain";
 import { TaskEntity } from "../entity/task.entity";
 
 /**
- * タスク作成レスポンスの型
+ * タスク更新レスポンスの型
  */
-export type CreateTodoResponseType = {
+export type UpdateTodoResponseType = {
   title: string;
   content: string;
   category: CategoryType;
@@ -12,10 +12,10 @@ export type CreateTodoResponseType = {
 };
 
 /**
- * タスク作成レスポンスDTO
+ * タスク更新レスポンスDTO
  */
-export class CreateTodoResponseDto {
-  private readonly _value: CreateTodoResponseType;
+export class UpdateTodoResponseDto {
+  private readonly _value: UpdateTodoResponseType;
 
   constructor(entity: TaskEntity) {
     this._value = {
