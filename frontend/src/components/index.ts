@@ -6,6 +6,7 @@ export { Button } from './ui/button/button';
 export { Checkbox } from './ui/checkbox/checkbox';
 export { Dialog } from './ui/dialog/dialog';
 export { Select } from './ui/select/select';
+export { LoadingOverlay } from './ui/loading-overlay/loading-overlay';
 export { Spinner } from './ui/spinner/spinner';
 export {
   Table, TableBody, TableCaption, TableCell, TableElement, TableFooter,

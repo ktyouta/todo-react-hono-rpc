@@ -1,4 +1,4 @@
-import { Button, Dialog, Select, Textarea, Textbox } from "@/components";
+import { Button, Dialog, LoadingOverlay, Select, Textarea, Textbox } from "@/components";
 import { CATEGORY_ID } from "@/constants/master";
 import { CategoryReturnType } from "@/features/api/get-category";
 import { StatusReturnType } from "@/features/api/get-status";
@@ -24,6 +24,7 @@ type PropsType = {
     register: UseFormRegister<TodoDetailEditType>;
     errors: FieldErrors<TodoDetailEditType>;
     selectedCategoryId: number;
+    isLoading: boolean;
 }
 
 export function TodoDetail(props: PropsType) {
@@ -44,6 +45,7 @@ export function TodoDetail(props: PropsType) {
         register,
         errors,
         selectedCategoryId,
+        isLoading,
     } = props;
 
     return (
@@ -171,6 +173,20 @@ export function TodoDetail(props: PropsType) {
                             </div>
                         )}
                     </div>
+                    <div className="mt-[20px] pt-[20px] border-t border-[#e8e8e8] flex flex-col sm:flex-row gap-[3%]">
+                        <div className="flex flex-1 items-center gap-2 max-w-[48%]">
+                            <span className="whitespace-nowrap text-gray-500 text-base">登録日</span>
+                            <span className="flex-1 px-3 py-2 text-base text-gray-700">
+                                {new Date(task.createdAt).toLocaleString('ja-JP')}
+                            </span>
+                        </div>
+                        <div className="flex flex-1 items-center gap-2 max-w-[48%]">
+                            <span className="whitespace-nowrap text-gray-500 text-base">更新日</span>
+                            <span className="flex-1 px-3 py-2 text-base text-gray-700">
+                                {new Date(task.updatedAt).toLocaleString('ja-JP')}
+                            </span>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -224,6 +240,9 @@ export function TodoDetail(props: PropsType) {
                     </div>
                 </div>
             </Dialog>
+
+            {/* ローディングオーバーレイ */}
+            {isLoading && <LoadingOverlay />}
         </div>
     );
 }

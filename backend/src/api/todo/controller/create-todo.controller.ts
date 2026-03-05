@@ -3,7 +3,7 @@ import { Hono } from "hono";
 import { API_ENDPOINT, FLG, HTTP_STATUS } from "../../../constant";
 import { TaskCategory, TaskContent, TaskStatus, TaskTitle } from "../../../domain";
 import { taskTransaction } from "../../../infrastructure";
-import { authMiddleware, userOperationGuardMiddleware } from "../../../middleware";
+import { authMiddleware } from "../../../middleware";
 import type { AppEnv } from "../../../type";
 import { formatZodErrors } from "../../../util";
 import { CreateTodoResponseDto } from "../dto";
@@ -17,7 +17,6 @@ import { CreateTodoSchema } from "../schema";
  */
 const createTodo = new Hono<AppEnv>().post(
     API_ENDPOINT.TODO,
-    userOperationGuardMiddleware,
     authMiddleware,
     zValidator("json", CreateTodoSchema, (result, c) => {
         if (!result.success) {

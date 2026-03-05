@@ -1,6 +1,7 @@
 import { Hono } from "hono";
 import type { AppEnv } from "../../../type";
 import { createTodo } from "./create-todo.controller";
+import { deleteTodo } from "./delete-todo.controller";
 import { getTodoList } from "./get-todo-list.controller";
 import { getTodo } from "./get-todo.controller";
 import { updateTodo } from "./update-todo.controller";
@@ -11,6 +12,7 @@ const todo = new Hono<AppEnv>()
     .route("/", getTodoList)
     .route("/", getTodo)
     .route("/", updateTodo)
+    .route("/", deleteTodo);
 
 export { todo };
 

@@ -8,6 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
+import { useDeleteTodoMutation } from "../api/delete-todo";
 import { useGetTodo } from "../api/get-todo";
 import { useUpdateTodoMutation } from "../api/update-todo";
 import { TodoDetailEditSchema, TodoDetailEditType } from "../types/todo-detail-edit-type";
@@ -55,6 +56,17 @@ export function useTodoDetail() {
         onError: () => {
             toast.error(`タスクの更新に失敗しました。時間をおいて再度お試しください。`);
         },
+    });
+    // タスク削除用ミューテーション
+    const deleteTodoMutation = useDeleteTodoMutation({
+        id: taskId,
+        onSuccess: (message) => {
+            toast.success(message);
+            appGoBack(paths.todo.path);
+        },
+        onError: () => {
+            toast.error(`タスクの削除に失敗しました。時間をおいて再度お試しください。`);
+        }
     });
 
     /**
@@ -114,9 +126,8 @@ export function useTodoDetail() {
      * 削除実行
      */
     function onConfirmDelete() {
-        // TODO: 削除API呼び出し
         deleteDialog.off();
-        appGoBack(paths.todo.path);
+        deleteTodoMutation.mutate();
     }
 
     return {
@@ -135,5 +146,6 @@ export function useTodoDetail() {
         register,
         errors,
         selectedCategoryId,
+        isLoading: updateTodoMutation.isPending || deleteTodoMutation.isPending,
     };
 }
