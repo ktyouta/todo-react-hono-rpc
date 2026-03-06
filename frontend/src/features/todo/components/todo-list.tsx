@@ -34,13 +34,16 @@ export function TodoList(props: PropsType) {
 
     return (
         <div className="w-full min-h-full p-1 sm:p-5">
-            {/* テーブル表示: md 以上 */}
+            {/* テーブル表示: lg 以上 */}
             <div className="hidden lg:block">
                 <Table
                     data={props.taskList}
                     columns={columns}
-                    className="text-[17px] table-fixed"
-                    rowClassName="h-[50px]"
+                    className="text-[17px] table-fixed
+                        [&_thead]:bg-gray-50/90
+                        [&_thead_tr]:border-b
+                        [&_thead_tr]:border-gray-400/60"
+                    rowClassName="h-[50px] border-gray-300/80 hover:bg-gray-100 cursor-pointer"
                     onRowClick={props.onRowClick}
                 />
             </div>
