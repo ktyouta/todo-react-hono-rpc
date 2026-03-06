@@ -23,7 +23,7 @@ export function TodoList(props: PropsType) {
 
     if (!props.taskList.length) {
         return (
-            <div className="w-full min-h-full p-5">
+            <div className="w-full min-h-full p-2 sm:p-5">
                 <div className="flex h-80 flex-col items-center justify-center bg-white text-gray-500">
                     <HiOutlineArchiveBoxXMark className="size-16" />
                     <h4>No Entries Found</h4>

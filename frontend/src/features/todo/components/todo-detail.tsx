@@ -142,13 +142,13 @@ export function TodoDetail(props: PropsType) {
                         </>
                     )}
                     <div className={`flex flex-col sm:flex-row gap-[3%] ${isEditMode ? "mt-[25px]" : "mt-[20px] pt-[20px] border-t border-[#e8e8e8]"}`}>
-                        <div className="flex flex-1 items-center gap-2 max-w-[48%]">
+                        <div className="flex flex-1 items-center gap-2 sm:max-w-[48%]">
                             <span className="whitespace-nowrap text-gray-500 text-base">カテゴリ</span>
                             {isEditMode ? (
                                 <Select
                                     registration={register("categoryId", { valueAsNumber: true })}
                                     options={categoryList.map((c) => ({ value: String(c.id), label: c.name }))}
-                                    className="flex-1 border border-[#c0c0c0] rounded px-3 py-2 bg-white text-[15px] focus:outline-none focus:border-[#888]"
+                                    className="flex-1 border border-[#c0c0c0] rounded px-3 py-2 bg-white text-base focus:outline-none focus:border-[#888]"
                                 />
                             ) : (
                                 <span className="flex-1 px-3 py-2 bg-gray-50 border border-[#e0e0e0] rounded text-lg">
@@ -157,13 +157,13 @@ export function TodoDetail(props: PropsType) {
                             )}
                         </div>
                         {(isEditMode ? selectedCategoryId !== CATEGORY_ID.MEMO : task.statusId !== null) && (
-                            <div className="flex flex-1 items-center gap-2 max-w-[48%]">
+                            <div className="flex flex-1 items-center gap-2 sm:max-w-[48%]">
                                 <span className="whitespace-nowrap text-gray-500 text-base">ステータス</span>
                                 {isEditMode ? (
                                     <Select
                                         registration={register("statusId", { valueAsNumber: true })}
                                         options={statusList.map((s) => ({ value: String(s.id), label: s.name }))}
-                                        className="flex-1 border border-[#c0c0c0] rounded px-3 py-2 bg-white text-[15px] focus:outline-none focus:border-[#888]"
+                                        className="flex-1 border border-[#c0c0c0] rounded px-3 py-2 bg-white text-base focus:outline-none focus:border-[#888]"
                                     />
                                 ) : (
                                     <span className="flex-1 px-3 py-2 bg-gray-50 border border-[#e0e0e0] rounded text-lg">
@@ -174,13 +174,13 @@ export function TodoDetail(props: PropsType) {
                         )}
                     </div>
                     <div className="mt-[20px] pt-[20px] border-t border-[#e8e8e8] flex flex-col sm:flex-row gap-[3%]">
-                        <div className="flex flex-1 items-center gap-2 max-w-[48%]">
+                        <div className="flex flex-1 items-center gap-2 sm:max-w-[48%]">
                             <span className="whitespace-nowrap text-gray-500 text-base">登録日</span>
                             <span className="flex-1 px-3 py-2 text-base text-gray-700">
                                 {new Date(task.createdAt).toLocaleString('ja-JP')}
                             </span>
                         </div>
-                        <div className="flex flex-1 items-center gap-2 max-w-[48%]">
+                        <div className="flex flex-1 items-center gap-2 sm:max-w-[48%]">
                             <span className="whitespace-nowrap text-gray-500 text-base">更新日</span>
                             <span className="flex-1 px-3 py-2 text-base text-gray-700">
                                 {new Date(task.updatedAt).toLocaleString('ja-JP')}

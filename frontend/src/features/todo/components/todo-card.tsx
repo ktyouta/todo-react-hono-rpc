@@ -15,7 +15,7 @@ export function TodoCard({ entry, onClick }: PropsType) {
                 <p className="text-[17px] font-medium text-gray-800 break-words min-w-0">{entry.title}</p>
                 <span className="text-xs text-gray-400 whitespace-nowrap shrink-0 mt-0.5">#{entry.id}</span>
             </div>
-            <div className="flex gap-6 mt-3 pt-3 border-t border-gray-100 text-xs">
+            <div className="flex flex-wrap gap-x-4 gap-y-2 mt-3 pt-3 border-t border-gray-100 text-xs">
                 <div>
                     <span className="text-gray-400">種別</span>
                     <span className="ml-1.5 text-gray-500">{entry.categoryName}</span>

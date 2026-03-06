@@ -87,7 +87,7 @@ export function Dashboard(props: PropsType) {
             */}
             <div className='flex flex-col flex-1 min-w-0 pl-20 lg:pl-0'>
                 {/* ヘッダー */}
-                <header className='h-14 bg-white border-b border-gray-200 flex items-center pl-6 pr-[70px]'>
+                <header className='h-14 bg-white border-b border-gray-200 flex items-center pl-6 pr-4 sm:pr-[70px]'>
                     <span className='text-[26px] font-bold text-gray-800 tracking-wide inline-block flex-1'>
                         Todoリスト
                     </span>
@@ -132,7 +132,7 @@ export function Dashboard(props: PropsType) {
                 </header>
                 <div className='flex flex-1'>
                     {/* メインコンテンツ */}
-                    <main className='flex-1 flex flex-col p-6'>
+                    <main className='flex-1 flex flex-col p-3 sm:p-6'>
                         {props.children}
                     </main>
                 </div>

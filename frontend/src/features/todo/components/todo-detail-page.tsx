@@ -1,13 +1,13 @@
 import { Loading, NotFound } from "@/components";
 import { Suspense } from "react";
-import { useParams } from "react-router-dom";
+import { useTaskId } from "../hooks/use-task-id";
 import { TodoDetailContainer } from "./todo-detail-container";
 
 export function TodoDetailPage() {
 
-    const { id } = useParams();
+    const taskId = useTaskId();
 
-    if (!id || !/^\d+$/.test(id)) {
+    if (!/^\d+$/.test(taskId)) {
         return <NotFound />;
     }
 
