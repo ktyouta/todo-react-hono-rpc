@@ -33,7 +33,7 @@ export function TodoList(props: PropsType) {
     }
 
     return (
-        <div className="w-full min-h-full p-5">
+        <div className="w-full min-h-full p-1 sm:p-5">
             {/* テーブル表示: md 以上 */}
             <div className="hidden lg:block">
                 <Table

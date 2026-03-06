@@ -64,7 +64,7 @@ export function TodoDetail(props: PropsType) {
 
             {/* ヘッダー */}
             <div className="flex items-center pr-[10px]">
-                <span className="font-bold text-[22px]">
+                <span className="font-bold text-[18px] sm:text-[22px]">
                     タスク詳細
                 </span>
                 <div className="flex-1" />
@@ -73,7 +73,7 @@ export function TodoDetail(props: PropsType) {
                         <Button
                             colorType={"red"}
                             sizeType={"large"}
-                            className="px-10"
+                            className="px-4 sm:px-10"
                             onClick={onClickCancel}
                         >
                             キャンセル
@@ -81,7 +81,7 @@ export function TodoDetail(props: PropsType) {
                         <Button
                             colorType={"green"}
                             sizeType={"large"}
-                            className="px-10 bg-cyan-500 hover:bg-cyan-600"
+                            className="px-4 sm:px-10 bg-cyan-500 hover:bg-cyan-600"
                             onClick={clickSave}
                         >
                             保存
@@ -91,7 +91,7 @@ export function TodoDetail(props: PropsType) {
                     <Button
                         colorType={"blue"}
                         sizeType={"large"}
-                        className="px-10"
+                        className="px-4 sm:px-10"
                         onClick={onClickEdit}
                     >
                         編集
@@ -100,13 +100,13 @@ export function TodoDetail(props: PropsType) {
             </div>
 
             {/* コンテンツ */}
-            <div className="w-full pt-[50px] text-[15px] flex-1">
+            <div className="w-full pt-7 sm:pt-[50px] text-[15px] flex-1">
                 <div className="w-full">
                     {isEditMode ? (
                         <>
                             <Textbox
                                 registration={register("title")}
-                                className="w-full border-[#c0c0c0]"
+                                className="w-full border-[#c0c0c0] text-base sm:text-[17px] sm:py-2 sm:h-auto"
                                 placeholder="タイトル"
                             />
                             {errors.title?.message && (
@@ -122,12 +122,12 @@ export function TodoDetail(props: PropsType) {
                         </>
                     )}
                 </div>
-                <div className="w-full p-[20px] border border-[#c0c0c0] rounded mt-[20px] bg-white">
+                <div className="w-full p-3 sm:p-[20px] border border-[#c0c0c0] rounded mt-3 sm:mt-[20px] bg-white">
                     {isEditMode ? (
                         <>
                             <Textarea
                                 registration={register("content")}
-                                className="w-full min-h-[450px] border-[#c0c0c0]"
+                                className="w-full min-h-[450px] border-[#c0c0c0] text-base sm:text-[17px]"
                             />
                             {errors.content?.message && (
                                 <p className="text-red-500 pl-1 mt-2">{errors.content.message}</p>
@@ -141,7 +141,7 @@ export function TodoDetail(props: PropsType) {
                             </p>
                         </>
                     )}
-                    <div className={`flex flex-col sm:flex-row gap-[3%] ${isEditMode ? "mt-[25px]" : "mt-[20px] pt-[20px] border-t border-[#e8e8e8]"}`}>
+                    <div className={`flex flex-col sm:flex-row gap-4 sm:gap-[3%] ${isEditMode ? "mt-[25px]" : "mt-[20px] pt-[20px] border-t border-[#e8e8e8]"}`}>
                         <div className="flex flex-1 items-center gap-2 sm:max-w-[48%]">
                             <span className="whitespace-nowrap text-gray-500 text-base">カテゴリ</span>
                             {isEditMode ? (
@@ -173,7 +173,7 @@ export function TodoDetail(props: PropsType) {
                             </div>
                         )}
                     </div>
-                    <div className="mt-[20px] pt-[20px] border-t border-[#e8e8e8] flex flex-col sm:flex-row gap-[3%]">
+                    <div className="mt-[20px] pt-[20px] border-t border-[#e8e8e8] flex flex-col sm:flex-row gap-4 sm:gap-[3%]">
                         <div className="flex flex-1 items-center gap-2 sm:max-w-[48%]">
                             <span className="whitespace-nowrap text-gray-500 text-base">登録日</span>
                             <span className="flex-1 px-3 py-2 text-base text-gray-700">
@@ -192,8 +192,8 @@ export function TodoDetail(props: PropsType) {
 
             {/* 削除エリア（閲覧時のみ） */}
             {!isEditMode && (
-                <div className="mt-[60px] pt-[30px] border-t border-gray-200">
-                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 p-5 border border-red-200 rounded bg-red-50">
+                <div className="mt-8 sm:mt-[60px] pt-4 sm:pt-[30px] border-t border-gray-200">
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 p-3 sm:p-5 border border-red-200 rounded bg-red-50">
                         <div>
                             <p className="text-sm font-medium text-red-700">タスクの削除</p>
                             <p className="text-sm text-gray-500 mt-1">このタスクを削除します。削除後は元に戻せません。</p>

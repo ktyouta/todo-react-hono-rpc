@@ -28,20 +28,20 @@ export function TodoCreate(props: PropsType) {
     return (
         <div className="w-full min-h-full">
             <div className="flex items-center pr-[10px]">
-                <span className="font-bold text-[22px]">
+                <span className="font-bold text-[18px] sm:text-[22px]">
                     タスク作成
                 </span>
                 <div className="flex-1" />
                 <Button
                     colorType={"green"}
                     sizeType={"large"}
-                    className="px-10 bg-cyan-500 hover:bg-cyan-600"
+                    className="px-4 sm:px-10 bg-cyan-500 hover:bg-cyan-600"
                     onClick={clickCreate}
                 >
                     作成
                 </Button>
             </div>
-            <div className="w-full pt-[50px] text-[15px]">
+            <div className="w-full pt-7 sm:pt-[50px] text-[15px]">
                 <div className="w-full">
                     <Textbox
                         registration={register("title")}
@@ -52,7 +52,7 @@ export function TodoCreate(props: PropsType) {
                         <p className="text-red-500 pl-1 mt-2">{errors.title.message}</p>
                     )}
                 </div>
-                <div className="w-full p-[20px] border border-[#c0c0c0] rounded mt-[20px] bg-white">
+                <div className="w-full p-3 sm:p-[20px] border border-[#c0c0c0] rounded mt-3 sm:mt-[20px] bg-white">
                     <Textarea
                         registration={register("content")}
                         className="w-full  min-h-[450px] border-[#c0c0c0]"
@@ -60,23 +60,23 @@ export function TodoCreate(props: PropsType) {
                     {errors.content?.message && (
                         <p className="text-red-500 pl-1 mt-2">{errors.content.message}</p>
                     )}
-                    <div className="flex flex-col sm:flex-row gap-[3%] mt-[25px]">
-                        <div className="flex flex-1 items-center gap-2 max-w-[48%]">
+                    <div className="flex flex-col sm:flex-row gap-4 sm:gap-[3%] mt-[25px]">
+                        <div className="flex flex-1 items-center gap-2 sm:max-w-[48%]">
                             <span className="whitespace-nowrap">カテゴリ</span>
                             <Select
                                 registration={register("categoryId", { valueAsNumber: true })}
                                 options={categoryList.map((c) => ({ value: String(c.id), label: c.name }))}
-                                className="flex-1 border border-[#c0c0c0] rounded px-3 py-2 bg-white text-[15px] focus:outline-none focus:border-[#888]"
+                                className="flex-1 border border-[#c0c0c0] rounded px-3 py-2 bg-white text-base focus:outline-none focus:border-[#888]"
                             />
                         </div>
                         {
                             selectedCategoryId !== CATEGORY_ID.MEMO &&
-                            <div className="flex flex-1 items-center gap-2 max-w-[48%]">
+                            <div className="flex flex-1 items-center gap-2 sm:max-w-[48%]">
                                 <span className="whitespace-nowrap">ステータス</span>
                                 <Select
                                     registration={register("statusId", { valueAsNumber: true })}
                                     options={statusList.map((s) => ({ value: String(s.id), label: s.name }))}
-                                    className="flex-1 border border-[#c0c0c0] rounded px-3 py-2 bg-white text-[15px] focus:outline-none focus:border-[#888]"
+                                    className="flex-1 border border-[#c0c0c0] rounded px-3 py-2 bg-white text-base focus:outline-none focus:border-[#888]"
                                 />
                             </div>
                         }

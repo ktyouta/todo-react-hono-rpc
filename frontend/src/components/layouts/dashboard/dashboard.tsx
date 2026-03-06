@@ -21,9 +21,9 @@ type PropsType = {
 
 export function Dashboard(props: PropsType) {
 
-    // true=展開(w-60) / false=折りたたみ(w-20)
-    // lg未満: 展開時のみオーバーレイ表示。折りたたみ時はアイコン表示で常時表示。
-    // lg以上: flex レイアウト内で幅のみ変化（現行通り）
+    // true=展開(w-60) / false=折りたたみ
+    // lg未満: 展開時のみオーバーレイ表示。折りたたみ時は非表示(w-0)。ヘッダーのハンバーガーで開く。
+    // lg以上: flex レイアウト内で幅のみ変化。折りたたみ時はアイコン表示(w-20)。
     // サイドバー表示フラグ
     const [isSidebarOpen, setIsSidebarOpen] = useState(window.innerWidth >= 1024);
     // ユーザーメニュー表示フラグ
@@ -41,15 +41,15 @@ export function Dashboard(props: PropsType) {
             )}
 
             {/* サイドバー
-                lg未満: 常に fixed。閉じた状態=w-20(アイコン表示)、開いた状態=w-60(オーバーレイ)
-                lg以上: flex レイアウト内に常時表示。幅のみ変化。
+                lg未満: 常に fixed。閉じた状態=w-0(非表示)、開いた状態=w-60(オーバーレイ)
+                lg以上: flex レイアウト内に常時表示。閉じた状態=w-20(アイコン表示)、開いた状態=w-60。
                 ※ position を切り替えないため、幅の transition が常に滑らかに動作する
             */}
             <nav className={cn(
                 'flex flex-col pt-6 overflow-hidden bg-cyan-500 shadow-md transition-all duration-300',
                 'fixed inset-y-0 left-0 z-40',
                 'lg:relative lg:inset-auto lg:z-auto',
-                isSidebarOpen ? 'w-60' : 'w-20',
+                isSidebarOpen ? 'w-60' : 'w-0 lg:w-20',
             )}>
                 <button
                     onClick={() => setIsSidebarOpen(!isSidebarOpen)}
@@ -82,12 +82,20 @@ export function Dashboard(props: PropsType) {
             </nav>
 
             {/* メインエリア
-                lg未満: 固定サイドバー(w-20)の幅分を pl-20 で確保
-                lg以上: flex レイアウトが幅を管理するため pl は不要
+                lg未満: サイドバーは w-0 (非表示) のため pl 不要
+                lg以上: flex レイアウトが幅を管理するため pl 不要
             */}
-            <div className='flex flex-col flex-1 min-w-0 pl-20 lg:pl-0'>
+            <div className='flex flex-col flex-1 min-w-0 lg:pl-0'>
                 {/* ヘッダー */}
                 <header className='h-14 bg-white border-b border-gray-200 flex items-center pl-6 pr-4 sm:pr-[70px]'>
+                    {/* ハンバーガーメニュー (モバイルのみ) */}
+                    <button
+                        className="lg:hidden mr-3 text-gray-600 hover:text-gray-800"
+                        onClick={() => setIsSidebarOpen(true)}
+                        aria-label="メニューを開く"
+                    >
+                        <LuMenu className='h-6 w-6' />
+                    </button>
                     <span className='text-[26px] font-bold text-gray-800 tracking-wide inline-block flex-1'>
                         Todoリスト
                     </span>
