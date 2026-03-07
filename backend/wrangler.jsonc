@@ -38,7 +38,7 @@
         {
           "binding": "DB",
           "database_name": "todo-react-hono-rpc-db",
-          "database_id": "<your-d1-database-id>",
+          "database_id": "6849234a-95f7-4da0-b812-a8a10be47d4c",
           "migrations_dir": "drizzle"
         }
       ],
