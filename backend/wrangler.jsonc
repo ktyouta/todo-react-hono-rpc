@@ -45,7 +45,7 @@
       "vars": {
         "ACCESS_TOKEN_EXPIRES": "15m",
         "REFRESH_TOKEN_EXPIRES": "7d",
-        "CORS_ORIGIN": ["https://<your-frontend-domain>"],
+        "CORS_ORIGIN": ["https://todo-react-hono-rpc.pages.dev"],
         "ALLOW_USER_OPERATION": "false",
         "ENV_PRODUCTION": "true"
       }
