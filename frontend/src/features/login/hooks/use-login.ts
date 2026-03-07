@@ -20,7 +20,7 @@ export function useLogin() {
     // ログインユーザー情報
     const loginUser = LoginUserContext.useCtx();
     // ルーティング用
-    const { appNavigate, appGoBack } = useAppNavigation();
+    const { appNavigate } = useAppNavigation();
     // リダイレクト先
     const queryParams = useQueryParams();
     const redirectTo = queryParams.redirectTo || paths.home.path;
@@ -64,18 +64,20 @@ export function useLogin() {
     });
 
     /**
-     * 前画面に戻る
-     */
-    function back() {
-        appGoBack(paths.home.path);
-    }
-
-    /**
      * サインアップ画面に遷移
      */
     function navigateSignup() {
         appNavigate(paths.signup.path);
     }
+
+    /**
+     * エンターキー押下時イベント
+     */
+    function handleKeyPress(event: React.KeyboardEvent<HTMLInputElement>) {
+        if (event.key === 'Enter') {
+            clickLogin();
+        }
+    };
 
     return {
         errMessage,
@@ -84,8 +86,8 @@ export function useLogin() {
         errors,
         clickLogin,
         loginUser,
-        back,
         redirectTo,
         navigateSignup,
+        handleKeyPress,
     }
 }

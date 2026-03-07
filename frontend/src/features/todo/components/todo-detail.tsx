@@ -116,7 +116,7 @@ export function TodoDetail(props: PropsType) {
                     ) : (
                         <>
                             <p className="text-base text-gray-400 mb-1 pl-0.5">タイトル</p>
-                            <p className="w-full px-0.5 text-2xl font-semibold">
+                            <p className="w-full px-0.5 text-2xl font-semibold break-words">
                                 {task.title}
                             </p>
                         </>
@@ -136,7 +136,7 @@ export function TodoDetail(props: PropsType) {
                     ) : (
                         <>
                             <p className="text-base text-gray-500 mb-3">タスク内容</p>
-                            <p className="w-full min-h-[450px] text-lg whitespace-pre-wrap leading-relaxed text-gray-800">
+                            <p className="w-full min-h-[450px] text-lg whitespace-pre-wrap leading-relaxed text-gray-800 break-words">
                                 {task.content}
                             </p>
                         </>

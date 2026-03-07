@@ -30,11 +30,11 @@ export const Default: Story = {
                 clickLogin={async () => {
                     alert("ログインボタンが押されました");
                 }}
-                back={() => {
-                    alert("戻るボタンが押されました");
-                }}
                 navigateSignup={() => {
                     alert("アカウント作成はこちらからが押されました");
+                }}
+                handleKeyPress={() => {
+                    alert("Enter Keyが押されました")
                 }}
             />
         );
