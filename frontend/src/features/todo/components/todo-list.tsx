@@ -24,9 +24,9 @@ export function TodoList(props: PropsType) {
     if (!props.taskList.length) {
         return (
             <div className="w-full min-h-full p-2 sm:p-5">
-                <div className="flex h-80 flex-col items-center justify-center bg-white text-gray-500">
-                    <HiOutlineArchiveBoxXMark className="size-16" />
-                    <h4>No Entries Found</h4>
+                <div className="flex h-80 flex-col items-center justify-center gap-3">
+                    <HiOutlineArchiveBoxXMark className="size-12 text-gray-300" />
+                    <p className="text-[17px] text-gray-400">タスクがありません</p>
                 </div>
             </div>
         );
