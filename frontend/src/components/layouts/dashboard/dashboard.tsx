@@ -144,6 +144,9 @@ export function Dashboard(props: PropsType) {
                         {props.children}
                     </main>
                 </div>
+                <footer className='h-10 flex items-center pl-6'>
+                    <span className='text-xs text-gray-400'>© 2026 Todo App. All rights reserved.</span>
+                </footer>
             </div>
         </div>
     );
