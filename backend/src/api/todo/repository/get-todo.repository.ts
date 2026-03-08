@@ -3,7 +3,7 @@ import { FLG } from "../../../constant";
 import { FrontUserId } from "../../../domain";
 import { TaskId } from "../../../domain/task-id";
 import type { Database } from "../../../infrastructure/db";
-import { categoryMaster, statusMaster, taskTransaction } from "../../../infrastructure/db";
+import { categoryMaster, priorityMaster, statusMaster, taskTransaction } from "../../../infrastructure/db";
 import { IGetTodoRepository, TodoItem } from "./get-todo.repository.interface";
 
 /**
@@ -25,6 +25,8 @@ export class GetTodoRepository implements IGetTodoRepository {
         categoryName: sql<string>`coalesce(${categoryMaster.name}, '')`,
         statusId: taskTransaction.statusId,
         statusName: sql<string>`coalesce(${statusMaster.name}, 'なし')`,
+        priorityId: taskTransaction.priorityId,
+        priorityName: sql<string>`coalesce(${priorityMaster.name}, 'なし')`,
         userId: taskTransaction.userId,
         deleteFlg: taskTransaction.deleteFlg,
         createdAt: taskTransaction.createdAt,
@@ -33,6 +35,7 @@ export class GetTodoRepository implements IGetTodoRepository {
       .from(taskTransaction)
       .leftJoin(categoryMaster, eq(taskTransaction.categoryId, categoryMaster.id))
       .leftJoin(statusMaster, eq(taskTransaction.statusId, statusMaster.id))
+      .leftJoin(priorityMaster, eq(taskTransaction.priorityId, priorityMaster.id))
       .where(
         and(
           eq(taskTransaction.deleteFlg, FLG.OFF),

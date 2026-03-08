@@ -1,18 +1,17 @@
 import { paths } from "@/config/paths";
 import { CATEGORY_ID } from "@/constants/master";
 import { getCategory } from "@/features/api/get-category";
+import { getPriority } from "@/features/api/get-priority";
 import { getStatus } from "@/features/api/get-status";
 import { useAppNavigation } from "@/hooks/use-app-navigation";
 import { useSwitch } from "@/hooks/use-switch";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { useDeleteTodoMutation } from "../api/delete-todo";
 import { useGetTodo } from "../api/get-todo";
 import { useUpdateTodoMutation } from "../api/update-todo";
-import { TodoDetailEditSchema, TodoDetailEditType } from "../types/todo-detail-edit-type";
 import { useTaskId } from "./use-task-id";
+import { useTodoUpdateForm } from "./use-todo-update.form";
 
 export function useTodoDetail() {
 
@@ -25,6 +24,8 @@ export function useTodoDetail() {
     const { data: status } = getStatus();
     // カテゴリリスト
     const { data: category } = getCategory();
+    // 優先度
+    const { data: priority } = getPriority();
     // ルーティング用
     const { appGoBack } = useAppNavigation();
     // 編集モード
@@ -32,19 +33,11 @@ export function useTodoDetail() {
     // 削除確認ダイアログ
     const deleteDialog = useSwitch();
     // タスク更新用
-    const { register, handleSubmit, formState: { errors }, reset, watch } = useForm<TodoDetailEditType>({
-        resolver: zodResolver(TodoDetailEditSchema),
-        defaultValues: {
-            title: task.title,
-            content: task.content ?? "",
-            categoryId: task.categoryId,
-            statusId: task.statusId ?? undefined,
-        },
-        mode: "onSubmit",
-        reValidateMode: "onSubmit",
+    const { register, handleSubmit, formState: { errors }, reset, watch } = useTodoUpdateForm({
+        task
     });
     // 選択中のカテゴリ
-    const selectedCategoryId = watch("categoryId");
+    const selectedCategoryId = watch("category");
     // タスク更新用ミューテーション
     const updateTodoMutation = useUpdateTodoMutation({
         id: taskId,
@@ -83,8 +76,8 @@ export function useTodoDetail() {
         reset({
             title: task.title,
             content: task.content ?? "",
-            categoryId: task.categoryId,
-            statusId: task.statusId ?? undefined,
+            category: task.categoryId,
+            status: task.statusId ?? undefined,
         });
         setIsEditMode(true);
     }
@@ -103,8 +96,9 @@ export function useTodoDetail() {
         updateTodoMutation.mutate({
             title: data.title,
             content: data.content,
-            category: data.categoryId,
-            status: data.categoryId !== CATEGORY_ID.MEMO ? data.statusId : undefined,
+            category: data.category,
+            status: data.category !== CATEGORY_ID.MEMO ? data.status : undefined,
+            priority: data.category !== CATEGORY_ID.MEMO ? data.priority : undefined,
         });
     });
 
@@ -134,6 +128,7 @@ export function useTodoDetail() {
         task,
         statusList: status.data,
         categoryList: category.data,
+        priorityList: priority.data,
         isEditMode,
         isDeleteDialogOpen: deleteDialog.flag,
         onClickBack,

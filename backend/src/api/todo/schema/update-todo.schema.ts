@@ -14,6 +14,7 @@ export const UpdateTodoSchema = z
       .min(1, "タスク内容を入力してください")
       .max(2000, "タスク内容は2000文字以内で入力してください"),
     category: z.number().int().min(1),
+    priority: z.number().int().optional(),
     status: z.number().int().optional(),
   });
 

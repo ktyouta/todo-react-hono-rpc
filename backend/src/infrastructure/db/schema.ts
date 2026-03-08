@@ -61,7 +61,7 @@ export type SeqMaster = typeof seqMaster.$inferSelect;
 export type NewSeqMaster = typeof seqMaster.$inferInsert;
 
 /**
- * カテゴリマスタ（種別）
+ * カテゴリマスタ
  */
 export const categoryMaster = sqliteTable("category_master", {
   id: integer("id").primaryKey(),
@@ -89,6 +89,20 @@ export type StatusMaster = typeof statusMaster.$inferSelect;
 export type NewStatusMaster = typeof statusMaster.$inferInsert;
 
 /**
+ * 優先度マスタ
+ */
+export const priorityMaster = sqliteTable("priority_master", {
+  id: integer("id").primaryKey(),
+  name: text("name").notNull(),
+  sortOrder: integer("sort_order").notNull(),
+  createdAt: text("created_at").notNull(),
+  updatedAt: text("updated_at").notNull(),
+});
+
+export type PriorityMaster = typeof priorityMaster.$inferSelect;
+export type NewPriorityMaster = typeof priorityMaster.$inferInsert;
+
+/**
  * タスクテーブルスキーマ
  */
 export const taskTransaction = sqliteTable("task_transaction", {
@@ -97,6 +111,7 @@ export const taskTransaction = sqliteTable("task_transaction", {
   content: text("content"),
   categoryId: integer("category_id").notNull().default(1),
   statusId: integer("status_id"),
+  priorityId: integer("priority_id"),
   userId: integer("user_id"),
   deleteFlg: text("delete_flg").notNull().default("0"),
   createdAt: text("created_at").notNull(),

@@ -14,6 +14,12 @@ const dummyStatusList = [
     { id: 3, name: '完了', sortOrder: 3, createdAt: '', updatedAt: '' },
 ];
 
+const priorityList = [
+    { id: 1, name: '低', sortOrder: 1, createdAt: '', updatedAt: '' },
+    { id: 2, name: '中', sortOrder: 2, createdAt: '', updatedAt: '' },
+    { id: 3, name: '高', sortOrder: 3, createdAt: '', updatedAt: '' },
+];
+
 const meta: Meta<typeof TodoCreate> = {
     title: 'features/todo-create',
     component: TodoCreate,
@@ -30,14 +36,16 @@ export const Default: Story = {
         const { register, formState: { errors } } = useForm<{
             title: string;
             content: string;
-            categoryId: number;
-            statusId?: number;
+            category: number;
+            status?: number;
+            priority?: number;
         }>({
             defaultValues: {
                 title: '',
                 content: '',
-                categoryId: 1,
-                statusId: 1,
+                category: 1,
+                status: 1,
+                priority: 1,
             },
         });
         return (
@@ -49,6 +57,7 @@ export const Default: Story = {
                 }}
                 categoryList={dummyCategoryList}
                 statusList={dummyStatusList}
+                priorityList={priorityList}
                 selectedCategoryId={1}
             />
         );
@@ -60,14 +69,16 @@ export const WithValidationErrors: Story = {
         const { register, formState: { errors }, setError } = useForm<{
             title: string;
             content: string;
-            categoryId: number;
-            statusId?: number;
+            category: number;
+            status?: number;
+            priority?: number;
         }>({
             defaultValues: {
                 title: '',
                 content: '',
-                categoryId: 1,
-                statusId: 1,
+                category: 1,
+                status: 1,
+                priority: 1,
             },
         });
 
@@ -83,6 +94,7 @@ export const WithValidationErrors: Story = {
                 clickCreate={async () => { }}
                 categoryList={dummyCategoryList}
                 statusList={dummyStatusList}
+                priorityList={priorityList}
                 selectedCategoryId={1}
             />
         );

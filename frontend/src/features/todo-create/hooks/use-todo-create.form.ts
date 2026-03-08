@@ -8,8 +8,9 @@ export function useTodoCreateForm() {
         defaultValues: {
             title: ``,
             content: ``,
-            categoryId: 1,
-            statusId: 1,
+            category: 1,
+            status: 1,
+            priority: 1,
         },
         mode: "onSubmit",
         reValidateMode: "onSubmit",

@@ -15,6 +15,7 @@ export const CreateTodoSchema = z
       .max(2000, "タスク内容は2000文字以内で入力してください"),
     category: z.number().int().min(1),
     status: z.number().int().optional(),
+    priority: z.number().int().optional(),
   });
 
 export type CreateTodoSchemaType = z.infer<typeof CreateTodoSchema>;

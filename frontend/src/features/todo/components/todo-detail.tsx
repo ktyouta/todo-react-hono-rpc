@@ -1,6 +1,7 @@
 import { Button, Dialog, LoadingOverlay, Select, Textarea, Textbox } from "@/components";
 import { CATEGORY_ID } from "@/constants/master";
 import { CategoryReturnType } from "@/features/api/get-category";
+import { PriorityReturnType } from "@/features/api/get-priority";
 import { StatusReturnType } from "@/features/api/get-status";
 import { BaseSyntheticEvent } from "react";
 import { FieldErrors, UseFormRegister } from "react-hook-form";
@@ -12,6 +13,7 @@ type PropsType = {
     task: TaskReturnType;
     statusList: StatusReturnType;
     categoryList: CategoryReturnType;
+    priorityList: PriorityReturnType;
     isEditMode: boolean;
     isDeleteDialogOpen: boolean;
     onClickBack: () => void;
@@ -33,6 +35,7 @@ export function TodoDetail(props: PropsType) {
         task,
         statusList,
         categoryList,
+        priorityList,
         isEditMode,
         isDeleteDialogOpen,
         onClickBack,
@@ -141,12 +144,12 @@ export function TodoDetail(props: PropsType) {
                             </p>
                         </>
                     )}
-                    <div className={`flex flex-col sm:flex-row gap-4 sm:gap-[3%] ${isEditMode ? "mt-[25px]" : "mt-[20px] pt-[20px] border-t border-[#e8e8e8]"}`}>
+                    <div className={`flex flex-col sm:flex-row gap-4 sm:gap-[3%] pt-[20px] border-t border-[#e8e8e8] ${isEditMode ? "mt-[25px]" : "mt-[20px]"}`}>
                         <div className="flex flex-1 items-center gap-2 sm:max-w-[48%]">
                             <span className="whitespace-nowrap text-gray-500 text-base">カテゴリ</span>
                             {isEditMode ? (
                                 <Select
-                                    registration={register("categoryId", { valueAsNumber: true })}
+                                    registration={register("category", { valueAsNumber: true })}
                                     options={categoryList.map((c) => ({ value: String(c.id), label: c.name }))}
                                     className="flex-1 border border-[#c0c0c0] rounded px-3 py-2 bg-white text-base focus:outline-none focus:border-[#888]"
                                 />
@@ -161,7 +164,7 @@ export function TodoDetail(props: PropsType) {
                                 <span className="whitespace-nowrap text-gray-500 text-base">ステータス</span>
                                 {isEditMode ? (
                                     <Select
-                                        registration={register("statusId", { valueAsNumber: true })}
+                                        registration={register("status", { valueAsNumber: true })}
                                         options={statusList.map((s) => ({ value: String(s.id), label: s.name }))}
                                         className="flex-1 border border-[#c0c0c0] rounded px-3 py-2 bg-white text-base focus:outline-none focus:border-[#888]"
                                     />
@@ -173,6 +176,24 @@ export function TodoDetail(props: PropsType) {
                             </div>
                         )}
                     </div>
+                    {(isEditMode ? selectedCategoryId !== CATEGORY_ID.MEMO : task.priorityId !== null) && (
+                        <div className={`flex flex-col sm:flex-row gap-4 sm:gap-[3%] pt-[20px] border-t border-[#e8e8e8] ${isEditMode ? "mt-[25px]" : "mt-[20px]"}`}>
+                            <div className="flex flex-1 items-center gap-2 sm:max-w-[48%]">
+                                <span className="whitespace-nowrap text-gray-500 text-base">優先度</span>
+                                {isEditMode ? (
+                                    <Select
+                                        registration={register("priority", { valueAsNumber: true })}
+                                        options={priorityList.map((s) => ({ value: String(s.id), label: s.name }))}
+                                        className="flex-1 border border-[#c0c0c0] rounded px-3 py-2 bg-white text-base focus:outline-none focus:border-[#888]"
+                                    />
+                                ) : (
+                                    <span className="flex-1 px-3 py-2 bg-gray-50 border border-[#e0e0e0] rounded text-lg">
+                                        {task.priorityName}
+                                    </span>
+                                )}
+                            </div>
+                        </div>
+                    )}
                     <div className="mt-[20px] pt-[20px] border-t border-[#e8e8e8] flex flex-col sm:flex-row gap-4 sm:gap-[3%]">
                         <div className="flex flex-1 items-center gap-2 sm:max-w-[48%]">
                             <span className="whitespace-nowrap text-gray-500 text-base">登録日</span>

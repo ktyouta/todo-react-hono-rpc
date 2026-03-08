@@ -15,6 +15,7 @@ export const API_ENDPOINT = {
   TODO_ID: "/api/v1/todo/:id",
   CATEGORY: "/api/v1/category",
   STATUS: "/api/v1/status",
+  PRIORITY: "/api/v1/priority",
 } as const;
 
 export type ApiEndpointType = (typeof API_ENDPOINT)[keyof typeof API_ENDPOINT];

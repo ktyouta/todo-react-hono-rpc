@@ -9,6 +9,8 @@ export type TodoItem = {
   categoryName: string;
   statusId: number | null;
   statusName: string;
+  priorityId: number | null;
+  priorityName: string;
   userId: number | null;
   deleteFlg: string;
   createdAt: string;

@@ -1,5 +1,6 @@
 import { CATEGORY_ID } from "@/constants/master";
 import { getCategory } from "@/features/api/get-category";
+import { getPriority } from "@/features/api/get-priority";
 import { getStatus } from "@/features/api/get-status";
 import { toast } from "react-toastify";
 import { useCreateTodoMutation } from "../api/create-todo";
@@ -13,6 +14,8 @@ export function useTodoCreate() {
     const { data: status } = getStatus();
     // カテゴリリスト
     const { data: category } = getCategory();
+    // 優先度
+    const { data: priority } = getPriority();
     // タスク作成リクエスト
     const postMutation = useCreateTodoMutation({
         onSuccess: (response) => {
@@ -20,8 +23,9 @@ export function useTodoCreate() {
             reset({
                 title: ``,
                 content: ``,
-                categoryId: 1,
-                statusId: 1,
+                category: 1,
+                status: 1,
+                priority: 1,
             });
         },
         onError: (errMessage) => {
@@ -29,7 +33,7 @@ export function useTodoCreate() {
         }
     });
     // 選択中のカテゴリID
-    const selectedCategoryId = watch("categoryId");
+    const selectedCategoryId = watch("category");
 
     /**
      * 作成ボタン押下
@@ -39,8 +43,9 @@ export function useTodoCreate() {
         postMutation.mutate({
             title: data.title,
             content: data.content,
-            category: data.categoryId,
-            status: data.categoryId !== CATEGORY_ID.MEMO ? data.statusId : undefined,
+            category: data.category,
+            status: data.category !== CATEGORY_ID.MEMO ? data.status : undefined,
+            priority: data.category !== CATEGORY_ID.MEMO ? data.priority : undefined,
         });
     });
 
@@ -50,6 +55,7 @@ export function useTodoCreate() {
         clickCreate,
         statusList: status.data,
         categoryList: category.data,
+        priorityList: priority.data,
         selectedCategoryId,
     };
 }
