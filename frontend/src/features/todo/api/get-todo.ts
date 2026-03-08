@@ -1,3 +1,4 @@
+import { NotFoundError } from "@/lib/errors";
 import { rpc } from "@/lib/rpc-client";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { InferResponseType } from "hono";
@@ -21,6 +22,12 @@ export function useGetTodo(props: PropsType) {
                 param: { id: props.id },
             });
             if (!res.ok) {
+
+                // タスクが存在しない
+                if (res.status === 404) {
+                    throw new NotFoundError();
+                }
+
                 throw Error(`タスクの取得に失敗しました`);
             }
             return res.json();

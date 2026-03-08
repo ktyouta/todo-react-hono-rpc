@@ -49,7 +49,7 @@ export function TodoDetail(props: PropsType) {
     } = props;
 
     return (
-        <div className="w-full min-h-full flex flex-col pb-7">
+        <div className="w-full min-h-full flex flex-col pb-4">
             {/* 一覧に戻る */}
             <div className="mb-4">
                 <button
