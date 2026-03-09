@@ -25,6 +25,16 @@ export function TodoCard({ entry, onClick }: PropsType) {
                     <span className="ml-1.5 text-gray-500">{entry.statusName}</span>
                 </div>
                 <div>
+                    <span className="text-gray-400">優先度</span>
+                    <span className="ml-1.5 text-gray-500">{entry.priorityName}</span>
+                </div>
+                {entry.dueDate && (
+                    <div>
+                        <span className="text-gray-400">期限日</span>
+                        <span className="ml-1.5 text-gray-500">{entry.dueDate.replaceAll('-', '/')}</span>
+                    </div>
+                )}
+                <div>
                     <span className="text-gray-400">登録日</span>
                     <span className="ml-1.5 text-gray-500">{entry.createdAt.slice(0, 10)}</span>
                 </div>

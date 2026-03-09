@@ -11,12 +11,14 @@ type PropsType = {
 
 // テーブルカラム
 const columns: TableProps<TaskListReturnType[number]>['columns'] = [
-    { title: 'ID', field: 'id', className: 'w-[8%] whitespace-nowrap' },
-    { title: 'タイトル', field: 'title' },
-    { title: 'カテゴリ', field: 'categoryName', className: 'w-[13%] whitespace-nowrap' },
-    { title: 'ステータス', field: 'statusName', className: 'w-[13%] whitespace-nowrap' },
-    { title: '登録日', field: 'createdAt', className: 'w-[13%] whitespace-nowrap hidden md:table-cell', Cell: ({ entry }) => <span>{entry.createdAt.slice(0, 10)}</span> },
-    { title: '更新日', field: 'updatedAt', className: 'w-[13%] whitespace-nowrap hidden md:table-cell', Cell: ({ entry }) => <span>{entry.updatedAt.slice(0, 10)}</span> },
+    { title: 'ID', field: 'id', className: 'w-[6%] whitespace-nowrap' },
+    { title: 'タイトル', field: 'title', className: 'max-w-0', Cell: ({ entry }) => <span className="block truncate">{entry.title}</span> },
+    { title: 'カテゴリ', field: 'categoryName', className: 'w-[10%] whitespace-nowrap' },
+    { title: 'ステータス', field: 'statusName', className: 'w-[10%] whitespace-nowrap' },
+    { title: '優先度', field: 'priorityName', className: 'w-[8%] whitespace-nowrap' },
+    { title: '期限日', field: 'dueDate', className: 'w-[11%] whitespace-nowrap', Cell: ({ entry }) => <span>{entry.dueDate ? entry.dueDate.replaceAll('-', '/') : '—'}</span> },
+    { title: '登録日', field: 'createdAt', className: 'w-[10%] whitespace-nowrap hidden md:table-cell', Cell: ({ entry }) => <span>{entry.createdAt.slice(0, 10)}</span> },
+    { title: '更新日', field: 'updatedAt', className: 'w-[10%] whitespace-nowrap hidden md:table-cell', Cell: ({ entry }) => <span>{entry.updatedAt.slice(0, 10)}</span> },
 ];
 
 export function TodoList(props: PropsType) {
