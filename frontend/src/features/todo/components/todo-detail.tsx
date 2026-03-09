@@ -1,10 +1,10 @@
-import { Button, Dialog, LoadingOverlay, Select, Textarea, Textbox } from "@/components";
+import { Button, DatePicker, Dialog, LoadingOverlay, Select, Textarea, Textbox } from "@/components";
 import { CATEGORY_ID } from "@/constants/master";
 import { CategoryReturnType } from "@/features/api/get-category";
 import { PriorityReturnType } from "@/features/api/get-priority";
 import { StatusReturnType } from "@/features/api/get-status";
 import { BaseSyntheticEvent } from "react";
-import { FieldErrors, UseFormRegister } from "react-hook-form";
+import { Control, Controller, FieldErrors, UseFormRegister } from "react-hook-form";
 import { HiArrowLeft } from "react-icons/hi2";
 import { TaskReturnType } from "../api/get-todo";
 import { TodoDetailEditType } from "../types/todo-detail-edit-type";
@@ -24,6 +24,7 @@ type PropsType = {
     onCancelDelete: () => void;
     onConfirmDelete: () => void;
     register: UseFormRegister<TodoDetailEditType>;
+    control: Control<TodoDetailEditType>;
     errors: FieldErrors<TodoDetailEditType>;
     selectedCategoryId: number;
     isLoading: boolean;
@@ -46,6 +47,7 @@ export function TodoDetail(props: PropsType) {
         onCancelDelete,
         onConfirmDelete,
         register,
+        control,
         errors,
         selectedCategoryId,
         isLoading,
@@ -146,7 +148,7 @@ export function TodoDetail(props: PropsType) {
                     )}
                     <div className={`flex flex-col sm:flex-row gap-4 sm:gap-[3%] pt-[20px] border-t border-[#e8e8e8] ${isEditMode ? "mt-[25px]" : "mt-[20px]"}`}>
                         <div className="flex flex-1 items-center gap-2 sm:max-w-[48%]">
-                            <span className="whitespace-nowrap text-gray-500 text-base">カテゴリ</span>
+                            <span className="whitespace-nowrap w-[4em] text-gray-500 text-base">カテゴリ</span>
                             {isEditMode ? (
                                 <Select
                                     registration={register("category", { valueAsNumber: true })}
@@ -161,7 +163,7 @@ export function TodoDetail(props: PropsType) {
                         </div>
                         {(isEditMode ? selectedCategoryId !== CATEGORY_ID.MEMO : task.statusId !== null) && (
                             <div className="flex flex-1 items-center gap-2 sm:max-w-[48%]">
-                                <span className="whitespace-nowrap text-gray-500 text-base">ステータス</span>
+                                <span className="whitespace-nowrap w-[4em] text-gray-500 text-base">ステータス</span>
                                 {isEditMode ? (
                                     <Select
                                         registration={register("status", { valueAsNumber: true })}
@@ -176,33 +178,56 @@ export function TodoDetail(props: PropsType) {
                             </div>
                         )}
                     </div>
-                    {(isEditMode ? selectedCategoryId !== CATEGORY_ID.MEMO : task.priorityId !== null) && (
+                    {(isEditMode ? selectedCategoryId !== CATEGORY_ID.MEMO : (task.priorityId !== null || task.dueDate !== null)) && (
                         <div className={`flex flex-col sm:flex-row gap-4 sm:gap-[3%] pt-[20px] border-t border-[#e8e8e8] ${isEditMode ? "mt-[25px]" : "mt-[20px]"}`}>
-                            <div className="flex flex-1 items-center gap-2 sm:max-w-[48%]">
-                                <span className="whitespace-nowrap text-gray-500 text-base">優先度</span>
-                                {isEditMode ? (
-                                    <Select
-                                        registration={register("priority", { valueAsNumber: true })}
-                                        options={priorityList.map((s) => ({ value: String(s.id), label: s.name }))}
-                                        className="flex-1 border border-[#c0c0c0] rounded px-3 py-2 bg-white text-base focus:outline-none focus:border-[#888]"
-                                    />
-                                ) : (
-                                    <span className="flex-1 px-3 py-2 bg-gray-50 border border-[#e0e0e0] rounded text-lg">
-                                        {task.priorityName}
-                                    </span>
-                                )}
-                            </div>
+                            {(isEditMode ? true : task.priorityId !== null) && (
+                                <div className="flex flex-1 items-center gap-2 sm:max-w-[48%]">
+                                    <span className="whitespace-nowrap w-[4em] text-gray-500 text-base">優先度</span>
+                                    {isEditMode ? (
+                                        <Select
+                                            registration={register("priority", { valueAsNumber: true })}
+                                            options={priorityList.map((s) => ({ value: String(s.id), label: s.name }))}
+                                            className="flex-1 border border-[#c0c0c0] rounded px-3 py-2 bg-white text-base focus:outline-none focus:border-[#888]"
+                                        />
+                                    ) : (
+                                        <span className="flex-1 px-3 py-2 bg-gray-50 border border-[#e0e0e0] rounded text-lg">
+                                            {task.priorityName}
+                                        </span>
+                                    )}
+                                </div>
+                            )}
+                            {(isEditMode ? true : task.dueDate !== null) && (
+                                <div className="flex flex-1 items-center gap-2 sm:max-w-[48%]">
+                                    <span className="whitespace-nowrap w-[4em] text-gray-500 text-base">期限日</span>
+                                    {isEditMode ? (
+                                        <Controller
+                                            name="dueDate"
+                                            control={control}
+                                            render={({ field }) => (
+                                                <DatePicker
+                                                    value={field.value ?? null}
+                                                    onChange={field.onChange}
+                                                />
+                                            )}
+                                        />
+                                    ) : (
+                                        <span className="flex-1 px-3 py-2 bg-gray-50 border border-[#e0e0e0] rounded text-lg">
+                                            {task.dueDate?.replaceAll("-", "/")}
+                                        </span>
+                                    )}
+                                </div>
+                            )}
                         </div>
                     )}
                     <div className="mt-[20px] pt-[20px] border-t border-[#e8e8e8] flex flex-col sm:flex-row gap-4 sm:gap-[3%]">
                         <div className="flex flex-1 items-center gap-2 sm:max-w-[48%]">
-                            <span className="whitespace-nowrap text-gray-500 text-base">登録日</span>
+                            <span className="whitespace-nowrap w-[4em] text-gray-500 text-base">登録日</span>
                             <span className="flex-1 px-3 py-2 text-base text-gray-700">
                                 {new Date(task.createdAt).toLocaleString('ja-JP')}
                             </span>
                         </div>
                         <div className="flex flex-1 items-center gap-2 sm:max-w-[48%]">
-                            <span className="whitespace-nowrap text-gray-500 text-base">更新日</span>
+                            <span className="whitespace-nowrap w-[4em] text-gray-500 text-base">更新日</span>
                             <span className="flex-1 px-3 py-2 text-base text-gray-700">
                                 {new Date(task.updatedAt).toLocaleString('ja-JP')}
                             </span>

@@ -9,7 +9,7 @@ import { useTodoCreateForm } from "./use-todo-create.form";
 export function useTodoCreate() {
 
     // 入力フォーム用
-    const { register, handleSubmit, formState: { errors }, reset, watch } = useTodoCreateForm();
+    const { register, control, handleSubmit, formState: { errors }, reset, watch } = useTodoCreateForm();
     // ステータスリスト
     const { data: status } = getStatus();
     // カテゴリリスト
@@ -26,6 +26,7 @@ export function useTodoCreate() {
                 category: 1,
                 status: 1,
                 priority: 1,
+                dueDate: null,
             });
         },
         onError: (errMessage) => {
@@ -46,11 +47,13 @@ export function useTodoCreate() {
             category: data.category,
             status: data.category !== CATEGORY_ID.MEMO ? data.status : undefined,
             priority: data.category !== CATEGORY_ID.MEMO ? data.priority : undefined,
+            dueDate: data.category !== CATEGORY_ID.MEMO ? data.dueDate : undefined,
         });
     });
 
     return {
         register,
+        control,
         errors,
         clickCreate,
         statusList: status.data,

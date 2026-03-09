@@ -24,6 +24,7 @@ export class GetTodoListRepository implements IGetTodoListRepository {
         categoryName: sql<string>`coalesce(${categoryMaster.name}, '')`,
         statusId: taskTransaction.statusId,
         statusName: sql<string>`coalesce(${statusMaster.name}, 'なし')`,
+        dueDate: taskTransaction.dueDate,
         userId: taskTransaction.userId,
         deleteFlg: taskTransaction.deleteFlg,
         createdAt: taskTransaction.createdAt,

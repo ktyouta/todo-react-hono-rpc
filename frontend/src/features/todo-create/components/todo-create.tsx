@@ -1,14 +1,15 @@
-import { Button, Select, Textarea, Textbox } from "@/components";
+import { Button, DatePicker, Select, Textarea, Textbox } from "@/components";
 import { CATEGORY_ID } from "@/constants/master";
 import { CategoryReturnType } from "@/features/api/get-category";
 import { PriorityReturnType } from "@/features/api/get-priority";
 import { StatusReturnType } from "@/features/api/get-status";
 import { BaseSyntheticEvent } from "react";
-import { FieldErrors, UseFormRegister } from "react-hook-form";
+import { Control, Controller, FieldErrors, UseFormRegister } from "react-hook-form";
 import { TodoCreateRequestType } from "../types/todo-create-request-type";
 
 type PropsType = {
     register: UseFormRegister<TodoCreateRequestType>;
+    control: Control<TodoCreateRequestType>;
     errors: FieldErrors<TodoCreateRequestType>;
     clickCreate: (e?: BaseSyntheticEvent<object, any, any> | undefined) => Promise<void>;
     statusList: StatusReturnType;
@@ -21,6 +22,7 @@ export function TodoCreate(props: PropsType) {
 
     const {
         register,
+        control,
         errors,
         clickCreate,
         statusList,
@@ -65,7 +67,7 @@ export function TodoCreate(props: PropsType) {
                     )}
                     <div className="flex flex-col sm:flex-row gap-4 sm:gap-[3%] mt-[25px] pt-[20px] border-t border-[#e8e8e8]">
                         <div className="flex flex-1 items-center gap-2 sm:max-w-[48%]">
-                            <span className="whitespace-nowrap">カテゴリ</span>
+                            <span className="whitespace-nowrap w-[4em]">カテゴリ</span>
                             <Select
                                 registration={register("category", { valueAsNumber: true })}
                                 options={categoryList.map((c) => ({ value: String(c.id), label: c.name }))}
@@ -75,7 +77,7 @@ export function TodoCreate(props: PropsType) {
                         {
                             selectedCategoryId !== CATEGORY_ID.MEMO &&
                             <div className="flex flex-1 items-center gap-2 sm:max-w-[48%]">
-                                <span className="whitespace-nowrap">ステータス</span>
+                                <span className="whitespace-nowrap w-[4em]">ステータス</span>
                                 <Select
                                     registration={register("status", { valueAsNumber: true })}
                                     options={statusList.map((s) => ({ value: String(s.id), label: s.name }))}
@@ -87,11 +89,24 @@ export function TodoCreate(props: PropsType) {
                     {selectedCategoryId !== CATEGORY_ID.MEMO && (
                         <div className="flex flex-col sm:flex-row gap-4 sm:gap-[3%] mt-[25px] pt-[20px] border-t border-[#e8e8e8]">
                             <div className="flex flex-1 items-center gap-2 sm:max-w-[48%]">
-                                <span className="whitespace-nowrap">優先度</span>
+                                <span className="whitespace-nowrap w-[4em]">優先度</span>
                                 <Select
                                     registration={register("priority", { valueAsNumber: true })}
                                     options={priorityList.map((s) => ({ value: String(s.id), label: s.name }))}
                                     className="flex-1 border border-[#c0c0c0] rounded px-3 py-2 bg-white text-base focus:outline-none focus:border-[#888]"
+                                />
+                            </div>
+                            <div className="flex flex-1 items-center gap-2 sm:max-w-[48%]">
+                                <span className="whitespace-nowrap w-[4em]">期限日</span>
+                                <Controller
+                                    name="dueDate"
+                                    control={control}
+                                    render={({ field }) => (
+                                        <DatePicker
+                                            value={field.value ?? null}
+                                            onChange={field.onChange}
+                                        />
+                                    )}
                                 />
                             </div>
                         </div>

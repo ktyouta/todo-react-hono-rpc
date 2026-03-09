@@ -27,6 +27,7 @@ export class GetTodoRepository implements IGetTodoRepository {
         statusName: sql<string>`coalesce(${statusMaster.name}, 'なし')`,
         priorityId: taskTransaction.priorityId,
         priorityName: sql<string>`coalesce(${priorityMaster.name}, 'なし')`,
+        dueDate: taskTransaction.dueDate,
         userId: taskTransaction.userId,
         deleteFlg: taskTransaction.deleteFlg,
         createdAt: taskTransaction.createdAt,

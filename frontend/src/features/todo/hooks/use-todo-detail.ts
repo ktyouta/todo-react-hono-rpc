@@ -33,7 +33,7 @@ export function useTodoDetail() {
     // 削除確認ダイアログ
     const deleteDialog = useSwitch();
     // タスク更新用
-    const { register, handleSubmit, formState: { errors }, reset, watch } = useTodoUpdateForm({
+    const { register, control, handleSubmit, formState: { errors }, reset, watch } = useTodoUpdateForm({
         task
     });
     // 選択中のカテゴリ
@@ -78,6 +78,7 @@ export function useTodoDetail() {
             content: task.content ?? "",
             category: task.categoryId,
             status: task.statusId ?? undefined,
+            dueDate: task.dueDate ?? null,
         });
         setIsEditMode(true);
     }
@@ -99,6 +100,7 @@ export function useTodoDetail() {
             category: data.category,
             status: data.category !== CATEGORY_ID.MEMO ? data.status : undefined,
             priority: data.category !== CATEGORY_ID.MEMO ? data.priority : undefined,
+            dueDate: data.category !== CATEGORY_ID.MEMO ? data.dueDate : undefined,
         });
     });
 
@@ -139,6 +141,7 @@ export function useTodoDetail() {
         onCancelDelete,
         onConfirmDelete,
         register,
+        control,
         errors,
         selectedCategoryId,
         isLoading: updateTodoMutation.isPending || deleteTodoMutation.isPending,

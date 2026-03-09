@@ -19,6 +19,7 @@ export function useTodoUpdateForm(props: PropsType) {
             category: task.categoryId,
             status: task.statusId ?? undefined,
             priority: task.priorityId ?? undefined,
+            dueDate: task.dueDate ?? null,
         },
         mode: "onSubmit",
         reValidateMode: "onSubmit",

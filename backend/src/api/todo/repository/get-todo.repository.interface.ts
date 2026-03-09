@@ -11,6 +11,7 @@ export type TodoItem = {
   statusName: string;
   priorityId: number | null;
   priorityName: string;
+  dueDate: string | null;
   userId: number | null;
   deleteFlg: string;
   createdAt: string;

@@ -12,6 +12,7 @@ export const TodoCreateRequestSchema = z.object({
     category: z.number().int().min(1),
     status: z.number().int().optional(),
     priority: z.number().int().optional(),
+    dueDate: z.string().nullable().optional(),
 });
 
 export type TodoCreateRequestType = z.infer<typeof TodoCreateRequestSchema>;

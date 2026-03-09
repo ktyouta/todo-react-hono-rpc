@@ -8,6 +8,7 @@ export type TodoListItem = {
   categoryName: string;
   statusId: number | null;
   statusName: string;
+  dueDate: string | null;
   userId: number | null;
   deleteFlg: string;
   createdAt: string;

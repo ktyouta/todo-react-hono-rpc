@@ -33,12 +33,13 @@ type Story = StoryObj<typeof TodoCreate>;
 
 export const Default: Story = {
     render: () => {
-        const { register, formState: { errors } } = useForm<{
+        const { register, control, formState: { errors } } = useForm<{
             title: string;
             content: string;
             category: number;
             status?: number;
             priority?: number;
+            dueDate?: string | null;
         }>({
             defaultValues: {
                 title: '',
@@ -46,11 +47,13 @@ export const Default: Story = {
                 category: 1,
                 status: 1,
                 priority: 1,
+                dueDate: null,
             },
         });
         return (
             <TodoCreate
                 register={register}
+                control={control}
                 errors={errors}
                 clickCreate={async () => {
                     alert('作成ボタンが押されました');
@@ -66,12 +69,13 @@ export const Default: Story = {
 
 export const WithValidationErrors: Story = {
     render: () => {
-        const { register, formState: { errors }, setError } = useForm<{
+        const { register, control, formState: { errors }, setError } = useForm<{
             title: string;
             content: string;
             category: number;
             status?: number;
             priority?: number;
+            dueDate?: string | null;
         }>({
             defaultValues: {
                 title: '',
@@ -79,6 +83,7 @@ export const WithValidationErrors: Story = {
                 category: 1,
                 status: 1,
                 priority: 1,
+                dueDate: null,
             },
         });
 
@@ -90,6 +95,7 @@ export const WithValidationErrors: Story = {
         return (
             <TodoCreate
                 register={register}
+                control={control}
                 errors={errors}
                 clickCreate={async () => { }}
                 categoryList={dummyCategoryList}

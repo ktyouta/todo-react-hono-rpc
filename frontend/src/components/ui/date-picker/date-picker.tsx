@@ -2,6 +2,7 @@ import { cn } from "@/utils/cn";
 import { ja } from "date-fns/locale";
 import ReactDatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import "./date-picker.css";
 
 type PropsType = {
     value: string | null;
@@ -35,8 +36,9 @@ export function DatePicker({ value, onChange, disabled, placeholder, className }
             disabled={disabled}
             placeholderText={placeholder ?? "日付を選択"}
             isClearable={!disabled}
+            wrapperClassName="flex-1"
             className={cn(
-                "h-9 border border-[#767676] rounded px-1.5 text-base",
+                "w-full border border-[#c0c0c0] rounded px-3 py-2 text-base",
                 "focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent",
                 "disabled:bg-gray-100 disabled:cursor-not-allowed disabled:text-gray-400",
                 className

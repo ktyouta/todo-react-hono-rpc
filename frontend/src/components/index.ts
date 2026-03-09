@@ -3,6 +3,7 @@ export { Errors } from './pages/errors/errors';
 export { Loading } from './pages/loading/loading';
 export { NotFound } from './pages/notfound/not-found';
 export { Button } from './ui/button/button';
+export { DatePicker } from './ui/date-picker/date-picker';
 export { Checkbox } from './ui/checkbox/checkbox';
 export { Dialog } from './ui/dialog/dialog';
 export { Select } from './ui/select/select';

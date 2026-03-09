@@ -11,6 +11,7 @@ export function useTodoCreateForm() {
             category: 1,
             status: 1,
             priority: 1,
+            dueDate: null,
         },
         mode: "onSubmit",
         reValidateMode: "onSubmit",

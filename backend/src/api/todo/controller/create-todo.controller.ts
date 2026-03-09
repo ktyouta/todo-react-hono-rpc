@@ -2,6 +2,7 @@ import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
 import { API_ENDPOINT, FLG, HTTP_STATUS } from "../../../constant";
 import { TaskCategory, TaskContent, TaskStatus, TaskTitle } from "../../../domain";
+import { TaskDueDate } from "../../../domain/task-due-date";
 import { TaskPriority } from "../../../domain/task-priority";
 import { taskTransaction } from "../../../infrastructure";
 import { authMiddleware } from "../../../middleware";
@@ -35,7 +36,8 @@ const createTodo = new Hono<AppEnv>().post(
         const taskCategory = new TaskCategory(body.category);
         const taskStatus = new TaskStatus(body.status);
         const taskPriority = new TaskPriority(body.priority);
-        const taskEntity = new TaskEntity(taskTitle, taskContent, taskCategory, taskStatus, taskPriority);
+        const taskDueDate = new TaskDueDate(body.dueDate);
+        const taskEntity = new TaskEntity(taskTitle, taskContent, taskCategory, taskStatus, taskPriority, taskDueDate);
         const userId = c.get("user")?.info.id;
         const now = new Date().toISOString();
 
@@ -46,6 +48,7 @@ const createTodo = new Hono<AppEnv>().post(
                 categoryId: taskEntity.category,
                 statusId: taskEntity.status,
                 priorityId: taskEntity.priority,
+                dueDate: taskEntity.dueDate,
                 userId: userId,
                 deleteFlg: FLG.OFF,
                 createdAt: now,

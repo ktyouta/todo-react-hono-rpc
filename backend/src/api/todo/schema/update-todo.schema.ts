@@ -16,6 +16,7 @@ export const UpdateTodoSchema = z
     category: z.number().int().min(1),
     priority: z.number().int().optional(),
     status: z.number().int().optional(),
+    dueDate: z.string().nullable().optional(),
   });
 
 export type UpdateTodoSchemaType = z.infer<typeof UpdateTodoSchema>;

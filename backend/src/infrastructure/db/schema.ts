@@ -112,6 +112,7 @@ export const taskTransaction = sqliteTable("task_transaction", {
   categoryId: integer("category_id").notNull().default(1),
   statusId: integer("status_id"),
   priorityId: integer("priority_id"),
+  dueDate: text("due_date"),
   userId: integer("user_id"),
   deleteFlg: text("delete_flg").notNull().default("0"),
   createdAt: text("created_at").notNull(),
