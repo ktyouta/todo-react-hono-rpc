@@ -17,9 +17,11 @@ type PropsType = {
 };
 
 const LABEL_CLASS = "text-sm text-gray-500 whitespace-nowrap w-[5em]";
-const SELECT_CLASS = "flex-1 px-3 py-2 text-base bg-white";
+const SELECT_CLASS = "flex-1 px-3 py-2 text-base bg-white border-[#c0c0c0]";
 
 export function TodoSearchBar({ filter, onChange, onSearch, onClear, categoryList, statusList, priorityList }: PropsType) {
+
+    // 詳細フィルター開閉フラグ
     const [isDetailOpen, setIsDetailOpen] = useState(false);
 
     const activeCount = [
@@ -32,7 +34,7 @@ export function TodoSearchBar({ filter, onChange, onSearch, onClear, categoryLis
     ].filter(Boolean).length;
 
     return (
-        <div className="p-3 bg-gray-50 border border-gray-200 rounded-lg mb-6">
+        <div className="pb-4 border-b border-gray-300 mb-6">
             {/* 常時表示エリア */}
             <div className="flex flex-col sm:flex-row gap-2">
                 {/* タイトル検索 */}
@@ -41,7 +43,7 @@ export function TodoSearchBar({ filter, onChange, onSearch, onClear, categoryLis
                     <Textbox
                         value={filter.title}
                         onChange={(e) => onChange({ ...filter, title: e.target.value })}
-                        className="w-full pl-8"
+                        className="w-full pl-8 border-[#c0c0c0]"
                         placeholder="タイトルで検索"
                     />
                 </div>
@@ -50,7 +52,7 @@ export function TodoSearchBar({ filter, onChange, onSearch, onClear, categoryLis
                     <button
                         type="button"
                         onClick={() => setIsDetailOpen(!isDetailOpen)}
-                        className="flex items-center gap-1.5 px-3 h-9 border border-gray-300 rounded text-sm text-gray-600 hover:bg-gray-100 whitespace-nowrap"
+                        className="flex items-center gap-1.5 px-3 h-9 bg-[#fcfdfd] border border-gray-300 rounded text-sm text-gray-600 hover:bg-gray-200 whitespace-nowrap"
                     >
                         <span>詳細フィルター</span>
                         {isDetailOpen
@@ -66,7 +68,7 @@ export function TodoSearchBar({ filter, onChange, onSearch, onClear, categoryLis
                     <button
                         type="button"
                         onClick={onClear}
-                        className="px-3 h-9 border border-gray-300 rounded text-sm text-gray-500 hover:bg-gray-100 whitespace-nowrap"
+                        className="px-3 h-9 bg-[#fcfdfd] border border-gray-300 rounded text-sm text-gray-600 hover:bg-gray-200 whitespace-nowrap"
                     >
                         クリア
                     </button>

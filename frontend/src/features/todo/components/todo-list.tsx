@@ -56,7 +56,7 @@ export function TodoList(props: PropsType) {
             ) : (
                 <>
                     {/* テーブル表示: lg 以上 */}
-                    <div className="hidden lg:block">
+                    <div className="hidden lg:block border border-gray-200 rounded-lg overflow-hidden">
                         <Table
                             data={taskList}
                             columns={columns}
