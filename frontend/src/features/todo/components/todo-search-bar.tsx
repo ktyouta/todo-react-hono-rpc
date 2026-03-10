@@ -1,0 +1,174 @@
+import { DatePicker, Select, Textbox } from "@/components";
+import { CategoryReturnType } from "@/features/api/get-category";
+import { PriorityReturnType } from "@/features/api/get-priority";
+import { StatusReturnType } from "@/features/api/get-status";
+import { useState } from "react";
+import { HiChevronDown, HiChevronUp, HiMagnifyingGlass } from "react-icons/hi2";
+import { TodoSearchFilter } from "../types/todo-search-filter";
+
+type PropsType = {
+    filter: TodoSearchFilter;
+    onChange: (filter: TodoSearchFilter) => void;
+    onSearch: () => void;
+    onClear: () => void;
+    categoryList: CategoryReturnType;
+    statusList: StatusReturnType;
+    priorityList: PriorityReturnType;
+};
+
+const LABEL_CLASS = "text-sm text-gray-500 whitespace-nowrap w-[5em]";
+const SELECT_CLASS = "flex-1 px-3 py-2 text-base bg-white";
+
+export function TodoSearchBar({ filter, onChange, onSearch, onClear, categoryList, statusList, priorityList }: PropsType) {
+    const [isDetailOpen, setIsDetailOpen] = useState(false);
+
+    const activeCount = [
+        filter.categoryId !== '',
+        filter.statusId !== '',
+        filter.priorityId !== '',
+        filter.dueDateFrom !== null || filter.dueDateTo !== null,
+        filter.createdAtFrom !== null || filter.createdAtTo !== null,
+        filter.updatedAtFrom !== null || filter.updatedAtTo !== null,
+    ].filter(Boolean).length;
+
+    return (
+        <div className="p-3 bg-gray-50 border border-gray-200 rounded-lg mb-6">
+            {/* 常時表示エリア */}
+            <div className="flex flex-col sm:flex-row gap-2">
+                {/* タイトル検索 */}
+                <div className="relative flex-1">
+                    <HiMagnifyingGlass className="absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-400 size-4 pointer-events-none" />
+                    <Textbox
+                        value={filter.title}
+                        onChange={(e) => onChange({ ...filter, title: e.target.value })}
+                        className="w-full pl-8"
+                        placeholder="タイトルで検索"
+                    />
+                </div>
+                {/* 詳細フィルターボタン + バッジ + クリア + 検索 */}
+                <div className="flex flex-wrap items-center gap-2 shrink-0">
+                    <button
+                        type="button"
+                        onClick={() => setIsDetailOpen(!isDetailOpen)}
+                        className="flex items-center gap-1.5 px-3 h-9 border border-gray-300 rounded text-sm text-gray-600 hover:bg-gray-100 whitespace-nowrap"
+                    >
+                        <span>詳細フィルター</span>
+                        {isDetailOpen
+                            ? <HiChevronUp className="size-4" />
+                            : <HiChevronDown className="size-4" />
+                        }
+                    </button>
+                    {activeCount > 0 && (
+                        <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-blue-500 text-white text-xs font-medium shrink-0">
+                            {activeCount}
+                        </span>
+                    )}
+                    <button
+                        type="button"
+                        onClick={onClear}
+                        className="px-3 h-9 border border-gray-300 rounded text-sm text-gray-500 hover:bg-gray-100 whitespace-nowrap"
+                    >
+                        クリア
+                    </button>
+                    <button
+                        type="button"
+                        onClick={onSearch}
+                        className="px-4 h-9 bg-blue-500 hover:bg-blue-600 text-white rounded text-sm font-medium whitespace-nowrap"
+                    >
+                        検索
+                    </button>
+                </div>
+            </div>
+
+            {/* 詳細フィルターパネル */}
+            {isDetailOpen && (
+                <div className="mt-3 pt-3 border-t border-gray-100 flex flex-col gap-3">
+                    {/* セレクト（3列グリッド） */}
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                        <div className="flex items-center gap-2">
+                            <span className={LABEL_CLASS}>カテゴリ</span>
+                            <Select
+                                value={filter.categoryId}
+                                onChange={(e) => onChange({ ...filter, categoryId: e.target.value })}
+                                options={[
+                                    { value: '', label: 'すべて' },
+                                    ...categoryList.map((c) => ({ value: String(c.id), label: c.name })),
+                                ]}
+                                className={SELECT_CLASS}
+                            />
+                        </div>
+                        <div className="flex items-center gap-2">
+                            <span className={LABEL_CLASS}>ステータス</span>
+                            <Select
+                                value={filter.statusId}
+                                onChange={(e) => onChange({ ...filter, statusId: e.target.value })}
+                                options={[
+                                    { value: '', label: 'すべて' },
+                                    ...statusList.map((s) => ({ value: String(s.id), label: s.name })),
+                                ]}
+                                className={SELECT_CLASS}
+                            />
+                        </div>
+                        <div className="flex items-center gap-2">
+                            <span className={LABEL_CLASS}>優先度</span>
+                            <Select
+                                value={filter.priorityId}
+                                onChange={(e) => onChange({ ...filter, priorityId: e.target.value })}
+                                options={[
+                                    { value: '', label: 'すべて' },
+                                    ...priorityList.map((p) => ({ value: String(p.id), label: p.name })),
+                                ]}
+                                className={SELECT_CLASS}
+                            />
+                        </div>
+                    </div>
+                    {/* 日付範囲 */}
+                    <div className="flex flex-col gap-3">
+                        <div className="flex items-center gap-2">
+                            <span className={LABEL_CLASS}>期限日</span>
+                            <DatePicker
+                                value={filter.dueDateFrom}
+                                onChange={(d) => onChange({ ...filter, dueDateFrom: d })}
+                                placeholder="開始日"
+                            />
+                            <span className="text-gray-400 text-sm shrink-0">〜</span>
+                            <DatePicker
+                                value={filter.dueDateTo}
+                                onChange={(d) => onChange({ ...filter, dueDateTo: d })}
+                                placeholder="終了日"
+                            />
+                        </div>
+                        <div className="flex items-center gap-2">
+                            <span className={LABEL_CLASS}>登録日</span>
+                            <DatePicker
+                                value={filter.createdAtFrom}
+                                onChange={(d) => onChange({ ...filter, createdAtFrom: d })}
+                                placeholder="開始日"
+                            />
+                            <span className="text-gray-400 text-sm shrink-0">〜</span>
+                            <DatePicker
+                                value={filter.createdAtTo}
+                                onChange={(d) => onChange({ ...filter, createdAtTo: d })}
+                                placeholder="終了日"
+                            />
+                        </div>
+                        <div className="flex items-center gap-2">
+                            <span className={LABEL_CLASS}>更新日</span>
+                            <DatePicker
+                                value={filter.updatedAtFrom}
+                                onChange={(d) => onChange({ ...filter, updatedAtFrom: d })}
+                                placeholder="開始日"
+                            />
+                            <span className="text-gray-400 text-sm shrink-0">〜</span>
+                            <DatePicker
+                                value={filter.updatedAtTo}
+                                onChange={(d) => onChange({ ...filter, updatedAtTo: d })}
+                                placeholder="終了日"
+                            />
+                        </div>
+                    </div>
+                </div>
+            )}
+        </div>
+    );
+}
