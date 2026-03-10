@@ -67,7 +67,7 @@ export function TodoCreate(props: PropsType) {
                     )}
                     <div className="flex flex-col sm:flex-row gap-4 sm:gap-[3%] mt-[25px] pt-[20px] border-t border-[#e8e8e8]">
                         <div className="flex flex-1 items-center gap-2 sm:max-w-[48%]">
-                            <span className="whitespace-nowrap w-[4em]">カテゴリ</span>
+                            <span className="whitespace-nowrap w-[5em]">カテゴリ</span>
                             <Select
                                 registration={register("category", { valueAsNumber: true })}
                                 options={categoryList.map((c) => ({ value: String(c.id), label: c.name }))}
@@ -77,7 +77,7 @@ export function TodoCreate(props: PropsType) {
                         {
                             selectedCategoryId !== CATEGORY_ID.MEMO &&
                             <div className="flex flex-1 items-center gap-2 sm:max-w-[48%]">
-                                <span className="whitespace-nowrap w-[4em]">ステータス</span>
+                                <span className="whitespace-nowrap w-[5em]">ステータス</span>
                                 <Select
                                     registration={register("status", { valueAsNumber: true })}
                                     options={statusList.map((s) => ({ value: String(s.id), label: s.name }))}
@@ -89,7 +89,7 @@ export function TodoCreate(props: PropsType) {
                     {selectedCategoryId !== CATEGORY_ID.MEMO && (
                         <div className="flex flex-col sm:flex-row gap-4 sm:gap-[3%] mt-[25px] pt-[20px] border-t border-[#e8e8e8]">
                             <div className="flex flex-1 items-center gap-2 sm:max-w-[48%]">
-                                <span className="whitespace-nowrap w-[4em]">優先度</span>
+                                <span className="whitespace-nowrap w-[5em]">優先度</span>
                                 <Select
                                     registration={register("priority", { valueAsNumber: true })}
                                     options={priorityList.map((s) => ({ value: String(s.id), label: s.name }))}
@@ -97,7 +97,7 @@ export function TodoCreate(props: PropsType) {
                                 />
                             </div>
                             <div className="flex flex-1 items-center gap-2 sm:max-w-[48%]">
-                                <span className="whitespace-nowrap w-[4em]">期限日</span>
+                                <span className="whitespace-nowrap w-[5em]">期限日</span>
                                 <Controller
                                     name="dueDate"
                                     control={control}

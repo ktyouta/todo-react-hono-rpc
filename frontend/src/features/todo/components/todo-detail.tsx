@@ -148,7 +148,7 @@ export function TodoDetail(props: PropsType) {
                     )}
                     <div className={`flex flex-col sm:flex-row gap-4 sm:gap-[3%] pt-[20px] border-t border-[#e8e8e8] ${isEditMode ? "mt-[25px]" : "mt-[20px]"}`}>
                         <div className="flex flex-1 items-center gap-2 sm:max-w-[48%]">
-                            <span className="whitespace-nowrap w-[4em] text-gray-500 text-base">カテゴリ</span>
+                            <span className="whitespace-nowrap w-[5em] text-gray-500 text-base">カテゴリ</span>
                             {isEditMode ? (
                                 <Select
                                     registration={register("category", { valueAsNumber: true })}
@@ -163,7 +163,7 @@ export function TodoDetail(props: PropsType) {
                         </div>
                         {(isEditMode ? selectedCategoryId !== CATEGORY_ID.MEMO : task.statusId !== null) && (
                             <div className="flex flex-1 items-center gap-2 sm:max-w-[48%]">
-                                <span className="whitespace-nowrap w-[4em] text-gray-500 text-base">ステータス</span>
+                                <span className="whitespace-nowrap w-[5em] text-gray-500 text-base">ステータス</span>
                                 {isEditMode ? (
                                     <Select
                                         registration={register("status", { valueAsNumber: true })}
@@ -182,7 +182,7 @@ export function TodoDetail(props: PropsType) {
                         <div className={`flex flex-col sm:flex-row gap-4 sm:gap-[3%] pt-[20px] border-t border-[#e8e8e8] ${isEditMode ? "mt-[25px]" : "mt-[20px]"}`}>
                             {(
                                 <div className="flex flex-1 items-center gap-2 sm:max-w-[48%]">
-                                    <span className="whitespace-nowrap w-[4em] text-gray-500 text-base">優先度</span>
+                                    <span className="whitespace-nowrap w-[5em] text-gray-500 text-base">優先度</span>
                                     {isEditMode ? (
                                         <Select
                                             registration={register("priority", { valueAsNumber: true })}
@@ -197,7 +197,7 @@ export function TodoDetail(props: PropsType) {
                                 </div>
                             )}
                             <div className="flex flex-1 items-center gap-2 sm:max-w-[48%]">
-                                <span className="whitespace-nowrap w-[4em] text-gray-500 text-base">期限日</span>
+                                <span className="whitespace-nowrap w-[5em] text-gray-500 text-base">期限日</span>
                                 {isEditMode ? (
                                     <Controller
                                         name="dueDate"
@@ -219,13 +219,13 @@ export function TodoDetail(props: PropsType) {
                     )}
                     <div className="mt-[20px] pt-[20px] border-t border-[#e8e8e8] flex flex-col sm:flex-row gap-4 sm:gap-[3%]">
                         <div className="flex flex-1 items-center gap-2 sm:max-w-[48%]">
-                            <span className="whitespace-nowrap w-[4em] text-gray-500 text-base">登録日</span>
+                            <span className="whitespace-nowrap w-[5em] text-gray-500 text-base">登録日</span>
                             <span className="flex-1 px-3 py-2 text-base text-gray-700">
                                 {new Date(task.createdAt).toLocaleString('ja-JP')}
                             </span>
                         </div>
                         <div className="flex flex-1 items-center gap-2 sm:max-w-[48%]">
-                            <span className="whitespace-nowrap w-[4em] text-gray-500 text-base">更新日</span>
+                            <span className="whitespace-nowrap w-[5em] text-gray-500 text-base">更新日</span>
                             <span className="flex-1 px-3 py-2 text-base text-gray-700">
                                 {new Date(task.updatedAt).toLocaleString('ja-JP')}
                             </span>
