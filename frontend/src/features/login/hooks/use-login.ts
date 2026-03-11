@@ -1,7 +1,7 @@
 import { LoginUserContext, SetLoginUserContext } from '@/app/components/login-user-provider';
 import { paths } from '@/config/paths';
 import { useAppNavigation } from '@/hooks/use-app-navigation';
-import { useQueryParams } from '@/hooks/use-query-params';
+import { useSearchParams } from 'react-router-dom';
 import { updateAccessToken } from '@/stores/access-token-store';
 import { useState } from 'react';
 import { useLoginMutation } from '../api/login';
@@ -22,8 +22,8 @@ export function useLogin() {
     // ルーティング用
     const { appNavigate } = useAppNavigation();
     // リダイレクト先
-    const queryParams = useQueryParams();
-    const redirectTo = queryParams.redirectTo || paths.home.path;
+    const [searchParams] = useSearchParams();
+    const redirectTo = searchParams.get('redirectTo') ?? paths.home.path;
 
     /**
      * ログインリクエスト

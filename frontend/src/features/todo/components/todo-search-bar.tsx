@@ -7,8 +7,8 @@ import { HiChevronDown, HiChevronUp, HiMagnifyingGlass } from "react-icons/hi2";
 import { TodoSearchFilter } from "../types/todo-search-filter";
 
 type PropsType = {
-    filter: TodoSearchFilter;
-    onChange: (filter: TodoSearchFilter) => void;
+    searchCondition: TodoSearchFilter;
+    onChange: (searchCondition: TodoSearchFilter) => void;
     onSearch: () => void;
     onClear: () => void;
     categoryList: CategoryReturnType;
@@ -19,18 +19,18 @@ type PropsType = {
 const LABEL_CLASS = "text-sm text-gray-500 whitespace-nowrap w-[5em]";
 const SELECT_CLASS = "flex-1 px-3 py-2 text-base bg-white border-[#c0c0c0]";
 
-export function TodoSearchBar({ filter, onChange, onSearch, onClear, categoryList, statusList, priorityList }: PropsType) {
+export function TodoSearchBar({ searchCondition, onChange, onSearch, onClear, categoryList, statusList, priorityList }: PropsType) {
 
     // 詳細フィルター開閉フラグ
     const [isDetailOpen, setIsDetailOpen] = useState(false);
 
     const activeCount = [
-        filter.categoryId !== '',
-        filter.statusId !== '',
-        filter.priorityId !== '',
-        filter.dueDateFrom !== null || filter.dueDateTo !== null,
-        filter.createdAtFrom !== null || filter.createdAtTo !== null,
-        filter.updatedAtFrom !== null || filter.updatedAtTo !== null,
+        searchCondition.categoryId !== '',
+        searchCondition.statusId !== '',
+        searchCondition.priorityId !== '',
+        searchCondition.dueDateFrom !== null || searchCondition.dueDateTo !== null,
+        searchCondition.createdAtFrom !== null || searchCondition.createdAtTo !== null,
+        searchCondition.updatedAtFrom !== null || searchCondition.updatedAtTo !== null,
     ].filter(Boolean).length;
 
     return (
@@ -41,8 +41,8 @@ export function TodoSearchBar({ filter, onChange, onSearch, onClear, categoryLis
                 <div className="relative flex-1">
                     <HiMagnifyingGlass className="absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-400 size-4 pointer-events-none" />
                     <Textbox
-                        value={filter.title}
-                        onChange={(e) => onChange({ ...filter, title: e.target.value })}
+                        value={searchCondition.title}
+                        onChange={(e) => onChange({ ...searchCondition, title: e.target.value })}
                         className="w-full pl-8 border-[#c0c0c0]"
                         placeholder="タイトルで検索"
                     />
@@ -90,8 +90,8 @@ export function TodoSearchBar({ filter, onChange, onSearch, onClear, categoryLis
                         <div className="flex items-center gap-2">
                             <span className={LABEL_CLASS}>カテゴリ</span>
                             <Select
-                                value={filter.categoryId}
-                                onChange={(e) => onChange({ ...filter, categoryId: e.target.value })}
+                                value={searchCondition.categoryId}
+                                onChange={(e) => onChange({ ...searchCondition, categoryId: e.target.value })}
                                 options={[
                                     { value: '', label: 'すべて' },
                                     ...categoryList.map((c) => ({ value: String(c.id), label: c.name })),
@@ -102,8 +102,8 @@ export function TodoSearchBar({ filter, onChange, onSearch, onClear, categoryLis
                         <div className="flex items-center gap-2">
                             <span className={LABEL_CLASS}>ステータス</span>
                             <Select
-                                value={filter.statusId}
-                                onChange={(e) => onChange({ ...filter, statusId: e.target.value })}
+                                value={searchCondition.statusId}
+                                onChange={(e) => onChange({ ...searchCondition, statusId: e.target.value })}
                                 options={[
                                     { value: '', label: 'すべて' },
                                     ...statusList.map((s) => ({ value: String(s.id), label: s.name })),
@@ -114,8 +114,8 @@ export function TodoSearchBar({ filter, onChange, onSearch, onClear, categoryLis
                         <div className="flex items-center gap-2">
                             <span className={LABEL_CLASS}>優先度</span>
                             <Select
-                                value={filter.priorityId}
-                                onChange={(e) => onChange({ ...filter, priorityId: e.target.value })}
+                                value={searchCondition.priorityId}
+                                onChange={(e) => onChange({ ...searchCondition, priorityId: e.target.value })}
                                 options={[
                                     { value: '', label: 'すべて' },
                                     ...priorityList.map((p) => ({ value: String(p.id), label: p.name })),
@@ -129,42 +129,42 @@ export function TodoSearchBar({ filter, onChange, onSearch, onClear, categoryLis
                         <div className="flex items-center gap-2">
                             <span className={LABEL_CLASS}>期限日</span>
                             <DatePicker
-                                value={filter.dueDateFrom}
-                                onChange={(d) => onChange({ ...filter, dueDateFrom: d })}
+                                value={searchCondition.dueDateFrom}
+                                onChange={(d) => onChange({ ...searchCondition, dueDateFrom: d })}
                                 placeholder="開始日"
                             />
                             <span className="text-gray-400 text-sm shrink-0">〜</span>
                             <DatePicker
-                                value={filter.dueDateTo}
-                                onChange={(d) => onChange({ ...filter, dueDateTo: d })}
+                                value={searchCondition.dueDateTo}
+                                onChange={(d) => onChange({ ...searchCondition, dueDateTo: d })}
                                 placeholder="終了日"
                             />
                         </div>
                         <div className="flex items-center gap-2">
                             <span className={LABEL_CLASS}>登録日</span>
                             <DatePicker
-                                value={filter.createdAtFrom}
-                                onChange={(d) => onChange({ ...filter, createdAtFrom: d })}
+                                value={searchCondition.createdAtFrom}
+                                onChange={(d) => onChange({ ...searchCondition, createdAtFrom: d })}
                                 placeholder="開始日"
                             />
                             <span className="text-gray-400 text-sm shrink-0">〜</span>
                             <DatePicker
-                                value={filter.createdAtTo}
-                                onChange={(d) => onChange({ ...filter, createdAtTo: d })}
+                                value={searchCondition.createdAtTo}
+                                onChange={(d) => onChange({ ...searchCondition, createdAtTo: d })}
                                 placeholder="終了日"
                             />
                         </div>
                         <div className="flex items-center gap-2">
                             <span className={LABEL_CLASS}>更新日</span>
                             <DatePicker
-                                value={filter.updatedAtFrom}
-                                onChange={(d) => onChange({ ...filter, updatedAtFrom: d })}
+                                value={searchCondition.updatedAtFrom}
+                                onChange={(d) => onChange({ ...searchCondition, updatedAtFrom: d })}
                                 placeholder="開始日"
                             />
                             <span className="text-gray-400 text-sm shrink-0">〜</span>
                             <DatePicker
-                                value={filter.updatedAtTo}
-                                onChange={(d) => onChange({ ...filter, updatedAtTo: d })}
+                                value={searchCondition.updatedAtTo}
+                                onChange={(d) => onChange({ ...searchCondition, updatedAtTo: d })}
                                 placeholder="終了日"
                             />
                         </div>

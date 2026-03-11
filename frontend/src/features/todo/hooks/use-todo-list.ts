@@ -3,12 +3,35 @@ import { getCategory } from "@/features/api/get-category";
 import { getPriority } from "@/features/api/get-priority";
 import { getStatus } from "@/features/api/get-status";
 import { useAppNavigation } from "@/hooks/use-app-navigation";
+import { useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { TaskListReturnType, useGetTodoList } from "../api/get-todo-list";
+import { TODO_LIST_QUERY_KEY } from "../constants/todo-list-query-params";
+import { initialTodoSearchFilter, TodoSearchFilter } from "../types/todo-search-filter";
 
 export function useTodoList() {
 
+    // クエリパラメータ取得用
+    const [searchParams, setSearchParams] = useSearchParams();
+    // 初期検索条件
+    const initSearchCondition: TodoSearchFilter = {
+        title: searchParams.get(TODO_LIST_QUERY_KEY.TITLE) ?? '',
+        categoryId: searchParams.get(TODO_LIST_QUERY_KEY.CATEGORY) ?? '',
+        statusId: searchParams.get(TODO_LIST_QUERY_KEY.STATUS) ?? '',
+        priorityId: searchParams.get(TODO_LIST_QUERY_KEY.PRIORITY) ?? '',
+        dueDateFrom: searchParams.get(TODO_LIST_QUERY_KEY.DUE_DATE_FROM),
+        dueDateTo: searchParams.get(TODO_LIST_QUERY_KEY.DUE_DATE_TO),
+        createdAtFrom: searchParams.get(TODO_LIST_QUERY_KEY.CREATED_AT_FROM),
+        createdAtTo: searchParams.get(TODO_LIST_QUERY_KEY.CREATED_AT_TO),
+        updatedAtFrom: searchParams.get(TODO_LIST_QUERY_KEY.UPDATED_AT_FROM),
+        updatedAtTo: searchParams.get(TODO_LIST_QUERY_KEY.UPDATED_AT_TO),
+    };
+    // タスク検索条件
+    const [searchCondition, setSearchCondition] = useState<TodoSearchFilter>(initSearchCondition);
+    // 適用済み検索条件（URLから直接導出）
+    const [appliedSearchCondition, setApliedSearchCondition] = useState<TodoSearchFilter>(initSearchCondition);
     // タスク一覧
-    const { data } = useGetTodoList();
+    const { data } = useGetTodoList(appliedSearchCondition);
     // カテゴリリスト
     const { data: category } = getCategory();
     // ステータスリスト
@@ -26,11 +49,61 @@ export function useTodoList() {
         appNavigate(`${paths.todoDetail.getHref(entry.id)}`);
     }
 
+    /**
+     * 検索条件クリア
+     */
+    function clearSearchCondition() {
+        setSearchCondition(initialTodoSearchFilter);
+        setSearchParams({});
+    }
+
+    /**
+     * 検索ボタン押下イベント
+     */
+    function clickSearch() {
+        const params: Record<string, string> = {};
+        if (searchCondition.title) {
+            params[TODO_LIST_QUERY_KEY.TITLE] = searchCondition.title;
+        }
+        if (searchCondition.categoryId) {
+            params[TODO_LIST_QUERY_KEY.CATEGORY] = searchCondition.categoryId;
+        }
+        if (searchCondition.statusId) {
+            params[TODO_LIST_QUERY_KEY.STATUS] = searchCondition.statusId;
+        }
+        if (searchCondition.priorityId) {
+            params[TODO_LIST_QUERY_KEY.PRIORITY] = searchCondition.priorityId;
+        }
+        if (searchCondition.dueDateFrom) {
+            params[TODO_LIST_QUERY_KEY.DUE_DATE_FROM] = searchCondition.dueDateFrom;
+        }
+        if (searchCondition.dueDateTo) {
+            params[TODO_LIST_QUERY_KEY.DUE_DATE_TO] = searchCondition.dueDateTo;
+        }
+        if (searchCondition.createdAtFrom) {
+            params[TODO_LIST_QUERY_KEY.CREATED_AT_FROM] = searchCondition.createdAtFrom;
+        }
+        if (searchCondition.createdAtTo) {
+            params[TODO_LIST_QUERY_KEY.CREATED_AT_TO] = searchCondition.createdAtTo;
+        }
+        if (searchCondition.updatedAtFrom) {
+            params[TODO_LIST_QUERY_KEY.UPDATED_AT_FROM] = searchCondition.updatedAtFrom;
+        }
+        if (searchCondition.updatedAtTo) {
+            params[TODO_LIST_QUERY_KEY.UPDATED_AT_TO] = searchCondition.updatedAtTo;
+        }
+        setSearchParams(params);
+    }
+
     return {
         taskList: data.data,
         onRowClick,
         categoryList: category.data,
         statusList: status.data,
         priorityList: priority.data,
+        searchCondition,
+        setSearchCondition,
+        clearSearchCondition,
+        clickSearch,
     };
 }

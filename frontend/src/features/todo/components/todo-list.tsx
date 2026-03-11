@@ -3,10 +3,9 @@ import { TableProps } from "@/components/ui/table/table";
 import { CategoryReturnType } from "@/features/api/get-category";
 import { PriorityReturnType } from "@/features/api/get-priority";
 import { StatusReturnType } from "@/features/api/get-status";
-import { useState } from "react";
 import { HiOutlineArchiveBoxXMark } from "react-icons/hi2";
 import { TaskListReturnType } from "../api/get-todo-list";
-import { initialTodoSearchFilter, TodoSearchFilter } from "../types/todo-search-filter";
+import { TodoSearchFilter } from "../types/todo-search-filter";
 import { TodoCard } from "./todo-card";
 import { TodoSearchBar } from "./todo-search-bar";
 
@@ -16,6 +15,10 @@ type PropsType = {
     categoryList: CategoryReturnType;
     statusList: StatusReturnType;
     priorityList: PriorityReturnType;
+    searchCondition: TodoSearchFilter;
+    setSearchCondition: (condition: TodoSearchFilter) => void;
+    clearSearchCondition: () => void;
+    clickSearch: () => void;
 }
 
 // テーブルカラム
@@ -31,17 +34,25 @@ const columns: TableProps<TaskListReturnType[number]>['columns'] = [
 ];
 
 export function TodoList(props: PropsType) {
-    const [filter, setFilter] = useState<TodoSearchFilter>(initialTodoSearchFilter);
 
-    const { taskList, onRowClick, categoryList, statusList, priorityList } = props;
+    const {
+        taskList,
+        onRowClick,
+        categoryList,
+        statusList,
+        priorityList,
+        searchCondition,
+        setSearchCondition,
+        clearSearchCondition,
+        clickSearch, } = props;
 
     return (
         <div className="w-full min-h-full p-1 sm:p-5">
             <TodoSearchBar
-                filter={filter}
-                onChange={setFilter}
-                onSearch={() => { /* TODO: API呼び出し */ }}
-                onClear={() => setFilter(initialTodoSearchFilter)}
+                searchCondition={searchCondition}
+                onChange={setSearchCondition}
+                onSearch={clickSearch}
+                onClear={clearSearchCondition}
                 categoryList={categoryList}
                 statusList={statusList}
                 priorityList={priorityList}
@@ -56,7 +67,7 @@ export function TodoList(props: PropsType) {
             ) : (
                 <>
                     {/* テーブル表示: lg 以上 */}
-                    <div className="hidden lg:block border border-gray-200 rounded-lg overflow-hidden">
+                    <div className="hidden lg:block border border-gray-200 rounded-md overflow-hidden">
                         <Table
                             data={taskList}
                             columns={columns}
