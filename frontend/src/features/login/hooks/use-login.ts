@@ -1,9 +1,9 @@
 import { LoginUserContext, SetLoginUserContext } from '@/app/components/login-user-provider';
 import { paths } from '@/config/paths';
 import { useAppNavigation } from '@/hooks/use-app-navigation';
-import { useSearchParams } from 'react-router-dom';
 import { updateAccessToken } from '@/stores/access-token-store';
 import { useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { useLoginMutation } from '../api/login';
 import { LoginRequestType } from '../types/login-request-type';
 import { useLoginForm } from './use-login-form';
@@ -23,7 +23,7 @@ export function useLogin() {
     const { appNavigate } = useAppNavigation();
     // リダイレクト先
     const [searchParams] = useSearchParams();
-    const redirectTo = searchParams.get('redirectTo') ?? paths.home.path;
+    const redirectTo = searchParams.get('redirectTo') || paths.home.path;
 
     /**
      * ログインリクエスト

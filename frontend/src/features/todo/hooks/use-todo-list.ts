@@ -54,6 +54,7 @@ export function useTodoList() {
      */
     function clearSearchCondition() {
         setSearchCondition(initialTodoSearchFilter);
+        setApliedSearchCondition(initialTodoSearchFilter);
         setSearchParams({});
     }
 
@@ -93,7 +94,17 @@ export function useTodoList() {
             params[TODO_LIST_QUERY_KEY.UPDATED_AT_TO] = searchCondition.updatedAtTo;
         }
         setSearchParams(params);
+        setApliedSearchCondition(searchCondition);
     }
+
+    /**
+     * エンターキー押下時イベント
+     */
+    function handleKeyPress(event: React.KeyboardEvent<HTMLInputElement>) {
+        if (event.key === 'Enter') {
+            clickSearch();
+        }
+    };
 
     return {
         taskList: data.data,
@@ -105,5 +116,6 @@ export function useTodoList() {
         setSearchCondition,
         clearSearchCondition,
         clickSearch,
+        handleKeyPress,
     };
 }

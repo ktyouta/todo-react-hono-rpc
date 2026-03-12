@@ -1,4 +1,5 @@
 import { FrontUserId } from "../../../domain";
+import { GetTodoListQuerySchemaType } from "../schema/get-todo-list-query.schema";
 
 export type TodoListItem = {
   id: number;
@@ -24,5 +25,5 @@ export interface IGetTodoListRepository {
   /**
    * 全件取得
    */
-  findAll(userId: FrontUserId): Promise<TodoListItem[]>;
+  findAll(userId: FrontUserId, query: GetTodoListQuerySchemaType): Promise<TodoListItem[]>;
 }

@@ -16,7 +16,20 @@ export function useGetTodoList(props: PropsType) {
     return useSuspenseQuery({
         queryKey: todoKeys.list(props),
         queryFn: async () => {
-            const res = await endpoint();
+            const res = await endpoint({
+                query: {
+                    title: props.title || undefined,
+                    categoryId: props.categoryId || undefined,
+                    statusId: props.statusId || undefined,
+                    priorityId: props.priorityId || undefined,
+                    dueDateFrom: props.dueDateFrom || undefined,
+                    dueDateTo: props.dueDateTo || undefined,
+                    createdAtFrom: props.createdAtFrom || undefined,
+                    createdAtTo: props.createdAtTo || undefined,
+                    updatedAtFrom: props.updatedAtFrom || undefined,
+                    updatedAtTo: props.updatedAtTo || undefined,
+                }
+            });
             if (!res.ok) {
                 throw Error(`タスク一覧の取得に失敗しました`);
             }

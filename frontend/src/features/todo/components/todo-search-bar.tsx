@@ -1,4 +1,4 @@
-import { DatePicker, Select, Textbox } from "@/components";
+import { Button, DatePicker, Select, Textbox } from "@/components";
 import { CategoryReturnType } from "@/features/api/get-category";
 import { PriorityReturnType } from "@/features/api/get-priority";
 import { StatusReturnType } from "@/features/api/get-status";
@@ -14,12 +14,13 @@ type PropsType = {
     categoryList: CategoryReturnType;
     statusList: StatusReturnType;
     priorityList: PriorityReturnType;
+    handleKeyPress: (event: React.KeyboardEvent<HTMLInputElement>) => void,
 };
 
 const LABEL_CLASS = "text-sm text-gray-500 whitespace-nowrap w-[5em]";
 const SELECT_CLASS = "flex-1 px-3 py-2 text-base bg-white border-[#c0c0c0]";
 
-export function TodoSearchBar({ searchCondition, onChange, onSearch, onClear, categoryList, statusList, priorityList }: PropsType) {
+export function TodoSearchBar({ searchCondition, onChange, onSearch, onClear, categoryList, statusList, priorityList, handleKeyPress }: PropsType) {
 
     // 詳細フィルター開閉フラグ
     const [isDetailOpen, setIsDetailOpen] = useState(false);
@@ -45,40 +46,44 @@ export function TodoSearchBar({ searchCondition, onChange, onSearch, onClear, ca
                         onChange={(e) => onChange({ ...searchCondition, title: e.target.value })}
                         className="w-full pl-8 border-[#c0c0c0]"
                         placeholder="タイトルで検索"
+                        onKeyDown={handleKeyPress}
                     />
                 </div>
                 {/* 詳細フィルターボタン + バッジ + クリア + 検索 */}
                 <div className="flex flex-wrap items-center gap-2 shrink-0">
-                    <button
-                        type="button"
+                    <Button
+                        colorType="blue"
+                        sizeType="small"
                         onClick={() => setIsDetailOpen(!isDetailOpen)}
-                        className="flex items-center gap-1.5 px-3 h-9 bg-[#fcfdfd] border border-gray-300 rounded text-sm text-gray-600 hover:bg-gray-200 whitespace-nowrap"
+                        className="flex items-center gap-1.5 px-3 h-9 py-0 bg-[#fcfdfd] border border-gray-300 text-sm text-gray-600 hover:bg-gray-200 whitespace-nowrap"
                     >
                         <span>詳細フィルター</span>
                         {isDetailOpen
                             ? <HiChevronUp className="size-4" />
                             : <HiChevronDown className="size-4" />
                         }
-                    </button>
+                    </Button>
                     {activeCount > 0 && (
-                        <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-blue-500 text-white text-xs font-medium shrink-0">
+                        <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-blue-500 text-white text-xs font-medium shrink-0 leading-none">
                             {activeCount}
                         </span>
                     )}
-                    <button
-                        type="button"
+                    <Button
+                        colorType="blue"
+                        sizeType="small"
                         onClick={onClear}
-                        className="px-3 h-9 bg-[#fcfdfd] border border-gray-300 rounded text-sm text-gray-600 hover:bg-gray-200 whitespace-nowrap"
+                        className="px-3 h-9 py-0 bg-[#fcfdfd] border border-gray-300 text-sm text-gray-600 hover:bg-gray-200 whitespace-nowrap"
                     >
                         クリア
-                    </button>
-                    <button
-                        type="button"
+                    </Button>
+                    <Button
+                        colorType="blue"
+                        sizeType="medium"
                         onClick={onSearch}
-                        className="px-4 h-9 bg-blue-500 hover:bg-blue-600 text-white rounded text-sm font-medium whitespace-nowrap"
+                        className="h-9 py-0 font-medium whitespace-nowrap"
                     >
                         検索
-                    </button>
+                    </Button>
                 </div>
             </div>
 

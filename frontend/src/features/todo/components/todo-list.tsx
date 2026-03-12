@@ -19,6 +19,7 @@ type PropsType = {
     setSearchCondition: (condition: TodoSearchFilter) => void;
     clearSearchCondition: () => void;
     clickSearch: () => void;
+    handleKeyPress: (event: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 
 // テーブルカラム
@@ -44,7 +45,8 @@ export function TodoList(props: PropsType) {
         searchCondition,
         setSearchCondition,
         clearSearchCondition,
-        clickSearch, } = props;
+        clickSearch,
+        handleKeyPress, } = props;
 
     return (
         <div className="w-full min-h-full p-1 sm:p-5">
@@ -56,6 +58,7 @@ export function TodoList(props: PropsType) {
                 categoryList={categoryList}
                 statusList={statusList}
                 priorityList={priorityList}
+                handleKeyPress={handleKeyPress}
             />
             {/* TODO: API連携後はレスポンスの件数値に差し替える */}
             <p className="text-sm text-gray-500 mb-3 text-right">全 {taskList.length} 件</p>
