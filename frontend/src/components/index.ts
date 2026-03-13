@@ -15,4 +15,5 @@ export {
 } from './ui/table/table';
 export { Textarea } from './ui/textarea/textarea';
 export { Textbox } from './ui/textbox/textbox';
+export { Pagination } from './ui/pagination/pagination';
 

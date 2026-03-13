@@ -35,7 +35,7 @@ export function TodoSearchBar({ searchCondition, onChange, onSearch, onClear, ca
     ].filter(Boolean).length;
 
     return (
-        <div className="pb-4 border-b border-gray-300 mb-6">
+        <div className="pb-4 border-b border-gray-300 mb-3 sm:mb-6">
             {/* 常時表示エリア */}
             <div className="flex flex-col sm:flex-row gap-2">
                 {/* タイトル検索 */}
