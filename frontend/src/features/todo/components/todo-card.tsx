@@ -1,7 +1,7 @@
 import { TaskListReturnType } from "../api/get-todo-list";
 
 type PropsType = {
-    entry: TaskListReturnType[number];
+    entry: TaskListReturnType['list'][number];
     onClick: () => void;
 }
 

@@ -11,8 +11,8 @@ import { TodoCard } from "./todo-card";
 import { TodoSearchBar } from "./todo-search-bar";
 
 type PropsType = {
-    taskList: TaskListReturnType;
-    onRowClick: (entry: TaskListReturnType[number]) => void;
+    taskData: TaskListReturnType;
+    onRowClick: (entry: TaskListReturnType['list'][number]) => void;
     categoryList: CategoryReturnType;
     statusList: StatusReturnType;
     priorityList: PriorityReturnType;
@@ -24,7 +24,7 @@ type PropsType = {
 }
 
 // テーブルカラム
-const columns: TableProps<TaskListReturnType[number]>['columns'] = [
+const columns: TableProps<TaskListReturnType['list'][number]>['columns'] = [
     { title: 'ID', field: 'id', className: 'w-[6%] whitespace-nowrap' },
     { title: 'タイトル', field: 'title', className: 'max-w-0', Cell: ({ entry }) => <span className="block truncate">{entry.title}</span> },
     { title: 'カテゴリ', field: 'categoryName', className: 'w-[10%] whitespace-nowrap' },
@@ -38,7 +38,7 @@ const columns: TableProps<TaskListReturnType[number]>['columns'] = [
 export function TodoList(props: PropsType) {
 
     const {
-        taskList,
+        taskData,
         onRowClick,
         categoryList,
         statusList,
@@ -66,9 +66,9 @@ export function TodoList(props: PropsType) {
                 handleKeyPress={handleKeyPress}
             />
             {/* TODO: API連携後はレスポンスの件数値に差し替える */}
-            <p className="text-sm text-gray-500 mb-3 text-right">全 {taskList.length} 件</p>
+            <p className="text-sm text-gray-500 mb-3 text-right">全 {taskData.total} 件</p>
             <div className="flex-1">
-                {taskList.length === 0 ? (
+                {taskData.list.length === 0 ? (
                     <div className="flex h-80 flex-col items-center justify-center gap-3">
                         <HiOutlineArchiveBoxXMark className="size-12 text-gray-300" />
                         <p className="text-[17px] text-gray-400">タスクがありません</p>
@@ -78,7 +78,7 @@ export function TodoList(props: PropsType) {
                         {/* テーブル表示: lg 以上 */}
                         <div className="hidden lg:block border border-gray-200 rounded-md overflow-hidden">
                             <Table
-                                data={taskList}
+                                data={taskData.list}
                                 columns={columns}
                                 className="text-[17px] table-fixed
                                     [&_thead]:bg-gray-50/90
@@ -90,7 +90,7 @@ export function TodoList(props: PropsType) {
                         </div>
                         {/* カード表示: lg 未満 */}
                         <div className="lg:hidden flex flex-col gap-3">
-                            {taskList.map((entry) => (
+                            {taskData.list.map((entry) => (
                                 <TodoCard
                                     key={entry.id}
                                     entry={entry}

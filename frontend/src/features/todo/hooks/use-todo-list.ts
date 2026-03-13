@@ -45,7 +45,7 @@ export function useTodoList() {
      * テーブルの行クリックイベント
      * @param entry
      */
-    function onRowClick(entry: TaskListReturnType[number]) {
+    function onRowClick(entry: TaskListReturnType['list'][number]) {
         appNavigate(`${paths.todoDetail.getHref(entry.id)}`);
     }
 
@@ -107,7 +107,7 @@ export function useTodoList() {
     };
 
     return {
-        taskList: data.data,
+        taskData: data.data,
         onRowClick,
         categoryList: category.data,
         statusList: status.data,

@@ -1,5 +1,5 @@
 import { FrontUserId } from "../../../domain";
-import { IGetTodoListRepository, TodoListItem } from "../repository/get-todo-list.repository.interface";
+import { IGetTodoListRepository, TodoListResult } from "../repository/get-todo-list.repository.interface";
 import { GetTodoListQuerySchemaType } from "../schema/get-todo-list-query.schema";
 
 /**
@@ -11,8 +11,11 @@ export class GetTodoListService {
   /**
    * 全件取得
    */
-  async findAll(userId: FrontUserId, query: GetTodoListQuerySchemaType): Promise<TodoListItem[]> {
-    const records = await this.repository.findAll(userId, query);
-    return records;
+  async findAll(userId: FrontUserId, query: GetTodoListQuerySchemaType): Promise<TodoListResult> {
+    const [list, total] = await Promise.all([
+      this.repository.findAll(userId, query),
+      this.repository.count(userId, query),
+    ]);
+    return { list, total };
   }
 }

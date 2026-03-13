@@ -31,8 +31,8 @@ const getTodoList = new Hono<AppEnv>().get(
             return c.json({ message: "認証エラー" }, HTTP_STATUS.UNAUTHORIZED);
         }
 
-        const taskList = await service.findAll(userId, query);
-        return c.json({ message: "タスク一覧を取得しました。", data: taskList }, HTTP_STATUS.OK);
+        const { list, total } = await service.findAll(userId, query);
+        return c.json({ message: "タスク一覧を取得しました。", data: { list, total } }, HTTP_STATUS.OK);
     });
 
 export { getTodoList };

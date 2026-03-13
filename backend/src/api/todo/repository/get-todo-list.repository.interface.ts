@@ -18,12 +18,21 @@ export type TodoListItem = {
   updatedAt: string;
 };
 
+export type TodoListResult = {
+  list: TodoListItem[];
+  total: number;
+};
+
 /**
  * タスク一覧取得リポジトリインターフェース
  */
 export interface IGetTodoListRepository {
   /**
-   * 全件取得
+   * 一覧取得
    */
   findAll(userId: FrontUserId, query: GetTodoListQuerySchemaType): Promise<TodoListItem[]>;
+  /**
+   * 総件数取得
+   */
+  count(userId: FrontUserId, query: GetTodoListQuerySchemaType): Promise<number>;
 }
