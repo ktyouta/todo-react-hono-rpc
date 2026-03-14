@@ -4,6 +4,7 @@ import { useAppNavigation } from '@/hooks/use-app-navigation';
 import { useCreateYearList } from '@/hooks/use-create-year-list';
 import { useState } from 'react';
 import { useNavigate } from "react-router-dom";
+import { toast } from 'react-toastify';
 import { useUpdateUserMutation } from '../api/update-user';
 import { useUpdateUserForm } from './use-update-user.form';
 
@@ -38,6 +39,7 @@ export function useUpdateUser() {
         onSuccess: (res) => {
             setLoginUserInfo(res.data.user);
             navigate(paths.home.path);
+            toast.success(res.message);
         },
         // 失敗後の処理
         onError: (message: string) => {
