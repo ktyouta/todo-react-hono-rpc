@@ -20,4 +20,6 @@ export const TODO_LIST_QUERY_KEY = {
     UPDATED_AT_FROM: `updatedAtFrom`,
     // 更新日(TO)
     UPDATED_AT_TO: `updatedAtTo`,
+    // ページ
+    PAGE: `page`,
 } as const;

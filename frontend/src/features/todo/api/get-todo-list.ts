@@ -1,33 +1,36 @@
 import { rpc } from "@/lib/rpc-client";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { InferResponseType } from "hono";
-import { TodoSearchFilter } from "../types/todo-search-filter";
+import { TODO_LIST_QUERY_KEY } from "../constants/todo-list-query-params";
 import { todoKeys } from "./query-key";
 
 const endpoint = rpc.api.v1.todo.$get;
 
-type PropsType = TodoSearchFilter;
+type PropsType = {
+    searchParams: URLSearchParams
+};
 
 // タスク一覧
 export type TaskListReturnType = InferResponseType<typeof endpoint, 200>['data'];
 
-export function useGetTodoList(props: PropsType) {
+export function useGetTodoList({ searchParams }: PropsType) {
 
     return useSuspenseQuery({
-        queryKey: todoKeys.list(props),
+        queryKey: todoKeys.list(searchParams),
         queryFn: async () => {
             const res = await endpoint({
                 query: {
-                    title: props.title || undefined,
-                    categoryId: props.categoryId || undefined,
-                    statusId: props.statusId || undefined,
-                    priorityId: props.priorityId || undefined,
-                    dueDateFrom: props.dueDateFrom || undefined,
-                    dueDateTo: props.dueDateTo || undefined,
-                    createdAtFrom: props.createdAtFrom || undefined,
-                    createdAtTo: props.createdAtTo || undefined,
-                    updatedAtFrom: props.updatedAtFrom || undefined,
-                    updatedAtTo: props.updatedAtTo || undefined,
+                    title: searchParams.get(TODO_LIST_QUERY_KEY.TITLE) || undefined,
+                    categoryId: searchParams.get(TODO_LIST_QUERY_KEY.CATEGORY) || undefined,
+                    statusId: searchParams.get(TODO_LIST_QUERY_KEY.STATUS) || undefined,
+                    priorityId: searchParams.get(TODO_LIST_QUERY_KEY.PRIORITY) || undefined,
+                    dueDateFrom: searchParams.get(TODO_LIST_QUERY_KEY.DUE_DATE_FROM) || undefined,
+                    dueDateTo: searchParams.get(TODO_LIST_QUERY_KEY.DUE_DATE_TO) || undefined,
+                    createdAtFrom: searchParams.get(TODO_LIST_QUERY_KEY.CREATED_AT_FROM) || undefined,
+                    createdAtTo: searchParams.get(TODO_LIST_QUERY_KEY.CREATED_AT_TO) || undefined,
+                    updatedAtFrom: searchParams.get(TODO_LIST_QUERY_KEY.UPDATED_AT_FROM) || undefined,
+                    updatedAtTo: searchParams.get(TODO_LIST_QUERY_KEY.UPDATED_AT_TO) || undefined,
+                    page: searchParams.get(TODO_LIST_QUERY_KEY.PAGE) || undefined,
                 }
             });
             if (!res.ok) {

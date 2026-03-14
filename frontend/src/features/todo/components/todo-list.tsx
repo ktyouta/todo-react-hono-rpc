@@ -3,7 +3,6 @@ import { TableProps } from "@/components/ui/table/table";
 import { CategoryReturnType } from "@/features/api/get-category";
 import { PriorityReturnType } from "@/features/api/get-priority";
 import { StatusReturnType } from "@/features/api/get-status";
-import { useState } from "react";
 import { HiOutlineArchiveBoxXMark } from "react-icons/hi2";
 import { TaskListReturnType } from "../api/get-todo-list";
 import { TodoSearchFilter } from "../types/todo-search-filter";
@@ -21,6 +20,8 @@ type PropsType = {
     clearSearchCondition: () => void;
     clickSearch: () => void;
     handleKeyPress: (event: React.KeyboardEvent<HTMLInputElement>) => void;
+    currentPage: number;
+    changePage: (page: number) => void;
 }
 
 // テーブルカラム
@@ -47,11 +48,9 @@ export function TodoList(props: PropsType) {
         setSearchCondition,
         clearSearchCondition,
         clickSearch,
-        handleKeyPress, } = props;
-
-    // TODO: API連携後はサーバーから取得したページ情報に差し替える
-    const [currentPage, setCurrentPage] = useState(1);
-    const totalPages = 10;
+        handleKeyPress,
+        currentPage,
+        changePage, } = props;
 
     return (
         <div className="w-full min-h-full p-1 sm:p-5 flex flex-col">
@@ -65,7 +64,6 @@ export function TodoList(props: PropsType) {
                 priorityList={priorityList}
                 handleKeyPress={handleKeyPress}
             />
-            {/* TODO: API連携後はレスポンスの件数値に差し替える */}
             <p className="text-sm text-gray-500 mb-3 text-right">全 {taskData.total} 件</p>
             <div className="flex-1">
                 {taskData.list.length === 0 ? (
@@ -102,11 +100,13 @@ export function TodoList(props: PropsType) {
                 )}
             </div>
             <div className="mt-auto pt-4">
-                <Pagination
-                    currentPage={currentPage}
-                    totalPages={totalPages}
-                    onPageChange={setCurrentPage}
-                />
+                {taskData.totalPages > 1 &&
+                    <Pagination
+                        currentPage={currentPage}
+                        totalPages={taskData.totalPages}
+                        onPageChange={changePage}
+                    />
+                }
             </div>
         </div>
     );

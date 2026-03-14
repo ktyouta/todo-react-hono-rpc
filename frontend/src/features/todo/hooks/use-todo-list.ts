@@ -28,10 +28,11 @@ export function useTodoList() {
     };
     // タスク検索条件
     const [searchCondition, setSearchCondition] = useState<TodoSearchFilter>(initSearchCondition);
-    // 適用済み検索条件（URLから直接導出）
-    const [appliedSearchCondition, setApliedSearchCondition] = useState<TodoSearchFilter>(initSearchCondition);
+    // 選択中のページ
+    const pageParam = searchParams.get(TODO_LIST_QUERY_KEY.PAGE);
+    const currentPage = pageParam && !Number.isNaN(Number(pageParam)) ? Number(pageParam) : 1;
     // タスク一覧
-    const { data } = useGetTodoList(appliedSearchCondition);
+    const { data, isFetching } = useGetTodoList({ searchParams });
     // カテゴリリスト
     const { data: category } = getCategory();
     // ステータスリスト
@@ -54,7 +55,6 @@ export function useTodoList() {
      */
     function clearSearchCondition() {
         setSearchCondition(initialTodoSearchFilter);
-        setApliedSearchCondition(initialTodoSearchFilter);
         setSearchParams({});
     }
 
@@ -94,7 +94,6 @@ export function useTodoList() {
             params[TODO_LIST_QUERY_KEY.UPDATED_AT_TO] = searchCondition.updatedAtTo;
         }
         setSearchParams(params);
-        setApliedSearchCondition(searchCondition);
     }
 
     /**
@@ -105,6 +104,19 @@ export function useTodoList() {
             clickSearch();
         }
     };
+
+    /**
+     * ページ切り替えイベント
+     */
+    function changePage(page: number) {
+        const params = Object.fromEntries(searchParams);
+        if (page > 1) {
+            params[TODO_LIST_QUERY_KEY.PAGE] = page.toString();
+        } else {
+            delete params[TODO_LIST_QUERY_KEY.PAGE];
+        }
+        setSearchParams(params);
+    }
 
     return {
         taskData: data.data,
@@ -117,5 +129,7 @@ export function useTodoList() {
         clearSearchCondition,
         clickSearch,
         handleKeyPress,
+        currentPage,
+        changePage,
     };
 }

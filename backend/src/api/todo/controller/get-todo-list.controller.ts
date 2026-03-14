@@ -32,7 +32,8 @@ const getTodoList = new Hono<AppEnv>().get(
         }
 
         const { list, total } = await service.findAll(userId, query);
-        return c.json({ message: "タスク一覧を取得しました。", data: { list, total } }, HTTP_STATUS.OK);
+        const totalPages = Math.ceil(total / GetTodoListRepository.LIMIT);
+        return c.json({ message: "タスク一覧を取得しました。", data: { list, total, totalPages } }, HTTP_STATUS.OK);
     });
 
 export { getTodoList };

@@ -12,7 +12,7 @@ import type { IGetTodoListRepository, TodoListItem } from "./get-todo-list.repos
 export class GetTodoListRepository implements IGetTodoListRepository {
 
   // 最大取得条件件数
-  private static readonly LIMIT = 5;
+  static readonly LIMIT = 30;
   constructor(private readonly db: Database) { }
 
   /**
