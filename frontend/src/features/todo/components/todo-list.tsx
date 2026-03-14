@@ -1,4 +1,4 @@
-import { Pagination, Table } from "@/components";
+import { LoadingOverlay, Pagination, Table } from "@/components";
 import { TableProps } from "@/components/ui/table/table";
 import { CategoryReturnType } from "@/features/api/get-category";
 import { PriorityReturnType } from "@/features/api/get-priority";
@@ -22,6 +22,7 @@ type PropsType = {
     handleKeyPress: (event: React.KeyboardEvent<HTMLInputElement>) => void;
     currentPage: number;
     changePage: (page: number) => void;
+    isShowOverlay: boolean;
 }
 
 // テーブルカラム
@@ -50,10 +51,12 @@ export function TodoList(props: PropsType) {
         clickSearch,
         handleKeyPress,
         currentPage,
-        changePage, } = props;
+        changePage,
+        isShowOverlay, } = props;
 
     return (
         <div className="w-full min-h-full p-1 sm:p-5 flex flex-col">
+            {isShowOverlay && <LoadingOverlay />}
             <TodoSearchBar
                 searchCondition={searchCondition}
                 onChange={setSearchCondition}

@@ -3,8 +3,9 @@ import { getCategory } from "@/features/api/get-category";
 import { getPriority } from "@/features/api/get-priority";
 import { getStatus } from "@/features/api/get-status";
 import { useAppNavigation } from "@/hooks/use-app-navigation";
+import { useDelayedFlag } from "@/hooks/use-delayed-flag";
+import { useTransitionSearchParams } from "@/hooks/use-transition-search-params";
 import { useState } from "react";
-import { useSearchParams } from "react-router-dom";
 import { TaskListReturnType, useGetTodoList } from "../api/get-todo-list";
 import { TODO_LIST_QUERY_KEY } from "../constants/todo-list-query-params";
 import { initialTodoSearchFilter, TodoSearchFilter } from "../types/todo-search-filter";
@@ -12,7 +13,7 @@ import { initialTodoSearchFilter, TodoSearchFilter } from "../types/todo-search-
 export function useTodoList() {
 
     // クエリパラメータ取得用
-    const [searchParams, setSearchParams] = useSearchParams();
+    const [searchParams, setSearchParams, isPending] = useTransitionSearchParams();
     // 初期検索条件
     const initSearchCondition: TodoSearchFilter = {
         title: searchParams.get(TODO_LIST_QUERY_KEY.TITLE) ?? '',
@@ -32,7 +33,7 @@ export function useTodoList() {
     const pageParam = searchParams.get(TODO_LIST_QUERY_KEY.PAGE);
     const currentPage = pageParam && !Number.isNaN(Number(pageParam)) ? Number(pageParam) : 1;
     // タスク一覧
-    const { data, isFetching } = useGetTodoList({ searchParams });
+    const { data } = useGetTodoList({ searchParams });
     // カテゴリリスト
     const { data: category } = getCategory();
     // ステータスリスト
@@ -41,6 +42,8 @@ export function useTodoList() {
     const { data: priority } = getPriority();
     // ルーティング用
     const { appNavigate } = useAppNavigation();
+    // オーバーレイ表示フラグ
+    const isShowOverlay = useDelayedFlag(isPending, 200);
 
     /**
      * テーブルの行クリックイベント
@@ -131,5 +134,6 @@ export function useTodoList() {
         handleKeyPress,
         currentPage,
         changePage,
+        isShowOverlay,
     };
 }
