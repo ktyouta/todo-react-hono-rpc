@@ -58,10 +58,12 @@ export const Default: Story = {
                 clickCreate={async () => {
                     alert('作成ボタンが押されました');
                 }}
+                clickClear={() => {}}
                 categoryList={dummyCategoryList}
                 statusList={dummyStatusList}
                 priorityList={priorityList}
                 selectedCategoryId={1}
+                isLoading={false}
             />
         );
     },
@@ -98,10 +100,12 @@ export const WithValidationErrors: Story = {
                 control={control}
                 errors={errors}
                 clickCreate={async () => { }}
+                clickClear={() => {}}
                 categoryList={dummyCategoryList}
                 statusList={dummyStatusList}
                 priorityList={priorityList}
                 selectedCategoryId={1}
+                isLoading={false}
             />
         );
     },
