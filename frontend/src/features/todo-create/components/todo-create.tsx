@@ -59,6 +59,11 @@ export function TodoCreate(props: PropsType) {
                 </div>
             </div>
             <div className="w-full pt-7 sm:pt-[50px] text-[15px]">
+                {Object.keys(errors).length > 0 && (
+                    <div className="flex items-center gap-2 px-3 py-2.5 mb-5 bg-red-50 border border-red-200 rounded text-sm text-red-600">
+                        <span>入力内容にエラーがあります。確認してください。</span>
+                    </div>
+                )}
                 <div className="w-full">
                     <Textbox
                         registration={register("title")}
