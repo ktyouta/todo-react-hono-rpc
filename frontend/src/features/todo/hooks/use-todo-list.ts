@@ -5,7 +5,7 @@ import { getStatus } from "@/features/api/get-status";
 import { useAppNavigation } from "@/hooks/use-app-navigation";
 import { useDelayedFlag } from "@/hooks/use-delayed-flag";
 import { useTransitionSearchParams } from "@/hooks/use-transition-search-params";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { TaskListReturnType, useGetTodoList } from "../api/get-todo-list";
 import { TODO_LIST_QUERY_KEY } from "../constants/todo-list-query-params";
 import { initialTodoSearchFilter, TodoSearchFilter } from "../types/todo-search-filter";
@@ -44,6 +44,19 @@ export function useTodoList() {
     const { appNavigate } = useAppNavigation();
     // オーバーレイ表示フラグ
     const isShowOverlay = useDelayedFlag(isPending, 250);
+    // ページ切り替え判定フラグ
+    const wasPageChanging = useRef(false);
+
+    // ページ切り替え完了後にページトップへスクロール
+    useEffect(() => {
+        if (isPending) {
+            wasPageChanging.current = true;
+        }
+        else if (wasPageChanging.current) {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            wasPageChanging.current = false;
+        }
+    }, [isPending]);
 
     /**
      * テーブルの行クリックイベント
