@@ -37,6 +37,20 @@ export function useTodoCreate() {
     const selectedCategoryId = watch("category");
 
     /**
+     * クリアボタン押下
+     */
+    const clickClear = () => {
+        reset({
+            title: ``,
+            content: ``,
+            category: 1,
+            status: 1,
+            priority: 1,
+            dueDate: null,
+        });
+    };
+
+    /**
      * 作成ボタン押下
      */
     const clickCreate = handleSubmit((data) => {
@@ -56,6 +70,7 @@ export function useTodoCreate() {
         control,
         errors,
         clickCreate,
+        clickClear,
         statusList: status.data,
         categoryList: category.data,
         priorityList: priority.data,

@@ -12,6 +12,7 @@ type PropsType = {
     control: Control<TodoCreateRequestType>;
     errors: FieldErrors<TodoCreateRequestType>;
     clickCreate: (e?: BaseSyntheticEvent<object, any, any> | undefined) => Promise<void>;
+    clickClear: () => void;
     statusList: StatusReturnType;
     categoryList: CategoryReturnType;
     priorityList: PriorityReturnType;
@@ -25,6 +26,7 @@ export function TodoCreate(props: PropsType) {
         control,
         errors,
         clickCreate,
+        clickClear,
         statusList,
         categoryList,
         priorityList,
@@ -37,14 +39,24 @@ export function TodoCreate(props: PropsType) {
                     タスク作成
                 </span>
                 <div className="flex-1" />
-                <Button
-                    colorType={"green"}
-                    sizeType={"large"}
-                    className="px-4 sm:px-10 bg-cyan-500 hover:bg-cyan-600"
-                    onClick={clickCreate}
-                >
-                    作成
-                </Button>
+                <div className="flex gap-2 sm:gap-3">
+                    <Button
+                        colorType={"green"}
+                        sizeType={"large"}
+                        className="px-4 sm:px-6 bg-gray-400 hover:bg-gray-500"
+                        onClick={clickClear}
+                    >
+                        クリア
+                    </Button>
+                    <Button
+                        colorType={"green"}
+                        sizeType={"large"}
+                        className="px-4 sm:px-10 bg-cyan-500 hover:bg-cyan-600"
+                        onClick={clickCreate}
+                    >
+                        作成
+                    </Button>
+                </div>
             </div>
             <div className="w-full pt-7 sm:pt-[50px] text-[15px]">
                 <div className="w-full">
