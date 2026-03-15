@@ -43,7 +43,7 @@ export function useTodoList() {
     // ルーティング用
     const { appNavigate } = useAppNavigation();
     // オーバーレイ表示フラグ
-    const isShowOverlay = useDelayedFlag(isPending, 200);
+    const isShowOverlay = useDelayedFlag(isPending, 250);
 
     /**
      * テーブルの行クリックイベント

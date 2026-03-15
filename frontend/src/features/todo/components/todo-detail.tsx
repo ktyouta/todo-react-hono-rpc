@@ -140,7 +140,10 @@ export function TodoDetail(props: PropsType) {
                         </>
                     ) : (
                         <>
-                            <p className="text-base text-gray-500 mb-3">タスク内容</p>
+                            <div className="mb-3">
+                                {task.categoryId === CATEGORY_ID.TASK && <p className="text-base text-gray-500">タスク内容</p>}
+                                {task.categoryId === CATEGORY_ID.MEMO && <p className="text-base text-gray-500">メモ内容</p>}
+                            </div>
                             <p className="w-full min-h-[450px] text-lg whitespace-pre-wrap leading-relaxed text-gray-800 break-words">
                                 {task.content}
                             </p>

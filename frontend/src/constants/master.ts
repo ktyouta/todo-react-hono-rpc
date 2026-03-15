@@ -1,1 +1,5 @@
-export const CATEGORY_ID = { TASK: 1, MEMO: 2 } as const;
+// カテゴリID
+export const CATEGORY_ID = {
+    TASK: 1,
+    MEMO: 2
+} as const;

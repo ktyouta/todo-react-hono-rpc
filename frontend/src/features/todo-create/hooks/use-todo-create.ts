@@ -39,7 +39,7 @@ export function useTodoCreate() {
     /**
      * クリアボタン押下
      */
-    const clickClear = () => {
+    function clickClear() {
         reset({
             title: ``,
             content: ``,
