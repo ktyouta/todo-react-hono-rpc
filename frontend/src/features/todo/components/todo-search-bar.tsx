@@ -33,6 +33,7 @@ export function TodoSearchBar({ searchCondition, onChange, onSearch, onClear, ca
         searchCondition.createdAtFrom !== null || searchCondition.createdAtTo !== null,
         searchCondition.updatedAtFrom !== null || searchCondition.updatedAtTo !== null,
     ].filter(Boolean).length;
+    const isEmpty = searchCondition.title === '' && activeCount === 0;
 
     return (
         <div className="pb-4 border-b border-gray-300 mb-3 sm:mb-6">
@@ -72,7 +73,8 @@ export function TodoSearchBar({ searchCondition, onChange, onSearch, onClear, ca
                         colorType="blue"
                         sizeType="small"
                         onClick={onClear}
-                        className="px-3 h-9 py-0 bg-[#fcfdfd] border border-gray-300 text-sm text-gray-600 hover:bg-gray-200 whitespace-nowrap"
+                        disabled={isEmpty}
+                        className="px-3 h-9 py-0 bg-[#fcfdfd] border border-gray-300 text-sm text-gray-600 hover:bg-gray-200 whitespace-nowrap disabled:opacity-70 disabled:hover:bg-[#fcfdfd]"
                     >
                         クリア
                     </Button>
