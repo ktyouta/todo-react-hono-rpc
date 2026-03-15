@@ -75,5 +75,6 @@ export function useTodoCreate() {
         categoryList: category.data,
         priorityList: priority.data,
         selectedCategoryId,
+        isLoading: postMutation.isPending
     };
 }

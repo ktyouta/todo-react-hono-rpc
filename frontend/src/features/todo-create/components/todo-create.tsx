@@ -1,4 +1,4 @@
-import { Button, DatePicker, Select, Textarea, Textbox } from "@/components";
+import { Button, DatePicker, LoadingOverlay, Select, Textarea, Textbox } from "@/components";
 import { CATEGORY_ID } from "@/constants/master";
 import { CategoryReturnType } from "@/features/api/get-category";
 import { PriorityReturnType } from "@/features/api/get-priority";
@@ -17,6 +17,7 @@ type PropsType = {
     categoryList: CategoryReturnType;
     priorityList: PriorityReturnType;
     selectedCategoryId: number;
+    isLoading: boolean;
 }
 
 export function TodoCreate(props: PropsType) {
@@ -30,7 +31,8 @@ export function TodoCreate(props: PropsType) {
         statusList,
         categoryList,
         priorityList,
-        selectedCategoryId } = props;
+        selectedCategoryId,
+        isLoading, } = props;
 
     return (
         <div className="w-full min-h-full">
@@ -130,6 +132,8 @@ export function TodoCreate(props: PropsType) {
                     )}
                 </div>
             </div>
+            {/* ローディングオーバーレイ */}
+            {isLoading && <LoadingOverlay />}
         </div>
     );
 }
