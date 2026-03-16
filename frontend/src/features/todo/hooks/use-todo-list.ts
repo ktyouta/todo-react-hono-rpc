@@ -128,7 +128,8 @@ export function useTodoList() {
         const params = Object.fromEntries(searchParams);
         if (page > 1) {
             params[TODO_LIST_QUERY_KEY.PAGE] = page.toString();
-        } else {
+        }
+        else {
             delete params[TODO_LIST_QUERY_KEY.PAGE];
         }
         setSearchParams(params);

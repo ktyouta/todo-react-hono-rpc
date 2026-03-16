@@ -8,6 +8,7 @@ import { Control, Controller, FieldErrors, UseFormRegister } from "react-hook-fo
 import { HiArrowLeft } from "react-icons/hi2";
 import { TaskReturnType } from "../api/get-todo";
 import { TodoDetailEditType } from "../types/todo-detail-edit-type";
+import { getDueDateStatus } from "../utils/due-date-status";
 
 type PropsType = {
     task: TaskReturnType;
@@ -52,6 +53,9 @@ export function TodoDetail(props: PropsType) {
         selectedCategoryId,
         isLoading,
     } = props;
+
+    // 期限日ステータス
+    const dueDateStatus = getDueDateStatus(task.dueDate);
 
     return (
         <div className="w-full min-h-full flex flex-col pb-4">
@@ -218,7 +222,7 @@ export function TodoDetail(props: PropsType) {
                                         )}
                                     />
                                 ) : (
-                                    <span className="flex-1 px-3 py-2 bg-gray-50 border border-[#e0e0e0] rounded text-lg">
+                                    <span className={`flex-1 px-3 py-2 bg-gray-50 border border-[#e0e0e0] rounded text-lg ${dueDateStatus === 'overdue' ? 'text-red-600' : dueDateStatus === 'warning' ? 'text-amber-500' : ''}`}>
                                         {task.dueDate ? task.dueDate.replaceAll("-", "/") : `なし`}
                                     </span>
                                 )}
