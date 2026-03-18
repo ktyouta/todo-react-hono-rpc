@@ -4,6 +4,26 @@
 -- 実行: npm run db:seed:local
 -- =============================================
 
+-- ロールマスタ
+INSERT OR IGNORE INTO role_master (id, name, created_at, updated_at) VALUES
+  (1, 'admin',        datetime('now'), datetime('now')),
+  (2, 'task_manager', datetime('now'), datetime('now')),
+  (3, 'user',         datetime('now'), datetime('now'));
+
+-- パーミッションマスタ
+INSERT OR IGNORE INTO permission_master (id, screen, created_at, updated_at) VALUES
+  (1, 'task_management', datetime('now'), datetime('now')),
+  (2, 'user_management', datetime('now'), datetime('now'));
+
+-- ロール・パーミッション中間テーブル
+-- admin: 全画面アクセス可
+-- task_manager: タスク管理のみアクセス可
+-- user: 管理画面へのアクセス不可
+INSERT OR IGNORE INTO role_permission (role_id, permission_id) VALUES
+  (1, 1), -- admin → task_management
+  (1, 2), -- admin → user_management
+  (2, 1); -- task_manager → task_management
+
 -- シーケンスマスタ（ID採番用）
 INSERT OR IGNORE INTO seq_master (key, next_id, created_at, updated_at) VALUES
   ('front_user_id', 1, datetime('now'), datetime('now'));

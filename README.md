@@ -240,7 +240,7 @@ const data = await res.json();
 
 ### sample 機能について
 
-`frontend/src/features/sample/` はテンプレートの**リファレンス実装**として用意されている。Container / Presentational パターン、hooks、Storybook の書き方の参考として利用し、実際のプロジェクトでは削除または置き換える想定。
+`frontend/src/features/sample/` は**リファレンス実装**として用意されている。Container / Presentational パターン、hooks、Storybook の書き方の参考として利用し、実際のプロジェクトでは削除または置き換える想定。
 
 ### ルート package.json の hono 依存
 
@@ -256,13 +256,3 @@ const data = await res.json();
 ### バックエンドの import パス
 
 バックエンドでは `@/` パスエイリアスを設定していない（相対パスで import する）。フロントエンドの `tsconfig` が `@/*` を `frontend/src/*` にマッピングしているため、バックエンドに同様のエイリアスを追加すると、RPC 型チェーンでバックエンドファイルを処理する際に誤解決される。
-
-### DB 名・ワーカー名の変更
-
-テンプレートを自分のプロジェクトに適用する際は、以下の設定値を変更する:
-
-| 設定 | ファイル | 現在の値 | 変更箇所 |
-|---|---|---|---|
-| ワーカー名 | `backend/wrangler.jsonc` | `react-hono-rpc` | `"name"` フィールド |
-| DB 名 | `backend/wrangler.jsonc` | `todo-react-hono-rpc-db` | `"database_name"`（デフォルト + production の両方） |
-| DB 名 | `backend/package.json` | `todo-react-hono-rpc-db` | `db:migrate:*` / `db:seed:*` スクリプト内 |

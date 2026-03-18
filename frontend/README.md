@@ -1,6 +1,6 @@
 # React Vite Template
 
-React + TypeScript + Vite を使用したフロントエンド開発用テンプレートです。
+React + TypeScript + Vite を使用したTodoアプリです。
 
 ## 技術スタック
 

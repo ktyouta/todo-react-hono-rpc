@@ -1,4 +1,4 @@
-import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
+import { integer, sqliteTable, text, uniqueIndex } from "drizzle-orm/sqlite-core";
 
 /**
  * サンプルテーブルスキーマ
@@ -14,6 +14,46 @@ export const sample = sqliteTable("sample", {
 
 export type Sample = typeof sample.$inferSelect;
 export type NewSample = typeof sample.$inferInsert;
+
+/**
+ * ロールマスタ
+ */
+export const roleMaster = sqliteTable("role_master", {
+  id: integer("id").primaryKey(),
+  name: text("name").notNull().unique(),
+  createdAt: text("created_at").notNull(),
+  updatedAt: text("updated_at").notNull(),
+});
+
+export type RoleMaster = typeof roleMaster.$inferSelect;
+export type NewRoleMaster = typeof roleMaster.$inferInsert;
+
+/**
+ * パーミッションマスタ
+ */
+export const permissionMaster = sqliteTable("permission_master", {
+  id: integer("id").primaryKey(),
+  screen: text("screen").notNull().unique(),
+  createdAt: text("created_at").notNull(),
+  updatedAt: text("updated_at").notNull(),
+});
+
+export type PermissionMaster = typeof permissionMaster.$inferSelect;
+export type NewPermissionMaster = typeof permissionMaster.$inferInsert;
+
+/**
+ * ロール・パーミッション中間テーブル
+ */
+export const rolePermission = sqliteTable("role_permission", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  roleId: integer("role_id").notNull().references(() => roleMaster.id),
+  permissionId: integer("permission_id").notNull().references(() => permissionMaster.id),
+}, (table) => [
+  uniqueIndex("role_permission_unique").on(table.roleId, table.permissionId),
+]);
+
+export type RolePermission = typeof rolePermission.$inferSelect;
+export type NewRolePermission = typeof rolePermission.$inferInsert;
 
 /**
  * フロントユーザーマスタ
