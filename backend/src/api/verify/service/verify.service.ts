@@ -1,8 +1,5 @@
 import type { FrontUserId } from "../../../domain";
-import type {
-    FrontUserMaster
-} from "../../../infrastructure/db";
-import { IVerifyRepository } from "../repository/verify.repository.interface";
+import type { IVerifyRepository, UserWithRole } from "../repository/verify.repository.interface";
 
 /**
  * ログインサービス
@@ -13,7 +10,14 @@ export class VerifyService {
     /**
      * ユーザー情報を取得
      */
-    async getUser(userId: FrontUserId): Promise<FrontUserMaster | undefined> {
+    async getUser(userId: FrontUserId): Promise<UserWithRole | undefined> {
         return await this.repository.findByUserId(userId);
+    }
+
+    /**
+     * ロールIDに紐づくパーミッション一覧を取得
+     */
+    async getPermissions(roleId: number): Promise<string[]> {
+        return await this.repository.findPermissionsByRoleId(roleId);
     }
 }

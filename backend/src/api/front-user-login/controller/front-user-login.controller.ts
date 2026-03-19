@@ -66,6 +66,9 @@ const frontUserLogin = new Hono<AppEnv>().post(
             return c.json({ message: "IDかパスワードが間違っています。" }, HTTP_STATUS.UNAUTHORIZED);
         }
 
+        // パーミッションを取得
+        const permissions = await service.getPermissions(userInfo.roleId);
+
         // トークンを発行
         const accessToken = await AccessToken.create(frontUserId, config);
         const refreshToken = await RefreshToken.create(frontUserId, config);
@@ -75,6 +78,7 @@ const frontUserLogin = new Hono<AppEnv>().post(
 
         const responseDto = new FrontUserLoginResponseDto(
             userInfo,
+            permissions,
             accessToken.token
         );
 

@@ -1,9 +1,8 @@
 import type { FrontUserId, FrontUserName, FrontUserPassword } from "../../../domain";
 import type {
   FrontUserLoginMaster,
-  FrontUserMaster,
 } from "../../../infrastructure/db";
-import type { IFrontUserLoginRepository } from "../repository";
+import type { IFrontUserLoginRepository, UserWithRole } from "../repository/front-user-login.repository.interface";
 
 /**
  * ログインサービス
@@ -23,8 +22,15 @@ export class FrontUserLoginService {
   /**
    * ユーザー情報を取得
    */
-  async getUserInfo(userId: FrontUserId): Promise<FrontUserMaster | undefined> {
+  async getUserInfo(userId: FrontUserId): Promise<UserWithRole | undefined> {
     return await this.repository.getUserInfo(userId);
+  }
+
+  /**
+   * ロールIDに紐づくパーミッション一覧を取得
+   */
+  async getPermissions(roleId: number): Promise<string[]> {
+    return await this.repository.getPermissionsByRoleId(roleId);
   }
 
   /**
@@ -36,8 +42,8 @@ export class FrontUserLoginService {
 
   /**
    * パスワードチェック
-   * @param password 
-   * @param loginInfo 
+   * @param password
+   * @param loginInfo
    */
   isMatchPassword(password: FrontUserPassword, loginInfo: FrontUserLoginMaster) {
 

@@ -42,6 +42,9 @@ const verify = new Hono<AppEnv>().get(
                 return c.json({ message: "認証失敗" }, HTTP_STATUS.UNAUTHORIZED);
             }
 
+            // パーミッションを取得
+            const permissions = await service.getPermissions(userInfo.roleId);
+
             // 新しいトークンを生成
             const accessToken = await AccessToken.create(userId, config);
 
@@ -53,6 +56,8 @@ const verify = new Hono<AppEnv>().get(
                         id: userInfo.id,
                         name: userInfo.name,
                         birthday: userInfo.birthday,
+                        role: userInfo.role,
+                        permissions,
                     },
                 },
             }, 200);
