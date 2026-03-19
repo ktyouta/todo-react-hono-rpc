@@ -50,6 +50,13 @@
       "when": 1773920392165,
       "tag": "0006_nifty_morgan_stark",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "6",
+      "when": 1773921362317,
+      "tag": "0007_wet_alice",
+      "breakpoints": true
     }
   ]
 }
