@@ -43,6 +43,13 @@
       "when": 1773057451003,
       "tag": "0005_tearful_dracula",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "6",
+      "when": 1773920392165,
+      "tag": "0006_nifty_morgan_stark",
+      "breakpoints": true
     }
   ]
 }
