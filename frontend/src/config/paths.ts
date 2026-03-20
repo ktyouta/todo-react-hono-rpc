@@ -21,6 +21,13 @@ export const paths = {
         path: '/signup',
         getHref: (redirectTo?: string) => `${paths.signup.path}${redirectTo ? `?redirectTo=${encodeURIComponent(redirectTo)}` : ``}`,
     },
+    todoManagement: {
+        path: '/todo-management',
+    },
+    todoManagementDetail: {
+        path: '/todo-management/:id',
+        getHref: (id: number) => `/todo-management/${id}`,
+    },
     updateUser: {
         path: '/update-user',
         getHref: (redirectTo?: string) => `${paths.updateUser.path}${redirectTo ? `?redirectTo=${encodeURIComponent(redirectTo)}` : ``}`,

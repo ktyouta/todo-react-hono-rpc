@@ -1,6 +1,5 @@
-import type { FrontUserMaster } from "../../../infrastructure/db";
 import type { FrontUserName } from "../../../domain";
-import type { FrontUserEntity, FrontUserLoginEntity } from "../entity";
+import type { FrontUserMaster } from "../../../infrastructure/db";
 
 /**
  * ユーザー作成リポジトリインターフェース
@@ -13,14 +12,14 @@ export interface ICreateFrontUserRepository {
   findByUserName(userName: FrontUserName): Promise<FrontUserMaster[]>;
 
   /**
-   * ユーザー情報を挿入
-   * @param entity ユーザーエンティティ
+   * ロールIDに紐づくロール名を取得
+   * @param roleId ロールID
    */
-  insertFrontUser(entity: FrontUserEntity): Promise<FrontUserMaster>;
+  findRoleNameById(roleId: number): Promise<string>;
 
   /**
-   * ログイン情報を挿入
-   * @param entity ログインエンティティ
+   * ロールIDに紐づくパーミッション一覧を取得
+   * @param roleId ロールID
    */
-  insertFrontLoginUser(entity: FrontUserLoginEntity): Promise<void>;
+  findPermissionsByRoleId(roleId: number): Promise<string[]>;
 }

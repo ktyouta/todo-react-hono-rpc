@@ -7,6 +7,7 @@ export * from "./front-user-password";
 export * from "./front-user-salt";
 export * from "./pepper";
 export * from "./refresh-token";
+export * from "./role-id";
 export * from "./seq";
 export * from "./task-category";
 export * from "./task-content";

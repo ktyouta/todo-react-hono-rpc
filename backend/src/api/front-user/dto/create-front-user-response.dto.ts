@@ -9,6 +9,8 @@ export type CreateFrontUserResponseType = {
     id: number;
     name: string;
     birthday: string;
+    role: string;
+    permissions: string[];
   };
 };
 
@@ -18,13 +20,15 @@ export type CreateFrontUserResponseType = {
 export class CreateFrontUserResponseDto {
   private readonly _value: CreateFrontUserResponseType;
 
-  constructor(entity: FrontUserEntity, accessToken: string) {
+  constructor(entity: FrontUserEntity, accessToken: string, role: string, permissions: string[]) {
     this._value = {
       accessToken,
       user: {
         id: entity.frontUserId,
         name: entity.frontUserName,
         birthday: entity.frontUserBirthday,
+        role,
+        permissions,
       },
     };
   }

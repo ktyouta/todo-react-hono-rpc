@@ -12,6 +12,7 @@ import {
     FrontUserSalt,
     Pepper,
     RefreshToken,
+    RoleId,
 } from "../../../domain";
 import { frontUserLoginMaster, frontUserMaster, seqMaster } from "../../../infrastructure/db";
 import { userOperationGuardMiddleware } from "../../../middleware";
@@ -47,6 +48,7 @@ const createFrontUser = new Hono<AppEnv>().post(
         // ドメインオブジェクトを生成
         const userName = new FrontUserName(body.name);
         const userBirthday = new FrontUserBirthday(body.birthday);
+        const roleId = RoleId.create();
         const salt = FrontUserSalt.generate();
         const pepper = new Pepper(config.pepper);
         const userPassword = await FrontUserPassword.hash(
@@ -81,7 +83,7 @@ const createFrontUser = new Hono<AppEnv>().post(
             userPassword,
             salt
         );
-        const userEntity = new FrontUserEntity(frontUserId, userName, userBirthday);
+        const userEntity = new FrontUserEntity(frontUserId, userName, userBirthday, roleId);
 
         // seq更新 + ログイン情報挿入 + ユーザー情報挿入（batch で atomic 実行）
         const now = new Date().toISOString();
@@ -102,11 +104,16 @@ const createFrontUser = new Hono<AppEnv>().post(
                 id: userEntity.frontUserId,
                 name: userEntity.frontUserName,
                 birthday: userEntity.frontUserBirthday,
+                roleId: userEntity.roleId,
                 deleteFlg: FLG.OFF,
                 createdAt: now,
                 updatedAt: now,
             }),
         ]);
+
+        // ロール名・パーミッションを取得
+        const role = await repository.findRoleNameById(roleId.value);
+        const permissions = await repository.findPermissionsByRoleId(roleId.value);
 
         // トークンを発行
         const accessToken = await AccessToken.create(frontUserId, config);
@@ -114,7 +121,9 @@ const createFrontUser = new Hono<AppEnv>().post(
 
         const responseDto = new CreateFrontUserResponseDto(
             userEntity,
-            accessToken.token
+            accessToken.token,
+            role,
+            permissions,
         );
 
         // リフレッシュトークンをCookieに設定

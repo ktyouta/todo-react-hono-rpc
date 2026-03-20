@@ -1,8 +1,8 @@
 import { and, eq, ne } from "drizzle-orm";
 import { FLG } from "../../../constant";
 import type { FrontUserId, FrontUserName } from "../../../domain";
-import type { DbClient, FrontUserMaster } from "../../../infrastructure/db";
-import { frontUserLoginMaster, frontUserMaster } from "../../../infrastructure/db";
+import type { DbClient } from "../../../infrastructure/db";
+import { frontUserMaster } from "../../../infrastructure/db";
 import type { IUpdateFrontUserRepository } from "./update-front-user.repository.interface";
 
 /**
@@ -33,51 +33,4 @@ export class UpdateFrontUserRepository implements IUpdateFrontUserRepository {
     return result.length > 0;
   }
 
-  /**
-   * ユーザー情報を更新
-   */
-  async updateFrontUser(
-    userId: FrontUserId,
-    userName: string,
-    userBirthday: string
-  ): Promise<FrontUserMaster | undefined> {
-    const now = new Date().toISOString();
-    const result = await this.db
-      .update(frontUserMaster)
-      .set({
-        name: userName,
-        birthday: userBirthday,
-        updatedAt: now,
-      })
-      .where(
-        and(
-          eq(frontUserMaster.id, userId.value),
-          eq(frontUserMaster.deleteFlg, FLG.OFF)
-        )
-      )
-      .returning();
-    return result[0];
-  }
-
-  /**
-   * ログイン情報のユーザー名を更新
-   */
-  async updateFrontLoginUser(
-    userId: FrontUserId,
-    userName: string
-  ): Promise<void> {
-    const now = new Date().toISOString();
-    await this.db
-      .update(frontUserLoginMaster)
-      .set({
-        name: userName,
-        updatedAt: now,
-      })
-      .where(
-        and(
-          eq(frontUserLoginMaster.id, userId.value),
-          eq(frontUserLoginMaster.deleteFlg, FLG.OFF)
-        )
-      );
-  }
 }

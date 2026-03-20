@@ -1,4 +1,3 @@
-import type { FrontUserMaster } from "../../../infrastructure/db";
 import type { FrontUserId, FrontUserName } from "../../../domain";
 
 /**
@@ -11,23 +10,4 @@ export interface IUpdateFrontUserRepository {
    * @param userName ユーザー名
    */
   checkUserNameExists(userId: FrontUserId, userName: FrontUserName): Promise<boolean>;
-
-  /**
-   * ユーザー情報を更新
-   * @param userId ユーザーID
-   * @param userName ユーザー名
-   * @param userBirthday 生年月日
-   */
-  updateFrontUser(
-    userId: FrontUserId,
-    userName: string,
-    userBirthday: string
-  ): Promise<FrontUserMaster | undefined>;
-
-  /**
-   * ログイン情報のユーザー名を更新
-   * @param userId ユーザーID
-   * @param userName ユーザー名
-   */
-  updateFrontLoginUser(userId: FrontUserId, userName: string): Promise<void>;
 }

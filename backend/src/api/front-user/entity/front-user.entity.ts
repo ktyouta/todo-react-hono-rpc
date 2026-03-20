@@ -1,7 +1,8 @@
 import {
+  FrontUserBirthday,
   FrontUserId,
   FrontUserName,
-  FrontUserBirthday,
+  RoleId,
 } from "../../../domain";
 
 /**
@@ -11,15 +12,18 @@ export class FrontUserEntity {
   private readonly _frontUserId: FrontUserId;
   private readonly _frontUserName: FrontUserName;
   private readonly _frontUserBirthday: FrontUserBirthday;
+  private readonly _roleId: RoleId;
 
   constructor(
     userId: FrontUserId,
     userName: FrontUserName,
-    userBirthday: FrontUserBirthday
+    userBirthday: FrontUserBirthday,
+    roleId: RoleId,
   ) {
     this._frontUserId = userId;
     this._frontUserName = userName;
     this._frontUserBirthday = userBirthday;
+    this._roleId = roleId;
   }
 
   get frontUserId(): number {
@@ -32,5 +36,9 @@ export class FrontUserEntity {
 
   get frontUserBirthday(): string {
     return this._frontUserBirthday.value;
+  }
+
+  get roleId(): number {
+    return this._roleId.value;
   }
 }

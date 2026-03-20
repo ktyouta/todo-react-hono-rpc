@@ -2,8 +2,7 @@ import { and, eq } from "drizzle-orm";
 import { FLG } from "../../../constant";
 import type { FrontUserName } from "../../../domain";
 import type { DbClient, FrontUserMaster } from "../../../infrastructure/db";
-import { frontUserLoginMaster, frontUserMaster } from "../../../infrastructure/db";
-import type { FrontUserEntity, FrontUserLoginEntity } from "../entity";
+import { frontUserMaster, permissionMaster, roleMaster, rolePermission } from "../../../infrastructure/db";
 import type { ICreateFrontUserRepository } from "./create-front-user.repository.interface";
 
 /**
@@ -28,40 +27,20 @@ export class CreateFrontUserRepository implements ICreateFrontUserRepository {
       );
   }
 
-  /**
-   * ユーザー情報を挿入
-   * @param entity ユーザーエンティティ
-   */
-  async insertFrontUser(entity: FrontUserEntity): Promise<FrontUserMaster> {
-    const now = new Date().toISOString();
+  async findRoleNameById(roleId: number): Promise<string> {
     const result = await this.db
-      .insert(frontUserMaster)
-      .values({
-        id: entity.frontUserId,
-        name: entity.frontUserName,
-        birthday: entity.frontUserBirthday,
-        deleteFlg: FLG.OFF,
-        createdAt: now,
-        updatedAt: now,
-      })
-      .returning();
-    return result[0];
+      .select({ name: roleMaster.name })
+      .from(roleMaster)
+      .where(eq(roleMaster.id, roleId));
+    return result[0].name;
   }
 
-  /**
-   * ログイン情報を挿入
-   * @param entity ログインエンティティ
-   */
-  async insertFrontLoginUser(entity: FrontUserLoginEntity): Promise<void> {
-    const now = new Date().toISOString();
-    await this.db.insert(frontUserLoginMaster).values({
-      id: entity.frontUserId,
-      name: entity.frontUserName,
-      password: entity.frontUserPassword,
-      salt: entity.salt,
-      deleteFlg: FLG.OFF,
-      createdAt: now,
-      updatedAt: now,
-    });
+  async findPermissionsByRoleId(roleId: number): Promise<string[]> {
+    const result = await this.db
+      .select({ screen: permissionMaster.screen })
+      .from(rolePermission)
+      .innerJoin(permissionMaster, eq(rolePermission.permissionId, permissionMaster.id))
+      .where(eq(rolePermission.roleId, roleId));
+    return result.map(r => r.screen);
   }
 }

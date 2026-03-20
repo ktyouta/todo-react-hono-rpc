@@ -33,7 +33,13 @@ export function useSignup() {
         // 正常終了後の処理
         onSuccess: (res) => {
             const data = res.data;
-            setLoginUserInfo(data.user);
+            setLoginUserInfo({
+                id: data.user.id,
+                name: data.user.name,
+                birthday: data.user.birthday,
+                role: data.user.role,
+                permissions: data.user.permissions,
+            });
             updateAccessToken(data.accessToken);
             navigate(paths.home.path);
         },

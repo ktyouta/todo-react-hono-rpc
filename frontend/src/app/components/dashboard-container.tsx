@@ -1,30 +1,37 @@
 import { Dashboard } from "@/components";
 import { paths } from "@/config/paths";
 import { useAppNavigation } from "@/hooks/use-app-navigation";
+import { usePermission } from "@/hooks/use-permission";
 import { Navigate, Outlet } from "react-router-dom";
 import { toast } from "react-toastify";
-import { HiOutlineDocumentPlus, HiOutlineHome } from 'react-icons/hi2';
+import { HiOutlineClipboardDocumentList, HiOutlineDocumentPlus, HiOutlineHome } from 'react-icons/hi2';
 import { useLogoutMutation } from "../api/logout";
 import { LoginUserContext, SetLoginUserContext } from "./login-user-provider";
-
-
-// サイドバーメニューリスト
-const navigationList = [
-    {
-        name: `ホーム`,
-        icon: <HiOutlineHome className='h-5 w-5' />,
-        path: paths.todo.path,
-    },
-    {
-        name: `タスク作成`,
-        icon: <HiOutlineDocumentPlus className='h-5 w-5' />,
-        path: paths.todoCreate.path,
-    },
-];
 
 export function DashboardContainer() {
     // ログインユーザー情報
     const loginUser = LoginUserContext.useCtx();
+    // タスク管理パーミッション
+    const hasTaskManagement = usePermission('task_management');
+
+    // サイドバーメニューリスト
+    const navigationList = [
+        {
+            name: `ホーム`,
+            icon: <HiOutlineHome className='h-5 w-5' />,
+            path: paths.todo.path,
+        },
+        {
+            name: `タスク作成`,
+            icon: <HiOutlineDocumentPlus className='h-5 w-5' />,
+            path: paths.todoCreate.path,
+        },
+        ...(hasTaskManagement ? [{
+            name: `タスク管理`,
+            icon: <HiOutlineClipboardDocumentList className='h-5 w-5' />,
+            path: paths.todoManagement.path,
+        }] : []),
+    ];
     // ログインユーザー情報(setter)
     const setLoginUser = SetLoginUserContext.useCtx();
     // ルーティング用

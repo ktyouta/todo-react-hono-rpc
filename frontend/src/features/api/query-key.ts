@@ -12,3 +12,8 @@ export const statusKeys = {
 export const priorityKeys = {
     all: ['priority'] as const,
 };
+
+// ユーザー管理
+export const userManagementKeys = {
+    all: ['user-management'] as const,
+};

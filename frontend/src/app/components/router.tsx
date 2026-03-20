@@ -3,6 +3,8 @@ import { paths } from '@/config/paths';
 import { LoginContainer } from '@/features/login/components/login-container';
 import { SignupContainer } from '@/features/signup/components/signup-container';
 import { TodoCreateContainer } from '@/features/todo-create/components/create-todo-container';
+import { TodoManagementDetailPage } from '@/features/todo-management/components/todo-management-detail-page';
+import { TodoManagementPage } from '@/features/todo-management/components/todo-management-page';
 import { TodoDetailPage } from '@/features/todo/components/todo-detail-page';
 import { TodoLayout } from '@/features/todo/components/todo-layout';
 import { TodoPage } from '@/features/todo/components/todo-page';
@@ -12,11 +14,13 @@ import { Navigate, useRoutes } from 'react-router-dom';
 import { DashboardContainer } from './dashboard-container';
 import { GuestRoute } from './guest-route';
 import { ProtectedRoute } from './protected-route';
+import { RoleRoute } from './role-route';
 
 const routerList = [
     {
         path: paths.home.path,
         element: (
+            // 未ログインはログイン画面へリダイレクト
             <Navigate to={paths.login.path} replace />
         )
     },
@@ -80,6 +84,35 @@ const routerList = [
                         element: (
                             <TodoCreateContainer />
                         )
+                    },
+                    {
+                        // 権限ガード：task_management 権限なしは404
+                        element: (
+                            <RoleRoute
+                                permission="task_management"
+                            />
+                        ),
+                        children: [
+                            {
+                                element: <TodoLayout />,
+                                children: [
+                                    {
+                                        // タスク管理一覧
+                                        path: paths.todoManagement.path,
+                                        element: (
+                                            <TodoManagementPage />
+                                        )
+                                    },
+                                    {
+                                        // タスク管理詳細
+                                        path: paths.todoManagementDetail.path,
+                                        element: (
+                                            <TodoManagementDetailPage />
+                                        )
+                                    }
+                                ]
+                            }
+                        ]
                     },
                 ]
             },
