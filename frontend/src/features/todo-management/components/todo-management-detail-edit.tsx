@@ -191,7 +191,7 @@ export function TodoManagementDetailEdit(props: PropsType) {
             >
                 <div className="space-y-4">
                     <p className="text-gray-700">
-                        他ユーザーのタスクです。<br />
+                        {`他ユーザーの${task.categoryName}です。`}<br />
                         保存してもよろしいですか？
                     </p>
                     <div className="flex justify-end gap-2">

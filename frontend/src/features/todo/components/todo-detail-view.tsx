@@ -76,8 +76,7 @@ export function TodoDetailView(props: PropsType) {
                 </div>
                 <div className="w-full p-3 sm:p-[20px] border border-[#c0c0c0] rounded mt-3 sm:mt-[20px] bg-white">
                     <div className="mb-3">
-                        {task.categoryId === CATEGORY_ID.TASK && <p className="text-base text-gray-500">タスク内容</p>}
-                        {task.categoryId === CATEGORY_ID.MEMO && <p className="text-base text-gray-500">メモ内容</p>}
+                        <p className="text-base text-gray-500">{task.categoryName}内容</p>
                     </div>
                     <p className="w-full min-h-[450px] text-lg whitespace-pre-wrap leading-relaxed text-gray-800 break-words">
                         {task.content}
@@ -135,8 +134,8 @@ export function TodoDetailView(props: PropsType) {
             <div className="mt-8 sm:mt-[60px] pt-4 sm:pt-[30px] border-t border-gray-200">
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 p-3 sm:p-5 border border-red-200 rounded bg-red-50">
                     <div>
-                        <p className="text-sm font-medium text-red-700">タスクの削除</p>
-                        <p className="text-sm text-gray-500 mt-1">このタスクを削除します。削除後は元に戻せません。</p>
+                        <p className="text-sm font-medium text-red-700">{`${task.categoryName}の削除`}</p>
+                        <p className="text-sm text-gray-500 mt-1">{`この${task.categoryName}を削除します。削除後は元に戻せません。`}</p>
                     </div>
                     <Button
                         colorType={"red"}
@@ -144,7 +143,7 @@ export function TodoDetailView(props: PropsType) {
                         className="shrink-0"
                         onClick={onClickDelete}
                     >
-                        タスクを削除する
+                        {`${task.categoryName}を削除する`}
                     </Button>
                 </div>
             </div>
@@ -153,12 +152,12 @@ export function TodoDetailView(props: PropsType) {
             <Dialog
                 isOpen={isDeleteDialogOpen}
                 onClose={onCancelDelete}
-                title="タスクの削除"
+                title={`${task.categoryName}の削除`}
                 size="small"
             >
                 <div className="space-y-4">
                     <p className="text-gray-700">
-                        このタスクを削除しますか？<br />
+                        {`この${task.categoryName}を削除しますか？`}<br />
                         この操作は取り消せません。
                     </p>
                     <div className="flex justify-end gap-2">
