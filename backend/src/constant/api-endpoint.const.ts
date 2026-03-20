@@ -13,6 +13,8 @@ export const API_ENDPOINT = {
   FRONT_USER_PASSWORD: "/api/v1/frontuser-password/:userId",
   TODO: "/api/v1/todo",
   TODO_ID: "/api/v1/todo/:id",
+  TODO_MANAGEMENT: "/api/v1/todo-management",
+  TODO_MANAGEMENT_ID: "/api/v1/todo-management/:id",
   CATEGORY: "/api/v1/category",
   STATUS: "/api/v1/status",
   PRIORITY: "/api/v1/priority",
