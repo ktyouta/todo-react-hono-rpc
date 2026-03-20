@@ -21,15 +21,18 @@ const routerList = [
         )
     },
     {
+        // 未認証ガード：ログイン済みはtodo画面へリダイレクト
         element: <GuestRoute />,
         children: [
             {
+                // ログイン
                 path: paths.login.path,
                 element: (
                     <LoginContainer />
                 )
             },
             {
+                // サインアップ
                 path: paths.signup.path,
                 element: (
                     <SignupContainer />
@@ -39,26 +42,31 @@ const routerList = [
     },
     {
         element: (
+            // 認証ガード：未ログインはログイン画面へリダイレクト
             <ProtectedRoute />
         ),
         children: [
             {
                 element: (
+                    // サイドバー・ナビゲーション等の共通レイアウト
                     <DashboardContainer />
                 ),
                 children: [
                     {
                         element: (
+                            // todo画面
                             <TodoLayout />
                         ),
                         children: [
                             {
+                                // todo一覧
                                 path: paths.todo.path,
                                 element: (
                                     <TodoPage />
                                 )
                             },
                             {
+                                // todo詳細
                                 path: paths.todoDetail.path,
                                 element: (
                                     <TodoDetailPage />
@@ -67,20 +75,23 @@ const routerList = [
                         ]
                     },
                     {
+                        // todo作成
                         path: paths.todoCreate.path,
                         element: (
                             <TodoCreateContainer />
                         )
-                    }
+                    },
                 ]
             },
             {
+                // ユーザー情報更新
                 path: paths.updateUser.path,
                 element: (
                     <UpdateUserContainer />
                 )
             },
             {
+                // パスワード更新
                 path: paths.updatePassword.path,
                 element: (
                     <UpdatePasswordContainer />
