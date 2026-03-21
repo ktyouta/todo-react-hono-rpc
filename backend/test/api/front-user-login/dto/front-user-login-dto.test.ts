@@ -1,22 +1,19 @@
 import { describe, it, expect } from "vitest";
 import { FrontUserLoginResponseDto } from "../../../../src/api/front-user-login/dto";
-import type { FrontUserMaster } from "../../../../src/infrastructure/db";
+import type { UserWithRole } from "../../../../src/api/front-user-login/repository/front-user-login.repository.interface";
 
 describe("FrontUserLoginResponseDto", () => {
   it("ユーザー情報からDTOを生成できること", () => {
-    const userInfo: FrontUserMaster = {
+    const userInfo: UserWithRole = {
       id: 1,
       name: "testuser",
       birthday: "19900101",
       roleId: 1,
-      lastLoginDate: "2024-01-01T00:00:00.000Z",
-      deleteFlg: false,
-      createdAt: "2024-01-01T00:00:00.000Z",
-      updatedAt: "2024-01-01T00:00:00.000Z",
+      role: "user",
     };
     const accessToken = "test-access-token";
 
-    const dto = new FrontUserLoginResponseDto(userInfo, accessToken);
+    const dto = new FrontUserLoginResponseDto(userInfo, ["todo"], accessToken);
 
     expect(dto.value.accessToken).toBe("test-access-token");
     expect(dto.value.user.id).toBe(1);
@@ -25,19 +22,16 @@ describe("FrontUserLoginResponseDto", () => {
   });
 
   it("lastLoginDateがnullでもDTOを生成できること", () => {
-    const userInfo: FrontUserMaster = {
+    const userInfo: UserWithRole = {
       id: 2,
       name: "newuser",
       birthday: "19950515",
       roleId: 1,
-      lastLoginDate: null,
-      deleteFlg: false,
-      createdAt: "2024-01-01T00:00:00.000Z",
-      updatedAt: "2024-01-01T00:00:00.000Z",
+      role: "user",
     };
     const accessToken = "another-access-token";
 
-    const dto = new FrontUserLoginResponseDto(userInfo, accessToken);
+    const dto = new FrontUserLoginResponseDto(userInfo, ["todo"], accessToken);
 
     expect(dto.value.accessToken).toBe("another-access-token");
     expect(dto.value.user.id).toBe(2);

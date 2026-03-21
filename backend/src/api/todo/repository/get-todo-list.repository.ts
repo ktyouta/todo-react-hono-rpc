@@ -34,6 +34,7 @@ export class GetTodoListRepository implements IGetTodoListRepository {
         priorityName: sql<string>`coalesce(${priorityMaster.name}, 'なし')`,
         dueDate: taskTransaction.dueDate,
         userId: taskTransaction.userId,
+        isFavorite: taskTransaction.isFavorite,
         deleteFlg: taskTransaction.deleteFlg,
         createdAt: taskTransaction.createdAt,
         updatedAt: taskTransaction.updatedAt,

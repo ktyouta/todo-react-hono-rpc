@@ -155,6 +155,7 @@ export const taskTransaction = sqliteTable("task_transaction", {
   priorityId: integer("priority_id"),
   dueDate: text("due_date"),
   userId: integer("user_id"),
+  isFavorite: integer("is_favorite", { mode: "boolean" }).notNull().default(false),
   deleteFlg: integer("delete_flg", { mode: "boolean" }).notNull().default(false),
   createdAt: text("created_at").notNull(),
   updatedAt: text("updated_at").notNull(),

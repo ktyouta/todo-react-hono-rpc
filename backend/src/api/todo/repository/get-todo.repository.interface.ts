@@ -13,6 +13,7 @@ export type TodoItem = {
   priorityName: string;
   dueDate: string | null;
   userId: number | null;
+  isFavorite: boolean;
   deleteFlg: boolean;
   createdAt: string;
   updatedAt: string;

@@ -1,0 +1,1 @@
+ALTER TABLE `task_transaction` ADD `is_favorite` integer DEFAULT false NOT NULL;
