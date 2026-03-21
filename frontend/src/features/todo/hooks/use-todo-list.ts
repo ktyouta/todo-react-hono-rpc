@@ -6,7 +6,9 @@ import { useAppNavigation } from "@/hooks/use-app-navigation";
 import { useDelayedFlag } from "@/hooks/use-delayed-flag";
 import { useTransitionSearchParams } from "@/hooks/use-transition-search-params";
 import { useEffect, useRef, useState } from "react";
+import { toast } from "react-toastify";
 import { TaskListReturnType, useGetTodoList } from "../api/get-todo-list";
+import { useUpdateTodoFavoriteMutation } from "../api/update-todo-favorite";
 import { TODO_LIST_QUERY_KEY } from "../constants/todo-list-query-params";
 import { initialTodoSearchFilter, TodoSearchFilter } from "../types/todo-search-filter";
 
@@ -42,6 +44,12 @@ export function useTodoList() {
     const { data: priority } = getPriority();
     // ルーティング用
     const { appNavigate } = useAppNavigation();
+    // お気に入りトグル用
+    const updateFavoriteMutation = useUpdateTodoFavoriteMutation({
+        onError: () => {
+            toast.error('お気に入りの更新に失敗しました。時間をおいて再度お試しください。');
+        },
+    });
     // オーバーレイ表示フラグ
     const isShowOverlay = useDelayedFlag(isPending, 250);
     // ページ切り替え判定フラグ
@@ -57,6 +65,16 @@ export function useTodoList() {
             wasPageChanging.current = false;
         }
     }, [isPending]);
+
+    /**
+     * お気に入りトグルイベント
+     */
+    function onFavoriteToggle(entry: TaskListReturnType['list'][number]) {
+        updateFavoriteMutation.mutate({
+            id: String(entry.id),
+            isFavorite: !entry.isFavorite,
+        });
+    }
 
     /**
      * テーブルの行クリックイベント
@@ -138,6 +156,7 @@ export function useTodoList() {
     return {
         taskData: data.data,
         onRowClick,
+        onFavoriteToggle,
         categoryList: category.data,
         statusList: status.data,
         priorityList: priority.data,

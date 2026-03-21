@@ -10,6 +10,7 @@ import { toast } from "react-toastify";
 import { useDeleteTodoMutation } from "../api/delete-todo";
 import { useGetTodo } from "../api/get-todo";
 import { useUpdateTodoMutation } from "../api/update-todo";
+import { useUpdateTodoFavoriteMutation } from "../api/update-todo-favorite";
 import { useTaskId } from "./use-task-id";
 import { useTodoUpdateForm } from "./use-todo-update.form";
 
@@ -50,6 +51,12 @@ export function useTodoDetail() {
             toast.error(`タスクの更新に失敗しました。時間をおいて再度お試しください。`);
         },
     });
+    // お気に入りトグル用ミューテーション
+    const updateFavoriteMutation = useUpdateTodoFavoriteMutation({
+        onError: () => {
+            toast.error('お気に入りの更新に失敗しました。時間をおいて再度お試しください。');
+        },
+    });
     // タスク削除用ミューテーション
     const deleteTodoMutation = useDeleteTodoMutation({
         id: taskId,
@@ -61,6 +68,16 @@ export function useTodoDetail() {
             toast.error(`タスクの削除に失敗しました。時間をおいて再度お試しください。`);
         }
     });
+
+    /**
+     * お気に入りトグル
+     */
+    function onFavoriteToggle() {
+        updateFavoriteMutation.mutate({
+            id: taskId,
+            isFavorite: !task.isFavorite,
+        });
+    }
 
     /**
      * 一覧に戻る
@@ -128,6 +145,7 @@ export function useTodoDetail() {
 
     return {
         task,
+        onFavoriteToggle,
         statusList: status.data,
         categoryList: category.data,
         priorityList: priority.data,

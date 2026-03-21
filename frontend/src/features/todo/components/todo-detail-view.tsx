@@ -3,7 +3,7 @@ import { CATEGORY_ID } from "@/constants/master";
 import { CategoryReturnType } from "@/features/api/get-category";
 import { PriorityReturnType } from "@/features/api/get-priority";
 import { StatusReturnType } from "@/features/api/get-status";
-import { HiArrowLeft } from "react-icons/hi2";
+import { HiArrowLeft, HiOutlineStar, HiStar } from "react-icons/hi2";
 import { TaskReturnType } from "../api/get-todo";
 import { getDueDateStatus } from "../utils/due-date-status";
 
@@ -18,6 +18,7 @@ type PropsType = {
     onClickDelete: () => void;
     onCancelDelete: () => void;
     onConfirmDelete: () => void;
+    onFavoriteToggle: () => void;
     isLoading: boolean;
 }
 
@@ -31,6 +32,7 @@ export function TodoDetailView(props: PropsType) {
         onClickDelete,
         onCancelDelete,
         onConfirmDelete,
+        onFavoriteToggle,
         isLoading,
     } = props;
 
@@ -70,9 +72,21 @@ export function TodoDetailView(props: PropsType) {
             <div className="w-full pt-7 sm:pt-[50px] text-[15px] flex-1">
                 <div className="w-full">
                     <p className="text-base text-gray-400 mb-1 pl-0.5">タイトル</p>
-                    <p className="w-full px-0.5 text-2xl font-semibold break-words">
-                        {task.title}
-                    </p>
+                    <div className="flex items-start gap-2 pr-1">
+                        <p className="flex-1 px-0.5 text-2xl font-semibold break-words">
+                            {task.title}
+                        </p>
+                        <button
+                            type="button"
+                            onClick={onFavoriteToggle}
+                            className="shrink-0 mt-1"
+                        >
+                            {task.isFavorite
+                                ? <HiStar className="size-7 text-amber-400" />
+                                : <HiOutlineStar className="size-7 text-gray-400" />
+                            }
+                        </button>
+                    </div>
                 </div>
                 <div className="w-full p-3 sm:p-[20px] border border-[#c0c0c0] rounded mt-3 sm:mt-[20px] bg-white">
                     <div className="mb-3">

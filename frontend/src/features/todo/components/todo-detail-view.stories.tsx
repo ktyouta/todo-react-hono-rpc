@@ -23,6 +23,7 @@ const dummyTaskBase = {
     title: 'サンプルタスク',
     content: 'これはサンプルのタスク内容です。\n複数行にわたる内容も表示できます。',
     userId: 1,
+    isFavorite: false,
     deleteFlg: false,
     createdAt: '2026-01-01T10:00:00.000Z',
     updatedAt: '2026-03-01T12:00:00.000Z',
@@ -49,6 +50,7 @@ const commonProps = {
     onClickDelete: () => {},
     onCancelDelete: () => {},
     onConfirmDelete: () => {},
+    onFavoriteToggle: () => {},
     isLoading: false,
 };
 
