@@ -57,6 +57,13 @@
       "when": 1773921362317,
       "tag": "0007_wet_alice",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "6",
+      "when": 1774059756029,
+      "tag": "0008_breezy_pride",
+      "breakpoints": true
     }
   ]
 }

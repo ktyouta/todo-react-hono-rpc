@@ -7,7 +7,7 @@ export const sample = sqliteTable("sample", {
   id: integer("id").primaryKey({ autoIncrement: true }),
   name: text("name").notNull(),
   description: text("description"),
-  deleteFlg: text("delete_flg").notNull().default("0"),
+  deleteFlg: integer("delete_flg", { mode: "boolean" }).notNull().default(false),
   createdAt: text("created_at").notNull(),
   updatedAt: text("updated_at").notNull(),
 });
@@ -64,7 +64,7 @@ export const frontUserMaster = sqliteTable("front_user_master", {
   birthday: text("birthday").notNull(),
   roleId: integer("role_id").notNull().references(() => roleMaster.id),
   lastLoginDate: text("last_login_date"),
-  deleteFlg: text("delete_flg").notNull().default("0"),
+  deleteFlg: integer("delete_flg", { mode: "boolean" }).notNull().default(false),
   createdAt: text("created_at").notNull(),
   updatedAt: text("updated_at").notNull(),
 });
@@ -80,7 +80,7 @@ export const frontUserLoginMaster = sqliteTable("front_user_login_master", {
   name: text("name").notNull().unique(),
   password: text("password").notNull(),
   salt: text("salt").notNull(),
-  deleteFlg: text("delete_flg").notNull().default("0"),
+  deleteFlg: integer("delete_flg", { mode: "boolean" }).notNull().default(false),
   createdAt: text("created_at").notNull(),
   updatedAt: text("updated_at").notNull(),
 });
@@ -155,7 +155,7 @@ export const taskTransaction = sqliteTable("task_transaction", {
   priorityId: integer("priority_id"),
   dueDate: text("due_date"),
   userId: integer("user_id"),
-  deleteFlg: text("delete_flg").notNull().default("0"),
+  deleteFlg: integer("delete_flg", { mode: "boolean" }).notNull().default(false),
   createdAt: text("created_at").notNull(),
   updatedAt: text("updated_at").notNull(),
 });

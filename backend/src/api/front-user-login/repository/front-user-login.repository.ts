@@ -1,5 +1,4 @@
 import { and, eq } from "drizzle-orm";
-import { FLG } from "../../../constant";
 import type { FrontUserId, FrontUserName } from "../../../domain";
 import type {
   Database,
@@ -27,7 +26,7 @@ export class FrontUserLoginRepository implements IFrontUserLoginRepository {
       .where(
         and(
           eq(frontUserLoginMaster.name, userName.value),
-          eq(frontUserLoginMaster.deleteFlg, FLG.OFF)
+          eq(frontUserLoginMaster.deleteFlg, false)
         )
       );
     return result[0];
@@ -51,7 +50,7 @@ export class FrontUserLoginRepository implements IFrontUserLoginRepository {
       .where(
         and(
           eq(frontUserMaster.id, userId.value),
-          eq(frontUserMaster.deleteFlg, FLG.OFF)
+          eq(frontUserMaster.deleteFlg, false)
         )
       );
     return result[0];

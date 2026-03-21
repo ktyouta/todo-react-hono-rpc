@@ -1,5 +1,4 @@
 import { and, eq } from "drizzle-orm";
-import { FLG } from "../../../constant";
 import type { FrontUserName } from "../../../domain";
 import type { DbClient, FrontUserMaster } from "../../../infrastructure/db";
 import { frontUserMaster, permissionMaster, roleMaster, rolePermission } from "../../../infrastructure/db";
@@ -22,7 +21,7 @@ export class CreateFrontUserRepository implements ICreateFrontUserRepository {
       .where(
         and(
           eq(frontUserMaster.name, userName.value),
-          eq(frontUserMaster.deleteFlg, FLG.OFF)
+          eq(frontUserMaster.deleteFlg, false)
         )
       );
   }

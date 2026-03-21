@@ -1,5 +1,4 @@
 import { and, eq } from "drizzle-orm";
-import { FLG } from "../../constant";
 import type { FrontUserId } from "../../domain";
 import type { Database, FrontUserMaster } from "../../infrastructure/db";
 import { frontUserMaster } from "../../infrastructure/db";
@@ -22,7 +21,7 @@ export class AuthRepository implements IAuthRepository {
       .where(
         and(
           eq(frontUserMaster.id, userId.value),
-          eq(frontUserMaster.deleteFlg, FLG.OFF)
+          eq(frontUserMaster.deleteFlg, false)
         )
       );
     return result[0];

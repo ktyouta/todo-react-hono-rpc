@@ -1,7 +1,7 @@
 import { zValidator } from "@hono/zod-validator";
 import { and, eq } from "drizzle-orm";
 import { Hono } from "hono";
-import { API_ENDPOINT, FLG, HTTP_STATUS } from "../../../constant";
+import { API_ENDPOINT, HTTP_STATUS } from "../../../constant";
 import { TaskCategory, TaskContent, TaskId, TaskStatus, TaskTitle } from "../../../domain";
 import { TaskDueDate } from "../../../domain/task-due-date";
 import { TaskPriority } from "../../../domain/task-priority";
@@ -68,7 +68,7 @@ const updateTodo = new Hono<AppEnv>().patch(
                     and(
                         eq(taskTransaction.id, taskId.value),
                         eq(taskTransaction.userId, userId.value),
-                        eq(taskTransaction.deleteFlg, FLG.OFF)
+                        eq(taskTransaction.deleteFlg, false)
                     )
                 ),
         ]);

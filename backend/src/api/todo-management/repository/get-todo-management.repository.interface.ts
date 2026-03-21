@@ -16,7 +16,7 @@ export type TodoManagementItem = {
     dueDate: string | null;
     userId: number | null;
     userName: string;
-    deleteFlg: string;
+    deleteFlg: boolean;
     createdAt: string;
     updatedAt: string;
 };

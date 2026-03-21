@@ -1,5 +1,4 @@
 import { and, eq, ne } from "drizzle-orm";
-import { FLG } from "../../../constant";
 import type { FrontUserId, FrontUserName } from "../../../domain";
 import type { DbClient } from "../../../infrastructure/db";
 import { frontUserMaster } from "../../../infrastructure/db";
@@ -27,7 +26,7 @@ export class UpdateFrontUserRepository implements IUpdateFrontUserRepository {
         and(
           eq(frontUserMaster.name, userName.value),
           ne(frontUserMaster.id, userId.value),
-          eq(frontUserMaster.deleteFlg, FLG.OFF)
+          eq(frontUserMaster.deleteFlg, false)
         )
       );
     return result.length > 0;

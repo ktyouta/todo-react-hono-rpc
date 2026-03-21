@@ -44,6 +44,6 @@ INSERT OR IGNORE INTO priority_master (id, name, sort_order, created_at, updated
 
 -- サンプルデータ
 INSERT OR IGNORE INTO sample (name, description, delete_flg, created_at, updated_at) VALUES
-  ('サンプル1', 'これはサンプルデータ1です。', '0', datetime('now'), datetime('now')),
-  ('サンプル2', 'これはサンプルデータ2です。', '0', datetime('now'), datetime('now')),
-  ('サンプル3', 'これはサンプルデータ3です。', '0', datetime('now'), datetime('now'));
+  ('サンプル1', 'これはサンプルデータ1です。', 0, datetime('now'), datetime('now')),
+  ('サンプル2', 'これはサンプルデータ2です。', 0, datetime('now'), datetime('now')),
+  ('サンプル3', 'これはサンプルデータ3です。', 0, datetime('now'), datetime('now'));

@@ -33,7 +33,7 @@ const dummyTask = {
     priorityName: '中',
     dueDate: '2026-12-31',
     userId: 1,
-    deleteFlg: '0',
+    deleteFlg: false,
     createdAt: '2026-01-01T10:00:00.000Z',
     updatedAt: '2026-03-01T12:00:00.000Z',
 };

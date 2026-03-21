@@ -1,5 +1,4 @@
 import { eq } from "drizzle-orm";
-import { FLG } from "../../../constant";
 import type { Database } from "../../../infrastructure/db";
 import { frontUserMaster, roleMaster } from "../../../infrastructure/db";
 import type { IGetUserManagementListRepository, UserManagementItem } from "./get-user-management-list.repository.interface";
@@ -25,7 +24,7 @@ export class GetUserManagementListRepository implements IGetUserManagementListRe
             })
             .from(frontUserMaster)
             .innerJoin(roleMaster, eq(frontUserMaster.roleId, roleMaster.id))
-            .where(eq(frontUserMaster.deleteFlg, FLG.OFF))
+            .where(eq(frontUserMaster.deleteFlg, false))
             .orderBy(frontUserMaster.id);
     }
 }

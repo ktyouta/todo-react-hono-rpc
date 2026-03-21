@@ -8,8 +8,9 @@ describe("FrontUserLoginResponseDto", () => {
       id: 1,
       name: "testuser",
       birthday: "19900101",
+      roleId: 1,
       lastLoginDate: "2024-01-01T00:00:00.000Z",
-      deleteFlg: "0",
+      deleteFlg: false,
       createdAt: "2024-01-01T00:00:00.000Z",
       updatedAt: "2024-01-01T00:00:00.000Z",
     };
@@ -28,8 +29,9 @@ describe("FrontUserLoginResponseDto", () => {
       id: 2,
       name: "newuser",
       birthday: "19950515",
+      roleId: 1,
       lastLoginDate: null,
-      deleteFlg: "0",
+      deleteFlg: false,
       createdAt: "2024-01-01T00:00:00.000Z",
       updatedAt: "2024-01-01T00:00:00.000Z",
     };

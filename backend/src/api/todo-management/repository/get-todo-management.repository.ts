@@ -1,5 +1,4 @@
 import { and, eq, sql } from "drizzle-orm";
-import { FLG } from "../../../constant";
 import { TaskId } from "../../../domain/task-id";
 import type { Database } from "../../../infrastructure/db";
 import { categoryMaster, frontUserMaster, priorityMaster, statusMaster, taskTransaction } from "../../../infrastructure/db";
@@ -40,7 +39,7 @@ export class GetTodoManagementRepository implements IGetTodoManagementRepository
             .leftJoin(frontUserMaster, eq(taskTransaction.userId, frontUserMaster.id))
             .where(
                 and(
-                    eq(taskTransaction.deleteFlg, FLG.OFF),
+                    eq(taskTransaction.deleteFlg, false),
                     eq(taskTransaction.id, taskId.value),
                 )
             )

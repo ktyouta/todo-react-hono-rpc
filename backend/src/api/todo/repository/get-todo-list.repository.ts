@@ -1,5 +1,4 @@
 import { and, eq, gte, like, lte, sql } from "drizzle-orm";
-import { FLG } from "../../../constant";
 import { FrontUserId } from "../../../domain";
 import type { Database } from "../../../infrastructure/db";
 import { categoryMaster, priorityMaster, statusMaster, taskTransaction } from "../../../infrastructure/db";
@@ -62,7 +61,7 @@ export class GetTodoListRepository implements IGetTodoListRepository {
 
   private buildConditions(userId: FrontUserId, query: GetTodoListQuerySchemaType) {
     return [
-      eq(taskTransaction.deleteFlg, FLG.OFF),
+      eq(taskTransaction.deleteFlg, false),
       eq(taskTransaction.userId, userId.value),
       ...(query.title ? [like(taskTransaction.title, `%${query.title}%`)] : []),
       ...(query.categoryId ? [eq(taskTransaction.categoryId, query.categoryId)] : []),

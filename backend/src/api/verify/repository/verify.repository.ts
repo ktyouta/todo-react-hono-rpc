@@ -1,5 +1,4 @@
 import { and, eq } from "drizzle-orm";
-import { FLG } from "../../../constant";
 import type { FrontUserId } from "../../../domain";
 import type { Database } from "../../../infrastructure/db";
 import { frontUserMaster, permissionMaster, roleMaster, rolePermission } from "../../../infrastructure/db";
@@ -29,7 +28,7 @@ export class VerifyRepository implements IVerifyRepository {
             .where(
                 and(
                     eq(frontUserMaster.id, userId.value),
-                    eq(frontUserMaster.deleteFlg, FLG.OFF)
+                    eq(frontUserMaster.deleteFlg, false)
                 )
             );
         return result[0];

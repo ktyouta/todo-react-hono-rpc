@@ -3,7 +3,7 @@ import { zValidator } from "@hono/zod-validator";
 import { and, eq } from "drizzle-orm";
 import { Hono } from "hono";
 import { setCookie } from "hono/cookie";
-import { API_ENDPOINT, FLG, HTTP_STATUS } from "../../../constant";
+import { API_ENDPOINT, HTTP_STATUS } from "../../../constant";
 import { FrontUserId, RefreshToken } from "../../../domain";
 import { frontUserLoginMaster, frontUserMaster } from "../../../infrastructure/db";
 import { authMiddleware, userOperationGuardMiddleware } from "../../../middleware";
@@ -33,19 +33,19 @@ const deleteFrontUser = new Hono<AppEnv>().delete(
         const now = new Date().toISOString();
         const [, deleteResult] = await db.batch([
             db.update(frontUserLoginMaster)
-                .set({ deleteFlg: FLG.ON, updatedAt: now })
+                .set({ deleteFlg: true, updatedAt: now })
                 .where(
                     and(
                         eq(frontUserLoginMaster.id, frontUserId.value),
-                        eq(frontUserLoginMaster.deleteFlg, FLG.OFF)
+                        eq(frontUserLoginMaster.deleteFlg, false)
                     )
                 ),
             db.update(frontUserMaster)
-                .set({ deleteFlg: FLG.ON, updatedAt: now })
+                .set({ deleteFlg: true, updatedAt: now })
                 .where(
                     and(
                         eq(frontUserMaster.id, frontUserId.value),
-                        eq(frontUserMaster.deleteFlg, FLG.OFF)
+                        eq(frontUserMaster.deleteFlg, false)
                     )
                 )
                 .returning(),

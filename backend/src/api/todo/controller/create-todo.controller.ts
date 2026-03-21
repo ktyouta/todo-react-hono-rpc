@@ -1,6 +1,6 @@
 import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
-import { API_ENDPOINT, FLG, HTTP_STATUS } from "../../../constant";
+import { API_ENDPOINT, HTTP_STATUS } from "../../../constant";
 import { TaskCategory, TaskContent, TaskStatus, TaskTitle } from "../../../domain";
 import { TaskDueDate } from "../../../domain/task-due-date";
 import { TaskPriority } from "../../../domain/task-priority";
@@ -50,7 +50,7 @@ const createTodo = new Hono<AppEnv>().post(
                 priorityId: taskEntity.priority,
                 dueDate: taskEntity.dueDate,
                 userId: userId,
-                deleteFlg: FLG.OFF,
+                deleteFlg: false,
                 createdAt: now,
                 updatedAt: now,
             }),

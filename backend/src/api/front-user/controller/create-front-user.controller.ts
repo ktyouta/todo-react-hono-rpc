@@ -2,7 +2,7 @@ import { zValidator } from "@hono/zod-validator";
 import { eq } from "drizzle-orm";
 import { Hono } from "hono";
 import { setCookie } from "hono/cookie";
-import { API_ENDPOINT, FLG, HTTP_STATUS } from "../../../constant";
+import { API_ENDPOINT, HTTP_STATUS } from "../../../constant";
 import {
     AccessToken,
     FrontUserBirthday,
@@ -96,7 +96,7 @@ const createFrontUser = new Hono<AppEnv>().post(
                 name: loginUserEntity.frontUserName,
                 password: loginUserEntity.frontUserPassword,
                 salt: loginUserEntity.salt,
-                deleteFlg: FLG.OFF,
+                deleteFlg: false,
                 createdAt: now,
                 updatedAt: now,
             }),
@@ -105,7 +105,7 @@ const createFrontUser = new Hono<AppEnv>().post(
                 name: userEntity.frontUserName,
                 birthday: userEntity.frontUserBirthday,
                 roleId: userEntity.roleId,
-                deleteFlg: FLG.OFF,
+                deleteFlg: false,
                 createdAt: now,
                 updatedAt: now,
             }),

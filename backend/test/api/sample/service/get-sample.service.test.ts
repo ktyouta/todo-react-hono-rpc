@@ -19,7 +19,7 @@ describe("GetSampleService (get)", () => {
       id: 1,
       name: "テスト",
       description: "説明",
-      deleteFlg: "0",
+      deleteFlg: false,
       createdAt: "2024-01-01T00:00:00.000Z",
       updatedAt: "2024-01-01T00:00:00.000Z",
     });

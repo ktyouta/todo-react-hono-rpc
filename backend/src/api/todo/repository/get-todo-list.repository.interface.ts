@@ -13,7 +13,7 @@ export type TodoListItem = {
   priorityName: string;
   dueDate: string | null;
   userId: number | null;
-  deleteFlg: string;
+  deleteFlg: boolean;
   createdAt: string;
   updatedAt: string;
 };

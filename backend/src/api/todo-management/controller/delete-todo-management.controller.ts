@@ -1,7 +1,7 @@
 import { zValidator } from "@hono/zod-validator";
 import { and, eq } from "drizzle-orm";
 import { Hono } from "hono";
-import { API_ENDPOINT, FLG, HTTP_STATUS } from "../../../constant";
+import { API_ENDPOINT, HTTP_STATUS } from "../../../constant";
 import { TaskId } from "../../../domain/task-id";
 import { taskTransaction } from "../../../infrastructure";
 import { requirePermission } from "../../../middleware";
@@ -30,12 +30,12 @@ const deleteTodoManagement = new Hono<AppEnv>().delete(
             db.update(taskTransaction)
                 .set({
                     updatedAt: now,
-                    deleteFlg: FLG.ON,
+                    deleteFlg: true,
                 })
                 .where(
                     and(
                         eq(taskTransaction.id, taskId.value),
-                        eq(taskTransaction.deleteFlg, FLG.OFF)
+                        eq(taskTransaction.deleteFlg, false)
                     )
                 ),
         ]);

@@ -1,5 +1,4 @@
 import { and, eq, gte, like, lte, sql } from "drizzle-orm";
-import { FLG } from "../../../constant";
 import type { Database } from "../../../infrastructure/db";
 import { categoryMaster, frontUserMaster, priorityMaster, statusMaster, taskTransaction } from "../../../infrastructure/db";
 import { GetTodoManagementListQuerySchemaType } from "../schema/get-todo-management-list-query.schema";
@@ -62,7 +61,7 @@ export class GetTodoManagementListRepository implements IGetTodoManagementListRe
 
     private buildConditions(query: GetTodoManagementListQuerySchemaType) {
         return [
-            eq(taskTransaction.deleteFlg, FLG.OFF),
+            eq(taskTransaction.deleteFlg, false),
             ...(query.userId ? [eq(taskTransaction.userId, query.userId)] : []),
             ...(query.title ? [like(taskTransaction.title, `%${query.title}%`)] : []),
             ...(query.categoryId ? [eq(taskTransaction.categoryId, query.categoryId)] : []),

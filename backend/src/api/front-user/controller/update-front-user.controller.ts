@@ -3,7 +3,7 @@ import { zValidator } from "@hono/zod-validator";
 import { and, eq } from "drizzle-orm";
 import { Hono } from "hono";
 import { setCookie } from "hono/cookie";
-import { API_ENDPOINT, FLG, HTTP_STATUS } from "../../../constant";
+import { API_ENDPOINT, HTTP_STATUS } from "../../../constant";
 import {
     FrontUserBirthday,
     FrontUserId,
@@ -60,7 +60,7 @@ const updateFrontUser = new Hono<AppEnv>().patch(
                 .where(
                     and(
                         eq(frontUserLoginMaster.id, frontUserId.value),
-                        eq(frontUserLoginMaster.deleteFlg, FLG.OFF)
+                        eq(frontUserLoginMaster.deleteFlg, false)
                     )
                 ),
             db.update(frontUserMaster)
@@ -72,7 +72,7 @@ const updateFrontUser = new Hono<AppEnv>().patch(
                 .where(
                     and(
                         eq(frontUserMaster.id, frontUserId.value),
-                        eq(frontUserMaster.deleteFlg, FLG.OFF)
+                        eq(frontUserMaster.deleteFlg, false)
                     )
                 )
                 .returning(),
