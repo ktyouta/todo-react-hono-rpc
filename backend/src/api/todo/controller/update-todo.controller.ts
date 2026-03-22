@@ -7,7 +7,7 @@ import { TaskDueDate } from "../../../domain/task-due-date";
 import { TaskPriority } from "../../../domain/task-priority";
 import { taskTransaction } from "../../../infrastructure";
 import { authMiddleware } from "../../../middleware";
-import type { AppEnv } from "../../../type";
+import type { AppEnv } from "../../../types";
 import { formatZodErrors } from "../../../util";
 import { UpdateTodoResponseDto } from "../dto/update-todo-response.dto";
 import { TaskEntity } from "../entity/task.entity";

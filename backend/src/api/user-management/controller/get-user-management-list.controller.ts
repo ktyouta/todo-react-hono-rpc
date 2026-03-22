@@ -1,7 +1,7 @@
 import { Hono } from "hono";
 import { API_ENDPOINT, HTTP_STATUS } from "../../../constant";
 import { requirePermission } from "../../../middleware";
-import type { AppEnv } from "../../../type";
+import type { AppEnv } from "../../../types";
 import { GetUserManagementListRepository } from "../repository/get-user-management-list.repository";
 import { GetUserManagementListService } from "../service/get-user-management-list.service";
 
@@ -23,3 +23,4 @@ const getUserManagementList = new Hono<AppEnv>().get(
 );
 
 export { getUserManagementList };
+

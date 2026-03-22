@@ -3,7 +3,7 @@ import { FrontUserEntity } from "../entity";
 /**
  * ユーザー作成レスポンスの型
  */
-export type CreateFrontUserResponseType = {
+type CreateFrontUserResponseType = {
   accessToken: string;
   user: {
     id: number;

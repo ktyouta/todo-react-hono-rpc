@@ -2,7 +2,7 @@ import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
 import { API_ENDPOINT, HTTP_STATUS } from "../../../constant";
 import { requirePermission } from "../../../middleware";
-import type { AppEnv } from "../../../type";
+import type { AppEnv } from "../../../types";
 import { formatZodErrors } from "../../../util";
 import { GetTodoManagementListRepository } from "../repository/get-todo-management-list.repository";
 import { GetTodoManagementListQuerySchema } from "../schema/get-todo-management-list-query.schema";
@@ -33,3 +33,4 @@ const getTodoManagementList = new Hono<AppEnv>().get(
 );
 
 export { getTodoManagementList };
+

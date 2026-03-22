@@ -9,7 +9,7 @@ import {
   notFoundHandler,
   requestIdMiddleware,
 } from "./middleware";
-import type { AppEnv } from "./type";
+import type { AppEnv } from "./types";
 
 const app = new Hono<AppEnv>();
 

@@ -8,7 +8,7 @@ import { TaskId } from "../../../domain/task-id";
 import { TaskPriority } from "../../../domain/task-priority";
 import { taskTransaction } from "../../../infrastructure";
 import { requirePermission } from "../../../middleware";
-import type { AppEnv } from "../../../type";
+import type { AppEnv } from "../../../types";
 import { formatZodErrors } from "../../../util";
 import { UpdateTodoManagementResponseDto } from "../dto/update-todo-management-response.dto";
 import { TaskEntity } from "../entity/task.entity";
@@ -73,3 +73,4 @@ const updateTodoManagement = new Hono<AppEnv>().patch(
 );
 
 export { updateTodoManagement };
+

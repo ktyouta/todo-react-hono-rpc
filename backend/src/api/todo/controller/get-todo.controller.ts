@@ -3,7 +3,7 @@ import { Hono } from "hono";
 import { API_ENDPOINT, HTTP_STATUS } from "../../../constant";
 import { TaskId } from "../../../domain/task-id";
 import { authMiddleware } from "../../../middleware";
-import type { AppEnv } from "../../../type";
+import type { AppEnv } from "../../../types";
 import { formatZodErrors } from "../../../util";
 import { GetTodoRepository } from "../repository/get-todo.repository";
 import { TaskIdParamSchema } from "../schema/task-id-param.schema";

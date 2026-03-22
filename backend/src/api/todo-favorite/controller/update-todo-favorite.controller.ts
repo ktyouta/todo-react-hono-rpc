@@ -5,7 +5,7 @@ import { API_ENDPOINT, HTTP_STATUS } from "../../../constant";
 import { TaskId } from "../../../domain";
 import { taskTransaction } from "../../../infrastructure";
 import { authMiddleware } from "../../../middleware";
-import type { AppEnv } from "../../../type";
+import type { AppEnv } from "../../../types";
 import { formatZodErrors } from "../../../util";
 import { TaskIdParamSchema } from "../../todo/schema/task-id-param.schema";
 import { UpdateTodoFavoriteSchema } from "../schema/update-todo-favorite.schema";
@@ -60,3 +60,4 @@ const updateTodoFavorite = new Hono<AppEnv>().patch(
 );
 
 export { updateTodoFavorite };
+

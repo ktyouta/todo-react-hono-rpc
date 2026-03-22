@@ -3,7 +3,7 @@ import { Hono } from "hono";
 import { API_ENDPOINT, HTTP_STATUS } from "../../../constant";
 import { TaskId } from "../../../domain/task-id";
 import { requirePermission } from "../../../middleware";
-import type { AppEnv } from "../../../type";
+import type { AppEnv } from "../../../types";
 import { formatZodErrors } from "../../../util";
 import { GetTodoManagementRepository } from "../repository/get-todo-management.repository";
 import { TaskIdParamSchema } from "../schema/task-id-param.schema";
@@ -38,3 +38,4 @@ const getTodoManagement = new Hono<AppEnv>().get(
 );
 
 export { getTodoManagement };
+

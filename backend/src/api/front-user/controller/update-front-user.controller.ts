@@ -1,4 +1,3 @@
-import { UserIdParamSchema } from "../../../schema";
 import { zValidator } from "@hono/zod-validator";
 import { and, eq } from "drizzle-orm";
 import { Hono } from "hono";
@@ -12,7 +11,8 @@ import {
 } from "../../../domain";
 import { frontUserLoginMaster, frontUserMaster } from "../../../infrastructure/db";
 import { authMiddleware, userOperationGuardMiddleware } from "../../../middleware";
-import type { AppEnv } from "../../../type";
+import { UserIdParamSchema } from "../../../schema";
+import type { AppEnv } from "../../../types";
 import { formatZodErrors } from "../../../util";
 import { UpdateFrontUserResponseDto } from "../dto";
 import { UpdateFrontUserRepository } from "../repository";
@@ -100,3 +100,4 @@ const updateFrontUser = new Hono<AppEnv>().patch(
 );
 
 export { updateFrontUser };
+

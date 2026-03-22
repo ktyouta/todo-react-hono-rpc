@@ -2,21 +2,17 @@ import type { EnvBindings, EnvConfig } from "../config";
 import type { FrontUserId } from "../domain";
 import type { Database } from "../infrastructure/db";
 
-/**
- * フロントユーザー情報型
- */
-export type FrontUserInfoType = {
-  id: number;
-  name: string;
-  birthday: string;
-};
 
 /**
  * 認証済みユーザー型
  */
 export type AuthUserType = {
   userId: FrontUserId;
-  info: FrontUserInfoType;
+  info: {
+    id: number;
+    name: string;
+    birthday: string;
+  };
 };
 
 /**

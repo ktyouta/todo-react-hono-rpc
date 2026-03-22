@@ -5,7 +5,7 @@ import { API_ENDPOINT, HTTP_STATUS } from "../../../constant";
 import { TaskId } from "../../../domain/task-id";
 import { taskTransaction } from "../../../infrastructure";
 import { requirePermission } from "../../../middleware";
-import type { AppEnv } from "../../../type";
+import type { AppEnv } from "../../../types";
 import { formatZodErrors } from "../../../util";
 import { TaskIdParamSchema } from "../schema/task-id-param.schema";
 
@@ -45,3 +45,4 @@ const deleteTodoManagement = new Hono<AppEnv>().delete(
 );
 
 export { deleteTodoManagement };
+

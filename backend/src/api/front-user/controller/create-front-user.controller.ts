@@ -16,7 +16,7 @@ import {
 } from "../../../domain";
 import { frontUserLoginMaster, frontUserMaster, seqMaster } from "../../../infrastructure/db";
 import { userOperationGuardMiddleware } from "../../../middleware";
-import type { AppEnv } from "../../../type";
+import type { AppEnv } from "../../../types";
 import { formatZodErrors } from "../../../util";
 import { CreateFrontUserResponseDto } from "../dto";
 import { FrontUserEntity, FrontUserLoginEntity } from "../entity";

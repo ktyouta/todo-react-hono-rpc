@@ -1,7 +1,7 @@
 /**
  * ユーザー更新レスポンスの型
  */
-export type UpdateFrontUserResponseType = {
+type UpdateFrontUserResponseType = {
   user: {
     id: number;
     name: string;

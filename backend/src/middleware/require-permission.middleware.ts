@@ -3,7 +3,7 @@ import { PermissionRepository, PermissionService } from "../auth";
 import { HTTP_STATUS } from "../constant";
 import { AccessToken } from "../domain";
 import { Header } from "../domain/header";
-import type { AppEnv } from "../type";
+import type { AppEnv } from "../types";
 
 /**
  * パーミッションガードミドルウェア

@@ -5,16 +5,8 @@ import { updateAccessToken } from '@/stores/access-token-store';
 import { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import { useSignupMutation } from '../api/signup';
+import { formatBirthday } from '@/utils/date-util';
 import { useSignupForm } from './use-signup.form';
-
-/**
- * 生年月日をyyyyMMdd形式に変換
- */
-function formatBirthday(birthday: { year: string; month: string; day: string }): string {
-    const month = birthday.month.padStart(2, '0');
-    const day = birthday.day.padStart(2, '0');
-    return `${birthday.year}${month}${day}`;
-}
 
 export function useSignup() {
 

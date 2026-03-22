@@ -9,7 +9,7 @@ import {
 } from "../../../domain";
 import { authMiddleware, userOperationGuardMiddleware } from "../../../middleware";
 import { UserIdParamSchema } from "../../../schema";
-import type { AppEnv } from "../../../type";
+import type { AppEnv } from "../../../types";
 import { formatZodErrors } from "../../../util";
 import { FrontUserPasswordRepository } from "../repository";
 import { FrontUserPasswordSchema } from "../schema";

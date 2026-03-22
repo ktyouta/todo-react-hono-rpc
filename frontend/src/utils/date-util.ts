@@ -46,10 +46,20 @@ export function getFormatDatetime(date: Date, format: DateFormat): string {
 
 /**
  * 現在日付(yyyyMMdd)を取得する
- * @param format 
- * @returns 
+ * @param format
+ * @returns
  */
 export function getNowDateYYYYMMDD() {
 
     return getFormatDatetime(new Date(), 'yyyyMMdd');
+}
+
+
+/**
+ * 生年月日をyyyyMMdd形式に変換する
+ */
+export function formatBirthday(birthday: { year: string; month: string; day: string }): string {
+    const month = birthday.month.padStart(2, '0');
+    const day = birthday.day.padStart(2, '0');
+    return `${birthday.year}${month}${day}`;
 }

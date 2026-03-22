@@ -11,7 +11,7 @@ import {
     Pepper,
     RefreshToken,
 } from "../../../domain";
-import type { AppEnv } from "../../../type";
+import type { AppEnv } from "../../../types";
 import { formatZodErrors } from "../../../util";
 import { FrontUserLoginResponseDto } from "../dto";
 import { FrontUserLoginRepository } from "../repository";

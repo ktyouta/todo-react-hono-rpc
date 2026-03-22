@@ -1,5 +1,5 @@
 import { Hono } from "hono";
-import type { AppEnv } from "../../../type";
+import type { AppEnv } from "../../../types";
 import { createTodo } from "./create-todo.controller";
 import { deleteTodo } from "./delete-todo.controller";
 import { getTodoList } from "./get-todo-list.controller";

@@ -1,7 +1,7 @@
 import { Hono } from "hono";
 import { API_ENDPOINT, HTTP_STATUS } from "../../../constant";
 import { authMiddleware } from "../../../middleware";
-import type { AppEnv } from "../../../type";
+import type { AppEnv } from "../../../types";
 import { GetStatusListRepository } from "../repository/get-status-list.repository";
 
 /**
