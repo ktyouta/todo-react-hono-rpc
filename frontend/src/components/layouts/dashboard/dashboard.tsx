@@ -133,7 +133,7 @@ export function Dashboard(props: PropsType) {
                     </div>
                     {
                         isUserMenuOpen &&
-                        <div className='absolute w-screen h-screen top-0 z-10 left-0'
+                        <div className='fixed inset-0 z-10'
                             onClick={() => { setIsUserMenuOpen(false) }}
                         />
                     }
