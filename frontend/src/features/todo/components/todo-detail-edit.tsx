@@ -6,11 +6,11 @@ import { StatusReturnType } from "@/features/api/get-status";
 import { BaseSyntheticEvent } from "react";
 import { Control, Controller, FieldErrors, UseFormRegister } from "react-hook-form";
 import { HiArrowLeft } from "react-icons/hi2";
-import { TaskReturnType } from "../api/get-todo";
+import { TaskDataType } from "../api/get-todo";
 import { TodoDetailEditType } from "../types/todo-detail-edit-type";
 
 type PropsType = {
-    task: TaskReturnType;
+    task: TaskDataType;
     statusList: StatusReturnType;
     categoryList: CategoryReturnType;
     priorityList: PriorityReturnType;

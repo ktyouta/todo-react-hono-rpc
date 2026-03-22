@@ -4,16 +4,16 @@ import { CategoryReturnType } from "@/features/api/get-category";
 import { PriorityReturnType } from "@/features/api/get-priority";
 import { StatusReturnType } from "@/features/api/get-status";
 import { HiOutlineArchiveBoxXMark, HiOutlineStar, HiStar } from "react-icons/hi2";
-import { TaskListReturnType } from "../api/get-todo-list";
+import { TaskListDataType } from "../api/get-todo-list";
 import { TodoSearchFilter } from "../types/todo-search-filter";
 import { getDueDateStatus } from "../utils/due-date-status";
 import { TodoCard } from "./todo-card";
 import { TodoSearchBar } from "./todo-search-bar";
 
 type PropsType = {
-    taskData: TaskListReturnType;
-    onRowClick: (entry: TaskListReturnType['list'][number]) => void;
-    onFavoriteToggle: (entry: TaskListReturnType['list'][number]) => void;
+    taskData: TaskListDataType;
+    onRowClick: (entry: TaskListDataType['list'][number]) => void;
+    onFavoriteToggle: (entry: TaskListDataType['list'][number]) => void;
     categoryList: CategoryReturnType;
     statusList: StatusReturnType;
     priorityList: PriorityReturnType;
@@ -46,7 +46,7 @@ export function TodoList(props: PropsType) {
         isShowOverlay, } = props;
 
     // テーブルカラム
-    const columns: TableProps<TaskListReturnType['list'][number]>['columns'] = [
+    const columns: TableProps<TaskListDataType['list'][number]>['columns'] = [
         { title: 'ID', field: 'id', className: 'w-[6%] whitespace-nowrap' },
         { title: 'タイトル', field: 'title', className: 'max-w-0', Cell: ({ entry }) => <span className="block truncate">{entry.title}</span> },
         { title: 'カテゴリ', field: 'categoryName', className: 'w-[10%] whitespace-nowrap' },

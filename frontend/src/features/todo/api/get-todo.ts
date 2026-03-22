@@ -7,7 +7,8 @@ import { todoKeys } from "./query-key";
 const endpoint = rpc.api.v1.todo[':id'].$get;
 
 // タスク詳細
-export type TaskReturnType = InferResponseType<typeof endpoint, 200>['data'];
+export type TaskResponseType = InferResponseType<typeof endpoint, 200>;
+export type TaskDataType = InferResponseType<typeof endpoint, 200>['data'];
 
 type PropsType = {
     id: string;

@@ -1,9 +1,9 @@
 import { HiOutlineStar, HiStar } from "react-icons/hi2";
-import { TaskListReturnType } from "../api/get-todo-list";
+import { TaskListDataType } from "../api/get-todo-list";
 import { getDueDateStatus } from "../utils/due-date-status";
 
 type PropsType = {
-    entry: TaskListReturnType['list'][number];
+    entry: TaskListDataType['list'][number];
     onClick: () => void;
     onFavoriteToggle: () => void;
 }

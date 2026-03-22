@@ -5,9 +5,11 @@ import { getStatus } from "@/features/api/get-status";
 import { useAppNavigation } from "@/hooks/use-app-navigation";
 import { useDelayedFlag } from "@/hooks/use-delayed-flag";
 import { useTransitionSearchParams } from "@/hooks/use-transition-search-params";
+import { useQueryClient } from "@tanstack/react-query";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
-import { TaskListReturnType, useGetTodoList } from "../api/get-todo-list";
+import { TaskListDataType, TaskListResponseType, useGetTodoList } from "../api/get-todo-list";
+import { todoKeys } from "../api/query-key";
 import { useUpdateTodoFavoriteMutation } from "../api/update-todo-favorite";
 import { TODO_LIST_QUERY_KEY } from "../constants/todo-list-query-params";
 import { initialTodoSearchFilter, TodoSearchFilter } from "../types/todo-search-filter";
@@ -45,9 +47,43 @@ export function useTodoList() {
     const { data: priority } = getPriority();
     // ルーティング用
     const { appNavigate } = useAppNavigation();
+    // QueryClientインスタンス
+    const queryClient = useQueryClient();
     // お気に入りトグル用
     const updateFavoriteMutation = useUpdateTodoFavoriteMutation({
-        onError: () => {
+        // APIコール前の楽観的更新
+        onMutate: async ({ id, isFavorite }) => {
+
+            await queryClient.cancelQueries({ queryKey: todoKeys.lists() });
+
+            const previousData = queryClient.getQueriesData<TaskListResponseType>({
+                queryKey: todoKeys.lists(),
+            });
+
+            queryClient.setQueriesData<TaskListResponseType>(
+                { queryKey: todoKeys.lists() },
+                (prev) => {
+                    if (!prev) {
+                        return prev;
+                    }
+                    return {
+                        ...prev,
+                        data: {
+                            ...prev.data,
+                            list: prev.data.list.map((task) => {
+                                return String(task.id) === id ? { ...task, isFavorite } : task
+                            }),
+                        },
+                    };
+                }
+            );
+            return { previousData };
+        },
+        onError: (context) => {
+            // 失敗時はキャッシュから復元
+            context?.previousData.forEach(([queryKey, data]) => {
+                queryClient.setQueryData(queryKey, data);
+            });
             toast.error('お気に入りの更新に失敗しました。時間をおいて再度お試しください。');
         },
     });
@@ -70,7 +106,7 @@ export function useTodoList() {
     /**
      * お気に入りトグルイベント
      */
-    function onFavoriteToggle(entry: TaskListReturnType['list'][number]) {
+    function onFavoriteToggle(entry: TaskListDataType['list'][number]) {
         updateFavoriteMutation.mutate({
             id: String(entry.id),
             isFavorite: !entry.isFavorite,
@@ -81,7 +117,7 @@ export function useTodoList() {
      * テーブルの行クリックイベント
      * @param entry
      */
-    function onRowClick(entry: TaskListReturnType['list'][number]) {
+    function onRowClick(entry: TaskListDataType['list'][number]) {
         appNavigate(`${paths.todoDetail.getHref(entry.id)}`);
     }
 

@@ -11,7 +11,8 @@ type PropsType = {
 };
 
 // タスク一覧
-export type TaskListReturnType = InferResponseType<typeof endpoint, 200>['data'];
+export type TaskListResponseType = InferResponseType<typeof endpoint, 200>;
+export type TaskListDataType = InferResponseType<typeof endpoint, 200>['data'];
 
 export function useGetTodoList({ searchParams }: PropsType) {
 

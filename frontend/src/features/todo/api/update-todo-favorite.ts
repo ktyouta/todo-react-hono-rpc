@@ -9,11 +9,12 @@ type MutationVariables = {
     isFavorite: boolean;
 };
 
-type PropsType = {
-    onError?: () => void;
+type PropsType<T> = {
+    onMutate?: (variables: MutationVariables) => Promise<T>;
+    onError?: (context: T | undefined) => void;
 };
 
-export function useUpdateTodoFavoriteMutation(props?: PropsType) {
+export function useUpdateTodoFavoriteMutation<T>(props: PropsType<T>) {
     const queryClient = useQueryClient();
     return useMutation({
         mutationFn: async ({ id, isFavorite }: MutationVariables) => {
@@ -27,11 +28,12 @@ export function useUpdateTodoFavoriteMutation(props?: PropsType) {
             }
             return res.json();
         },
+        onMutate: props.onMutate,
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: todoKeys.all });
         },
-        onError: () => {
-            props?.onError?.();
+        onError: (_err, _variables, context) => {
+            props.onError?.(context);
         },
     });
 }

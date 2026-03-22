@@ -5,10 +5,12 @@ import { getPriority } from "@/features/api/get-priority";
 import { getStatus } from "@/features/api/get-status";
 import { useAppNavigation } from "@/hooks/use-app-navigation";
 import { useSwitch } from "@/hooks/use-switch";
+import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { useDeleteTodoMutation } from "../api/delete-todo";
-import { useGetTodo } from "../api/get-todo";
+import { TaskResponseType, useGetTodo } from "../api/get-todo";
+import { todoKeys } from "../api/query-key";
 import { useUpdateTodoMutation } from "../api/update-todo";
 import { useUpdateTodoFavoriteMutation } from "../api/update-todo-favorite";
 import { useTaskId } from "./use-task-id";
@@ -51,9 +53,36 @@ export function useTodoDetail() {
             toast.error(`タスクの更新に失敗しました。時間をおいて再度お試しください。`);
         },
     });
+    // QueryClientインスタンス
+    const queryClient = useQueryClient();
     // お気に入りトグル用ミューテーション
     const updateFavoriteMutation = useUpdateTodoFavoriteMutation({
-        onError: () => {
+        // APIコール前の楽観的更新
+        onMutate: async ({ id, isFavorite }) => {
+
+            await queryClient.cancelQueries({ queryKey: todoKeys.detail(id) });
+
+            const previousData = queryClient.getQueryData<TaskResponseType>(
+                todoKeys.detail(id)
+            );
+
+            queryClient.setQueriesData<TaskResponseType>(
+                { queryKey: todoKeys.detail(id) },
+                (old) => {
+                    if (!old) return old;
+                    return {
+                        ...old,
+                        data: { ...old.data, isFavorite },
+                    };
+                }
+            );
+            return { previousData };
+        },
+        onError: (context) => {
+            // 失敗時はキャッシュから復元
+            if (context?.previousData) {
+                queryClient.setQueriesData({ queryKey: todoKeys.detail(taskId) }, context.previousData);
+            }
             toast.error('お気に入りの更新に失敗しました。時間をおいて再度お試しください。');
         },
     });

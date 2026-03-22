@@ -1,10 +1,10 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { TaskReturnType } from "../api/get-todo";
+import { TaskDataType } from "../api/get-todo";
 import { TodoDetailEditSchema, TodoDetailEditType } from "../types/todo-detail-edit-type";
 
 type PropsType = {
-    task: TaskReturnType
+    task: TaskDataType
 }
 
 export function useTodoUpdateForm(props: PropsType) {
