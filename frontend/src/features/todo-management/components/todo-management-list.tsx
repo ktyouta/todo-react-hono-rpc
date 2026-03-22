@@ -107,7 +107,7 @@ export function TodoManagementList(props: PropsType) {
                                     [&_thead]:bg-gray-50/90
                                     [&_thead_tr]:border-b
                                     [&_thead_tr]:border-gray-400/60"
-                                rowClassName="h-[50px] border-gray-300/80 hover:bg-gray-100 cursor-pointer"
+                                rowClassName="h-[50px] border-gray-300/80 hover:bg-[#EFEFEF] cursor-pointer"
                                 onRowClick={onRowClick}
                             />
                         </div>
