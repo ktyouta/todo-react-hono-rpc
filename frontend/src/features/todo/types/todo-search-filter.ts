@@ -9,6 +9,7 @@ export type TodoSearchFilter = {
     createdAtTo: string | null;
     updatedAtFrom: string | null;
     updatedAtTo: string | null;
+    isFavorite: boolean;
 };
 
 export const initialTodoSearchFilter: TodoSearchFilter = {
@@ -22,4 +23,5 @@ export const initialTodoSearchFilter: TodoSearchFilter = {
     createdAtTo: null,
     updatedAtFrom: null,
     updatedAtTo: null,
+    isFavorite: false,
 };

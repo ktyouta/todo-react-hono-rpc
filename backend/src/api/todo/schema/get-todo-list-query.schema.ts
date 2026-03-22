@@ -23,6 +23,12 @@ export const GetTodoListQuerySchema = z.object({
         (v) => (v === "" ? undefined : v),
         z.coerce.number().int().positive().default(1)
     ),
+    isFavorite: z.preprocess(
+        (v) => {
+            return v === `true`
+        },
+        z.boolean()
+    ),
 });
 
 export type GetTodoListQuerySchemaType = z.infer<typeof GetTodoListQuerySchema>;

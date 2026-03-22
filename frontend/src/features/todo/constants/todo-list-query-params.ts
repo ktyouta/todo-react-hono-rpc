@@ -22,4 +22,6 @@ export const TODO_LIST_QUERY_KEY = {
     UPDATED_AT_TO: `updatedAtTo`,
     // ページ
     PAGE: `page`,
+    // お気に入り
+    IS_FAVORITE: `isFavorite`,
 } as const;

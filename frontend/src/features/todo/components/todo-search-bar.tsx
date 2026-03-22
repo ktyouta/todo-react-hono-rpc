@@ -4,6 +4,7 @@ import { PriorityReturnType } from "@/features/api/get-priority";
 import { StatusReturnType } from "@/features/api/get-status";
 import { useState } from "react";
 import { HiChevronDown, HiChevronUp, HiMagnifyingGlass } from "react-icons/hi2";
+import { FAVORITE_OPTIONS } from "../constants/todo-filter-options";
 import { TodoSearchFilter } from "../types/todo-search-filter";
 
 type PropsType = {
@@ -32,6 +33,7 @@ export function TodoSearchBar({ searchCondition, onChange, onSearch, onClear, ca
         searchCondition.dueDateFrom !== null || searchCondition.dueDateTo !== null,
         searchCondition.createdAtFrom !== null || searchCondition.createdAtTo !== null,
         searchCondition.updatedAtFrom !== null || searchCondition.updatedAtTo !== null,
+        searchCondition.isFavorite,
     ].filter(Boolean).length;
     const isEmpty = searchCondition.title === '' && activeCount === 0;
 
@@ -92,8 +94,8 @@ export function TodoSearchBar({ searchCondition, onChange, onSearch, onClear, ca
             {/* 詳細フィルターパネル */}
             {isDetailOpen && (
                 <div className="mt-3 pt-3 border-t border-gray-100 flex flex-col gap-3">
-                    {/* セレクト（3列グリッド） */}
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    {/* セレクト（2列グリッド） */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <div className="flex items-center gap-2">
                             <span className={LABEL_CLASS}>カテゴリ</span>
                             <Select
@@ -127,6 +129,15 @@ export function TodoSearchBar({ searchCondition, onChange, onSearch, onClear, ca
                                     { value: '', label: 'すべて' },
                                     ...priorityList.map((p) => ({ value: String(p.id), label: p.name })),
                                 ]}
+                                className={SELECT_CLASS}
+                            />
+                        </div>
+                        <div className="flex items-center gap-2">
+                            <span className={LABEL_CLASS}>お気に入り</span>
+                            <Select
+                                value={searchCondition.isFavorite ? 'true' : ''}
+                                onChange={(e) => onChange({ ...searchCondition, isFavorite: e.target.value === 'true' })}
+                                options={FAVORITE_OPTIONS}
                                 className={SELECT_CLASS}
                             />
                         </div>

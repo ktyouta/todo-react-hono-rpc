@@ -28,6 +28,7 @@ export function useTodoList() {
         createdAtTo: searchParams.get(TODO_LIST_QUERY_KEY.CREATED_AT_TO),
         updatedAtFrom: searchParams.get(TODO_LIST_QUERY_KEY.UPDATED_AT_FROM),
         updatedAtTo: searchParams.get(TODO_LIST_QUERY_KEY.UPDATED_AT_TO),
+        isFavorite: searchParams.get(TODO_LIST_QUERY_KEY.IS_FAVORITE) === `true`,
     };
     // タスク検索条件
     const [searchCondition, setSearchCondition] = useState<TodoSearchFilter>(initSearchCondition);
@@ -126,6 +127,9 @@ export function useTodoList() {
         }
         if (searchCondition.updatedAtTo) {
             params[TODO_LIST_QUERY_KEY.UPDATED_AT_TO] = searchCondition.updatedAtTo;
+        }
+        if (searchCondition.isFavorite) {
+            params[TODO_LIST_QUERY_KEY.IS_FAVORITE] = `true`;
         }
         setSearchParams(params);
     }

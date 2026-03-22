@@ -31,6 +31,7 @@ export function useGetTodoList({ searchParams }: PropsType) {
                     updatedAtFrom: searchParams.get(TODO_LIST_QUERY_KEY.UPDATED_AT_FROM) || undefined,
                     updatedAtTo: searchParams.get(TODO_LIST_QUERY_KEY.UPDATED_AT_TO) || undefined,
                     page: searchParams.get(TODO_LIST_QUERY_KEY.PAGE) || undefined,
+                    isFavorite: searchParams.get(TODO_LIST_QUERY_KEY.IS_FAVORITE) || undefined,
                 }
             });
             if (!res.ok) {

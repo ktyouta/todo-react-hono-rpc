@@ -48,6 +48,12 @@ export class GetTodoListRepository implements IGetTodoListRepository {
       .offset((query.page - 1) * GetTodoListRepository.LIMIT);
   }
 
+  /**
+   * 件数取得
+   * @param userId 
+   * @param query 
+   * @returns 
+   */
   async count(userId: FrontUserId, query: GetTodoListQuerySchemaType): Promise<number> {
 
     const conditions = this.buildConditions(userId, query);
@@ -74,6 +80,7 @@ export class GetTodoListRepository implements IGetTodoListRepository {
       ...(query.createdAtTo ? [lte(taskTransaction.createdAt, query.createdAtTo)] : []),
       ...(query.updatedAtFrom ? [gte(taskTransaction.updatedAt, query.updatedAtFrom)] : []),
       ...(query.updatedAtTo ? [lte(taskTransaction.updatedAt, query.updatedAtTo)] : []),
+      ...(query.isFavorite ? [eq(taskTransaction.isFavorite, query.isFavorite)] : []),
     ];
   }
 }
