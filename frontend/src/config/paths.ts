@@ -28,6 +28,13 @@ export const paths = {
         path: '/todo-management/:id',
         getHref: (id: number) => `/todo-management/${id}`,
     },
+    todoDeletedManagement: {
+        path: '/todo-deleted-management',
+    },
+    todoDeletedManagementDetail: {
+        path: '/todo-deleted-management/:id',
+        getHref: (id: number) => `/todo-deleted-management/${id}`,
+    },
     updateUser: {
         path: '/update-user',
         getHref: (redirectTo?: string) => `${paths.updateUser.path}${redirectTo ? `?redirectTo=${encodeURIComponent(redirectTo)}` : ``}`,

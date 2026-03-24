@@ -3,6 +3,8 @@ import { paths } from '@/config/paths';
 import { LoginContainer } from '@/features/login/components/login-container';
 import { SignupContainer } from '@/features/signup/components/signup-container';
 import { TodoCreateContainer } from '@/features/todo-create/components/create-todo-container';
+import { TodoDeletedManagementDetailPage } from '@/features/todo-deleted-management/components/todo-deleted-management-detail-page';
+import { TodoDeletedManagementPage } from '@/features/todo-deleted-management/components/todo-deleted-management-page';
 import { TodoManagementDetailPage } from '@/features/todo-management/components/todo-management-detail-page';
 import { TodoManagementPage } from '@/features/todo-management/components/todo-management-page';
 import { TodoDetailPage } from '@/features/todo/components/todo-detail-page';
@@ -108,6 +110,35 @@ const routerList = [
                                         path: paths.todoManagementDetail.path,
                                         element: (
                                             <TodoManagementDetailPage />
+                                        )
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        // 権限ガード：deleted_task_management 権限なしは404
+                        element: (
+                            <RoleRoute
+                                permission="deleted_task_management"
+                            />
+                        ),
+                        children: [
+                            {
+                                element: <TodoLayout />,
+                                children: [
+                                    {
+                                        // 削除タスク管理一覧
+                                        path: paths.todoDeletedManagement.path,
+                                        element: (
+                                            <TodoDeletedManagementPage />
+                                        )
+                                    },
+                                    {
+                                        // 削除タスク管理詳細
+                                        path: paths.todoDeletedManagementDetail.path,
+                                        element: (
+                                            <TodoDeletedManagementDetailPage />
                                         )
                                     }
                                 ]

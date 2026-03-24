@@ -4,7 +4,7 @@ import { useAppNavigation } from "@/hooks/use-app-navigation";
 import { usePermission } from "@/hooks/use-permission";
 import { Navigate, Outlet } from "react-router-dom";
 import { toast } from "react-toastify";
-import { HiOutlineClipboardDocumentList, HiOutlineDocumentPlus, HiOutlineHome } from 'react-icons/hi2';
+import { HiOutlineArchiveBoxXMark, HiOutlineClipboardDocumentList, HiOutlineDocumentPlus, HiOutlineHome } from 'react-icons/hi2';
 import { useLogoutMutation } from "../api/logout";
 import { LoginUserContext, SetLoginUserContext } from "./login-user-provider";
 
@@ -13,6 +13,8 @@ export function DashboardContainer() {
     const loginUser = LoginUserContext.useCtx();
     // タスク管理パーミッション
     const hasTaskManagement = usePermission('task_management');
+    // 削除タスク管理パーミッション
+    const hasDeletedTaskManagement = usePermission('deleted_task_management');
 
     // サイドバーメニューリスト
     const navigationList = [
@@ -30,6 +32,11 @@ export function DashboardContainer() {
             name: `タスク管理`,
             icon: <HiOutlineClipboardDocumentList className='h-5 w-5' />,
             path: paths.todoManagement.path,
+        }] : []),
+        ...(hasDeletedTaskManagement ? [{
+            name: `削除タスク管理`,
+            icon: <HiOutlineArchiveBoxXMark className='h-5 w-5' />,
+            path: paths.todoDeletedManagement.path,
         }] : []),
     ];
     // ログインユーザー情報(setter)
