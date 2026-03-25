@@ -14,5 +14,7 @@ export * from "./todo-deleted";
 export * from "./todo-deleted-restore";
 export * from "./todo-management";
 export * from "./user-management";
+export * from "./user-management-role";
+export * from "./user-management-password";
 export * from "./verify";
 

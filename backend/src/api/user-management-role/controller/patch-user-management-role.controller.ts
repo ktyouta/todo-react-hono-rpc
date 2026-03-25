@@ -5,9 +5,9 @@ import { FrontUserId, RoleId } from "../../../domain";
 import { requirePermission } from "../../../middleware";
 import type { AppEnv } from "../../../types";
 import { formatZodErrors } from "../../../util";
+import { UserManagementIdParamSchema } from "../../user-management/schema/user-management-id-param.schema";
 import { PatchUserManagementRoleRepository } from "../repository/patch-user-management-role.repository";
 import { PatchUserManagementRoleSchema } from "../schema/patch-user-management-role.schema";
-import { UserManagementIdParamSchema } from "../schema/user-management-id-param.schema";
 import { PatchUserManagementRoleService } from "../service/patch-user-management-role.service";
 
 /**
@@ -30,13 +30,7 @@ const patchUserManagementRole = new Hono<AppEnv>().patch(
     async (c) => {
         const db = c.get("db");
         const userId = FrontUserId.of(c.req.valid("param").id);
-
-        let roleId: RoleId;
-        try {
-            roleId = RoleId.of(c.req.valid("json").roleId);
-        } catch {
-            return c.json({ message: "ロールIDが不正です。" }, HTTP_STATUS.BAD_REQUEST);
-        }
+        const roleId = RoleId.of(c.req.valid("json").roleId);
 
         const repository = new PatchUserManagementRoleRepository(db);
         const service = new PatchUserManagementRoleService(repository);

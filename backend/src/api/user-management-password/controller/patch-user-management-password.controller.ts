@@ -5,9 +5,9 @@ import { FrontUserId, FrontUserPassword, FrontUserSalt, Pepper } from "../../../
 import { requirePermission } from "../../../middleware";
 import type { AppEnv } from "../../../types";
 import { formatZodErrors } from "../../../util";
+import { UserManagementIdParamSchema } from "../../user-management/schema/user-management-id-param.schema";
 import { PatchUserManagementPasswordRepository } from "../repository/patch-user-management-password.repository";
 import { PatchUserManagementPasswordSchema } from "../schema/patch-user-management-password.schema";
-import { UserManagementIdParamSchema } from "../schema/user-management-id-param.schema";
 import { PatchUserManagementPasswordService } from "../service/patch-user-management-password.service";
 
 /**
