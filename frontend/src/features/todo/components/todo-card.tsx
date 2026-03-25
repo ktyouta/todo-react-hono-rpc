@@ -20,7 +20,7 @@ export function TodoCard({ entry, onClick, onFavoriteToggle }: PropsType) {
             </div>
             <div className="flex flex-wrap gap-x-4 gap-y-2 mt-3 pt-3 border-t border-gray-100 text-xs relative">
                 <div>
-                    <span className="text-gray-400">種別</span>
+                    <span className="text-gray-400">カテゴリ</span>
                     <span className="ml-1.5 text-gray-500">{entry.categoryName}</span>
                 </div>
                 <div>
