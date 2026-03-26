@@ -4,14 +4,19 @@ import { LoginContainer } from '@/features/login/components/login-container';
 import { SignupContainer } from '@/features/signup/components/signup-container';
 import { TodoCreateContainer } from '@/features/todo-create/components/create-todo-container';
 import { TodoDeletedManagementDetailPage } from '@/features/todo-deleted-management/components/todo-deleted-management-detail-page';
+import { TodoDeletedManagementLayout } from '@/features/todo-deleted-management/components/todo-deleted-management-layout';
 import { TodoDeletedManagementPage } from '@/features/todo-deleted-management/components/todo-deleted-management-page';
 import { TodoManagementDetailPage } from '@/features/todo-management/components/todo-management-detail-page';
+import { TodoManagementLayout } from '@/features/todo-management/components/todo-management-layout';
 import { TodoManagementPage } from '@/features/todo-management/components/todo-management-page';
 import { TodoDetailPage } from '@/features/todo/components/todo-detail-page';
 import { TodoLayout } from '@/features/todo/components/todo-layout';
 import { TodoPage } from '@/features/todo/components/todo-page';
 import { UpdatePasswordContainer } from '@/features/updatepassword/components/update-password-container';
 import { UpdateUserContainer } from '@/features/updateuser/components/update-user-container';
+import { UserManagementDetailPage } from '@/features/user-management/components/user-management-detail-page';
+import { UserManagementLayout } from '@/features/user-management/components/user-management-layout';
+import { UserManagementPage } from '@/features/user-management/components/user-management-page';
 import { Navigate, useRoutes } from 'react-router-dom';
 import { DashboardContainer } from './dashboard-container';
 import { GuestRoute } from './guest-route';
@@ -96,7 +101,7 @@ const routerList = [
                         ),
                         children: [
                             {
-                                element: <TodoLayout />,
+                                element: <TodoManagementLayout />,
                                 children: [
                                     {
                                         // タスク管理一覧
@@ -125,7 +130,7 @@ const routerList = [
                         ),
                         children: [
                             {
-                                element: <TodoLayout />,
+                                element: <TodoDeletedManagementLayout />,
                                 children: [
                                     {
                                         // 削除タスク管理一覧
@@ -139,6 +144,35 @@ const routerList = [
                                         path: paths.todoDeletedManagementDetail.path,
                                         element: (
                                             <TodoDeletedManagementDetailPage />
+                                        )
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        // 権限ガード：user_management 権限なしは404
+                        element: (
+                            <RoleRoute
+                                permission="user_management"
+                            />
+                        ),
+                        children: [
+                            {
+                                element: <UserManagementLayout />,
+                                children: [
+                                    {
+                                        // ユーザー管理一覧
+                                        path: paths.userManagement.path,
+                                        element: (
+                                            <UserManagementPage />
+                                        )
+                                    },
+                                    {
+                                        // ユーザー管理詳細
+                                        path: paths.userManagementDetail.path,
+                                        element: (
+                                            <UserManagementDetailPage />
                                         )
                                     }
                                 ]

@@ -2,7 +2,7 @@ import { paths } from "@/config/paths";
 import { getCategory } from "@/features/api/get-category";
 import { getPriority } from "@/features/api/get-priority";
 import { getStatus } from "@/features/api/get-status";
-import { getUserManagementList } from "@/features/api/get-user-management-list";
+import { getUserList } from "@/features/api/get-user-list";
 import { useAppNavigation } from "@/hooks/use-app-navigation";
 import { useDelayedFlag } from "@/hooks/use-delayed-flag";
 import { useTransitionSearchParams } from "@/hooks/use-transition-search-params";
@@ -39,7 +39,7 @@ export function useTodoManagementList() {
     // タスク一覧
     const { data } = useGetTodoManagementList({ searchParams });
     // ユーザーリスト
-    const { data: users } = getUserManagementList();
+    const { data: users } = getUserList();
     // カテゴリリスト
     const { data: category } = getCategory();
     // ステータスリスト
@@ -146,7 +146,7 @@ export function useTodoManagementList() {
     return {
         taskData: data.data,
         onRowClick,
-        userList: users.data.list,
+        userList: users.data,
         categoryList: category.data,
         statusList: status.data,
         priorityList: priority.data,

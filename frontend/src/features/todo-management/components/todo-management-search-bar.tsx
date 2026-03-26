@@ -2,7 +2,7 @@ import { Button, DatePicker, Select, Textbox } from "@/components";
 import { CategoryReturnType } from "@/features/api/get-category";
 import { PriorityReturnType } from "@/features/api/get-priority";
 import { StatusReturnType } from "@/features/api/get-status";
-import { UserManagementListReturnType } from "@/features/api/get-user-management-list";
+import { UserManagementListReturnType } from "@/features/api/get-user-list";
 import { useState } from "react";
 import { HiChevronDown, HiChevronUp, HiMagnifyingGlass } from "react-icons/hi2";
 import { TodoManagementSearchFilter } from "../types/todo-management-search-filter";
@@ -12,7 +12,7 @@ type PropsType = {
     onChange: (searchCondition: TodoManagementSearchFilter) => void;
     onSearch: () => void;
     onClear: () => void;
-    userList: UserManagementListReturnType['list'];
+    userList: UserManagementListReturnType;
     categoryList: CategoryReturnType;
     statusList: StatusReturnType;
     priorityList: PriorityReturnType;

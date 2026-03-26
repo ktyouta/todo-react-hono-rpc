@@ -42,5 +42,12 @@ export const paths = {
     updatePassword: {
         path: '/update-password',
         getHref: (redirectTo?: string) => `${paths.updatePassword.path}${redirectTo ? `?redirectTo=${encodeURIComponent(redirectTo)}` : ``}`,
-    }
+    },
+    userManagement: {
+        path: '/user-management',
+    },
+    userManagementDetail: {
+        path: '/user-management/:id',
+        getHref: (id: number) => `/user-management/${id}`,
+    },
 } as const;

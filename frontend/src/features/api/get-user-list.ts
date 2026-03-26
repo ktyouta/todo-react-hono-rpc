@@ -1,16 +1,16 @@
 import { rpc } from "@/lib/rpc-client";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { InferResponseType } from "hono";
-import { userManagementKeys } from "./query-key";
+import { userListKeys } from "./query-key";
 
-const endpoint = rpc.api.v1['user-management'].$get;
+const endpoint = rpc.api.v1['user-list'].$get;
 
-// ユーザー一覧
+// ユーザーリスト（ドロップダウン用）
 export type UserManagementListReturnType = InferResponseType<typeof endpoint, 200>['data'];
 
-export function getUserManagementList() {
+export function getUserList() {
     return useSuspenseQuery({
-        queryKey: userManagementKeys.all,
+        queryKey: userListKeys.all,
         queryFn: async () => {
             const res = await endpoint();
             if (!res.ok) {

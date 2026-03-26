@@ -1,6 +1,7 @@
 import { Context, Hono } from "hono";
 import { cors } from "hono/cors";
-import { category, frontUser, frontUserLogin, frontUserLogout, frontUserPassword, health, priority, refresh, sample, status, todo, todoDeleted, todoDeletedRestore, todoFavorite, todoManagement, userManagement, userManagementPassword, userManagementRole, verify } from "./api";
+import { category, frontUser, frontUserLogin, frontUserLogout, frontUserPassword, health, priority, refresh, sample, status, todo, todoDeleted, todoDeletedRestore, todoFavorite, todoManagement, userList, userManagement, userManagementPassword, userManagementRole, verify } from "./api";
+import { roleList } from "./api/role-list";
 import {
   accessLogMiddleware,
   createDbClientMiddleware,
@@ -59,9 +60,11 @@ const routes = app
   .route("/", todoManagement)
   .route("/", todoDeleted)
   .route("/", todoDeletedRestore)
+  .route("/", userList)
   .route("/", userManagement)
   .route("/", userManagementRole)
   .route("/", userManagementPassword)
+  .route("/", roleList)
 
 // RPC用の型エクスポート
 export type AppType = typeof routes;

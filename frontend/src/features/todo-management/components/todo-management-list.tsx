@@ -3,7 +3,7 @@ import { TableProps } from "@/components/ui/table/table";
 import { CategoryReturnType } from "@/features/api/get-category";
 import { PriorityReturnType } from "@/features/api/get-priority";
 import { StatusReturnType } from "@/features/api/get-status";
-import { UserManagementListReturnType } from "@/features/api/get-user-management-list";
+import { UserManagementListReturnType } from "@/features/api/get-user-list";
 import { getDueDateStatus } from "@/features/todo/utils/due-date-status";
 import { HiOutlineArchiveBoxXMark } from "react-icons/hi2";
 import { TaskManagementListReturnType } from "../api/get-todo-management-list";
@@ -14,7 +14,7 @@ import { TodoManagementSearchBar } from "./todo-management-search-bar";
 type PropsType = {
     taskData: TaskManagementListReturnType;
     onRowClick: (entry: TaskManagementListReturnType['list'][number]) => void;
-    userList: UserManagementListReturnType['list'];
+    userList: UserManagementListReturnType;
     categoryList: CategoryReturnType;
     statusList: StatusReturnType;
     priorityList: PriorityReturnType;

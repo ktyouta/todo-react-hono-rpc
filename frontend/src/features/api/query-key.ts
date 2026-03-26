@@ -13,7 +13,12 @@ export const priorityKeys = {
     all: ['priority'] as const,
 };
 
-// ユーザー管理
-export const userManagementKeys = {
-    all: ['user-management'] as const,
+// ユーザーリスト（ドロップダウン用）
+export const userListKeys = {
+    all: ['user-list'] as const,
+};
+
+// ロールリスト（ドロップダウン用）
+export const roleListKeys = {
+    all: ['role-list'] as const,
 };

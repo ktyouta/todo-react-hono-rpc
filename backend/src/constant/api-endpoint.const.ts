@@ -19,6 +19,7 @@ export const API_ENDPOINT = {
   TODO_DELETED: "/api/v1/todo-deleted",
   TODO_DELETED_ID: "/api/v1/todo-deleted/:id",
   TODO_DELETED_RESTORE: "/api/v1/todo-deleted/:id/restore",
+  USER_LIST: "/api/v1/user-list",
   USER_MANAGEMENT: "/api/v1/user-management",
   USER_MANAGEMENT_ID: "/api/v1/user-management/:id",
   USER_MANAGEMENT_ROLE: "/api/v1/user-management/:id/role",
@@ -26,6 +27,7 @@ export const API_ENDPOINT = {
   CATEGORY: "/api/v1/category",
   STATUS: "/api/v1/status",
   PRIORITY: "/api/v1/priority",
+  ROLE_LIST: "/api/v1/role-list",
 } as const;
 
 export type ApiEndpointType = (typeof API_ENDPOINT)[keyof typeof API_ENDPOINT];
