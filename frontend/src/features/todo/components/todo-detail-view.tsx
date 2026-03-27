@@ -1,4 +1,5 @@
 import { Button, Dialog, LoadingOverlay } from "@/components";
+import { getFormatDatetime } from "@/utils/date-util";
 import { CATEGORY_ID } from "@/constants/master";
 import { CategoryReturnType } from "@/features/api/get-category";
 import { PriorityReturnType } from "@/features/api/get-priority";
@@ -122,7 +123,7 @@ export function TodoDetailView(props: PropsType) {
                             <div className="flex flex-1 items-center gap-2 sm:max-w-[48%]">
                                 <span className="whitespace-nowrap w-[5em] text-gray-500 text-base">期限日</span>
                                 <span className={`flex-1 px-3 py-2 bg-gray-50 border border-[#e0e0e0] rounded text-lg ${dueDateStatus === 'overdue' ? 'text-red-600' : dueDateStatus === 'warning' ? 'text-amber-500' : ''}`}>
-                                    {task.dueDate ? task.dueDate.replaceAll("-", "/") : `なし`}
+                                    {task.dueDate ? task.dueDate : `なし`}
                                 </span>
                             </div>
                         </div>
@@ -131,13 +132,13 @@ export function TodoDetailView(props: PropsType) {
                         <div className="flex flex-1 items-center gap-2 sm:max-w-[48%]">
                             <span className="whitespace-nowrap w-[5em] text-gray-500 text-base">登録日</span>
                             <span className="flex-1 px-3 py-2 text-base text-gray-700">
-                                {new Date(task.createdAt).toLocaleString('ja-JP')}
+                                {getFormatDatetime(new Date(task.createdAt), 'yyyy-MM-dd HH:mm:ss')}
                             </span>
                         </div>
                         <div className="flex flex-1 items-center gap-2 sm:max-w-[48%]">
                             <span className="whitespace-nowrap w-[5em] text-gray-500 text-base">更新日</span>
                             <span className="flex-1 px-3 py-2 text-base text-gray-700">
-                                {new Date(task.updatedAt).toLocaleString('ja-JP')}
+                                {getFormatDatetime(new Date(task.updatedAt), 'yyyy-MM-dd HH:mm:ss')}
                             </span>
                         </div>
                     </div>

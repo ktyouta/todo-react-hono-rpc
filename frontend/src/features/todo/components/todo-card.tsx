@@ -34,7 +34,7 @@ export function TodoCard({ entry, onClick, onFavoriteToggle }: PropsType) {
                 {entry.dueDate && (() => {
 
                     const status = getDueDateStatus(entry.dueDate);
-                    const dateStr = entry.dueDate.replaceAll('-', '/');
+                    const dateStr = entry.dueDate;
 
                     if (status === 'overdue') {
                         return (

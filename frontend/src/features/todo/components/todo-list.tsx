@@ -59,7 +59,7 @@ export function TodoList(props: PropsType) {
                 }
 
                 const status = getDueDateStatus(entry.dueDate);
-                const dateStr = entry.dueDate.replaceAll('-', '/');
+                const dateStr = entry.dueDate;
 
                 if (status === 'overdue') {
                     return <span className="text-red-600">{dateStr}</span>;

@@ -6,8 +6,8 @@
 
 -- ロールマスタ
 INSERT OR IGNORE INTO role_master (id, name, created_at, updated_at) VALUES
-  (1, 'user', datetime('now'), datetime('now')),
-  (2, 'admin', datetime('now'), datetime('now'));
+  (1, '一般ユーザー', datetime('now'), datetime('now')),
+  (2, '管理者', datetime('now'), datetime('now'));
 
 -- パーミッションマスタ
 INSERT OR IGNORE INTO permission_master (id, screen, created_at, updated_at) VALUES

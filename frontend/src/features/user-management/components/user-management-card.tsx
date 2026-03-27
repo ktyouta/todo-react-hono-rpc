@@ -18,7 +18,7 @@ export function UserManagementCard({ entry, onClick }: PropsType) {
             <div className="flex flex-wrap gap-x-4 gap-y-2 mt-3 pt-3 border-t border-gray-100 text-xs">
                 <div>
                     <span className="text-gray-400">生年月日</span>
-                    <span className="ml-1.5 text-gray-500">{entry.birthday.replaceAll('-', '/')}</span>
+                    <span className="ml-1.5 text-gray-500">{`${entry.birthday.slice(0, 4)}-${entry.birthday.slice(4, 6)}-${entry.birthday.slice(6, 8)}`}</span>
                 </div>
                 <div>
                     <span className="text-gray-400">ロール</span>

@@ -1,4 +1,5 @@
 import { Button, DatePicker, LoadingOverlay, Select, Textarea, Textbox } from "@/components";
+import { getFormatDatetime } from "@/utils/date-util";
 import { CATEGORY_ID } from "@/constants/master";
 import { CategoryReturnType } from "@/features/api/get-category";
 import { PriorityReturnType } from "@/features/api/get-priority";
@@ -154,13 +155,13 @@ export function TodoDetailEdit(props: PropsType) {
                         <div className="flex flex-1 items-center gap-2 sm:max-w-[48%]">
                             <span className="whitespace-nowrap w-[5em] text-gray-500 text-base">登録日</span>
                             <span className="flex-1 px-3 py-2 text-base text-gray-700">
-                                {new Date(props.task.createdAt).toLocaleString('ja-JP')}
+                                {getFormatDatetime(new Date(props.task.createdAt), 'yyyy-MM-dd HH:mm:ss')}
                             </span>
                         </div>
                         <div className="flex flex-1 items-center gap-2 sm:max-w-[48%]">
                             <span className="whitespace-nowrap w-[5em] text-gray-500 text-base">更新日</span>
                             <span className="flex-1 px-3 py-2 text-base text-gray-700">
-                                {new Date(props.task.updatedAt).toLocaleString('ja-JP')}
+                                {getFormatDatetime(new Date(props.task.updatedAt), 'yyyy-MM-dd HH:mm:ss')}
                             </span>
                         </div>
                     </div>

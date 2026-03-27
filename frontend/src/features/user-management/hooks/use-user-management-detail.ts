@@ -1,3 +1,4 @@
+import { LoginUserContext } from "@/app/components/login-user-provider";
 import { paths } from "@/config/paths";
 import { useAppNavigation } from "@/hooks/use-app-navigation";
 import { useSwitch } from "@/hooks/use-switch";
@@ -16,15 +17,21 @@ import { useUserManagementId } from "./use-user-management-id";
 export function useUserManagementDetail() {
     // ユーザーID
     const userId = useUserManagementId();
-    // ユーザー一覧
+    // ユーザー詳細データ
     const { data } = useGetUserManagement({ id: userId });
     const user = data.data;
     // ナビゲーション用
     const { appGoBack } = useAppNavigation();
-    // 削除ダイアログ
+    // 削除確認ダイアログ
     const deleteDialog = useSwitch();
+    // ロール変更確認ダイアログ
+    const roleDialog = useSwitch();
+    // パスワードリセット確認ダイアログ
+    const passwordDialog = useSwitch();
     // ロール一覧
     const { data: role } = getRoleList();
+    // ログインユーザー情報
+    const loginUser = LoginUserContext.useCtx();
 
     // ロール更新フォーム
     const roleForm = useForm<UserManagementRoleFormType>({
@@ -37,7 +44,7 @@ export function useUserManagementDetail() {
     // パスワード更新フォーム
     const passwordForm = useForm<UserManagementPasswordFormType>({
         resolver: zodResolver(UserManagementPasswordSchema),
-        defaultValues: { newPassword: '' },
+        defaultValues: { newPassword: '', confirmPassword: '' },
         mode: "onSubmit",
         reValidateMode: "onSubmit",
     });
@@ -77,26 +84,74 @@ export function useUserManagementDetail() {
         },
     });
 
+    /**
+     * 一覧に戻る
+     */
     function onClickBack() {
         appGoBack(paths.userManagement.path);
     }
 
-    const clickSaveRole = roleForm.handleSubmit((data) => {
+    /**
+     * ロール保存ボタン押下（バリデーション後に確認ダイアログを表示）
+     */
+    const clickSaveRole = roleForm.handleSubmit(() => {
+        roleDialog.on();
+    });
+
+    /**
+     * ロール変更確認ダイアログをキャンセル
+     */
+    function onCancelSaveRole() {
+        roleDialog.off();
+    }
+
+    /**
+     * ロール変更を確定実行
+     */
+    const onConfirmSaveRole = roleForm.handleSubmit((data) => {
+        roleDialog.off();
         roleMutation.mutate({ roleId: data.roleId });
     });
 
-    const clickSavePassword = passwordForm.handleSubmit((data) => {
+    /**
+     * パスワード設定ボタン押下（バリデーション後に確認ダイアログを表示）
+     */
+    const clickSavePassword = passwordForm.handleSubmit(() => {
+        passwordDialog.on();
+    });
+
+    /**
+     * パスワードリセット確認ダイアログをキャンセル
+     */
+    function onCancelSavePassword() {
+        passwordDialog.off();
+    }
+
+    /**
+     * パスワードリセットを確定実行
+     */
+    const onConfirmSavePassword = passwordForm.handleSubmit((data) => {
+        passwordDialog.off();
         passwordMutation.mutate({ newPassword: data.newPassword });
     });
 
+    /**
+     * 削除ボタン押下（確認ダイアログを表示）
+     */
     function onClickDelete() {
         deleteDialog.on();
     }
 
+    /**
+     * 削除確認ダイアログをキャンセル
+     */
     function onCancelDelete() {
         deleteDialog.off();
     }
 
+    /**
+     * 削除を確定実行
+     */
     function onConfirmDelete() {
         deleteDialog.off();
         deleteMutation.mutate();
@@ -107,9 +162,15 @@ export function useUserManagementDetail() {
         onClickBack,
         roleForm,
         clickSaveRole,
+        isRoleDialogOpen: roleDialog.flag,
+        onCancelSaveRole,
+        onConfirmSaveRole,
         isRoleLoading: roleMutation.isPending,
         passwordForm,
         clickSavePassword,
+        isPasswordDialogOpen: passwordDialog.flag,
+        onCancelSavePassword,
+        onConfirmSavePassword,
         isPasswordLoading: passwordMutation.isPending,
         isDeleteDialogOpen: deleteDialog.flag,
         onClickDelete,
@@ -117,5 +178,6 @@ export function useUserManagementDetail() {
         onConfirmDelete,
         isDeleteLoading: deleteMutation.isPending,
         roleList: role.data,
+        loginUser,
     };
 }

@@ -1,4 +1,5 @@
 import { Button, Dialog, LoadingOverlay, Select, Textbox } from "@/components";
+import { getFormatDatetime } from "@/utils/date-util";
 import { Controller } from "react-hook-form";
 import { HiArrowLeft } from "react-icons/hi2";
 import { useUserManagementDetail } from "../hooks/use-user-management-detail";
@@ -11,9 +12,15 @@ export function UserManagementDetail(props: PropsType) {
         onClickBack,
         roleForm,
         clickSaveRole,
+        isRoleDialogOpen,
+        onCancelSaveRole,
+        onConfirmSaveRole,
         isRoleLoading,
         passwordForm,
         clickSavePassword,
+        isPasswordDialogOpen,
+        onCancelSavePassword,
+        onConfirmSavePassword,
         isPasswordLoading,
         isDeleteDialogOpen,
         onClickDelete,
@@ -21,6 +28,7 @@ export function UserManagementDetail(props: PropsType) {
         onConfirmDelete,
         isDeleteLoading,
         roleList,
+        loginUser,
     } = props;
 
     return (
@@ -48,34 +56,34 @@ export function UserManagementDetail(props: PropsType) {
                 <div className="flex flex-col gap-4">
                     <div className="flex flex-col sm:flex-row gap-4 sm:gap-[3%]">
                         <div className="flex flex-1 items-center gap-2">
-                            <span className="whitespace-nowrap w-[6em] text-gray-500 text-sm">ユーザー名</span>
-                            <span className="flex-1 px-3 py-2 bg-gray-50 border border-[#e0e0e0] rounded text-base">{user.name}</span>
+                            <span className="whitespace-nowrap w-[6em] text-gray-500 text-base">ユーザー名</span>
+                            <span className="flex-1 px-3 py-2 bg-gray-50 border border-[#e0e0e0] rounded text-lg">{user.name}</span>
                         </div>
                         <div className="flex flex-1 items-center gap-2">
-                            <span className="whitespace-nowrap w-[6em] text-gray-500 text-sm">生年月日</span>
-                            <span className="flex-1 px-3 py-2 bg-gray-50 border border-[#e0e0e0] rounded text-base">{user.birthday.replaceAll('-', '/')}</span>
+                            <span className="whitespace-nowrap w-[6em] text-gray-500 text-base">生年月日</span>
+                            <span className="flex-1 px-3 py-2 bg-gray-50 border border-[#e0e0e0] rounded text-lg">{`${user.birthday.slice(0, 4)}-${user.birthday.slice(4, 6)}-${user.birthday.slice(6, 8)}`}</span>
                         </div>
                     </div>
                     <div className="flex flex-col sm:flex-row gap-4 sm:gap-[3%]">
                         <div className="flex flex-1 items-center gap-2">
-                            <span className="whitespace-nowrap w-[6em] text-gray-500 text-sm">ロール</span>
-                            <span className="flex-1 px-3 py-2 bg-gray-50 border border-[#e0e0e0] rounded text-base">{user.roleName}</span>
+                            <span className="whitespace-nowrap w-[6em] text-gray-500 text-base">ロール</span>
+                            <span className="flex-1 px-3 py-2 bg-gray-50 border border-[#e0e0e0] rounded text-lg">{user.roleName}</span>
                         </div>
                         <div className="flex flex-1 items-center gap-2">
-                            <span className="whitespace-nowrap w-[6em] text-gray-500 text-sm">最終ログイン</span>
-                            <span className="flex-1 px-3 py-2 bg-gray-50 border border-[#e0e0e0] rounded text-base">
-                                {user.lastLoginDate ? new Date(user.lastLoginDate).toLocaleString('ja-JP') : 'なし'}
+                            <span className="whitespace-nowrap w-[6em] text-gray-500 text-base">最終ログイン</span>
+                            <span className="flex-1 px-3 py-2 bg-gray-50 border border-[#e0e0e0] rounded text-lg">
+                                {user.lastLoginDate ? getFormatDatetime(new Date(user.lastLoginDate), 'yyyy-MM-dd HH:mm:ss') : 'なし'}
                             </span>
                         </div>
                     </div>
                     <div className="flex flex-col sm:flex-row gap-4 sm:gap-[3%]">
                         <div className="flex flex-1 items-center gap-2">
-                            <span className="whitespace-nowrap w-[6em] text-gray-500 text-sm">登録日</span>
-                            <span className="flex-1 px-3 py-2 text-sm text-gray-700">{new Date(user.createdAt).toLocaleString('ja-JP')}</span>
+                            <span className="whitespace-nowrap w-[6em] text-gray-500 text-base">登録日</span>
+                            <span className="flex-1 px-3 py-2 text-base text-gray-700">{getFormatDatetime(new Date(user.createdAt), 'yyyy-MM-dd HH:mm:ss')}</span>
                         </div>
                         <div className="flex flex-1 items-center gap-2">
-                            <span className="whitespace-nowrap w-[6em] text-gray-500 text-sm">更新日</span>
-                            <span className="flex-1 px-3 py-2 text-sm text-gray-700">{new Date(user.updatedAt).toLocaleString('ja-JP')}</span>
+                            <span className="whitespace-nowrap w-[6em] text-gray-500 text-base">更新日</span>
+                            <span className="flex-1 px-3 py-2 text-base text-gray-700">{getFormatDatetime(new Date(user.updatedAt), 'yyyy-MM-dd HH:mm:ss')}</span>
                         </div>
                     </div>
                 </div>
@@ -84,8 +92,8 @@ export function UserManagementDetail(props: PropsType) {
             {/* ロール変更 */}
             <div className="w-full p-3 sm:p-5 border border-[#c0c0c0] rounded bg-white mb-4 sm:mb-6">
                 <p className="text-base text-gray-500 font-medium mb-4">ロール変更</p>
-                <div className="flex flex-col sm:flex-row gap-3 items-center">
-                    <div className="flex-1 max-w-xs">
+                <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+                    <div className="w-full sm:flex-1 sm:max-w-xs">
                         <Controller
                             name="roleId"
                             control={roleForm.control}
@@ -96,7 +104,7 @@ export function UserManagementDetail(props: PropsType) {
                                     options={[
                                         ...roleList.map((u) => ({ value: String(u.id), label: u.name })),
                                     ]}
-                                    className="w-full px-3 py-2 text-base border-[#c0c0c0]"
+                                    className="w-full px-3 py-2.5 text-base border-[#c0c0c0]"
                                 />
                             )}
                         />
@@ -106,10 +114,10 @@ export function UserManagementDetail(props: PropsType) {
                     </div>
                     <Button
                         colorType="blue"
-                        sizeType="medium"
+                        sizeType="large"
                         onClick={clickSaveRole}
                         disabled={isRoleLoading}
-                        className="shrink-0"
+                        className="w-full sm:w-auto shrink-0"
                     >
                         保存
                     </Button>
@@ -119,24 +127,35 @@ export function UserManagementDetail(props: PropsType) {
             {/* パスワードリセット */}
             <div className="w-full p-3 sm:p-5 border border-[#c0c0c0] rounded bg-white mb-4 sm:mb-6">
                 <p className="text-base text-gray-500 font-medium mb-4">パスワードリセット</p>
-                <div className="flex flex-col sm:flex-row gap-3 items-center">
-                    <div className="flex-1 max-w-xs">
+                <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+                    <div className="w-full sm:flex-1 sm:max-w-xs">
                         <Textbox
                             type="password"
                             placeholder="新しいパスワード（8文字以上）"
-                            className="w-full border-[#c0c0c0]"
+                            className="w-full h-auto py-2.5 border-[#c0c0c0]"
                             {...passwordForm.register('newPassword')}
                         />
                         {passwordForm.formState.errors.newPassword && (
                             <p className="text-sm text-red-500 mt-1">{passwordForm.formState.errors.newPassword.message}</p>
                         )}
                     </div>
+                    <div className="w-full sm:flex-1 sm:max-w-xs">
+                        <Textbox
+                            type="password"
+                            placeholder="確認用パスワード"
+                            className="w-full h-auto py-2.5 border-[#c0c0c0]"
+                            {...passwordForm.register('confirmPassword')}
+                        />
+                        {passwordForm.formState.errors.confirmPassword && (
+                            <p className="text-sm text-red-500 mt-1">{passwordForm.formState.errors.confirmPassword.message}</p>
+                        )}
+                    </div>
                     <Button
                         colorType="blue"
-                        sizeType="medium"
+                        sizeType="large"
                         onClick={clickSavePassword}
                         disabled={isPasswordLoading}
-                        className="shrink-0"
+                        className="w-full sm:w-auto shrink-0"
                     >
                         設定
                     </Button>
@@ -160,6 +179,62 @@ export function UserManagementDetail(props: PropsType) {
                     </Button>
                 </div>
             </div>
+
+            {/* ロール変更確認ダイアログ */}
+            <Dialog
+                isOpen={isRoleDialogOpen}
+                onClose={onCancelSaveRole}
+                title="ロールの変更"
+                size="small"
+            >
+                <div className="space-y-4">
+                    <p className="text-gray-700">
+                        {`${user.name} のロールを変更しますか？`}
+                        {
+                            user.id !== loginUser?.id &&
+                            <>
+                                <br /><span className="text-red-600">※他ユーザーのロールを変更します</span>
+                            </>
+                        }
+                    </p>
+                    <div className="flex justify-end gap-2">
+                        <Button colorType="blue" sizeType="medium" onClick={onCancelSaveRole}>
+                            キャンセル
+                        </Button>
+                        <Button colorType="blue" sizeType="medium" onClick={onConfirmSaveRole}>
+                            変更する
+                        </Button>
+                    </div>
+                </div>
+            </Dialog>
+
+            {/* パスワードリセット確認ダイアログ */}
+            <Dialog
+                isOpen={isPasswordDialogOpen}
+                onClose={onCancelSavePassword}
+                title="パスワードのリセット"
+                size="small"
+            >
+                <div className="space-y-4">
+                    <p className="text-gray-700">
+                        {`${user.name} のパスワードをリセットしますか？`}
+                        {
+                            user.id !== loginUser?.id &&
+                            <>
+                                <br /><span className="text-red-600">※他のユーザーのパスワードを変更します</span>
+                            </>
+                        }
+                    </p>
+                    <div className="flex justify-end gap-2">
+                        <Button colorType="blue" sizeType="medium" onClick={onCancelSavePassword}>
+                            キャンセル
+                        </Button>
+                        <Button colorType="blue" sizeType="medium" onClick={onConfirmSavePassword}>
+                            リセットする
+                        </Button>
+                    </div>
+                </div>
+            </Dialog>
 
             {/* 削除確認ダイアログ */}
             <Dialog
