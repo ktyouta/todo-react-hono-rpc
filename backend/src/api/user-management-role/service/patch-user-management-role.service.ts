@@ -10,6 +10,13 @@ export class PatchUserManagementRoleService {
     /**
      * ロールを更新
      */
+    async getRolePermission(roleId: RoleId): Promise<string[]> {
+        return await this.repository.getRolePermission(roleId);
+    }
+
+    /**
+     * ロールを更新
+     */
     async updateRole(userId: FrontUserId, roleId: RoleId): Promise<boolean> {
         return await this.repository.updateRole(userId, roleId);
     }

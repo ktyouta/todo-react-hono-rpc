@@ -55,8 +55,8 @@ export function useUserManagementDetail() {
         onSuccess: (message) => {
             toast.success(message);
         },
-        onError: () => {
-            toast.error('ロールの変更に失敗しました。時間をおいて再度お試しください。');
+        onError: (message) => {
+            toast.error(message ?? 'ロールの変更に失敗しました。時間をおいて再度お試しください。');
         },
     });
 
@@ -67,8 +67,8 @@ export function useUserManagementDetail() {
             toast.success(message);
             passwordForm.reset();
         },
-        onError: () => {
-            toast.error('パスワードのリセットに失敗しました。時間をおいて再度お試しください。');
+        onError: (message) => {
+            toast.error(message ?? 'パスワードのリセットに失敗しました。時間をおいて再度お試しください。');
         },
     });
 
@@ -79,8 +79,8 @@ export function useUserManagementDetail() {
             toast.success(message);
             appGoBack(paths.userManagement.path);
         },
-        onError: () => {
-            toast.error('ユーザーの削除に失敗しました。時間をおいて再度お試しください。');
+        onError: (message) => {
+            toast.error(message ?? 'ユーザーの削除に失敗しました。時間をおいて再度お試しください。');
         },
     });
 

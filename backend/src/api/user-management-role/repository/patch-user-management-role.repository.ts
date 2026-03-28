@@ -1,7 +1,7 @@
 import { and, eq } from "drizzle-orm";
 import type { FrontUserId, RoleId } from "../../../domain";
 import type { Database } from "../../../infrastructure/db";
-import { frontUserMaster } from "../../../infrastructure/db";
+import { frontUserMaster, permissionMaster, rolePermission } from "../../../infrastructure/db";
 import type { IPatchUserManagementRoleRepository } from "./patch-user-management-role.repository.interface";
 
 /**
@@ -9,6 +9,24 @@ import type { IPatchUserManagementRoleRepository } from "./patch-user-management
  */
 export class PatchUserManagementRoleRepository implements IPatchUserManagementRoleRepository {
     constructor(private readonly db: Database) { }
+
+    /**
+     * ロールに紐づくパーミッション取得
+     */
+    async getRolePermission(roleId: RoleId): Promise<string[]> {
+        const result = await this.db
+            .select({
+                screen: permissionMaster.screen,
+            })
+            .from(rolePermission)
+            .innerJoin(permissionMaster, eq(permissionMaster.id, rolePermission.permissionId))
+            .where(
+                and(
+                    eq(rolePermission.roleId, roleId.value),
+                )
+            )
+        return result.map((e => e.screen));
+    }
 
     /**
      * ロールを更新

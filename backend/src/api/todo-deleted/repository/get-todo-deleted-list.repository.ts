@@ -54,6 +54,7 @@ export class GetTodoDeletedListRepository implements IGetTodoDeletedListReposito
         const [{ total }] = await this.db
             .select({ total: sql<number>`count(*)` })
             .from(taskTransaction)
+            .leftJoin(frontUserMaster, eq(taskTransaction.userId, frontUserMaster.id))
             .where(and(...conditions));
 
         return total;
@@ -62,6 +63,7 @@ export class GetTodoDeletedListRepository implements IGetTodoDeletedListReposito
     private buildConditions(query: GetTodoDeletedListQuerySchemaType) {
         return [
             eq(taskTransaction.deleteFlg, true),
+            eq(frontUserMaster.deleteFlg, false),
             ...(query.userId ? [eq(taskTransaction.userId, query.userId)] : []),
             ...(query.title ? [like(taskTransaction.title, `%${query.title}%`)] : []),
             ...(query.categoryId ? [eq(taskTransaction.categoryId, query.categoryId)] : []),

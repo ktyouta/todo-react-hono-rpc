@@ -2,7 +2,7 @@ import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
 import { API_ENDPOINT, HTTP_STATUS } from "../../../constant";
 import { FrontUserId, RoleId } from "../../../domain";
-import { requirePermission } from "../../../middleware";
+import { authMiddleware, requirePermission } from "../../../middleware";
 import type { AppEnv } from "../../../types";
 import { formatZodErrors } from "../../../util";
 import { UserManagementIdParamSchema } from "../../user-management/schema/user-management-id-param.schema";
@@ -16,6 +16,7 @@ import { PatchUserManagementRoleService } from "../service/patch-user-management
  */
 const patchUserManagementRole = new Hono<AppEnv>().patch(
     API_ENDPOINT.USER_MANAGEMENT_ROLE,
+    authMiddleware,
     requirePermission("user_management"),
     zValidator("param", UserManagementIdParamSchema, (result, c) => {
         if (!result.success) {
@@ -29,13 +30,23 @@ const patchUserManagementRole = new Hono<AppEnv>().patch(
     }),
     async (c) => {
         const db = c.get("db");
-        const userId = FrontUserId.of(c.req.valid("param").id);
+        const targetUserId = FrontUserId.of(c.req.valid("param").id);
+        const userId = c.get("user")?.userId;
         const roleId = RoleId.of(c.req.valid("json").roleId);
 
         const repository = new PatchUserManagementRoleRepository(db);
         const service = new PatchUserManagementRoleService(repository);
 
-        const updated = await service.updateRole(userId, roleId);
+        // 自己ロール降格ガード：変更後のロールにuser_management権限がない場合は自己降格を拒否する
+        if (targetUserId.value === userId?.value) {
+            const userPermission = await service.getRolePermission(roleId);
+
+            if (!userPermission.includes("user_management")) {
+                return c.json({ message: "管理権限のないロールに自身のロールを変更することはできません。" }, HTTP_STATUS.UNPROCESSABLE_ENTITY);
+            }
+        }
+
+        const updated = await service.updateRole(targetUserId, roleId);
 
         if (!updated) {
             return c.json({ message: "ユーザーが見つかりません。" }, HTTP_STATUS.NOT_FOUND);
