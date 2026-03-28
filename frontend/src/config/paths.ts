@@ -50,4 +50,11 @@ export const paths = {
         path: '/user-management/:id',
         getHref: (id: number) => `/user-management/${id}`,
     },
+    userDeletedManagement: {
+        path: '/user-deleted-management',
+    },
+    userDeletedManagementDetail: {
+        path: '/user-deleted-management/:id',
+        getHref: (id: number) => `/user-deleted-management/${id}`,
+    },
 } as const;

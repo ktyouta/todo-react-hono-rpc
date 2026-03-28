@@ -1,1 +1,1 @@
-export * from "./controller/user-deleted.controller";
+export * from "./controller";
