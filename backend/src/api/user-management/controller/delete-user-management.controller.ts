@@ -3,7 +3,7 @@ import { and, eq } from "drizzle-orm";
 import { Hono } from "hono";
 import { API_ENDPOINT, HTTP_STATUS } from "../../../constant";
 import { FrontUserId } from "../../../domain";
-import { frontUserLoginMaster, frontUserMaster } from "../../../infrastructure/db";
+import { frontUserLoginMaster, frontUserMaster, taskTransaction } from "../../../infrastructure/db";
 import { authMiddleware, requirePermission } from "../../../middleware";
 import type { AppEnv } from "../../../types";
 import { formatZodErrors } from "../../../util";
@@ -60,6 +60,14 @@ const deleteUserManagement = new Hono<AppEnv>().delete(
                     and(
                         eq(frontUserLoginMaster.id, targetUserId.value),
                         eq(frontUserLoginMaster.deleteFlg, false)
+                    )
+                ),
+            db.update(taskTransaction)
+                .set({ deleteFlg: true, updatedAt: now })
+                .where(
+                    and(
+                        eq(taskTransaction.userId, targetUserId.value),
+                        eq(taskTransaction.deleteFlg, false)
                     )
                 ),
         ]);
