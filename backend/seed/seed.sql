@@ -9,6 +9,14 @@ INSERT OR IGNORE INTO role_master (id, name, created_at, updated_at) VALUES
   (1, '一般ユーザー', datetime('now'), datetime('now')),
   (2, '管理者', datetime('now'), datetime('now'));
 
+-- 画面マスタ
+INSERT OR IGNORE INTO screen_master (id, key, name, created_at, updated_at) VALUES
+  (1, 'task_management',         'タスク管理',       datetime('now'), datetime('now')),
+  (2, 'user_management',         'ユーザー管理',     datetime('now'), datetime('now')),
+  (3, 'deleted_task_management', '削除タスク管理',   datetime('now'), datetime('now')),
+  (4, 'deleted_user_management', '削除ユーザー管理', datetime('now'), datetime('now')),
+  (5, 'user_create',             'ユーザー作成',     datetime('now'), datetime('now'));
+
 -- パーミッションマスタ
 INSERT OR IGNORE INTO permission_master (id, screen, created_at, updated_at) VALUES
   (1, 'task_management', datetime('now'), datetime('now')),

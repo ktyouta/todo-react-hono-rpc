@@ -29,11 +29,25 @@ export type RoleMaster = typeof roleMaster.$inferSelect;
 export type NewRoleMaster = typeof roleMaster.$inferInsert;
 
 /**
+ * 画面マスタ
+ */
+export const screenMaster = sqliteTable("screen_master", {
+  id: integer("id").primaryKey(),
+  key: text("key").notNull().unique(),
+  name: text("name").notNull(),
+  createdAt: text("created_at").notNull(),
+  updatedAt: text("updated_at").notNull(),
+});
+
+export type ScreenMaster = typeof screenMaster.$inferSelect;
+export type NewScreenMaster = typeof screenMaster.$inferInsert;
+
+/**
  * パーミッションマスタ
  */
 export const permissionMaster = sqliteTable("permission_master", {
   id: integer("id").primaryKey(),
-  screen: text("screen").notNull().unique(),
+  screenId: integer("screen_id").notNull().unique().references(() => screenMaster.id),
   createdAt: text("created_at").notNull(),
   updatedAt: text("updated_at").notNull(),
 });

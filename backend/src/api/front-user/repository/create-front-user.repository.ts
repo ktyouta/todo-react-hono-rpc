@@ -1,7 +1,7 @@
 import { and, eq } from "drizzle-orm";
 import type { FrontUserName } from "../../../domain";
 import type { DbClient, FrontUserMaster } from "../../../infrastructure/db";
-import { frontUserMaster, permissionMaster, roleMaster, rolePermission, seqMaster } from "../../../infrastructure/db";
+import { frontUserMaster, permissionMaster, roleMaster, rolePermission, screenMaster, seqMaster } from "../../../infrastructure/db";
 import { SEQ_KEY } from "../../../constant";
 import type { ICreateFrontUserRepository } from "./create-front-user.repository.interface";
 
@@ -37,11 +37,12 @@ export class CreateFrontUserRepository implements ICreateFrontUserRepository {
 
   async findPermissionsByRoleId(roleId: number): Promise<string[]> {
     const result = await this.db
-      .select({ screen: permissionMaster.screen })
+      .select({ key: screenMaster.key })
       .from(rolePermission)
       .innerJoin(permissionMaster, eq(rolePermission.permissionId, permissionMaster.id))
+      .innerJoin(screenMaster, eq(permissionMaster.screenId, screenMaster.id))
       .where(eq(rolePermission.roleId, roleId));
-    return result.map(r => r.screen);
+    return result.map(r => r.key);
   }
 
   async getNextSeqId(): Promise<number | null> {

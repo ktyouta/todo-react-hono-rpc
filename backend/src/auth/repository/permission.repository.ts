@@ -1,7 +1,7 @@
 import { and, eq } from "drizzle-orm";
 import type { FrontUserId } from "../../domain";
 import type { Database } from "../../infrastructure/db";
-import { frontUserMaster, permissionMaster, rolePermission } from "../../infrastructure/db";
+import { frontUserMaster, permissionMaster, rolePermission, screenMaster } from "../../infrastructure/db";
 import type { IPermissionRepository } from "./permission.repository.interface";
 
 /**
@@ -28,15 +28,16 @@ export class PermissionRepository implements IPermissionRepository {
     }
 
     /**
-     * ロールIDに紐づくパーミッション（screen）一覧を取得
+     * ロールIDに紐づくパーミッション（screen key）一覧を取得
      * @param roleId ロールID
      */
     async getPermissions(roleId: number): Promise<string[]> {
         const result = await this.db
-            .select({ screen: permissionMaster.screen })
+            .select({ key: screenMaster.key })
             .from(rolePermission)
             .innerJoin(permissionMaster, eq(rolePermission.permissionId, permissionMaster.id))
+            .innerJoin(screenMaster, eq(permissionMaster.screenId, screenMaster.id))
             .where(eq(rolePermission.roleId, roleId));
-        return result.map(r => r.screen);
+        return result.map(r => r.key);
     }
 }
