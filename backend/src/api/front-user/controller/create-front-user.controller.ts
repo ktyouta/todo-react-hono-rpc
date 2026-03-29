@@ -2,7 +2,7 @@ import { zValidator } from "@hono/zod-validator";
 import { eq } from "drizzle-orm";
 import { Hono } from "hono";
 import { setCookie } from "hono/cookie";
-import { API_ENDPOINT, HTTP_STATUS } from "../../../constant";
+import { API_ENDPOINT, HTTP_STATUS, SEQ_KEY } from "../../../constant";
 import {
     AccessToken,
     FrontUserBirthday,
@@ -22,8 +22,6 @@ import { CreateFrontUserResponseDto } from "../dto";
 import { FrontUserEntity, FrontUserLoginEntity } from "../entity";
 import { CreateFrontUserRepository } from "../repository";
 import { CreateFrontUserSchema } from "../schema";
-
-const SEQ_KEY = "front_user_id";
 
 /**
  * ユーザー作成
@@ -64,16 +62,11 @@ const createFrontUser = new Hono<AppEnv>().post(
         }
 
         // ID採番: seq_master から次のIDを取得
-        const seqResult = await db
-            .select()
-            .from(seqMaster)
-            .where(eq(seqMaster.key, SEQ_KEY));
+        const nextId = await repository.getNextSeqId();
 
-        if (seqResult.length === 0) {
+        if (nextId === null) {
             return c.json({ message: "シーケンスが初期化されていません。" }, HTTP_STATUS.INTERNAL_SERVER_ERROR);
         }
-
-        const nextId = seqResult[0].nextId;
         const frontUserId = FrontUserId.of(nextId);
 
         // エンティティを生成
@@ -90,7 +83,7 @@ const createFrontUser = new Hono<AppEnv>().post(
         await db.batch([
             db.update(seqMaster)
                 .set({ nextId: nextId + 1, updatedAt: now })
-                .where(eq(seqMaster.key, SEQ_KEY)),
+                .where(eq(seqMaster.key, SEQ_KEY.FRONT_USER_ID)),
             db.insert(frontUserLoginMaster).values({
                 id: loginUserEntity.frontUserId,
                 name: loginUserEntity.frontUserName,

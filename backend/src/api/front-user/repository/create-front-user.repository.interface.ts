@@ -22,4 +22,10 @@ export interface ICreateFrontUserRepository {
    * @param roleId ロールID
    */
   findPermissionsByRoleId(roleId: number): Promise<string[]>;
+
+  /**
+   * seq_master から次のIDを取得
+   * シーケンスが未初期化の場合は null を返す
+   */
+  getNextSeqId(): Promise<number | null>;
 }

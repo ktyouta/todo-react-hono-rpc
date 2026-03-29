@@ -1,7 +1,7 @@
 import { zValidator } from "@hono/zod-validator";
 import { eq } from "drizzle-orm";
 import { Hono } from "hono";
-import { API_ENDPOINT, HTTP_STATUS } from "../../../constant";
+import { API_ENDPOINT, HTTP_STATUS, SEQ_KEY } from "../../../constant";
 import {
     FrontUserBirthday,
     FrontUserId,
@@ -16,10 +16,8 @@ import { requirePermission } from "../../../middleware";
 import type { AppEnv } from "../../../types";
 import { formatZodErrors } from "../../../util";
 import { FrontUserEntity, FrontUserLoginEntity } from "../../front-user/entity";
-import { CreateFrontUserRepository } from "../../front-user/repository";
+import { CreateUserManagementRepository } from "../repository/create-user-management.repository";
 import { CreateUserManagementSchema } from "../schema/create-user-management.schema";
-
-const SEQ_KEY = "front_user_id";
 
 /**
  * ユーザー作成（管理者用）
@@ -27,7 +25,7 @@ const SEQ_KEY = "front_user_id";
  */
 const createUserManagement = new Hono<AppEnv>().post(
     API_ENDPOINT.USER_MANAGEMENT,
-    requirePermission("user_management"),
+    requirePermission("user_create"),
     zValidator("json", CreateUserManagementSchema, (result, c) => {
         if (!result.success) {
             const data = formatZodErrors(result.error);
@@ -39,7 +37,7 @@ const createUserManagement = new Hono<AppEnv>().post(
         const body = c.req.valid("json");
         const db = c.get("db");
         const config = c.get("envConfig");
-        const repository = new CreateFrontUserRepository(db);
+        const repository = new CreateUserManagementRepository(db);
 
         // ドメインオブジェクトを生成
         const userName = new FrontUserName(body.name);
@@ -56,16 +54,11 @@ const createUserManagement = new Hono<AppEnv>().post(
         }
 
         // ID採番: seq_master から次のIDを取得
-        const seqResult = await db
-            .select()
-            .from(seqMaster)
-            .where(eq(seqMaster.key, SEQ_KEY));
+        const nextId = await repository.getNextSeqId();
 
-        if (seqResult.length === 0) {
+        if (nextId === null) {
             return c.json({ message: "シーケンスが初期化されていません。" }, HTTP_STATUS.INTERNAL_SERVER_ERROR);
         }
-
-        const nextId = seqResult[0].nextId;
         const frontUserId = FrontUserId.of(nextId);
 
         // エンティティを生成
@@ -77,7 +70,7 @@ const createUserManagement = new Hono<AppEnv>().post(
         await db.batch([
             db.update(seqMaster)
                 .set({ nextId: nextId + 1, updatedAt: now })
-                .where(eq(seqMaster.key, SEQ_KEY)),
+                .where(eq(seqMaster.key, SEQ_KEY.FRONT_USER_ID)),
             db.insert(frontUserLoginMaster).values({
                 id: loginUserEntity.frontUserId,
                 name: loginUserEntity.frontUserName,

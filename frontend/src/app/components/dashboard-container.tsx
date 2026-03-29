@@ -2,7 +2,7 @@ import { Dashboard } from "@/components";
 import { paths } from "@/config/paths";
 import { useAppNavigation } from "@/hooks/use-app-navigation";
 import { usePermission } from "@/hooks/use-permission";
-import { HiOutlineArchiveBoxXMark, HiOutlineClipboardDocumentList, HiOutlineDocumentPlus, HiOutlineHome, HiOutlineUser, HiOutlineUserMinus } from 'react-icons/hi2';
+import { HiOutlineArchiveBoxXMark, HiOutlineClipboardDocumentList, HiOutlineDocumentPlus, HiOutlineHome, HiOutlineUser, HiOutlineUserMinus, HiOutlineUserPlus } from 'react-icons/hi2';
 import { Navigate, Outlet } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useLogoutMutation } from "../api/logout";
@@ -15,6 +15,8 @@ export function DashboardContainer() {
     const hasTaskManagement = usePermission('task_management');
     // 削除タスク管理パーミッション
     const hasDeletedTaskManagement = usePermission('deleted_task_management');
+    // ユーザー作成パーミッション
+    const hasUserCreate = usePermission('user_create');
     // ユーザー管理パーミッション
     const hasUserManagement = usePermission('user_management');
     // 削除ユーザー管理パーミッション
@@ -41,6 +43,11 @@ export function DashboardContainer() {
             name: `削除タスク管理`,
             icon: <HiOutlineArchiveBoxXMark className='h-5 w-5' />,
             path: paths.todoDeletedManagement.path,
+        }] : []),
+        ...(hasUserCreate ? [{
+            name: `ユーザー作成`,
+            icon: <HiOutlineUserPlus className='h-5 w-5' />,
+            path: paths.userCreate.path,
         }] : []),
         ...(hasUserManagement ? [{
             name: `ユーザー管理`,

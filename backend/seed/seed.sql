@@ -14,7 +14,8 @@ INSERT OR IGNORE INTO permission_master (id, screen, created_at, updated_at) VAL
   (1, 'task_management', datetime('now'), datetime('now')),
   (2, 'user_management', datetime('now'), datetime('now')),
   (3, 'deleted_task_management', datetime('now'), datetime('now')),
-  (4, 'deleted_user_management', datetime('now'), datetime('now'));
+  (4, 'deleted_user_management', datetime('now'), datetime('now')),
+  (5, 'user_create', datetime('now'), datetime('now'));
 
 -- ロール・パーミッション中間テーブル
 -- admin: 全画面アクセス可
@@ -23,7 +24,8 @@ INSERT OR IGNORE INTO role_permission (role_id, permission_id) VALUES
   (2, 1), -- admin → task_management
   (2, 2), -- admin → user_management
   (2, 3), -- admin → deleted_task_management
-  (2, 4); -- admin → deleted_user_management
+  (2, 4), -- admin → deleted_user_management
+  (2, 5); -- admin → user_create
 
 -- シーケンスマスタ（ID採番用）
 INSERT OR IGNORE INTO seq_master (key, next_id, created_at, updated_at) VALUES
