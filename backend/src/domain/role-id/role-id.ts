@@ -1,7 +1,5 @@
-export enum RoleType {
-  user = 1,
-  admin = 2,
-}
+// デフォルトのロール値
+const DEFAULT_ROLE_ID = 1;
 
 /**
  * ロールID
@@ -24,11 +22,9 @@ export class RoleId {
    * ファクトリメソッド
    */
   static of(roleId: number): RoleId {
-
-    if (!Object.values(RoleType).includes(roleId)) {
+    if (roleId < 1) {
       throw new Error(`ロールIDが不正です。ID:${roleId}`);
     }
-
     return new RoleId(roleId);
   }
 
@@ -36,6 +32,6 @@ export class RoleId {
    * デフォルトロール（一般ユーザー）を生成するファクトリメソッド
    */
   static create(): RoleId {
-    return new RoleId(RoleType.user);
+    return new RoleId(DEFAULT_ROLE_ID);
   }
 }

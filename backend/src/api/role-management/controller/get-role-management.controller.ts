@@ -6,6 +6,7 @@ import type { AppEnv } from "../../../types";
 import { formatZodErrors } from "../../../util";
 import { GetRoleManagementRepository } from "../repository/get-role-management.repository";
 import { RoleManagementIdParamSchema } from "../schema/role-management-id-param.schema";
+import { GetRoleManagementService } from "../service/get-role-management.service";
 
 /**
  * ロール詳細取得（管理者用）
@@ -23,13 +24,15 @@ const getRoleManagement = new Hono<AppEnv>().get(
         const db = c.get("db");
         const { roleId } = c.req.valid("param");
         const repository = new GetRoleManagementRepository(db);
-        const role = await repository.findById(roleId);
+        const service = new GetRoleManagementService(repository);
 
+        const role = await service.findRole(roleId);
         if (!role) {
             return c.json({ message: "ロールが見つかりません。" }, HTTP_STATUS.NOT_FOUND);
         }
 
-        return c.json({ message: "ロールを取得しました。", data: role }, HTTP_STATUS.OK);
+        const permissions = await service.findPermissions(roleId);
+        return c.json({ message: "ロールを取得しました。", data: { ...role, permissions } }, HTTP_STATUS.OK);
     }
 );
 

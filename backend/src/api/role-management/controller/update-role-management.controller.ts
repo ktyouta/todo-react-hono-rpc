@@ -2,6 +2,7 @@ import { zValidator } from "@hono/zod-validator";
 import { eq } from "drizzle-orm";
 import { Hono } from "hono";
 import { API_ENDPOINT, HTTP_STATUS } from "../../../constant";
+import { PermissionId, RoleName } from "../../../domain";
 import { roleMaster, rolePermission } from "../../../infrastructure/db";
 import { requirePermission } from "../../../middleware";
 import type { AppEnv } from "../../../types";
@@ -35,6 +36,9 @@ const updateRoleManagement = new Hono<AppEnv>().put(
         const db = c.get("db");
         const repository = new UpdateRoleManagementRepository(db);
 
+        const roleName = new RoleName(body.name);
+        const permissionIds = body.permissionIds.map((id) => new PermissionId(id));
+
         // ロール存在チェック
         const role = await repository.findById(roleId);
         if (!role) {
@@ -42,7 +46,7 @@ const updateRoleManagement = new Hono<AppEnv>().put(
         }
 
         // ロール名重複チェック（自身を除く）
-        const nameConflict = await repository.findByNameExcludingId(body.name, roleId);
+        const nameConflict = await repository.findByNameExcludingId(roleName, roleId);
         if (nameConflict.length > 0) {
             return c.json({ message: "既に同じ名前のロールが存在しています。" }, HTTP_STATUS.UNPROCESSABLE_ENTITY);
         }
@@ -51,19 +55,19 @@ const updateRoleManagement = new Hono<AppEnv>().put(
 
         await db.batch([
             db.update(roleMaster)
-                .set({ name: body.name, updatedAt: now })
+                .set({ name: roleName.value, updatedAt: now })
                 .where(eq(roleMaster.id, roleId)),
             db.delete(rolePermission)
                 .where(eq(rolePermission.roleId, roleId)),
-            ...body.permissionIds.map((permissionId) =>
+            ...permissionIds.map((permissionId) =>
                 db.insert(rolePermission).values({
                     roleId,
-                    permissionId,
+                    permissionId: permissionId.value,
                 })
             ),
         ]);
 
-        return c.json({ message: "ロールを更新しました。", data: { id: roleId, name: body.name, updatedAt: now } }, HTTP_STATUS.OK);
+        return c.json({ message: "ロールを更新しました。", data: { id: roleId, name: roleName.value, updatedAt: now } }, HTTP_STATUS.OK);
     }
 );
 

@@ -12,6 +12,17 @@ export type RoleManagementItem = {
     updatedAt: string;
 };
 
+export type RoleManagementBase = Omit<RoleManagementItem, "permissions">;
+
+export type RolePermissionRow = RolePermissionInfo & { roleId: number };
+
 export interface IGetRoleManagementListRepository {
-    findAll(): Promise<RoleManagementItem[]>;
+    /**
+     * 全ロールを取得
+     */
+    findAll(): Promise<RoleManagementBase[]>;
+    /**
+     * 全ロールのパーミッション情報を一括取得
+     */
+    findAllPermissions(): Promise<RolePermissionRow[]>;
 }

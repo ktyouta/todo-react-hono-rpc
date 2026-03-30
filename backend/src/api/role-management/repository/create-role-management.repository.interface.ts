@@ -1,4 +1,6 @@
+import type { RoleName } from "../../../domain";
+
 export interface ICreateRoleManagementRepository {
-    findByName(name: string): Promise<{ id: number }[]>;
+    findByName(roleName: RoleName): Promise<{ id: number }[]>;
     getNextSeqId(): Promise<number | null>;
 }

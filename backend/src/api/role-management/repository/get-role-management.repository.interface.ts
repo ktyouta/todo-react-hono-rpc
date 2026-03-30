@@ -1,5 +1,12 @@
-import type { RoleManagementItem } from "./get-role-management-list.repository.interface";
+import type { RoleManagementBase, RolePermissionInfo } from "./get-role-management-list.repository.interface";
 
 export interface IGetRoleManagementRepository {
-    findById(roleId: number): Promise<RoleManagementItem | undefined>;
+    /**
+     * IDでロールを取得
+     */
+    findById(roleId: number): Promise<RoleManagementBase | undefined>;
+    /**
+     * ロールIDに紐づくパーミッション情報を取得
+     */
+    findPermissions(roleId: number): Promise<RolePermissionInfo[]>;
 }

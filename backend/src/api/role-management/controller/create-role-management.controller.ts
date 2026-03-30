@@ -2,6 +2,7 @@ import { zValidator } from "@hono/zod-validator";
 import { eq } from "drizzle-orm";
 import { Hono } from "hono";
 import { API_ENDPOINT, HTTP_STATUS, SEQ_KEY } from "../../../constant";
+import { PermissionId, RoleName } from "../../../domain";
 import { roleMaster, rolePermission, seqMaster } from "../../../infrastructure/db";
 import { requirePermission } from "../../../middleware";
 import type { AppEnv } from "../../../types";
@@ -28,8 +29,11 @@ const createRoleManagement = new Hono<AppEnv>().post(
         const db = c.get("db");
         const repository = new CreateRoleManagementRepository(db);
 
+        const roleName = new RoleName(body.name);
+        const permissionIds = body.permissionIds.map((id) => new PermissionId(id));
+
         // ロール名重複チェック
-        const existing = await repository.findByName(body.name);
+        const existing = await repository.findByName(roleName);
         if (existing.length > 0) {
             return c.json({ message: "既に同じ名前のロールが存在しています。" }, HTTP_STATUS.UNPROCESSABLE_ENTITY);
         }
@@ -48,14 +52,14 @@ const createRoleManagement = new Hono<AppEnv>().post(
                 .where(eq(seqMaster.key, SEQ_KEY.ROLE_ID)),
             db.insert(roleMaster).values({
                 id: nextId,
-                name: body.name,
+                name: roleName.value,
                 createdAt: now,
                 updatedAt: now,
             }),
-            ...body.permissionIds.map((permissionId) =>
+            ...permissionIds.map((permissionId) =>
                 db.insert(rolePermission).values({
                     roleId: nextId,
-                    permissionId,
+                    permissionId: permissionId.value,
                 })
             ),
         ]);
@@ -63,7 +67,7 @@ const createRoleManagement = new Hono<AppEnv>().post(
         return c.json(
             {
                 message: "ロールを作成しました。",
-                data: { id: nextId, name: body.name, createdAt: now, updatedAt: now },
+                data: { id: nextId, name: roleName.value, createdAt: now, updatedAt: now },
             },
             HTTP_STATUS.CREATED
         );

@@ -1,5 +1,6 @@
 import { eq } from "drizzle-orm";
 import { SEQ_KEY } from "../../../constant";
+import type { RoleName } from "../../../domain";
 import type { Database } from "../../../infrastructure/db";
 import { roleMaster, seqMaster } from "../../../infrastructure/db";
 import type { ICreateRoleManagementRepository } from "./create-role-management.repository.interface";
@@ -7,13 +8,19 @@ import type { ICreateRoleManagementRepository } from "./create-role-management.r
 export class CreateRoleManagementRepository implements ICreateRoleManagementRepository {
     constructor(private readonly db: Database) {}
 
-    async findByName(name: string): Promise<{ id: number }[]> {
+    /**
+     * ロール名でロールを検索（重複チェック用）
+     */
+    async findByName(roleName: RoleName): Promise<{ id: number }[]> {
         return await this.db
             .select({ id: roleMaster.id })
             .from(roleMaster)
-            .where(eq(roleMaster.name, name));
+            .where(eq(roleMaster.name, roleName.value));
     }
 
+    /**
+     * seq_master から次のロールIDを取得
+     */
     async getNextSeqId(): Promise<number | null> {
         const result = await this.db
             .select()
