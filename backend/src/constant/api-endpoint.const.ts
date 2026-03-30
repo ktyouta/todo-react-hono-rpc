@@ -31,6 +31,8 @@ export const API_ENDPOINT = {
   USER_DELETED: "/api/v1/user-deleted",
   USER_DELETED_ID: "/api/v1/user-deleted/:id",
   USER_DELETED_RESTORE: "/api/v1/user-deleted/:id/restore",
+  ROLE_MANAGEMENT: "/api/v1/role-management",
+  ROLE_MANAGEMENT_ID: "/api/v1/role-management/:roleId",
 } as const;
 
 export type ApiEndpointType = (typeof API_ENDPOINT)[keyof typeof API_ENDPOINT];
