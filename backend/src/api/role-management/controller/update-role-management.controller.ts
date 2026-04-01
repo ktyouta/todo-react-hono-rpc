@@ -10,6 +10,7 @@ import { formatZodErrors } from "../../../util";
 import { UpdateRoleManagementRepository } from "../repository/update-role-management.repository";
 import { RoleManagementIdParamSchema } from "../schema/role-management-id-param.schema";
 import { UpdateRoleManagementSchema } from "../schema/update-role-management.schema";
+import { UpdateRoleManagementService } from "../service/update-role-management.service";
 
 /**
  * ロール更新（管理者用）
@@ -35,20 +36,29 @@ const updateRoleManagement = new Hono<AppEnv>().put(
         const body = c.req.valid("json");
         const db = c.get("db");
         const repository = new UpdateRoleManagementRepository(db);
+        const service = new UpdateRoleManagementService(repository);
 
         const roleName = new RoleName(body.name);
         const permissionIds = body.permissionIds.map((id) => new PermissionId(id));
 
         // ロール存在チェック
-        const role = await repository.findById(roleId);
+        const role = await service.findRole(roleId);
         if (!role) {
             return c.json({ message: "ロールが見つかりません。" }, HTTP_STATUS.NOT_FOUND);
         }
 
         // ロール名重複チェック（自身を除く）
-        const nameConflict = await repository.findByNameExcludingId(roleName, roleId);
+        const nameConflict = await service.findByNameExcludingId(roleName, roleId);
         if (nameConflict.length > 0) {
             return c.json({ message: "既に同じ名前のロールが存在しています。" }, HTTP_STATUS.UNPROCESSABLE_ENTITY);
+        }
+
+        // 保護対象のパーミッションチェック
+        if (role.isProtected) {
+            const missingPermissions = await service.findMissingProtectedPermissions(permissionIds);
+            if (missingPermissions.length > 0) {
+                return c.json({ message: "設定必須の画面が含まれていません。" }, HTTP_STATUS.UNPROCESSABLE_ENTITY);
+            }
         }
 
         const now = new Date().toISOString();
