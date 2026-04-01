@@ -1,4 +1,4 @@
-import type { IGetRoleManagementListRepository, RoleManagementBase, RoleManagementItem, RolePermissionInfo, RolePermissionRow } from "../repository/get-role-management-list.repository.interface";
+import type { IGetRoleManagementListRepository, RoleManagementBase, RoleManagementItem, RolePermissionRow } from "../repository/get-role-management-list.repository.interface";
 
 /**
  * ロール一覧取得サービス
@@ -24,17 +24,20 @@ export class GetRoleManagementListService {
      * ロール一覧とパーミッション情報を結合
      */
     mergeRolesWithPermissions(roles: RoleManagementBase[], permissionRows: RolePermissionRow[]): RoleManagementItem[] {
-        const permissionMap = new Map<number, RolePermissionInfo[]>();
-        for (const row of permissionRows) {
-            if (!permissionMap.has(row.roleId)) {
-                permissionMap.set(row.roleId, []);
+        const permissionMap = new Map<number, RolePermissionRow[]>();
+
+        permissionRows.forEach((e) => {
+            const roleId = e.roleId;
+            let permissions = permissionMap.get(roleId);
+
+            if (!permissions) {
+                permissions = [];
+                permissionMap.set(roleId, permissions);
             }
-            permissionMap.get(row.roleId)!.push({
-                permissionId: row.permissionId,
-                screenKey: row.screenKey,
-                screenName: row.screenName,
-            });
-        }
+
+            permissions.push(e);
+        });
+
         return roles.map((role) => ({
             ...role,
             permissions: permissionMap.get(role.id) ?? [],

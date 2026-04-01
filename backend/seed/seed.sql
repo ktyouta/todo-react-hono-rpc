@@ -5,9 +5,9 @@
 -- =============================================
 
 -- ロールマスタ
-INSERT OR IGNORE INTO role_master (id, name, created_at, updated_at) VALUES
-  (1, '一般ユーザー', datetime('now'), datetime('now')),
-  (2, '管理者', datetime('now'), datetime('now'));
+INSERT OR IGNORE INTO role_master (id, name, is_protected, created_at, updated_at) VALUES
+  (1, '一般ユーザー', 0, datetime('now'), datetime('now')),
+  (2, '管理者',       1, datetime('now'), datetime('now'));
 
 -- 画面マスタ
 INSERT OR IGNORE INTO screen_master (id, key, name, created_at, updated_at) VALUES
@@ -19,13 +19,13 @@ INSERT OR IGNORE INTO screen_master (id, key, name, created_at, updated_at) VALU
   (6, 'role_management',         'ロール管理',       datetime('now'), datetime('now'));
 
 -- パーミッションマスタ
-INSERT OR IGNORE INTO permission_master (id, screen_id, created_at, updated_at) VALUES
-  (1, 1, datetime('now'), datetime('now')), -- task_management
-  (2, 2, datetime('now'), datetime('now')), -- user_management
-  (3, 3, datetime('now'), datetime('now')), -- deleted_task_management
-  (4, 4, datetime('now'), datetime('now')), -- deleted_user_management
-  (5, 5, datetime('now'), datetime('now')), -- user_create
-  (6, 6, datetime('now'), datetime('now')); -- role_management
+INSERT OR IGNORE INTO permission_master (id, screen_id, is_protected, created_at, updated_at) VALUES
+  (1, 1, 0, datetime('now'), datetime('now')), -- task_management
+  (2, 2, 1, datetime('now'), datetime('now')), -- user_management
+  (3, 3, 0, datetime('now'), datetime('now')), -- deleted_task_management
+  (4, 4, 1, datetime('now'), datetime('now')), -- deleted_user_management
+  (5, 5, 1, datetime('now'), datetime('now')), -- user_create
+  (6, 6, 1, datetime('now'), datetime('now')); -- role_management
 
 -- ロール・パーミッション中間テーブル
 -- admin: 全画面アクセス可

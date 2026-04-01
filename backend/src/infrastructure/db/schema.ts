@@ -21,6 +21,7 @@ export type NewSample = typeof sample.$inferInsert;
 export const roleMaster = sqliteTable("role_master", {
   id: integer("id").primaryKey(),
   name: text("name").notNull().unique(),
+  isProtected: integer("is_protected").notNull().default(0),
   createdAt: text("created_at").notNull(),
   updatedAt: text("updated_at").notNull(),
 });
@@ -48,6 +49,7 @@ export type NewScreenMaster = typeof screenMaster.$inferInsert;
 export const permissionMaster = sqliteTable("permission_master", {
   id: integer("id").primaryKey(),
   screenId: integer("screen_id").notNull().unique().references(() => screenMaster.id),
+  isProtected: integer("is_protected").notNull().default(0),
   createdAt: text("created_at").notNull(),
   updatedAt: text("updated_at").notNull(),
 });
