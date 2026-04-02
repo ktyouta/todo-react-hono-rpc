@@ -22,6 +22,7 @@ export const roleMaster = sqliteTable("role_master", {
   id: integer("id").primaryKey(),
   name: text("name").notNull().unique(),
   isProtected: integer("is_protected", { mode: "boolean" }).notNull().default(false),
+  isImmutable: integer("is_immutable", { mode: "boolean" }).notNull().default(false),
   createdAt: text("created_at").notNull(),
   updatedAt: text("updated_at").notNull(),
 });

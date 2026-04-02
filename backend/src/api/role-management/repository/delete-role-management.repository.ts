@@ -14,7 +14,8 @@ export class DeleteRoleManagementRepository implements IDeleteRoleManagementRepo
             .select({
                 id: roleMaster.id,
                 name: roleMaster.name,
-                isProtected: roleMaster.isProtected
+                isProtected: roleMaster.isProtected,
+                isImmutable: roleMaster.isImmutable,
             })
             .from(roleMaster)
             .where(eq(roleMaster.id, roleId));

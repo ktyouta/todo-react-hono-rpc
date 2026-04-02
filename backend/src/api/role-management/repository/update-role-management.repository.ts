@@ -15,7 +15,8 @@ export class UpdateRoleManagementRepository implements IUpdateRoleManagementRepo
             .select({
                 id: roleMaster.id,
                 name: roleMaster.name,
-                isProtected: roleMaster.isProtected
+                isProtected: roleMaster.isProtected,
+                isImmutable: roleMaster.isImmutable,
             })
             .from(roleMaster)
             .where(eq(roleMaster.id, roleId));

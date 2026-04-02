@@ -5,9 +5,9 @@
 -- =============================================
 
 -- ロールマスタ
-INSERT OR IGNORE INTO role_master (id, name, is_protected, created_at, updated_at) VALUES
-  (1, '一般ユーザー', 0, datetime('now'), datetime('now')),
-  (2, '管理者',       1, datetime('now'), datetime('now'));
+INSERT OR IGNORE INTO role_master (id, name, is_protected, is_immutable, created_at, updated_at) VALUES
+  (1, '一般ユーザー', 0, 1, datetime('now'), datetime('now')),
+  (2, '管理者',       1, 0, datetime('now'), datetime('now'));
 
 -- 画面マスタ
 INSERT OR IGNORE INTO screen_master (id, key, name, created_at, updated_at) VALUES

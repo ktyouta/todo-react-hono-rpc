@@ -39,6 +39,11 @@ const deleteRoleManagement = new Hono<AppEnv>().delete(
             return c.json({ message: "保護対象ロールのため削除できません" }, HTTP_STATUS.UNPROCESSABLE_ENTITY);
         }
 
+        // 削除不可ロールについては削除不可
+        if (role.isImmutable) {
+            return c.json({ message: "削除できないロールです。" }, HTTP_STATUS.UNPROCESSABLE_ENTITY);
+        }
+
         // 削除対象ロールの使用チェック
         const user = await service.checkExistUser(roleId);
         if (user.length > 0) {

@@ -47,18 +47,25 @@ const updateRoleManagement = new Hono<AppEnv>().put(
             return c.json({ message: "ロールが見つかりません。" }, HTTP_STATUS.NOT_FOUND);
         }
 
-        // ロール名重複チェック（自身を除く）
-        const nameConflict = await service.findByNameExcludingId(roleName, roleId);
-        if (nameConflict.length > 0) {
-            return c.json({ message: "既に同じ名前のロールが存在しています。" }, HTTP_STATUS.UNPROCESSABLE_ENTITY);
-        }
-
         // 保護対象のパーミッションチェック
         if (role.isProtected) {
             const missingPermissions = await service.findMissingProtectedPermissions(permissionIds);
             if (missingPermissions.length > 0) {
                 return c.json({ message: "設定必須の画面が含まれていません。" }, HTTP_STATUS.UNPROCESSABLE_ENTITY);
             }
+        }
+
+        // パーミッション設定不可チェック
+        if (role.isImmutable) {
+            if (permissionIds.length) {
+                return c.json({ message: "パーミッションを設定できないロールです。" }, HTTP_STATUS.UNPROCESSABLE_ENTITY);
+            }
+        }
+
+        // ロール名重複チェック（自身を除く）
+        const nameConflict = await service.findByNameExcludingId(roleName, roleId);
+        if (nameConflict.length > 0) {
+            return c.json({ message: "既に同じ名前のロールが存在しています。" }, HTTP_STATUS.UNPROCESSABLE_ENTITY);
         }
 
         const now = new Date().toISOString();
