@@ -1,3 +1,4 @@
+import type { GetRoleManagementListQuerySchemaType } from "../schema/get-role-management-list-query.schema";
 import type { IGetRoleManagementListRepository, RoleManagementBase, RoleManagementItem, RolePermissionRow } from "../repository/get-role-management-list.repository.interface";
 
 /**
@@ -7,10 +8,10 @@ export class GetRoleManagementListService {
     constructor(private readonly repository: IGetRoleManagementListRepository) { }
 
     /**
-     * 全ロールを取得
+     * ロールを取得（name が指定された場合は部分一致フィルタ）
      */
-    async findAll(): Promise<RoleManagementBase[]> {
-        return await this.repository.findAll();
+    async findAll(query: GetRoleManagementListQuerySchemaType): Promise<RoleManagementBase[]> {
+        return await this.repository.findAll(query);
     }
 
     /**

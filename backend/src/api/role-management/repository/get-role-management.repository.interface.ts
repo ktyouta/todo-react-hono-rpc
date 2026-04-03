@@ -2,6 +2,7 @@ export type RoleDetail = {
     id: number;
     name: string;
     isProtected: boolean;
+    isImmutable: boolean;
     createdAt: string;
     updatedAt: string;
 };

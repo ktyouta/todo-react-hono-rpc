@@ -15,6 +15,7 @@ export class GetRoleManagementRepository implements IGetRoleManagementRepository
                 id: roleMaster.id,
                 name: roleMaster.name,
                 isProtected: roleMaster.isProtected,
+                isImmutable: roleMaster.isImmutable,
                 createdAt: roleMaster.createdAt,
                 updatedAt: roleMaster.updatedAt,
             })

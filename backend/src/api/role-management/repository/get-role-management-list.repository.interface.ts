@@ -1,3 +1,5 @@
+import type { GetRoleManagementListQuerySchemaType } from "../schema/get-role-management-list-query.schema";
+
 export type RolePermissionInfo = {
     permissionId: number;
     screenKey: string;
@@ -18,9 +20,9 @@ export type RolePermissionRow = RolePermissionInfo & { roleId: number };
 
 export interface IGetRoleManagementListRepository {
     /**
-     * 全ロールを取得
+     * ロールを取得（name が指定された場合は部分一致フィルタ）
      */
-    findAll(): Promise<RoleManagementBase[]>;
+    findAll(query: GetRoleManagementListQuerySchemaType): Promise<RoleManagementBase[]>;
     /**
      * 全ロールのパーミッション情報を一括取得
      */
