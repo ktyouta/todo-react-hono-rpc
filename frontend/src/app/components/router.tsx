@@ -17,6 +17,7 @@ import { UpdateUserContainer } from '@/features/updateuser/components/update-use
 import { UserDeletedManagementDetailPage } from '@/features/user-deleted-management/components/user-deleted-management-detail-page';
 import { UserDeletedManagementLayout } from '@/features/user-deleted-management/components/user-deleted-management-layout';
 import { UserDeletedManagementPage } from '@/features/user-deleted-management/components/user-deleted-management-page';
+import { RoleCreatePage } from '@/features/role-create/components/role-create-page';
 import { UserCreatePage } from '@/features/user-create/components/user-create-page';
 import { UserManagementDetailPage } from '@/features/user-management/components/user-management-detail-page';
 import { UserManagementLayout } from '@/features/user-management/components/user-management-layout';
@@ -167,6 +168,23 @@ const routerList = [
                                 path: paths.userCreate.path,
                                 element: (
                                     <UserCreatePage />
+                                )
+                            }
+                        ]
+                    },
+                    {
+                        // 権限ガード：role_management 権限なしは404
+                        element: (
+                            <RoleRoute
+                                permission="role_management"
+                            />
+                        ),
+                        children: [
+                            {
+                                // ロール作成
+                                path: paths.roleCreate.path,
+                                element: (
+                                    <RoleCreatePage />
                                 )
                             }
                         ]

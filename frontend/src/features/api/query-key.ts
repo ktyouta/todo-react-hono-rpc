@@ -22,3 +22,8 @@ export const userListKeys = {
 export const roleListKeys = {
     all: ['role-list'] as const,
 };
+
+// パーミッション一覧（ロール作成・編集用）
+export const permissionListKeys = {
+    all: ['permission-list'] as const,
+};

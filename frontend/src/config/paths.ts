@@ -46,6 +46,16 @@ export const paths = {
     userCreate: {
         path: '/user-create',
     },
+    roleCreate: {
+        path: '/role-create',
+    },
+    roleManagement: {
+        path: '/role-management',
+    },
+    roleManagementDetail: {
+        path: '/role-management/:id',
+        getHref: (id: number) => `/role-management/${id}`,
+    },
     userManagement: {
         path: '/user-management',
     },
