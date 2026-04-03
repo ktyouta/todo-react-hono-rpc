@@ -1,6 +1,7 @@
 import { Context, Hono } from "hono";
 import { cors } from "hono/cors";
 import { category, frontUser, frontUserLogin, frontUserLogout, frontUserPassword, health, priority, refresh, roleManagement, sample, status, todo, todoDeleted, todoDeletedRestore, todoFavorite, todoManagement, userDeleted, userDeletedRestore, userList, userManagement, userManagementPassword, userManagementRole, verify } from "./api";
+import { permissionList } from "./api/permission-list";
 import { roleList } from "./api/role-list";
 import {
   accessLogMiddleware,
@@ -65,6 +66,7 @@ const routes = app
   .route("/", userManagementRole)
   .route("/", userManagementPassword)
   .route("/", roleList)
+  .route("/", permissionList)
   .route("/", roleManagement)
   .route("/", userDeleted)
   .route("/", userDeletedRestore)

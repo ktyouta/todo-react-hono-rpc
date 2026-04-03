@@ -28,6 +28,7 @@ export const API_ENDPOINT = {
   STATUS: "/api/v1/status",
   PRIORITY: "/api/v1/priority",
   ROLE_LIST: "/api/v1/role-list",
+  PERMISSION_LIST: "/api/v1/permission-list",
   USER_DELETED: "/api/v1/user-deleted",
   USER_DELETED_ID: "/api/v1/user-deleted/:id",
   USER_DELETED_RESTORE: "/api/v1/user-deleted/:id/restore",
