@@ -26,11 +26,10 @@ const getRoleManagementList = new Hono<AppEnv>().get(
         const repository = new GetRoleManagementListRepository(db);
         const service = new GetRoleManagementListService(repository);
 
-        const roles = await service.findAll(query);
-        const permissionRows = await service.findAllPermissions();
-        const list = service.mergeRolesWithPermissions(roles, permissionRows);
+        const { list, total } = await service.findAll(query);
+        const totalPages = Math.ceil(total / GetRoleManagementListRepository.LIMIT);
 
-        return c.json({ message: "ロール一覧を取得しました。", data: list }, HTTP_STATUS.OK);
+        return c.json({ message: "ロール一覧を取得しました。", data: { list, total, totalPages } }, HTTP_STATUS.OK);
     }
 );
 

@@ -1,6 +1,7 @@
 import { NotFound } from '@/components';
 import { paths } from '@/config/paths';
 import { LoginContainer } from '@/features/login/components/login-container';
+import { RoleCreatePage } from '@/features/role-create/components/role-create-page';
 import { SignupContainer } from '@/features/signup/components/signup-container';
 import { TodoCreateContainer } from '@/features/todo-create/components/create-todo-container';
 import { TodoDeletedManagementDetailPage } from '@/features/todo-deleted-management/components/todo-deleted-management-detail-page';
@@ -14,11 +15,10 @@ import { TodoLayout } from '@/features/todo/components/todo-layout';
 import { TodoPage } from '@/features/todo/components/todo-page';
 import { UpdatePasswordContainer } from '@/features/updatepassword/components/update-password-container';
 import { UpdateUserContainer } from '@/features/updateuser/components/update-user-container';
+import { UserCreatePage } from '@/features/user-create/components/user-create-page';
 import { UserDeletedManagementDetailPage } from '@/features/user-deleted-management/components/user-deleted-management-detail-page';
 import { UserDeletedManagementLayout } from '@/features/user-deleted-management/components/user-deleted-management-layout';
 import { UserDeletedManagementPage } from '@/features/user-deleted-management/components/user-deleted-management-page';
-import { RoleCreatePage } from '@/features/role-create/components/role-create-page';
-import { UserCreatePage } from '@/features/user-create/components/user-create-page';
 import { UserManagementDetailPage } from '@/features/user-management/components/user-management-detail-page';
 import { UserManagementLayout } from '@/features/user-management/components/user-management-layout';
 import { UserManagementPage } from '@/features/user-management/components/user-management-page';
@@ -176,7 +176,7 @@ const routerList = [
                         // 権限ガード：role_management 権限なしは404
                         element: (
                             <RoleRoute
-                                permission="role_management"
+                                permission="role_create"
                             />
                         ),
                         children: [

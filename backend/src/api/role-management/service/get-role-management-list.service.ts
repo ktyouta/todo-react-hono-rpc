@@ -1,5 +1,5 @@
 import type { GetRoleManagementListQuerySchemaType } from "../schema/get-role-management-list-query.schema";
-import type { IGetRoleManagementListRepository, RoleManagementBase, RoleManagementItem, RolePermissionRow } from "../repository/get-role-management-list.repository.interface";
+import type { IGetRoleManagementListRepository, RoleManagementBase, RoleManagementItem, RoleManagementListResult, RolePermissionRow } from "../repository/get-role-management-list.repository.interface";
 
 /**
  * ロール一覧取得サービス
@@ -8,23 +8,27 @@ export class GetRoleManagementListService {
     constructor(private readonly repository: IGetRoleManagementListRepository) { }
 
     /**
-     * ロールを取得（name が指定された場合は部分一致フィルタ）
+     * ロール一覧とパーミッション情報を取得して結合した結果を返す
      */
-    async findAll(query: GetRoleManagementListQuerySchemaType): Promise<RoleManagementBase[]> {
-        return await this.repository.findAll(query);
-    }
+    async findAll(query: GetRoleManagementListQuerySchemaType): Promise<RoleManagementListResult> {
+        const [roles, total] = await Promise.all([
+            this.repository.findAll(query),
+            this.repository.count(query),
+        ]);
 
-    /**
-     * 全ロールのパーミッション情報を一括取得
-     */
-    async findAllPermissions(): Promise<RolePermissionRow[]> {
-        return await this.repository.findAllPermissions();
+        const roleIds = roles.map((r) => r.id);
+        const permissionRows = roleIds.length > 0
+            ? await this.repository.findPermissionsByRoleIds(roleIds)
+            : [];
+
+        const list = this.mergeRolesWithPermissions(roles, permissionRows);
+        return { list, total };
     }
 
     /**
      * ロール一覧とパーミッション情報を結合
      */
-    mergeRolesWithPermissions(roles: RoleManagementBase[], permissionRows: RolePermissionRow[]): RoleManagementItem[] {
+    private mergeRolesWithPermissions(roles: RoleManagementBase[], permissionRows: RolePermissionRow[]): RoleManagementItem[] {
         const permissionMap = new Map<number, RolePermissionRow[]>();
 
         permissionRows.forEach((e) => {
