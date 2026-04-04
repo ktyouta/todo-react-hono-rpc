@@ -7,12 +7,14 @@ import { taskTransaction } from "../../../infrastructure";
 import { authMiddleware } from "../../../middleware";
 import type { AppEnv } from "../../../types";
 import { formatZodErrors } from "../../../util";
+import { DeleteTodoRepository } from "../repository/delete-todo.repository";
 import { TaskIdParamSchema } from "../schema/task-id-param.schema";
+import { DeleteTodoService } from "../service/delete-todo.service";
 
 
 /**
  * タスク削除
- * @route PATCH /api/v1/todo
+ * @route DELETE /api/v1/todo
  */
 const deleteTodo = new Hono<AppEnv>().delete(
     API_ENDPOINT.TODO_ID,
@@ -24,13 +26,25 @@ const deleteTodo = new Hono<AppEnv>().delete(
     }),
     async (c) => {
         const db = c.get('db');
-
+        const repository = new DeleteTodoRepository(db);
+        const service = new DeleteTodoService(repository);
         const taskId = new TaskId(c.req.valid("param").id);
         const userId = c.get("user")?.userId;
         const now = new Date().toISOString();
 
         if (!userId) {
             return c.json({ message: "認証エラー" }, HTTP_STATUS.UNAUTHORIZED);
+        }
+
+        const task = await service.find(userId, taskId);
+
+        if (!task) {
+            return c.json({ message: "削除対象のタスクが存在しません。" }, HTTP_STATUS.NOT_FOUND);
+        }
+
+        // お気に入りチェック
+        if (task.isFavorite) {
+            return c.json({ message: "お気に入りのタスクは削除できません。" }, HTTP_STATUS.UNPROCESSABLE_ENTITY);
         }
 
         await db.batch([

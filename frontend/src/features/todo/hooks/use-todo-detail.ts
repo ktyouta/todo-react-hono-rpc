@@ -93,8 +93,8 @@ export function useTodoDetail() {
             toast.success(message);
             appGoBack(paths.todo.path);
         },
-        onError: () => {
-            toast.error(`タスクの削除に失敗しました。時間をおいて再度お試しください。`);
+        onError: (message) => {
+            toast.error(message ?? `タスクの削除に失敗しました。時間をおいて再度お試しください。`);
         }
     });
 
