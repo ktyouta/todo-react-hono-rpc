@@ -86,7 +86,7 @@ export function RoleManagementDetailView(props: PropsType) {
             </div>
 
             {/* Danger Zone（isProtected なら非表示） */}
-            {!role.isProtected && (
+            {!role.isProtected && !role.isImmutable && (
                 <div className="mt-4 sm:mt-8 pt-4 sm:pt-6 border-t border-gray-200">
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 p-3 sm:p-5 border border-red-200 rounded bg-red-50">
                         <div>

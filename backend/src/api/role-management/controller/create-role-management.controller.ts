@@ -16,7 +16,7 @@ import { CreateRoleManagementSchema } from "../schema/create-role-management.sch
  */
 const createRoleManagement = new Hono<AppEnv>().post(
     API_ENDPOINT.ROLE_MANAGEMENT,
-    requirePermission("role_management"),
+    requirePermission("role_create"),
     zValidator("json", CreateRoleManagementSchema, (result, c) => {
         if (!result.success) {
             const data = formatZodErrors(result.error);

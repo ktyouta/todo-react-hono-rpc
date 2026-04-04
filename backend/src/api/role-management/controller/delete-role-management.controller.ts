@@ -2,7 +2,8 @@ import { zValidator } from "@hono/zod-validator";
 import { eq } from "drizzle-orm";
 import { Hono } from "hono";
 import { API_ENDPOINT, HTTP_STATUS } from "../../../constant";
-import { roleMaster, rolePermission } from "../../../infrastructure/db";
+import { RoleId } from "../../../domain";
+import { frontUserMaster, roleMaster, rolePermission } from "../../../infrastructure/db";
 import { requirePermission } from "../../../middleware";
 import type { AppEnv } from "../../../types";
 import { formatZodErrors } from "../../../util";
@@ -51,6 +52,10 @@ const deleteRoleManagement = new Hono<AppEnv>().delete(
         }
 
         await db.batch([
+            // フロントユーザーテーブル
+            db.update(frontUserMaster)
+                .set({ roleId: RoleId.create().value })
+                .where(eq(frontUserMaster.roleId, roleId)),
             // ロールパーミッションテーブル
             db.delete(rolePermission)
                 .where(eq(rolePermission.roleId, roleId)),
