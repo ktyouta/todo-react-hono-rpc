@@ -2,7 +2,7 @@ import { Dashboard } from "@/components";
 import { paths } from "@/config/paths";
 import { useAppNavigation } from "@/hooks/use-app-navigation";
 import { usePermission } from "@/hooks/use-permission";
-import { HiOutlineArchiveBoxXMark, HiOutlineClipboardDocumentList, HiOutlineDocumentPlus, HiOutlineHome, HiOutlineShieldCheck, HiOutlineUser, HiOutlineUserMinus, HiOutlineUserPlus } from 'react-icons/hi2';
+import { HiOutlineArchiveBoxXMark, HiOutlineClipboardDocumentList, HiOutlineDocumentPlus, HiOutlineHome, HiOutlineKey, HiOutlineShieldCheck, HiOutlineUser, HiOutlineUserMinus, HiOutlineUserPlus } from 'react-icons/hi2';
 import { Navigate, Outlet } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useLogoutMutation } from "../api/logout";
@@ -21,6 +21,8 @@ export function DashboardContainer() {
     const hasUserManagement = usePermission('user_management');
     // 削除ユーザー管理パーミッション
     const hasDeletedUserManagement = usePermission('deleted_user_management');
+    // ロール作成パーミッション
+    const hasRoleCreate = usePermission('role_create');
     // ロール管理パーミッション
     const hasRoleManagement = usePermission('role_management');
 
@@ -61,10 +63,15 @@ export function DashboardContainer() {
             icon: <HiOutlineUserMinus className='h-5 w-5' />,
             path: paths.userDeletedManagement.path,
         }] : []),
-        ...(hasRoleManagement ? [{
+        ...(hasRoleCreate ? [{
             name: `ロール作成`,
             icon: <HiOutlineShieldCheck className='h-5 w-5' />,
             path: paths.roleCreate.path,
+        }] : []),
+        ...(hasRoleManagement ? [{
+            name: `ロール管理`,
+            icon: <HiOutlineKey className='h-5 w-5' />,
+            path: paths.roleManagement.path,
         }] : []),
     ];
     // ログインユーザー情報(setter)

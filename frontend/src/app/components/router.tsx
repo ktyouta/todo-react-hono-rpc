@@ -2,6 +2,9 @@ import { NotFound } from '@/components';
 import { paths } from '@/config/paths';
 import { LoginContainer } from '@/features/login/components/login-container';
 import { RoleCreatePage } from '@/features/role-create/components/role-create-page';
+import { RoleManagementDetailPage } from '@/features/role-management/components/role-management-detail-page';
+import { RoleManagementLayout } from '@/features/role-management/components/role-management-layout';
+import { RoleManagementPage } from '@/features/role-management/components/role-management-page';
 import { SignupContainer } from '@/features/signup/components/signup-container';
 import { TodoCreateContainer } from '@/features/todo-create/components/create-todo-container';
 import { TodoDeletedManagementDetailPage } from '@/features/todo-deleted-management/components/todo-deleted-management-detail-page';
@@ -173,7 +176,7 @@ const routerList = [
                         ]
                     },
                     {
-                        // 権限ガード：role_management 権限なしは404
+                        // 権限ガード：role_create 権限なしは404
                         element: (
                             <RoleRoute
                                 permission="role_create"
@@ -186,6 +189,35 @@ const routerList = [
                                 element: (
                                     <RoleCreatePage />
                                 )
+                            }
+                        ]
+                    },
+                    {
+                        // 権限ガード：role_management 権限なしは404
+                        element: (
+                            <RoleRoute
+                                permission="role_management"
+                            />
+                        ),
+                        children: [
+                            {
+                                element: <RoleManagementLayout />,
+                                children: [
+                                    {
+                                        // ロール管理一覧
+                                        path: paths.roleManagement.path,
+                                        element: (
+                                            <RoleManagementPage />
+                                        )
+                                    },
+                                    {
+                                        // ロール管理詳細
+                                        path: paths.roleManagementDetail.path,
+                                        element: (
+                                            <RoleManagementDetailPage />
+                                        )
+                                    },
+                                ]
                             }
                         ]
                     },
