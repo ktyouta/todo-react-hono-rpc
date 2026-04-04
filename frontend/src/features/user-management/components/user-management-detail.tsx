@@ -53,38 +53,36 @@ export function UserManagementDetail(props: PropsType) {
             {/* ユーザー情報（読み取り専用） */}
             <div className="w-full p-3 sm:p-5 border border-[#c0c0c0] rounded bg-white mb-4 sm:mb-6">
                 <p className="text-base text-gray-500 font-medium mb-4">ユーザー情報</p>
-                <div className="flex flex-col gap-4">
-                    <div className="flex flex-col sm:flex-row gap-4 sm:gap-[3%]">
-                        <div className="flex flex-1 items-center gap-2">
-                            <span className="whitespace-nowrap w-[6em] text-gray-500 text-base">ユーザー名</span>
-                            <span className="flex-1 px-3 py-2 bg-gray-50 border border-[#e0e0e0] rounded text-lg">{user.name}</span>
-                        </div>
-                        <div className="flex flex-1 items-center gap-2">
-                            <span className="whitespace-nowrap w-[6em] text-gray-500 text-base">生年月日</span>
-                            <span className="flex-1 px-3 py-2 bg-gray-50 border border-[#e0e0e0] rounded text-lg">{`${user.birthday.slice(0, 4)}-${user.birthday.slice(4, 6)}-${user.birthday.slice(6, 8)}`}</span>
-                        </div>
+                <div className="flex flex-col sm:flex-row gap-4 sm:gap-[3%]">
+                    <div className="flex flex-1 items-center gap-2">
+                        <span className="whitespace-nowrap w-[6em] text-gray-500 text-base">ユーザー名</span>
+                        <span className="flex-1 px-3 py-2 bg-gray-50 border border-[#e0e0e0] rounded text-lg">{user.name}</span>
                     </div>
-                    <div className="flex flex-col sm:flex-row gap-4 sm:gap-[3%]">
-                        <div className="flex flex-1 items-center gap-2">
-                            <span className="whitespace-nowrap w-[6em] text-gray-500 text-base">ロール</span>
-                            <span className="flex-1 px-3 py-2 bg-gray-50 border border-[#e0e0e0] rounded text-lg">{user.roleName}</span>
-                        </div>
-                        <div className="flex flex-1 items-center gap-2">
-                            <span className="whitespace-nowrap w-[6em] text-gray-500 text-base">最終ログイン</span>
-                            <span className="flex-1 px-3 py-2 bg-gray-50 border border-[#e0e0e0] rounded text-lg">
-                                {user.lastLoginDate ? getFormatDatetime(new Date(user.lastLoginDate), 'yyyy-MM-dd HH:mm:ss') : 'なし'}
-                            </span>
-                        </div>
+                    <div className="flex flex-1 items-center gap-2">
+                        <span className="whitespace-nowrap w-[6em] text-gray-500 text-base">生年月日</span>
+                        <span className="flex-1 px-3 py-2 bg-gray-50 border border-[#e0e0e0] rounded text-lg">{`${user.birthday.slice(0, 4)}-${user.birthday.slice(4, 6)}-${user.birthday.slice(6, 8)}`}</span>
                     </div>
-                    <div className="flex flex-col sm:flex-row gap-4 sm:gap-[3%]">
-                        <div className="flex flex-1 items-center gap-2">
-                            <span className="whitespace-nowrap w-[6em] text-gray-500 text-base">登録日</span>
-                            <span className="flex-1 px-3 py-2 text-base text-gray-700">{getFormatDatetime(new Date(user.createdAt), 'yyyy-MM-dd HH:mm:ss')}</span>
-                        </div>
-                        <div className="flex flex-1 items-center gap-2">
-                            <span className="whitespace-nowrap w-[6em] text-gray-500 text-base">更新日</span>
-                            <span className="flex-1 px-3 py-2 text-base text-gray-700">{getFormatDatetime(new Date(user.updatedAt), 'yyyy-MM-dd HH:mm:ss')}</span>
-                        </div>
+                </div>
+                <div className="flex flex-col sm:flex-row gap-4 sm:gap-[3%] mt-[20px] pt-[20px] border-t border-[#e8e8e8]">
+                    <div className="flex flex-1 items-center gap-2">
+                        <span className="whitespace-nowrap w-[6em] text-gray-500 text-base">ロール</span>
+                        <span className="flex-1 px-3 py-2 bg-gray-50 border border-[#e0e0e0] rounded text-lg">{user.roleName}</span>
+                    </div>
+                    <div className="flex flex-1 items-center gap-2">
+                        <span className="whitespace-nowrap w-[6em] text-gray-500 text-base">最終ログイン</span>
+                        <span className="flex-1 px-3 py-2 bg-gray-50 border border-[#e0e0e0] rounded text-lg">
+                            {user.lastLoginDate ? getFormatDatetime(new Date(user.lastLoginDate), 'yyyy-MM-dd HH:mm:ss') : 'なし'}
+                        </span>
+                    </div>
+                </div>
+                <div className="flex flex-col sm:flex-row gap-4 sm:gap-[3%] mt-[20px] pt-[20px] border-t border-[#e8e8e8]">
+                    <div className="flex flex-1 items-center gap-2">
+                        <span className="whitespace-nowrap w-[6em] text-gray-500 text-base">登録日</span>
+                        <span className="flex-1 px-3 py-2 text-base text-gray-700">{getFormatDatetime(new Date(user.createdAt), 'yyyy-MM-dd HH:mm:ss')}</span>
+                    </div>
+                    <div className="flex flex-1 items-center gap-2">
+                        <span className="whitespace-nowrap w-[6em] text-gray-500 text-base">更新日</span>
+                        <span className="flex-1 px-3 py-2 text-base text-gray-700">{getFormatDatetime(new Date(user.updatedAt), 'yyyy-MM-dd HH:mm:ss')}</span>
                     </div>
                 </div>
             </div>

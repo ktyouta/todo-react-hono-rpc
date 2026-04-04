@@ -68,17 +68,13 @@ export function useRoleManagementDetail() {
 
     /**
      * パーミッションの選択状態をトグルする
-     * isProtected かつチェック済みの場合は外せない
      * @param permissionId トグル対象のパーミッションID
      */
     function togglePermission(permissionId: number) {
-        const perm = permissionList.find((p) => p.permissionId === permissionId);
-        if (perm?.isProtected && selectedPermissionIds.includes(permissionId)) {
-            return;
-        }
         if (selectedPermissionIds.includes(permissionId)) {
             setValue("permissionIds", selectedPermissionIds.filter((id) => id !== permissionId));
-        } else {
+        }
+        else {
             setValue("permissionIds", [...selectedPermissionIds, permissionId]);
         }
     }
@@ -117,7 +113,7 @@ export function useRoleManagementDetail() {
      */
     const clickSave = handleSubmit((data) => {
         const missingRequired = requiredPermissionIds.filter((id) => !data.permissionIds.includes(id));
-        if (missingRequired.length > 0) {
+        if (role.isProtected && missingRequired.length > 0) {
             setError("permissionIds", { message: "必須のパーミッションがチェックされていません" });
             return;
         }
