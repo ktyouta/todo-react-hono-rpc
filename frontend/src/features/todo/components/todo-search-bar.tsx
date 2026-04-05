@@ -15,13 +15,14 @@ type PropsType = {
     categoryList: CategoryReturnType;
     statusList: StatusReturnType;
     priorityList: PriorityReturnType;
-    handleKeyPress: (event: React.KeyboardEvent<HTMLInputElement>) => void,
+    handleKeyPress: (event: React.KeyboardEvent<HTMLInputElement>) => void;
+    onToggleBulkMode: () => void;
 };
 
 const LABEL_CLASS = "text-sm text-gray-500 whitespace-nowrap w-[5em]";
 const SELECT_CLASS = "flex-1 px-3 py-2 text-base bg-white border-[#c0c0c0]";
 
-export function TodoSearchBar({ searchCondition, onChange, onSearch, onClear, categoryList, statusList, priorityList, handleKeyPress }: PropsType) {
+export function TodoSearchBar({ searchCondition, onChange, onSearch, onClear, categoryList, statusList, priorityList, handleKeyPress, onToggleBulkMode }: PropsType) {
 
     // 詳細フィルター開閉フラグ
     const [isDetailOpen, setIsDetailOpen] = useState(false);
@@ -87,6 +88,14 @@ export function TodoSearchBar({ searchCondition, onChange, onSearch, onClear, ca
                         className="h-9 py-0 font-medium whitespace-nowrap"
                     >
                         検索
+                    </Button>
+                    <Button
+                        colorType="green"
+                        sizeType="medium"
+                        onClick={onToggleBulkMode}
+                        className="px-3 h-9 py-0 bg-teal-500 hover:bg-teal-600 text-white font-medium whitespace-nowrap"
+                    >
+                        一括操作
                     </Button>
                 </div>
             </div>

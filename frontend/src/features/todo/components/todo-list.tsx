@@ -1,12 +1,17 @@
 import { LoadingOverlay, Pagination, Table } from "@/components";
+import { Checkbox } from "@/components/ui/checkbox/checkbox";
 import { TableProps } from "@/components/ui/table/table";
 import { CategoryReturnType } from "@/features/api/get-category";
 import { PriorityReturnType } from "@/features/api/get-priority";
 import { StatusReturnType } from "@/features/api/get-status";
 import { HiOutlineArchiveBoxXMark, HiOutlineStar, HiStar } from "react-icons/hi2";
 import { TaskListDataType } from "../api/get-todo-list";
+import { UseTodoBulkReturn } from "../hooks/use-todo-bulk";
 import { TodoSearchFilter } from "../types/todo-search-filter";
 import { getDueDateStatus } from "../utils/due-date-status";
+import { TodoActionBar } from "./todo-action-bar";
+import { TodoBulkDeleteDialog } from "./todo-bulk-delete-dialog";
+import { TodoBulkUpdateDialogContainer } from "./todo-bulk-update-dialog-container";
 import { TodoCard } from "./todo-card";
 import { TodoSearchBar } from "./todo-search-bar";
 
@@ -25,6 +30,7 @@ type PropsType = {
     currentPage: number;
     changePage: (page: number) => void;
     isShowOverlay: boolean;
+    bulk: UseTodoBulkReturn;
 }
 
 export function TodoList(props: PropsType) {
@@ -43,10 +49,26 @@ export function TodoList(props: PropsType) {
         handleKeyPress,
         currentPage,
         changePage,
-        isShowOverlay, } = props;
+        isShowOverlay,
+        bulk,
+    } = props;
 
     // テーブルカラム
     const columns: TableProps<TaskListDataType['list'][number]>['columns'] = [
+        ...(bulk.isBulkMode ? [{
+            title: '',
+            field: 'id' as const,
+            className: 'w-[4%] whitespace-nowrap text-center',
+            Cell: ({ entry }: { entry: TaskListDataType['list'][number] }) => (
+                <div className="flex items-center justify-center" onClick={(e) => e.stopPropagation()}>
+                    <Checkbox
+                        checked={bulk.selectedIds.includes(entry.id)}
+                        onChange={(checked) => bulk.onSelectItem(entry.id, checked)}
+                        size="medium"
+                    />
+                </div>
+            ),
+        }] : []),
         { title: 'ID', field: 'id', className: 'w-[6%] whitespace-nowrap' },
         { title: 'タイトル', field: 'title', className: 'max-w-0', Cell: ({ entry }) => <span className="block truncate">{entry.title}</span> },
         { title: 'カテゴリ', field: 'categoryName', className: 'w-[10%] whitespace-nowrap' },
@@ -96,16 +118,31 @@ export function TodoList(props: PropsType) {
     return (
         <div className="w-full min-h-full p-1 sm:p-5 flex flex-col">
             {isShowOverlay && <LoadingOverlay />}
-            <TodoSearchBar
-                searchCondition={searchCondition}
-                onChange={setSearchCondition}
-                onSearch={clickSearch}
-                onClear={clearSearchCondition}
-                categoryList={categoryList}
-                statusList={statusList}
-                priorityList={priorityList}
-                handleKeyPress={handleKeyPress}
-            />
+
+            {/* 検索バー / アクションバー 切替 */}
+            {bulk.isBulkMode ? (
+                <TodoActionBar
+                    selectedCount={bulk.selectedIds.length}
+                    isAllSelected={bulk.isAllSelected}
+                    onSelectAll={bulk.onSelectAll}
+                    onOpenBulkUpdateDialog={bulk.onOpenBulkUpdateDialog}
+                    onOpenBulkDeleteDialog={bulk.onOpenBulkDeleteDialog}
+                    onCancel={bulk.onToggleBulkMode}
+                />
+            ) : (
+                <TodoSearchBar
+                    searchCondition={searchCondition}
+                    onChange={setSearchCondition}
+                    onSearch={clickSearch}
+                    onClear={clearSearchCondition}
+                    categoryList={categoryList}
+                    statusList={statusList}
+                    priorityList={priorityList}
+                    handleKeyPress={handleKeyPress}
+                    onToggleBulkMode={bulk.onToggleBulkMode}
+                />
+            )}
+
             <p className="text-sm text-gray-500 mb-3 text-right pr-2">全 {taskData.total} 件</p>
             <div className="flex-1">
                 {taskData.list.length === 0 ? (
@@ -125,7 +162,10 @@ export function TodoList(props: PropsType) {
                                     [&_thead_tr]:border-b
                                     [&_thead_tr]:border-gray-400/60"
                                 rowClassName="h-[50px] border-gray-300/80 hover:bg-[#EFEFEF] cursor-pointer"
-                                onRowClick={onRowClick}
+                                onRowClick={bulk.isBulkMode
+                                    ? (entry) => bulk.onSelectItem(entry.id, !bulk.selectedIds.includes(entry.id))
+                                    : onRowClick
+                                }
                             />
                         </div>
                         {/* カード表示: lg 未満 */}
@@ -134,8 +174,14 @@ export function TodoList(props: PropsType) {
                                 <TodoCard
                                     key={entry.id}
                                     entry={entry}
-                                    onClick={() => onRowClick(entry)}
+                                    onClick={() => bulk.isBulkMode
+                                        ? bulk.onSelectItem(entry.id, !bulk.selectedIds.includes(entry.id))
+                                        : onRowClick(entry)
+                                    }
                                     onFavoriteToggle={() => onFavoriteToggle(entry)}
+                                    isBulkMode={bulk.isBulkMode}
+                                    isSelected={bulk.selectedIds.includes(entry.id)}
+                                    onSelect={(checked) => bulk.onSelectItem(entry.id, checked)}
                                 />
                             ))}
                         </div>
@@ -151,6 +197,27 @@ export function TodoList(props: PropsType) {
                     />
                 }
             </div>
+
+            {/* 一括変更ダイアログ */}
+            <TodoBulkUpdateDialogContainer
+                isOpen={bulk.isBulkUpdateDialogOpen}
+                selectedCount={bulk.selectedIds.length}
+                isLoading={bulk.isBulkUpdateLoading}
+                categoryList={bulk.categoryList}
+                statusList={bulk.statusList}
+                priorityList={bulk.priorityList}
+                onClose={bulk.onCloseBulkUpdateDialog}
+                onConfirm={bulk.onConfirmBulkUpdate}
+            />
+
+            {/* 一括削除ダイアログ */}
+            <TodoBulkDeleteDialog
+                isOpen={bulk.isBulkDeleteDialogOpen}
+                selectedCount={bulk.selectedIds.length}
+                isLoading={bulk.isBulkDeleteLoading}
+                onClose={bulk.onCloseBulkDeleteDialog}
+                onConfirm={bulk.onConfirmBulkDelete}
+            />
         </div>
     );
 }

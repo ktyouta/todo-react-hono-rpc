@@ -13,6 +13,7 @@ import { todoKeys } from "../api/query-key";
 import { useUpdateTodoFavoriteMutation } from "../api/update-todo-favorite";
 import { TODO_LIST_QUERY_KEY } from "../constants/todo-list-query-params";
 import { initialTodoSearchFilter, TodoSearchFilter } from "../types/todo-search-filter";
+import { useTodoBulk } from "./use-todo-bulk";
 
 export function useTodoList() {
 
@@ -45,6 +46,13 @@ export function useTodoList() {
     const { data: status } = getStatus();
     // 優先度リスト
     const { data: priority } = getPriority();
+    // 一括操作
+    const bulk = useTodoBulk({
+        taskData: data.data,
+        categoryList: category.data,
+        statusList: status.data,
+        priorityList: priority.data,
+    });
     // ルーティング用
     const { appNavigate } = useAppNavigation();
     // QueryClientインスタンス
@@ -208,5 +216,6 @@ export function useTodoList() {
         currentPage,
         changePage,
         isShowOverlay,
+        bulk,
     };
 }
