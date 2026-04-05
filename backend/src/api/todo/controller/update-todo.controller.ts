@@ -2,7 +2,7 @@ import { zValidator } from "@hono/zod-validator";
 import { and, eq } from "drizzle-orm";
 import { Hono } from "hono";
 import { API_ENDPOINT, HTTP_STATUS } from "../../../constant";
-import { TaskCategory, TaskContent, TaskId, TaskStatus, TaskTitle } from "../../../domain";
+import { CategoryType, TaskCategory, TaskContent, TaskId, TaskStatus, TaskTitle } from "../../../domain";
 import { TaskDueDate } from "../../../domain/task-due-date";
 import { TaskPriority } from "../../../domain/task-priority";
 import { taskTransaction } from "../../../infrastructure";
@@ -48,6 +48,7 @@ const updateTodo = new Hono<AppEnv>().patch(
         const taskEntity = new TaskEntity(taskTitle, taskContent, taskCategory, taskStatus, taskPriority, taskDueDate);
         const userId = c.get("user")?.userId;
         const now = new Date().toISOString();
+        const isMemo = taskEntity.category === CategoryType.memo;
 
         if (!userId) {
             return c.json({ message: "認証エラー" }, HTTP_STATUS.UNAUTHORIZED);
@@ -59,9 +60,9 @@ const updateTodo = new Hono<AppEnv>().patch(
                     title: taskEntity.taskTitle,
                     content: taskEntity.taskContent,
                     categoryId: taskEntity.category,
-                    statusId: taskEntity.status,
-                    priorityId: taskEntity.priority,
-                    dueDate: taskEntity.dueDate,
+                    statusId: isMemo ? null : taskEntity.status,
+                    priorityId: isMemo ? null : taskEntity.priority,
+                    dueDate: isMemo ? null : taskEntity.dueDate,
                     updatedAt: now,
                 })
                 .where(

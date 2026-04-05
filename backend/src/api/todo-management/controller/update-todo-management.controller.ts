@@ -2,7 +2,7 @@ import { zValidator } from "@hono/zod-validator";
 import { and, eq } from "drizzle-orm";
 import { Hono } from "hono";
 import { API_ENDPOINT, HTTP_STATUS } from "../../../constant";
-import { TaskCategory, TaskContent, TaskStatus, TaskTitle } from "../../../domain";
+import { CategoryType, TaskCategory, TaskContent, TaskStatus, TaskTitle } from "../../../domain";
 import { TaskDueDate } from "../../../domain/task-due-date";
 import { TaskId } from "../../../domain/task-id";
 import { TaskPriority } from "../../../domain/task-priority";
@@ -37,7 +37,6 @@ const updateTodoManagement = new Hono<AppEnv>().patch(
     async (c) => {
         const body = c.req.valid("json");
         const db = c.get("db");
-
         const taskId = new TaskId(c.req.valid("param").id);
         const taskTitle = new TaskTitle(body.title);
         const taskContent = new TaskContent(body.content);
@@ -47,6 +46,7 @@ const updateTodoManagement = new Hono<AppEnv>().patch(
         const taskDueDate = new TaskDueDate(body.dueDate);
         const taskEntity = new TaskEntity(taskTitle, taskContent, taskCategory, taskStatus, taskPriority, taskDueDate);
         const now = new Date().toISOString();
+        const isMemo = taskEntity.category === CategoryType.memo;
 
         await db.batch([
             db.update(taskTransaction)
@@ -54,9 +54,9 @@ const updateTodoManagement = new Hono<AppEnv>().patch(
                     title: taskEntity.taskTitle,
                     content: taskEntity.taskContent,
                     categoryId: taskEntity.category,
-                    statusId: taskEntity.status,
-                    priorityId: taskEntity.priority,
-                    dueDate: taskEntity.dueDate,
+                    statusId: isMemo ? null : taskEntity.status,
+                    priorityId: isMemo ? null : taskEntity.priority,
+                    dueDate: isMemo ? null : taskEntity.dueDate,
                     updatedAt: now,
                 })
                 .where(

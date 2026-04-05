@@ -1,5 +1,5 @@
-import { and, eq, inArray } from "drizzle-orm";
-import { FrontUserId } from "../../../domain";
+import { and, eq, inArray, ne } from "drizzle-orm";
+import { CategoryType, FrontUserId } from "../../../domain";
 import type { Database } from "../../../infrastructure/db";
 import { taskTransaction } from "../../../infrastructure/db";
 import { BulkUpdateTodoSchemaType } from "../schema/bulk-update-todo.schema";
@@ -13,21 +13,37 @@ export class BulkUpdateTodoRepository implements IBulkUpdateTodoRepository {
 
   /**
    * タスクを一括更新
+   *
+   * カテゴリ変更ルール:
+   * - categoryId = メモ → statusId / priorityId を null にクリア
+   * - categoryId = タスク等 → リクエストの statusId / priorityId をセット
+   * - categoryId 未指定 → WHERE に ne 条件を追加してメモタスクをスキップ
    */
   async bulkUpdate(userId: FrontUserId, query: BulkUpdateTodoSchemaType, now: string): Promise<void> {
+    const { ids, categoryId, statusId, priorityId } = query;
+    const isMemo = categoryId === CategoryType.memo;
+
     await this.db
       .update(taskTransaction)
       .set({
-        ...(query.statusId !== undefined && { statusId: query.statusId }),
-        ...(query.categoryId !== undefined && { categoryId: query.categoryId }),
-        ...(query.priorityId !== undefined && { priorityId: query.priorityId }),
+        ...(categoryId !== undefined && { categoryId }),
+        ...(isMemo
+          ? { statusId: null, priorityId: null }
+          : {
+              ...(statusId !== undefined && { statusId }),
+              ...(priorityId !== undefined && { priorityId }),
+            }),
         updatedAt: now,
       })
       .where(
         and(
           eq(taskTransaction.userId, userId.value),
           eq(taskTransaction.deleteFlg, false),
-          inArray(taskTransaction.id, query.ids)
+          inArray(taskTransaction.id, ids),
+          // カテゴリ変更なしの場合、メモタスクをスキップ
+          ...(categoryId === undefined
+            ? [ne(taskTransaction.categoryId, CategoryType.memo)]
+            : []),
         )
       );
   }
