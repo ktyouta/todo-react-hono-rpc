@@ -8,6 +8,7 @@ import { useDelayedFlag } from "@/hooks/use-delayed-flag";
 import { useTransitionSearchParams } from "@/hooks/use-transition-search-params";
 import { useEffect, useRef, useState } from "react";
 import { TodoDeletedManagementListReturnType, useGetTodoDeletedManagementList } from "../api/get-todo-deleted-management-list";
+import { useTodoDeletedManagementBulk } from "./use-todo-deleted-management-bulk";
 import { TODO_DELETED_MANAGEMENT_QUERY_KEY } from "../constants/todo-deleted-management-query-params";
 import { initialTodoDeletedManagementSearchFilter, TodoDeletedManagementSearchFilter } from "../types/todo-deleted-management-search-filter";
 
@@ -48,6 +49,8 @@ export function useTodoDeletedManagementList() {
     const { appNavigate } = useAppNavigation();
     // オーバーレイ表示フラグ
     const isShowOverlay = useDelayedFlag(isPending, 250);
+    // 一括操作
+    const bulk = useTodoDeletedManagementBulk({ taskData: data.data });
     // ページ切り替え判定フラグ
     const wasPageChanging = useRef(false);
 
@@ -150,5 +153,6 @@ export function useTodoDeletedManagementList() {
         currentPage,
         changePage,
         isShowOverlay,
+        bulk,
     };
 }
