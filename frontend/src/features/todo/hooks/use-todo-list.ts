@@ -199,6 +199,7 @@ export function useTodoList() {
             delete params[TODO_LIST_QUERY_KEY.PAGE];
         }
         setSearchParams(params);
+        bulk.exitBulkMode();
     }
 
     return {

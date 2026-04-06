@@ -3,24 +3,24 @@ import { PriorityReturnType } from "@/features/api/get-priority";
 import { StatusReturnType } from "@/features/api/get-status";
 import { useState } from "react";
 import { toast } from "react-toastify";
-import { useBulkDeleteTodoMutation } from "../api/bulk-delete-todo";
-import { useBulkUpdateTodoMutation } from "../api/bulk-update-todo";
-import { TaskListDataType } from "../api/get-todo-list";
+import { useBulkDeleteTodoManagementMutation } from "../api/bulk-delete-todo-management";
+import { useBulkUpdateTodoManagementMutation } from "../api/bulk-update-todo-management";
+import { TaskManagementListReturnType } from "../api/get-todo-management-list";
 
-export type BulkUpdateFormValues = {
+export type BulkUpdateManagementFormValues = {
     categoryId?: number;
     statusId?: number;
     priorityId?: number;
 };
 
 type PropsType = {
-    taskData: TaskListDataType;
+    taskData: TaskManagementListReturnType;
     categoryList: CategoryReturnType;
     statusList: StatusReturnType;
     priorityList: PriorityReturnType;
 };
 
-export function useTodoBulk({ taskData, categoryList, statusList, priorityList }: PropsType) {
+export function useTodoManagementBulk({ taskData, categoryList, statusList, priorityList }: PropsType) {
 
     // 一括操作モードフラグ
     const [isBulkMode, setIsBulkMode] = useState(false);
@@ -35,7 +35,7 @@ export function useTodoBulk({ taskData, categoryList, statusList, priorityList }
         taskData.list.length > 0 &&
         taskData.list.every((t) => selectedIds.includes(t.id));
     // 一括削除ミューテーション
-    const bulkDeleteMutation = useBulkDeleteTodoMutation({
+    const bulkDeleteMutation = useBulkDeleteTodoManagementMutation({
         onSuccess: (data) => {
             toast.success(data.message);
             setIsBulkDeleteDialogOpen(false);
@@ -46,7 +46,7 @@ export function useTodoBulk({ taskData, categoryList, statusList, priorityList }
         },
     });
     // 一括更新ミューテーション
-    const bulkUpdateMutation = useBulkUpdateTodoMutation({
+    const bulkUpdateMutation = useBulkUpdateTodoManagementMutation({
         onSuccess: (data) => {
             toast.success(data.message);
             setIsBulkUpdateDialogOpen(false);
@@ -125,7 +125,7 @@ export function useTodoBulk({ taskData, categoryList, statusList, priorityList }
     /**
      * 一括変更を実行
      */
-    function onConfirmBulkUpdate(values: BulkUpdateFormValues) {
+    function onConfirmBulkUpdate(values: BulkUpdateManagementFormValues) {
         bulkUpdateMutation.mutate({
             ids: selectedIds,
             ...values,
@@ -163,4 +163,4 @@ export function useTodoBulk({ taskData, categoryList, statusList, priorityList }
     };
 }
 
-export type UseTodoBulkReturn = ReturnType<typeof useTodoBulk>;
+export type UseTodoManagementBulkReturn = ReturnType<typeof useTodoManagementBulk>;

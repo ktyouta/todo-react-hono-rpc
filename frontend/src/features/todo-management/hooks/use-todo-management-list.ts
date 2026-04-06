@@ -10,12 +10,12 @@ import { useEffect, useRef, useState } from "react";
 import { TaskManagementListReturnType, useGetTodoManagementList } from "../api/get-todo-management-list";
 import { TODO_MANAGEMENT_QUERY_KEY } from "../constants/todo-management-query-params";
 import { initialTodoManagementSearchFilter, TodoManagementSearchFilter } from "../types/todo-management-search-filter";
+import { useTodoManagementBulk } from "./use-todo-management-bulk";
 
 export function useTodoManagementList() {
 
     // クエリパラメータ取得用
     const [searchParams, setSearchParams, isPending] = useTransitionSearchParams();
-
     // 初期検索条件
     const initSearchCondition: TodoManagementSearchFilter = {
         userId: searchParams.get(TODO_MANAGEMENT_QUERY_KEY.USER_ID) ?? '',
@@ -30,7 +30,6 @@ export function useTodoManagementList() {
         updatedAtFrom: searchParams.get(TODO_MANAGEMENT_QUERY_KEY.UPDATED_AT_FROM),
         updatedAtTo: searchParams.get(TODO_MANAGEMENT_QUERY_KEY.UPDATED_AT_TO),
     };
-
     // タスク検索条件
     const [searchCondition, setSearchCondition] = useState<TodoManagementSearchFilter>(initSearchCondition);
     // 選択中のページ
@@ -46,6 +45,13 @@ export function useTodoManagementList() {
     const { data: status } = getStatus();
     // 優先度リスト
     const { data: priority } = getPriority();
+    // 一括操作
+    const bulk = useTodoManagementBulk({
+        taskData: data.data,
+        categoryList: category.data,
+        statusList: status.data,
+        priorityList: priority.data,
+    });
     // ルーティング用
     const { appNavigate } = useAppNavigation();
     // オーバーレイ表示フラグ
@@ -141,6 +147,7 @@ export function useTodoManagementList() {
             delete params[TODO_MANAGEMENT_QUERY_KEY.PAGE];
         }
         setSearchParams(params);
+        bulk.exitBulkMode();
     }
 
     return {
@@ -158,5 +165,6 @@ export function useTodoManagementList() {
         currentPage,
         changePage,
         isShowOverlay,
+        bulk,
     };
 }
