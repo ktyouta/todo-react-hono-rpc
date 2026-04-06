@@ -58,7 +58,7 @@ export function UserDeletedManagementList(props: PropsType) {
                 roleList={roleList}
                 handleKeyPress={handleKeyPress}
             />
-            <p className="text-sm text-gray-500 mb-3 text-right">全 {userData.total} 件</p>
+            <p className="text-sm text-gray-500 mb-3 text-right pr-2">全 {userData.total} 件</p>
             <div className="flex-1">
                 {userData.list.length === 0 ? (
                     <div className="flex h-80 flex-col items-center justify-center gap-3">

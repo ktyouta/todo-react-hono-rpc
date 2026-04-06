@@ -8,7 +8,7 @@ import { HiOutlineArchiveBoxXMark, HiOutlineStar, HiStar } from "react-icons/hi2
 import { TaskListDataType } from "../api/get-todo-list";
 import { UseTodoBulkReturn } from "../hooks/use-todo-bulk";
 import { TodoSearchFilter } from "../types/todo-search-filter";
-import { getDueDateStatus } from "../utils/due-date-status";
+import { getDueDateStatus } from "@/utils/due-date-status";
 import { TodoActionBar } from "./todo-action-bar";
 import { TodoBulkDeleteDialog } from "./todo-bulk-delete-dialog";
 import { TodoBulkUpdateDialogContainer } from "./todo-bulk-update-dialog-container";

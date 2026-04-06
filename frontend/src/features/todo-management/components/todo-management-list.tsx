@@ -5,7 +5,7 @@ import { CategoryReturnType } from "@/features/api/get-category";
 import { PriorityReturnType } from "@/features/api/get-priority";
 import { StatusReturnType } from "@/features/api/get-status";
 import { UserManagementListReturnType } from "@/features/api/get-user-list";
-import { getDueDateStatus } from "@/features/todo/utils/due-date-status";
+import { getDueDateStatus } from "@/utils/due-date-status";
 import { HiOutlineArchiveBoxXMark } from "react-icons/hi2";
 import { TaskManagementListReturnType } from "../api/get-todo-management-list";
 import { UseTodoManagementBulkReturn } from "../hooks/use-todo-management-bulk";
@@ -130,7 +130,7 @@ export function TodoManagementList(props: PropsType) {
                 />
             )}
 
-            <p className="text-sm text-gray-500 mb-3 text-right">全 {taskData.total} 件</p>
+            <p className="text-sm text-gray-500 mb-3 text-right pr-2">全 {taskData.total} 件</p>
             <div className="flex-1">
                 {taskData.list.length === 0 ? (
                     <div className="flex h-80 flex-col items-center justify-center gap-3">

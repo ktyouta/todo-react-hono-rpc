@@ -6,7 +6,7 @@ import { PriorityReturnType } from "@/features/api/get-priority";
 import { StatusReturnType } from "@/features/api/get-status";
 import { HiArrowLeft, HiOutlineStar, HiStar } from "react-icons/hi2";
 import { TaskDataType } from "../api/get-todo";
-import { getDueDateStatus } from "../utils/due-date-status";
+import { getDueDateStatus } from "@/utils/due-date-status";
 
 type PropsType = {
     task: TaskDataType;

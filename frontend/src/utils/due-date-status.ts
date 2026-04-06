@@ -1,5 +1,13 @@
 export type DueDateStatus = 'overdue' | 'warning' | 'normal' | 'none';
 
+// 期限日カラーマッピング
+export const dateColorMap: Record<DueDateStatus, string> = {
+    overdue: "text-red-600",
+    warning: "text-amber-500",
+    normal: "text-gray-500",
+    none: "text-gray-500",
+};
+
 /**
  * 期限日の状態を返す
  * - overdue: 期限切れ（今日より前）

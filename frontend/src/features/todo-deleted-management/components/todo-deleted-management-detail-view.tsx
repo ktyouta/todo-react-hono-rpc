@@ -2,7 +2,7 @@ import { LoginUserType } from "@/app/api/verify";
 import { Button, Dialog, LoadingOverlay } from "@/components";
 import { CATEGORY_ID } from "@/constants/master";
 import { getFormatDatetime } from "@/utils/date-util";
-import { getDueDateStatus } from "@/features/todo/utils/due-date-status";
+import { getDueDateStatus } from "@/utils/due-date-status";
 import { HiArrowLeft } from "react-icons/hi2";
 import { TodoDeletedManagementReturnType } from "../api/get-todo-deleted-management";
 

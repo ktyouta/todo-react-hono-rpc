@@ -1,5 +1,5 @@
 import { Checkbox } from "@/components/ui/checkbox/checkbox";
-import { getDueDateStatus } from "@/features/todo/utils/due-date-status";
+import { dateColorMap, getDueDateStatus } from "@/utils/due-date-status";
 import { TodoDeletedManagementListReturnType } from "../api/get-todo-deleted-management-list";
 
 type PropsType = {
@@ -50,29 +50,12 @@ export function TodoDeletedManagementCard({ entry, onClick, isBulkMode = false, 
                 {entry.dueDate && (() => {
                     const status = getDueDateStatus(entry.dueDate);
                     const dateStr = entry.dueDate;
-
-                    if (status === 'overdue') {
-                        return (
-                            <div>
-                                <span className="text-gray-400">期限日</span>
-                                <span className="ml-1.5 text-red-600">{dateStr}</span>
-                            </div>
-                        );
-                    }
-
-                    if (status === 'warning') {
-                        return (
-                            <div>
-                                <span className="text-gray-400">期限日</span>
-                                <span className="ml-1.5 text-amber-500">{dateStr}</span>
-                            </div>
-                        );
-                    }
+                    const dateColor = dateColorMap[status];
 
                     return (
                         <div>
                             <span className="text-gray-400">期限日</span>
-                            <span className="ml-1.5 text-gray-500">{dateStr}</span>
+                            <span className={`ml-1.5 ${dateColor}`}>{dateStr}</span>
                         </div>
                     );
                 })()}

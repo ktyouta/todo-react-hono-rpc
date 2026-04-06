@@ -4,7 +4,7 @@ import { getFormatDatetime } from "@/utils/date-util";
 import { CategoryReturnType } from "@/features/api/get-category";
 import { PriorityReturnType } from "@/features/api/get-priority";
 import { StatusReturnType } from "@/features/api/get-status";
-import { getDueDateStatus } from "@/features/todo/utils/due-date-status";
+import { getDueDateStatus } from "@/utils/due-date-status";
 import { HiArrowLeft } from "react-icons/hi2";
 import { TaskManagementReturnType } from "../api/get-todo-management";
 

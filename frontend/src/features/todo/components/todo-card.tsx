@@ -1,7 +1,7 @@
 import { Checkbox } from "@/components/ui/checkbox/checkbox";
+import { dateColorMap, getDueDateStatus } from "@/utils/due-date-status";
 import { HiOutlineStar, HiStar } from "react-icons/hi2";
 import { TaskListDataType } from "../api/get-todo-list";
-import { getDueDateStatus } from "../utils/due-date-status";
 
 type PropsType = {
     entry: TaskListDataType['list'][number];
@@ -49,29 +49,12 @@ export function TodoCard({ entry, onClick, onFavoriteToggle, isBulkMode = false,
 
                     const status = getDueDateStatus(entry.dueDate);
                     const dateStr = entry.dueDate;
-
-                    if (status === 'overdue') {
-                        return (
-                            <div>
-                                <span className="text-gray-400">期限日</span>
-                                <span className="ml-1.5 text-red-600">{dateStr}</span>
-                            </div>
-                        );
-                    }
-
-                    if (status === 'warning') {
-                        return (
-                            <div>
-                                <span className="text-gray-400">期限日</span>
-                                <span className="ml-1.5 text-amber-500">{dateStr}</span>
-                            </div>
-                        );
-                    }
+                    const dateColor = dateColorMap[status];
 
                     return (
                         <div>
                             <span className="text-gray-400">期限日</span>
-                            <span className="ml-1.5 text-gray-500">{dateStr}</span>
+                            <span className={`ml-1.5 ${dateColor}`}>{dateStr}</span>
                         </div>
                     );
                 })()}

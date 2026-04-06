@@ -50,7 +50,7 @@ export function RoleManagementList(props: PropsType) {
                 onClear={clearSearchCondition}
                 handleKeyPress={handleKeyPress}
             />
-            <p className="text-sm text-gray-500 mb-3 text-right">全 {roleData.total} 件</p>
+            <p className="text-sm text-gray-500 mb-3 text-right pr-2">全 {roleData.total} 件</p>
             <div className="flex-1">
                 {roleData.list.length === 0 ? (
                     <div className="flex h-80 flex-col items-center justify-center gap-3">
