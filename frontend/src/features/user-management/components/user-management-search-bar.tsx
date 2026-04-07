@@ -11,13 +11,14 @@ type PropsType = {
     onClear: () => void;
     handleKeyPress: (event: React.KeyboardEvent<HTMLInputElement>) => void;
     roleList: RoleListReturnType;
+    onToggleBulkMode: () => void;
 };
 
 const LABEL_CLASS = "text-sm text-gray-500 whitespace-nowrap w-[5em]";
 const SELECT_CLASS = "flex-1 px-3 py-2 text-base bg-white border-[#c0c0c0]";
 
 
-export function UserManagementSearchBar({ searchCondition, onChange, onSearch, onClear, handleKeyPress, roleList }: PropsType) {
+export function UserManagementSearchBar({ searchCondition, onChange, onSearch, onClear, handleKeyPress, roleList, onToggleBulkMode }: PropsType) {
     const [isDetailOpen, setIsDetailOpen] = useState(false);
 
     const activeCount = [
@@ -72,6 +73,14 @@ export function UserManagementSearchBar({ searchCondition, onChange, onSearch, o
                         className="h-9 py-0 font-medium whitespace-nowrap"
                     >
                         検索
+                    </Button>
+                    <Button
+                        colorType="green"
+                        sizeType="medium"
+                        onClick={onToggleBulkMode}
+                        className="px-3 h-9 py-0 bg-teal-500 hover:bg-teal-600 text-white font-medium whitespace-nowrap"
+                    >
+                        一括操作
                     </Button>
                 </div>
             </div>

@@ -1,3 +1,4 @@
+import { LoginUserContext } from "@/app/components/login-user-provider";
 import { paths } from "@/config/paths";
 import { useAppNavigation } from "@/hooks/use-app-navigation";
 import { useDelayedFlag } from "@/hooks/use-delayed-flag";
@@ -7,6 +8,7 @@ import { getRoleList } from "../../api/get-role-list";
 import { useGetUserManagementList, UserManagementListReturnType } from "../api/get-user-management-list";
 import { USER_MANAGEMENT_QUERY_KEY } from "../constants/user-management-query-params";
 import { initialUserManagementSearchFilter, UserManagementSearchFilter } from "../types/user-management-search-filter";
+import { useUserManagementBulk } from "./use-user-management-bulk";
 
 export function useUserManagementList() {
     // URLクエリパラメータの読み書きと遷移中フラグ
@@ -35,6 +37,13 @@ export function useUserManagementList() {
     const wasPageChanging = useRef(false);
     // ロール一覧
     const { data: role } = getRoleList();
+    // ログインユーザー情報
+    const loginUser = LoginUserContext.useCtx();
+    // 一括操作
+    const bulk = useUserManagementBulk({
+        userData: data.data,
+        loginUserId: loginUser?.id,
+    });
 
     useEffect(() => {
         if (isPending) {
@@ -107,6 +116,7 @@ export function useUserManagementList() {
             delete params[USER_MANAGEMENT_QUERY_KEY.PAGE];
         }
         setSearchParams(params);
+        bulk.exitBulkMode();
     }
 
     return {
@@ -121,5 +131,6 @@ export function useUserManagementList() {
         changePage,
         isShowOverlay,
         roleList: role.data,
+        bulk,
     };
 }

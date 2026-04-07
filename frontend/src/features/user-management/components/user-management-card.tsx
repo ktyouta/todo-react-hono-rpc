@@ -1,16 +1,31 @@
+import { Checkbox } from "@/components/ui/checkbox/checkbox";
 import { UserManagementListReturnType } from "../api/get-user-management-list";
 
 type PropsType = {
     entry: UserManagementListReturnType['list'][number];
     onClick: () => void;
+    isBulkMode?: boolean;
+    isSelected?: boolean;
+    isDisabled?: boolean;
+    onSelect?: (checked: boolean) => void;
 };
 
-export function UserManagementCard({ entry, onClick }: PropsType) {
+export function UserManagementCard({ entry, onClick, isBulkMode, isSelected, isDisabled, onSelect }: PropsType) {
     return (
         <div
             className="bg-white border border-gray-200 rounded-lg p-4 cursor-pointer hover:bg-gray-50 transition-colors"
             onClick={onClick}
         >
+            {isBulkMode && (
+                <div className="mb-3" onClick={(e) => e.stopPropagation()}>
+                    <Checkbox
+                        checked={isSelected ?? false}
+                        onChange={onSelect ?? (() => {})}
+                        disabled={isDisabled}
+                        size="medium"
+                    />
+                </div>
+            )}
             <div className="flex items-start justify-between gap-3">
                 <p className="text-[17px] font-medium text-gray-800 break-words min-w-0">{entry.name}</p>
                 <span className="text-xs text-gray-400 whitespace-nowrap shrink-0 mt-0.5">#{entry.id}</span>
