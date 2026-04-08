@@ -18,6 +18,7 @@ export * from "./user-deleted";
 export * from "./user-deleted-restore";
 export * from "./user-management";
 export * from "./user-management-bulk-delete";
+export * from "./user-management-bulk-role";
 export * from "./user-management-role";
 export * from "./user-management-password";
 export * from "./verify";
