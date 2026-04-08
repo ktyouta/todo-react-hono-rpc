@@ -8,6 +8,7 @@ import type { UseUserManagementBulkReturn } from "../hooks/use-user-management-b
 import type { UserManagementSearchFilter } from "../types/user-management-search-filter";
 import { UserManagementActionBar } from "./user-management-action-bar";
 import { UserManagementBulkDeleteDialog } from "./user-management-bulk-delete-dialog";
+import { UserManagementBulkRoleDialog } from "./user-management-bulk-role-dialog";
 import { UserManagementCard } from "./user-management-card";
 import { UserManagementSearchBar } from "./user-management-search-bar";
 
@@ -82,6 +83,7 @@ export function UserManagementList(props: PropsType) {
                     selectedCount={bulk.selectedIds.length}
                     isAllSelected={bulk.isAllSelected}
                     onSelectAll={bulk.onSelectAll}
+                    onOpenBulkRoleDialog={bulk.onOpenBulkRoleDialog}
                     onOpenBulkDeleteDialog={bulk.onOpenBulkDeleteDialog}
                     onCancel={bulk.onToggleBulkMode}
                 />
@@ -155,6 +157,19 @@ export function UserManagementList(props: PropsType) {
                     />
                 )}
             </div>
+
+            {/* 一括ロール変更ダイアログ */}
+            <UserManagementBulkRoleDialog
+                isOpen={bulk.isBulkRoleDialogOpen}
+                selectedCount={bulk.selectedIds.length}
+                isLoading={bulk.isBulkRoleLoading}
+                roleList={roleList}
+                selectedRoleId={bulk.selectedRoleId}
+                errorMessage={bulk.bulkRoleErrorMessage}
+                onClose={bulk.onCloseBulkRoleDialog}
+                onSelectRole={bulk.onSelectRole}
+                onConfirm={bulk.onConfirmBulkRole}
+            />
 
             {/* 一括削除ダイアログ */}
             <UserManagementBulkDeleteDialog

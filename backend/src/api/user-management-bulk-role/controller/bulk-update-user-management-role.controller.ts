@@ -31,7 +31,7 @@ const bulkUpdateUserManagementRole = new Hono<AppEnv>().patch(
         const service = new BulkUpdateUserManagementRoleService(repository);
 
         // 自己ロール降格ガード：変更後のロールにuser_management権限がない場合は自己降格させない
-        if (loginUserId !== undefined && ids.includes(loginUserId)) {
+        if (loginUserId && ids.includes(loginUserId)) {
             const permissions = await service.getRolePermission(roleId);
 
             if (!permissions.includes("user_management")) {

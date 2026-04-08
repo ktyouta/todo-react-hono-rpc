@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { useBulkDeleteUserManagementMutation } from "../api/bulk-delete-user-management";
+import { useBulkUpdateUserManagementRoleMutation } from "../api/bulk-update-user-management-role";
 import { UserManagementListReturnType } from "../api/get-user-management-list";
 
 type PropsType = {
@@ -16,12 +17,31 @@ export function useUserManagementBulk({ userData, loginUserId }: PropsType) {
     const [selectedIds, setSelectedIds] = useState<number[]>([]);
     // 一括削除ダイアログ開閉
     const [isBulkDeleteDialogOpen, setIsBulkDeleteDialogOpen] = useState(false);
+    // 一括ロール変更ダイアログ開閉
+    const [isBulkRoleDialogOpen, setIsBulkRoleDialogOpen] = useState(false);
+    // 一括ロール変更：選択中のロールID
+    const [selectedRoleId, setSelectedRoleId] = useState<number | null>(null);
+    // 一括ロール変更：サーバーエラーメッセージ
+    const [bulkRoleErrorMessage, setBulkRoleErrorMessage] = useState<string | null>(null);
     // 自分自身を除いた選択可能なユーザーリスト
     const selectableList = userData.list.filter((u) => u.id !== loginUserId);
     // チェックボックス全選択フラグ（自分自身を除く）
     const isAllSelected =
         selectableList.length > 0 &&
         selectableList.every((u) => selectedIds.includes(u.id));
+    // 一括ロール変更ミューテーション
+    const bulkRoleMutation = useBulkUpdateUserManagementRoleMutation({
+        onSuccess: (data) => {
+            toast.success(data.message);
+            setIsBulkRoleDialogOpen(false);
+            setBulkRoleErrorMessage(null);
+            exitBulkMode();
+        },
+        onError: (message) => {
+            setBulkRoleErrorMessage(message ?? "一括ロール変更に失敗しました。時間をおいて再度お試しください。");
+        },
+    });
+
     // 一括削除ミューテーション
     const bulkDeleteMutation = useBulkDeleteUserManagementMutation({
         onSuccess: (data) => {
@@ -79,6 +99,39 @@ export function useUserManagementBulk({ userData, loginUserId }: PropsType) {
     }
 
     /**
+     * 一括ロール変更ダイアログを開く
+     */
+    function onOpenBulkRoleDialog() {
+        setSelectedRoleId(null);
+        setBulkRoleErrorMessage(null);
+        setIsBulkRoleDialogOpen(true);
+    }
+
+    /**
+     * 一括ロール変更ダイアログを閉じる
+     */
+    function onCloseBulkRoleDialog() {
+        setIsBulkRoleDialogOpen(false);
+        setBulkRoleErrorMessage(null);
+    }
+
+    /**
+     * ロール選択
+     */
+    function onSelectRole(roleId: number | null) {
+        setSelectedRoleId(roleId);
+        setBulkRoleErrorMessage(null);
+    }
+
+    /**
+     * 一括ロール変更を実行
+     */
+    function onConfirmBulkRole() {
+        if (selectedRoleId === null) return;
+        bulkRoleMutation.mutate({ ids: selectedIds, roleId: selectedRoleId });
+    }
+
+    /**
      * 一括削除ダイアログを開く
      */
     function onOpenBulkDeleteDialog() {
@@ -104,6 +157,9 @@ export function useUserManagementBulk({ userData, loginUserId }: PropsType) {
         selectedIds,
         isAllSelected,
         isBulkDeleteDialogOpen,
+        isBulkRoleDialogOpen,
+        selectedRoleId,
+        bulkRoleErrorMessage,
         onToggleBulkMode,
         onSelectAll,
         onSelectItem,
@@ -111,7 +167,12 @@ export function useUserManagementBulk({ userData, loginUserId }: PropsType) {
         onOpenBulkDeleteDialog,
         onCloseBulkDeleteDialog,
         onConfirmBulkDelete,
+        onOpenBulkRoleDialog,
+        onCloseBulkRoleDialog,
+        onSelectRole,
+        onConfirmBulkRole,
         isBulkDeleteLoading: bulkDeleteMutation.isPending,
+        isBulkRoleLoading: bulkRoleMutation.isPending,
         exitBulkMode,
     };
 }

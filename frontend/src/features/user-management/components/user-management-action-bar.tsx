@@ -5,6 +5,7 @@ type PropsType = {
     selectedCount: number;
     isAllSelected: boolean;
     onSelectAll: (checked: boolean) => void;
+    onOpenBulkRoleDialog: () => void;
     onOpenBulkDeleteDialog: () => void;
     onCancel: () => void;
 };
@@ -13,6 +14,7 @@ export function UserManagementActionBar({
     selectedCount,
     isAllSelected,
     onSelectAll,
+    onOpenBulkRoleDialog,
     onOpenBulkDeleteDialog,
     onCancel,
 }: PropsType) {
@@ -30,6 +32,15 @@ export function UserManagementActionBar({
                     {selectedCount}件選択中
                 </span>
                 <div className="flex flex-wrap items-center gap-2 ml-auto">
+                    <Button
+                        colorType="blue"
+                        sizeType="medium"
+                        onClick={onOpenBulkRoleDialog}
+                        disabled={!hasSelection}
+                        className="h-9 py-0 px-3 font-medium whitespace-nowrap disabled:opacity-50"
+                    >
+                        ロール変更
+                    </Button>
                     <Button
                         colorType="blue"
                         sizeType="medium"
