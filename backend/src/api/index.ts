@@ -29,3 +29,6 @@ export * from "./todo-management-bulk-delete";
 export * from "./todo-management-bulk-update";
 export * from "./todo-deleted-bulk-restore";
 export * from "./user-deleted-bulk-restore";
+export * from "./todo-trash";
+export * from "./todo-trash-restore";
+export * from "./todo-trash-bulk-restore";

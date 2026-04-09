@@ -39,7 +39,11 @@ export const API_ENDPOINT = {
   TODO_DELETED_BULK_RESTORE: "/api/v1/todo-deleted/bulk/restore",
   USER_MANAGEMENT_BULK: "/api/v1/user-management/bulk",
   USER_MANAGEMENT_BULK_ROLE: "/api/v1/user-management/bulk/role",
-  USER_DELETED_BULK_RESTORE: "/api/v1/user-deleted/bulk/restore"
+  USER_DELETED_BULK_RESTORE: "/api/v1/user-deleted/bulk/restore",
+  TODO_TRASH: "/api/v1/todo/trash",
+  TODO_TRASH_ID: "/api/v1/todo/trash/:id",
+  TODO_TRASH_RESTORE: "/api/v1/todo/trash/:id/restore",
+  TODO_TRASH_BULK_RESTORE: "/api/v1/todo/trash/bulk/restore",
 } as const;
 
 export type ApiEndpointType = (typeof API_ENDPOINT)[keyof typeof API_ENDPOINT];
