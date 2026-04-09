@@ -7,6 +7,7 @@ import { useEffect, useRef, useState } from "react";
 import { UserDeletedManagementListReturnType, useGetUserDeletedManagementList } from "../api/get-user-deleted-management-list";
 import { USER_DELETED_MANAGEMENT_QUERY_KEY } from "../constants/user-deleted-management-query-params";
 import { initialUserDeletedManagementSearchFilter, UserDeletedManagementSearchFilter } from "../types/user-deleted-management-search-filter";
+import { useUserDeletedManagementBulk } from "./use-user-deleted-management-bulk";
 
 export function useUserDeletedManagementList() {
 
@@ -36,6 +37,8 @@ export function useUserDeletedManagementList() {
     const { appNavigate } = useAppNavigation();
     // オーバーレイ表示フラグ
     const isShowOverlay = useDelayedFlag(isPending, 250);
+    // 一括操作
+    const bulk = useUserDeletedManagementBulk({ userData: data.data });
     // ページ切り替え判定フラグ
     const wasPageChanging = useRef(false);
 
@@ -112,6 +115,7 @@ export function useUserDeletedManagementList() {
             delete params[USER_DELETED_MANAGEMENT_QUERY_KEY.PAGE];
         }
         setSearchParams(params);
+        bulk.exitBulkMode();
     }
 
     return {
@@ -126,5 +130,6 @@ export function useUserDeletedManagementList() {
         currentPage,
         changePage,
         isShowOverlay,
+        bulk,
     };
 }

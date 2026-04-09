@@ -1,18 +1,32 @@
+import { Checkbox } from "@/components/ui/checkbox/checkbox";
 import { UserDeletedManagementListReturnType } from "../api/get-user-deleted-management-list";
 
 type PropsType = {
     entry: UserDeletedManagementListReturnType['list'][number];
     onClick: () => void;
+    isBulkMode?: boolean;
+    isSelected?: boolean;
+    onSelect?: (checked: boolean) => void;
 };
 
-export function UserDeletedManagementCard({ entry, onClick }: PropsType) {
+export function UserDeletedManagementCard({ entry, onClick, isBulkMode = false, isSelected = false, onSelect }: PropsType) {
     return (
         <div
-            className="bg-white border border-gray-200 rounded-lg p-4 cursor-pointer hover:bg-gray-50 transition-colors"
+            className={`bg-white border rounded-lg p-4 cursor-pointer transition-colors ${isSelected ? 'border-blue-400 bg-blue-50' : 'border-gray-200 hover:bg-gray-50'}`}
             onClick={onClick}
         >
-            <div className="flex items-start justify-between gap-3">
-                <p className="text-[17px] font-medium text-gray-800 break-words min-w-0">{entry.name}</p>
+            <div className="flex items-start gap-3">
+                {isBulkMode && (
+                    <div onClick={(e) => e.stopPropagation()}>
+                        <Checkbox
+                            checked={isSelected}
+                            onChange={(checked) => onSelect?.(checked)}
+                            size="medium"
+                            className="mt-0.5 shrink-0"
+                        />
+                    </div>
+                )}
+                <p className="text-[17px] font-medium text-gray-800 break-words min-w-0 flex-1">{entry.name}</p>
                 <span className="text-xs text-gray-400 whitespace-nowrap shrink-0 mt-0.5">#{entry.id}</span>
             </div>
             <div className="flex flex-wrap gap-x-4 gap-y-2 mt-3 pt-3 border-t border-gray-100 text-xs">

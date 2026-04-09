@@ -8,9 +8,9 @@ import { useDelayedFlag } from "@/hooks/use-delayed-flag";
 import { useTransitionSearchParams } from "@/hooks/use-transition-search-params";
 import { useEffect, useRef, useState } from "react";
 import { TodoDeletedManagementListReturnType, useGetTodoDeletedManagementList } from "../api/get-todo-deleted-management-list";
-import { useTodoDeletedManagementBulk } from "./use-todo-deleted-management-bulk";
 import { TODO_DELETED_MANAGEMENT_QUERY_KEY } from "../constants/todo-deleted-management-query-params";
 import { initialTodoDeletedManagementSearchFilter, TodoDeletedManagementSearchFilter } from "../types/todo-deleted-management-search-filter";
+import { useTodoDeletedManagementBulk } from "./use-todo-deleted-management-bulk";
 
 export function useTodoDeletedManagementList() {
 
@@ -29,7 +29,6 @@ export function useTodoDeletedManagementList() {
         updatedAtFrom: searchParams.get(TODO_DELETED_MANAGEMENT_QUERY_KEY.UPDATED_AT_FROM),
         updatedAtTo: searchParams.get(TODO_DELETED_MANAGEMENT_QUERY_KEY.UPDATED_AT_TO),
     };
-
     // タスク検索条件
     const [searchCondition, setSearchCondition] = useState<TodoDeletedManagementSearchFilter>(initSearchCondition);
     // 選択中のページ
@@ -136,6 +135,7 @@ export function useTodoDeletedManagementList() {
             delete params[TODO_DELETED_MANAGEMENT_QUERY_KEY.PAGE];
         }
         setSearchParams(params);
+        bulk.exitBulkMode();
     }
 
     return {

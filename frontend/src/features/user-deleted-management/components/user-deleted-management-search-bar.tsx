@@ -11,12 +11,13 @@ type PropsType = {
     onClear: () => void;
     roleList: RoleListReturnType;
     handleKeyPress: (event: React.KeyboardEvent<HTMLInputElement>) => void;
+    onToggleBulkMode: () => void;
 };
 
 const LABEL_CLASS = "text-sm text-gray-500 whitespace-nowrap w-[5em]";
 const SELECT_CLASS = "flex-1 px-3 py-2 text-base bg-white border-[#c0c0c0]";
 
-export function UserDeletedManagementSearchBar({ searchCondition, onChange, onSearch, onClear, roleList, handleKeyPress }: PropsType) {
+export function UserDeletedManagementSearchBar({ searchCondition, onChange, onSearch, onClear, roleList, handleKeyPress, onToggleBulkMode }: PropsType) {
 
     // 詳細フィルター開閉フラグ
     const [isDetailOpen, setIsDetailOpen] = useState(false);
@@ -78,6 +79,14 @@ export function UserDeletedManagementSearchBar({ searchCondition, onChange, onSe
                         className="h-9 py-0 font-medium whitespace-nowrap"
                     >
                         検索
+                    </Button>
+                    <Button
+                        colorType="green"
+                        sizeType="medium"
+                        onClick={onToggleBulkMode}
+                        className="px-3 h-9 py-0 bg-teal-500 hover:bg-teal-600 text-white font-medium whitespace-nowrap"
+                    >
+                        一括操作
                     </Button>
                 </div>
             </div>
