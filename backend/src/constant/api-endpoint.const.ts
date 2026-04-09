@@ -38,7 +38,8 @@ export const API_ENDPOINT = {
   TODO_MANAGEMENT_BULK: "/api/v1/todo-management/bulk",
   TODO_DELETED_BULK_RESTORE: "/api/v1/todo-deleted/bulk/restore",
   USER_MANAGEMENT_BULK: "/api/v1/user-management/bulk",
-  USER_MANAGEMENT_BULK_ROLE: "/api/v1/user-management/bulk/role"
+  USER_MANAGEMENT_BULK_ROLE: "/api/v1/user-management/bulk/role",
+  USER_DELETED_BULK_RESTORE: "/api/v1/user-deleted/bulk/restore"
 } as const;
 
 export type ApiEndpointType = (typeof API_ENDPOINT)[keyof typeof API_ENDPOINT];

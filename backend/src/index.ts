@@ -1,6 +1,6 @@
 import { Context, Hono } from "hono";
 import { cors } from "hono/cors";
-import { category, frontUser, frontUserLogin, frontUserLogout, frontUserPassword, health, priority, refresh, roleManagement, sample, status, todo, todoBulkDelete, todoBulkUpdate, todoDeleted, todoDeletedBulkRestore, todoDeletedRestore, todoFavorite, todoManagement, todoManagementBulkDelete, todoManagementBulkUpdate, userDeleted, userDeletedRestore, userList, userManagement, userManagementBulkDelete, userManagementBulkRole, userManagementPassword, userManagementRole, verify } from "./api";
+import { category, frontUser, frontUserLogin, frontUserLogout, frontUserPassword, health, priority, refresh, roleManagement, sample, status, todo, todoBulkDelete, todoBulkUpdate, todoDeleted, todoDeletedBulkRestore, todoDeletedRestore, todoFavorite, todoManagement, todoManagementBulkDelete, todoManagementBulkUpdate, userDeleted, userDeletedBulkRestore, userDeletedRestore, userList, userManagement, userManagementBulkDelete, userManagementBulkRole, userManagementPassword, userManagementRole, verify } from "./api";
 import { permissionList } from "./api/permission-list";
 import { roleList } from "./api/role-list";
 import {
@@ -75,6 +75,7 @@ const routes = app
   .route("/", roleList)
   .route("/", permissionList)
   .route("/", roleManagement)
+  .route("/", userDeletedBulkRestore)
   .route("/", userDeleted)
   .route("/", userDeletedRestore)
 

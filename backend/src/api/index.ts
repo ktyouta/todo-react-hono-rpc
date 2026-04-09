@@ -28,3 +28,4 @@ export * from "./todo-bulk-update";
 export * from "./todo-management-bulk-delete";
 export * from "./todo-management-bulk-update";
 export * from "./todo-deleted-bulk-restore";
+export * from "./user-deleted-bulk-restore";
