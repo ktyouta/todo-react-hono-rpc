@@ -29,7 +29,7 @@ type PropsType = {
 
 // テーブルカラム（通常モード）
 const baseColumns: TableProps<UserManagementListReturnType['list'][number]>['columns'] = [
-    { title: 'ID', field: 'id', className: 'w-[5%] whitespace-nowrap' },
+    { title: 'ID', field: 'id', className: 'w-[5%] whitespace-nowrap pl-4' },
     { title: 'ユーザー名', field: 'name', className: 'max-w-0', Cell: ({ entry }) => <span className="block truncate">{entry.name}</span> },
     { title: '生年月日', field: 'birthday', className: 'w-[12%] whitespace-nowrap', Cell: ({ entry }) => <span>{`${entry.birthday.slice(0, 4)}-${entry.birthday.slice(4, 6)}-${entry.birthday.slice(6, 8)}`}</span> },
     { title: 'ロール', field: 'roleName', className: 'w-[10%] whitespace-nowrap' },

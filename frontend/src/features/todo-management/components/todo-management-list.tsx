@@ -36,7 +36,7 @@ type PropsType = {
 
 // テーブルカラム（通常モード）
 const baseColumns: TableProps<TaskManagementListReturnType['list'][number]>['columns'] = [
-    { title: 'ID', field: 'id', className: 'w-[5%] whitespace-nowrap' },
+    { title: 'ID', field: 'id', className: 'w-[5%] whitespace-nowrap pl-4' },
     { title: 'タイトル', field: 'title', className: 'max-w-0', Cell: ({ entry }) => <span className="block truncate">{entry.title}</span> },
     { title: 'ユーザー', field: 'userName', className: 'w-[10%] whitespace-nowrap' },
     { title: 'カテゴリ', field: 'categoryName', className: 'w-[9%] whitespace-nowrap' },

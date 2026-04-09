@@ -22,6 +22,9 @@ import { UserCreatePage } from '@/features/user-create/components/user-create-pa
 import { UserDeletedManagementDetailPage } from '@/features/user-deleted-management/components/user-deleted-management-detail-page';
 import { UserDeletedManagementLayout } from '@/features/user-deleted-management/components/user-deleted-management-layout';
 import { UserDeletedManagementPage } from '@/features/user-deleted-management/components/user-deleted-management-page';
+import { TodoTrashDetailPage } from '@/features/todo-trash/components/todo-trash-detail-page';
+import { TodoTrashLayout } from '@/features/todo-trash/components/todo-trash-layout';
+import { TodoTrashPage } from '@/features/todo-trash/components/todo-trash-page';
 import { UserManagementDetailPage } from '@/features/user-management/components/user-management-detail-page';
 import { UserManagementLayout } from '@/features/user-management/components/user-management-layout';
 import { UserManagementPage } from '@/features/user-management/components/user-management-page';
@@ -276,6 +279,25 @@ const routerList = [
                                         )
                                     }
                                 ]
+                            }
+                        ]
+                    },
+                    {
+                        element: <TodoTrashLayout />,
+                        children: [
+                            {
+                                // ゴミ箱一覧
+                                path: paths.todoTrash.path,
+                                element: (
+                                    <TodoTrashPage />
+                                )
+                            },
+                            {
+                                // ゴミ箱詳細
+                                path: paths.todoTrashDetail.path,
+                                element: (
+                                    <TodoTrashDetailPage />
+                                )
                             }
                         ]
                     },
