@@ -44,6 +44,7 @@ export const API_ENDPOINT = {
   TODO_TRASH_ID: "/api/v1/todo/trash/:id",
   TODO_TRASH_RESTORE: "/api/v1/todo/trash/:id/restore",
   TODO_TRASH_BULK_RESTORE: "/api/v1/todo/trash/bulk/restore",
+  TODO_STATS: "/api/v1/todo/stats",
 } as const;
 
 export type ApiEndpointType = (typeof API_ENDPOINT)[keyof typeof API_ENDPOINT];
