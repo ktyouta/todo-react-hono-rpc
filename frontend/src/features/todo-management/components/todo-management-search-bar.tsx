@@ -4,7 +4,8 @@ import { PriorityReturnType } from "@/features/api/get-priority";
 import { StatusReturnType } from "@/features/api/get-status";
 import { UserManagementListReturnType } from "@/features/api/get-user-list";
 import { useState } from "react";
-import { HiChevronDown, HiChevronUp, HiMagnifyingGlass } from "react-icons/hi2";
+import { HiMagnifyingGlass } from "react-icons/hi2";
+import { MdFilterAlt } from "react-icons/md";
 import { TodoManagementSearchFilter } from "../types/todo-management-search-filter";
 
 type PropsType = {
@@ -56,23 +57,18 @@ export function TodoManagementSearchBar({ searchCondition, onChange, onSearch, o
                 </div>
                 {/* 詳細フィルターボタン + バッジ + クリア + 検索 */}
                 <div className="flex flex-wrap items-center gap-2 shrink-0">
-                    <Button
-                        colorType="blue"
-                        sizeType="small"
+                    <button
+                        type="button"
                         onClick={() => setIsDetailOpen(!isDetailOpen)}
-                        className="flex items-center gap-1.5 px-3 h-9 py-0 bg-[#fcfdfd] border border-gray-300 text-sm text-gray-600 hover:bg-gray-200 whitespace-nowrap"
+                        className="relative flex items-center justify-center h-9 w-9 rounded border border-gray-300 bg-[#fcfdfd] hover:bg-gray-200 shrink-0"
                     >
-                        <span>詳細フィルター</span>
-                        {isDetailOpen
-                            ? <HiChevronUp className="size-4" />
-                            : <HiChevronDown className="size-4" />
-                        }
-                    </Button>
-                    {activeCount > 0 && (
-                        <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-blue-500 text-white text-xs font-medium shrink-0 leading-none">
-                            {activeCount}
-                        </span>
-                    )}
+                        <MdFilterAlt className={`size-5 ${isDetailOpen || activeCount > 0 ? 'text-blue-500' : 'text-gray-500'}`} />
+                        {activeCount > 0 && (
+                            <span className="absolute -top-1.5 -right-1.5 flex items-center justify-center w-4 h-4 rounded-full bg-blue-500 text-white text-[10px] font-medium leading-none">
+                                {activeCount}
+                            </span>
+                        )}
+                    </button>
                     <Button
                         colorType="blue"
                         sizeType="small"
