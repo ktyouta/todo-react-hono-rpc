@@ -3,7 +3,7 @@ import { CategoryReturnType } from "@/features/api/get-category";
 import { PriorityReturnType } from "@/features/api/get-priority";
 import { StatusReturnType } from "@/features/api/get-status";
 import { useState } from "react";
-import { HiMagnifyingGlass } from "react-icons/hi2";
+import { HiChevronDown, HiChevronUp, HiMagnifyingGlass } from "react-icons/hi2";
 import { MdFilterAlt } from "react-icons/md";
 import { FAVORITE_OPTIONS } from "../constants/todo-filter-options";
 import { TodoSearchFilter } from "../types/todo-search-filter";
@@ -56,10 +56,11 @@ export function TodoSearchBar({ searchCondition, onChange, onSearch, onClear, ca
                 </div>
                 {/* 詳細フィルターボタン + バッジ + クリア + 検索 */}
                 <div className="flex flex-wrap items-center gap-2 shrink-0">
+                    {/* モバイル: アイコンボタン */}
                     <button
                         type="button"
                         onClick={() => setIsDetailOpen(!isDetailOpen)}
-                        className="relative flex items-center justify-center h-9 w-9 rounded border border-gray-300 bg-[#fcfdfd] hover:bg-gray-200 shrink-0"
+                        className="relative sm:hidden flex items-center justify-center h-9 w-9 rounded border border-gray-300 bg-[#fcfdfd] hover:bg-gray-200 shrink-0"
                     >
                         <MdFilterAlt className={`size-5 ${isDetailOpen || activeCount > 0 ? 'text-blue-500' : 'text-gray-500'}`} />
                         {activeCount > 0 && (
@@ -68,6 +69,24 @@ export function TodoSearchBar({ searchCondition, onChange, onSearch, onClear, ca
                             </span>
                         )}
                     </button>
+                    {/* sm以上: テキストボタン + バッジ */}
+                    <Button
+                        colorType="blue"
+                        sizeType="small"
+                        onClick={() => setIsDetailOpen(!isDetailOpen)}
+                        className="hidden sm:flex items-center gap-1.5 px-3 h-9 py-0 bg-[#fcfdfd] border border-gray-300 text-sm text-gray-600 hover:bg-gray-200 whitespace-nowrap"
+                    >
+                        <span>詳細フィルター</span>
+                        {isDetailOpen
+                            ? <HiChevronUp className="size-4" />
+                            : <HiChevronDown className="size-4" />
+                        }
+                    </Button>
+                    {activeCount > 0 && (
+                        <span className="hidden sm:inline-flex items-center justify-center w-5 h-5 rounded-full bg-blue-500 text-white text-xs font-medium shrink-0 leading-none">
+                            {activeCount}
+                        </span>
+                    )}
                     <Button
                         colorType="blue"
                         sizeType="small"
