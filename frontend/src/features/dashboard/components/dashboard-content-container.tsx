@@ -4,33 +4,34 @@ import { DashboardStatsSection } from './dashboard-stats-section';
 import { DashboardTaskSection } from './dashboard-task-section';
 
 export function DashboardContentContainer() {
-    const { stats } = useDashboardStats();
+    const { stats, clickTask } = useDashboardStats();
 
     return (
         <div className="p-4 sm:p-6 w-full flex flex-col gap-6">
-            {/* 要注意 */}
+            {/* スケジュール */}
             <DashboardStatsSection
                 overdue={stats.overdue}
                 dueToday={stats.dueToday}
+                dueSoon={stats.dueSoon}
                 overdueList={stats.overdueList}
                 dueTodayList={stats.dueTodayList}
+                dueSoonList={stats.dueSoonList}
+                clickTask={clickTask}
             />
-            {/* タスク状況 ＋ その他 */}
-            <div className="flex flex-col md:flex-row gap-6">
-                <div className="md:flex-1">
-                    <DashboardTaskSection
-                        byStatus={stats.byStatus}
-                        byPriority={stats.byPriority}
-                    />
-                </div>
-                <div className="md:w-96">
-                    <DashboardOtherSection
-                        favorites={stats.favorites}
-                        memos={stats.memos}
-                        trash={stats.trash}
-                    />
-                </div>
-            </div>
+            {/* タスク状況 */}
+            <DashboardTaskSection
+                byStatus={stats.byStatus}
+                byPriority={stats.byPriority}
+            />
+            {/* その他 */}
+            <DashboardOtherSection
+                favorites={stats.favorites}
+                memos={stats.memos}
+                trash={stats.trash}
+                noDueDate={stats.noDueDate}
+                noPriority={stats.noPriority}
+                total={stats.total}
+            />
         </div>
     );
 }

@@ -5,7 +5,7 @@ import type { IGetTodoStatsRepository, TodoStats } from "../repository/get-todo-
  * タスク集計取得サービス
  */
 export class GetTodoStatsService {
-  constructor(private readonly repository: IGetTodoStatsRepository) {}
+  constructor(private readonly repository: IGetTodoStatsRepository) { }
 
   /**
    * 集計取得

@@ -1,12 +1,12 @@
-type Variant = 'default' | 'red' | 'yellow';
+type StatCardVariant = 'default' | 'red' | 'yellow';
 
 type PropsType = {
     value: number;
     label: string;
-    variant?: Variant;
+    variant?: StatCardVariant;
 };
 
-const variantStyles: Record<Variant, { card: string; value: string }> = {
+const variantStyles: Record<StatCardVariant, { card: string; value: string }> = {
     default: {
         card: 'bg-white border-gray-200',
         value: 'text-gray-800',

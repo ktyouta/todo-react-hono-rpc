@@ -2,6 +2,7 @@ import { Hono } from "hono";
 import { API_ENDPOINT, HTTP_STATUS } from "../../../constant";
 import { authMiddleware } from "../../../middleware";
 import type { AppEnv } from "../../../types";
+import { GetTodoStatsResponseDto } from "../dto/get-todo-stats-response.dto";
 import { GetTodoStatsRepository } from "../repository/get-todo-stats.repository";
 import { GetTodoStatsService } from "../service/get-todo-stats.service";
 
@@ -22,8 +23,10 @@ const getTodoStats = new Hono<AppEnv>().get(
       return c.json({ message: "認証エラー" }, HTTP_STATUS.UNAUTHORIZED);
     }
 
-    const stats = await service.find(userId);
-    return c.json({ message: "タスク集計を取得しました。", data: stats }, HTTP_STATUS.OK);
+    const todoStats = await service.find(userId);
+    const dto = new GetTodoStatsResponseDto(todoStats);
+
+    return c.json({ message: "タスク集計を取得しました。", data: dto.value }, HTTP_STATUS.OK);
   }
 );
 

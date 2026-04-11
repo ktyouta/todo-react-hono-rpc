@@ -3,28 +3,33 @@ import { FrontUserId } from "../../../domain";
 export type TodoStatsListItem = {
   id: number;
   title: string;
-  dueDate: string;
+  dueDate: string | null;
 };
 
-export type TodoStats = {
+export type StatType = {
   overdue: number;
   dueToday: number;
-  overdueList: TodoStatsListItem[];
-  dueTodayList: TodoStatsListItem[];
-  byStatus: {
-    notStarted: number;
-    inProgress: number;
-    done: number;
-  };
-  byPriority: {
-    high: number;
-    medium: number;
-    low: number;
-  };
+  dueSoon: number;
+  notStarted: number;
+  inProgress: number;
+  done: number;
+  highPriority: number;
+  mediumPriority: number;
+  lowPriority: number;
   favorites: number;
   trash: number;
   memos: number;
-};
+  noDueDate: number;
+  noPriority: number;
+  total: number;
+}
+
+export type TodoStats = {
+  stats: StatType;
+  overdueList: TodoStatsListItem[];
+  dueTodayList: TodoStatsListItem[];
+  dueSoonList: TodoStatsListItem[];
+}
 
 /**
  * タスク集計取得リポジトリインターフェース

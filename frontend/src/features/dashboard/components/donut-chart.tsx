@@ -1,11 +1,10 @@
 import { Cell, Pie, PieChart, ResponsiveContainer } from 'recharts';
-import { ChartItem } from './status-donut-chart';
 
 type PropsType = {
-    data: ChartItem[];
+    data: { name: string; color: string; value: number }[];
 };
 
-export function PriorityDonutChart({ data }: PropsType) {
+export function DonutChart({ data }: PropsType) {
     const total = data.reduce((sum, v) => sum + v.value, 0);
     // データが0件の場合はグレーの「データなし」セグメントを表示
     const chartData = total === 0
@@ -27,13 +26,13 @@ export function PriorityDonutChart({ data }: PropsType) {
                         endAngle={-270}
                         strokeWidth={0}
                     >
-                        {chartData.map((entry, index) => (
-                            <Cell key={index} fill={entry.color} />
+                        {chartData.map((entry) => (
+                            <Cell key={entry.name} fill={entry.color} />
                         ))}
                     </Pie>
                 </PieChart>
             </ResponsiveContainer>
-            <div className="flex flex-wrap justify-center gap-x-4 gap-y-1 text-sm">
+            <div className="flex flex-wrap justify-center gap-x-4 gap-y-1 text-base">
                 {data.map((item) => (
                     <div key={item.name} className="flex items-center gap-1.5">
                         <span

@@ -1,1 +1,1 @@
-export * from "./controller/get-todo-stats.controller";
+export * from "./controller";

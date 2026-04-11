@@ -6,9 +6,13 @@ export type TaskListItem = {
     dueDate: string;
 };
 
-export type Variant = 'red' | 'yellow';
+export type TaskItemVariant = 'red' | 'yellow' | 'blue';
 
-const variantStyles: Record<Variant, { strip: string; border: string; dateBadge: string; idChip: string }> = {
+type PropsType = TaskListItem & { variant: TaskItemVariant } & {
+    clickTask: (id: number) => void;
+}
+
+const variantStyles: Record<TaskItemVariant, { strip: string; border: string; dateBadge: string; idChip: string }> = {
     red: {
         strip: 'bg-red-400',
         border: 'border-red-100',
@@ -21,13 +25,19 @@ const variantStyles: Record<Variant, { strip: string; border: string; dateBadge:
         dateBadge: 'bg-amber-100 text-amber-600',
         idChip: 'bg-gray-100 text-gray-500',
     },
+    blue: {
+        strip: 'bg-blue-400',
+        border: 'border-blue-100',
+        dateBadge: 'bg-blue-100 text-blue-600',
+        idChip: 'bg-gray-100 text-gray-500',
+    },
 };
 
-export function TaskItem({ id, title, dueDate, variant }: TaskListItem & { variant: Variant }) {
+export function TaskItem({ id, title, dueDate, variant, clickTask }: PropsType) {
     const variantStyle = variantStyles[variant];
     return (
         <li className={`bg-white rounded-md border ${variantStyle.border} shadow-sm overflow-hidden`}>
-            <div className="flex">
+            <div className="flex cursor-pointer" onClick={() => { clickTask(id) }}>
                 <div className={`w-1.5 shrink-0 ${variantStyle.strip}`} />
                 <div className="flex-1 p-3">
                     <div className="flex items-start justify-between gap-2">

@@ -1,14 +1,15 @@
-import { TaskItem, TaskListItem, Variant } from './task-item';
+import { TaskItem, TaskListItem, TaskItemVariant } from './task-item';
 
 type PropsType = {
     count: number;
     label: string;
     list: TaskListItem[];
-    variant: Variant;
+    variant: TaskItemVariant;
     colorClass: { card: string; count: string };
+    clickTask: (id: number) => void;
 };
 
-export function WarningCard({ count, label, list, variant, colorClass }: PropsType) {
+export function WarningCard({ count, label, list, variant, colorClass, clickTask }: PropsType) {
     return (
         <div className={`border rounded-lg p-4 flex flex-col gap-3 ${colorClass.card}`}>
             <div>
@@ -24,6 +25,7 @@ export function WarningCard({ count, label, list, variant, colorClass }: PropsTy
                             title={task.title}
                             dueDate={task.dueDate}
                             variant={variant}
+                            clickTask={clickTask}
                         />
                     ))}
                 </ul>

@@ -1,17 +1,23 @@
-import { useSuspenseQuery } from '@tanstack/react-query';
-import { getDashboardStatsEndpoint } from '../api/get-dashboard-stats';
+import { paths } from '@/config/paths';
+import { useAppNavigation } from '@/hooks/use-app-navigation';
+import { useGetDashboardStats } from '../api/get-dashboard-stats';
 
 export function useDashboardStats() {
-    const { data } = useSuspenseQuery({
-        queryKey: ['dashboard-stats'],
-        queryFn: async () => {
-            const res = await getDashboardStatsEndpoint();
-            if (!res.ok) {
-                throw new Error('ダッシュボード統計の取得に失敗しました');
-            }
-            return res.json();
-        },
-    });
+    // タスク集計データ
+    const { data } = useGetDashboardStats();
+    // ルーティング用
+    const { appNavigate } = useAppNavigation();
 
-    return { stats: data.data };
+    /**
+     * タスククリックイベント
+     * @param id 
+     */
+    function clickTask(id: number) {
+        appNavigate(paths.todoDetail.getHref(id));
+    }
+
+    return {
+        stats: data.data,
+        clickTask
+    };
 }
