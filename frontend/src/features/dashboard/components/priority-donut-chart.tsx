@@ -1,23 +1,13 @@
 import { Cell, Pie, PieChart, ResponsiveContainer } from 'recharts';
+import { ChartItem } from './status-donut-chart';
 
 type PropsType = {
-    high: number;
-    medium: number;
-    low: number;
+    data: ChartItem[];
 };
 
-const PRIORITY_ITEMS = [
-    { name: '高', color: '#f87171' },
-    { name: '中', color: '#fbbf24' },
-    { name: '低', color: '#86efac' },
-] as const;
-
-export function PriorityDonutChart({ high, medium, low }: PropsType) {
-    const counts = [high, medium, low];
-    const total = counts.reduce((sum, v) => sum + v, 0);
-
-    const data = PRIORITY_ITEMS.map((item, i) => ({ ...item, value: counts[i] }));
-
+export function PriorityDonutChart({ data }: PropsType) {
+    const total = data.reduce((sum, v) => sum + v.value, 0);
+    // データが0件の場合はグレーの「データなし」セグメントを表示
     const chartData = total === 0
         ? [{ name: 'データなし', color: '#e5e7eb', value: 1 }]
         : data;

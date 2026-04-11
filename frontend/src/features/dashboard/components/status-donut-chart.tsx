@@ -1,23 +1,14 @@
 import { Cell, Pie, PieChart, ResponsiveContainer } from 'recharts';
 
+export type ChartItem = { name: string; color: string; value: number };
+
 type PropsType = {
-    notStarted: number;
-    inProgress: number;
-    done: number;
+    data: ChartItem[];
 };
 
-const STATUS_ITEMS = [
-    { name: '未着手', color: '#d1d5db' },
-    { name: '着手中', color: '#22d3ee' },
-    { name: '完了',   color: '#34d399' },
-] as const;
-
-export function StatusDonutChart({ notStarted, inProgress, done }: PropsType) {
-    const counts = [notStarted, inProgress, done];
-    const total = counts.reduce((sum, v) => sum + v, 0);
-
-    const data = STATUS_ITEMS.map((item, i) => ({ ...item, value: counts[i] }));
-
+export function StatusDonutChart({ data }: PropsType) {
+    const total = data.reduce((sum, v) => sum + v.value, 0);
+    // データが0件の場合はグレーの「データなし」セグメントを表示
     const chartData = total === 0
         ? [{ name: 'データなし', color: '#e5e7eb', value: 1 }]
         : data;
