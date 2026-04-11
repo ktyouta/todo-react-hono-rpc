@@ -70,6 +70,9 @@ export const paths = {
         path: '/user-deleted-management/:id',
         getHref: (id: number) => `/user-deleted-management/${id}`,
     },
+    dashboard: {
+        path: '/dashboard',
+    },
     todoTrash: {
         path: '/todo-trash',
     },

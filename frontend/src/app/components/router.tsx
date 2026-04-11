@@ -28,6 +28,7 @@ import { TodoTrashPage } from '@/features/todo-trash/components/todo-trash-page'
 import { UserManagementDetailPage } from '@/features/user-management/components/user-management-detail-page';
 import { UserManagementLayout } from '@/features/user-management/components/user-management-layout';
 import { UserManagementPage } from '@/features/user-management/components/user-management-page';
+import { DashboardPage } from '@/features/dashboard/components/dashboard-page';
 import { Navigate, useRoutes } from 'react-router-dom';
 import { DashboardContainer } from './dashboard-container';
 import { GuestRoute } from './guest-route';
@@ -74,6 +75,13 @@ const routerList = [
                     <DashboardContainer />
                 ),
                 children: [
+                    {
+                        // ダッシュボード
+                        path: paths.dashboard.path,
+                        element: (
+                            <DashboardPage />
+                        )
+                    },
                     {
                         element: (
                             // todo画面

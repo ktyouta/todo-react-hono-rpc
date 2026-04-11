@@ -2,7 +2,7 @@ import { Dashboard } from "@/components";
 import { paths } from "@/config/paths";
 import { useAppNavigation } from "@/hooks/use-app-navigation";
 import { usePermission } from "@/hooks/use-permission";
-import { HiOutlineArchiveBoxXMark, HiOutlineClipboardDocumentList, HiOutlineDocumentPlus, HiOutlineHome, HiOutlineKey, HiOutlineShieldCheck, HiOutlineTrash, HiOutlineUser, HiOutlineUserMinus, HiOutlineUserPlus } from 'react-icons/hi2';
+import { HiOutlineArchiveBoxXMark, HiOutlineChartBar, HiOutlineClipboardDocumentList, HiOutlineDocumentPlus, HiOutlineHome, HiOutlineKey, HiOutlineShieldCheck, HiOutlineTrash, HiOutlineUser, HiOutlineUserMinus, HiOutlineUserPlus } from 'react-icons/hi2';
 import { Navigate, Outlet } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useLogoutMutation } from "../api/logout";
@@ -37,6 +37,11 @@ export function DashboardContainer() {
             name: `タスク作成`,
             icon: <HiOutlineDocumentPlus className='h-5 w-5' />,
             path: paths.todoCreate.path,
+        },
+        {
+            name: `ダッシュボード`,
+            icon: <HiOutlineChartBar className='h-5 w-5' />,
+            path: paths.dashboard.path,
         },
         {
             name: `ゴミ箱`,
