@@ -2,7 +2,7 @@ import { Dashboard } from "@/components";
 import { paths } from "@/config/paths";
 import { useAppNavigation } from "@/hooks/use-app-navigation";
 import { usePermission } from "@/hooks/use-permission";
-import { HiOutlineArchiveBoxXMark, HiOutlineChartBar, HiOutlineClipboardDocumentList, HiOutlineDocumentPlus, HiOutlineHome, HiOutlineKey, HiOutlineShieldCheck, HiOutlineTrash, HiOutlineUser, HiOutlineUserMinus, HiOutlineUserPlus } from 'react-icons/hi2';
+import { HiOutlineArchiveBoxXMark, HiOutlineChartBar, HiOutlineClipboardDocumentList, HiOutlineDocumentPlus, HiOutlineHome, HiOutlineKey, HiOutlineShieldCheck, HiOutlineSquares2X2, HiOutlineTrash, HiOutlineUser, HiOutlineUserMinus, HiOutlineUserPlus } from 'react-icons/hi2';
 import { Navigate, Outlet } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useLogoutMutation } from "../api/logout";
@@ -25,6 +25,8 @@ export function DashboardContainer() {
     const hasRoleCreate = usePermission('role_create');
     // ロール管理パーミッション
     const hasRoleManagement = usePermission('role_management');
+    // 管理者ダッシュボードパーミッション
+    const hasAdminDashboard = usePermission('admin_dashboard');
 
     // サイドバーメニューリスト
     const navigationList = [
@@ -82,6 +84,11 @@ export function DashboardContainer() {
             name: `ロール管理`,
             icon: <HiOutlineKey className='h-5 w-5' />,
             path: paths.roleManagement.path,
+        }] : []),
+        ...(hasAdminDashboard ? [{
+            name: `管理者ダッシュボード`,
+            icon: <HiOutlineSquares2X2 className='h-5 w-5' />,
+            path: paths.adminDashboard.path,
         }] : []),
     ];
     // ログインユーザー情報(setter)

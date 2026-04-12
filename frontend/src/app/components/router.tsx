@@ -28,6 +28,7 @@ import { TodoTrashPage } from '@/features/todo-trash/components/todo-trash-page'
 import { UserManagementDetailPage } from '@/features/user-management/components/user-management-detail-page';
 import { UserManagementLayout } from '@/features/user-management/components/user-management-layout';
 import { UserManagementPage } from '@/features/user-management/components/user-management-page';
+import { AdminDashboardPage } from '@/features/admin-dashboard/components/admin-dashboard-page';
 import { DashboardPage } from '@/features/dashboard/components/dashboard-page';
 import { Navigate, useRoutes } from 'react-router-dom';
 import { DashboardContainer } from './dashboard-container';
@@ -110,6 +111,23 @@ const routerList = [
                         element: (
                             <TodoCreateContainer />
                         )
+                    },
+                    {
+                        // 権限ガード：admin_dashboard 権限なしは404
+                        element: (
+                            <RoleRoute
+                                permission="admin_dashboard"
+                            />
+                        ),
+                        children: [
+                            {
+                                // 管理者ダッシュボード
+                                path: paths.adminDashboard.path,
+                                element: (
+                                    <AdminDashboardPage />
+                                )
+                            }
+                        ]
                     },
                     {
                         // 権限ガード：task_management 権限なしは404

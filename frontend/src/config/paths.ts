@@ -73,6 +73,9 @@ export const paths = {
     dashboard: {
         path: '/dashboard',
     },
+    adminDashboard: {
+        path: '/admin-dashboard',
+    },
     todoTrash: {
         path: '/todo-trash',
     },
