@@ -11,13 +11,14 @@ INSERT OR IGNORE INTO role_master (id, name, is_protected, is_immutable, created
 
 -- 画面マスタ
 INSERT OR IGNORE INTO screen_master (id, key, name, created_at, updated_at) VALUES
-  (1, 'task_management',         'タスク管理',       datetime('now'), datetime('now')),
-  (2, 'user_management',         'ユーザー管理',     datetime('now'), datetime('now')),
-  (3, 'deleted_task_management', '削除タスク管理',   datetime('now'), datetime('now')),
-  (4, 'deleted_user_management', '削除ユーザー管理', datetime('now'), datetime('now')),
-  (5, 'user_create',             'ユーザー作成',     datetime('now'), datetime('now')),
-  (6, 'role_management',         'ロール管理',       datetime('now'), datetime('now')),
-  (7, 'role_create',             'ロール作成',       datetime('now'), datetime('now'));
+  (1, 'task_management',         'タスク管理',           datetime('now'), datetime('now')),
+  (2, 'user_management',         'ユーザー管理',         datetime('now'), datetime('now')),
+  (3, 'deleted_task_management', '削除タスク管理',       datetime('now'), datetime('now')),
+  (4, 'deleted_user_management', '削除ユーザー管理',     datetime('now'), datetime('now')),
+  (5, 'user_create',             'ユーザー作成',         datetime('now'), datetime('now')),
+  (6, 'role_management',         'ロール管理',           datetime('now'), datetime('now')),
+  (7, 'role_create',             'ロール作成',           datetime('now'), datetime('now')),
+  (8, 'admin_dashboard',         '管理者ダッシュボード', datetime('now'), datetime('now'));
 
 -- パーミッションマスタ
 INSERT OR IGNORE INTO permission_master (id, screen_id, is_protected, created_at, updated_at) VALUES
@@ -27,7 +28,8 @@ INSERT OR IGNORE INTO permission_master (id, screen_id, is_protected, created_at
   (4, 4, 1, datetime('now'), datetime('now')), -- deleted_user_management
   (5, 5, 1, datetime('now'), datetime('now')), -- user_create
   (6, 6, 1, datetime('now'), datetime('now')), -- role_management
-  (7, 7, 1, datetime('now'), datetime('now')); -- role_create
+  (7, 7, 1, datetime('now'), datetime('now')), -- role_create
+  (8, 8, 1, datetime('now'), datetime('now')); -- admin_dashboard
 
 -- ロール・パーミッション中間テーブル
 -- admin: 全画面アクセス可
@@ -39,7 +41,8 @@ INSERT OR IGNORE INTO role_permission (role_id, permission_id) VALUES
   (2, 4), -- admin → deleted_user_management
   (2, 5), -- admin → user_create
   (2, 6), -- admin → role_management
-  (2, 7); -- admin → role_create
+  (2, 7), -- admin → role_create
+  (2, 8); -- admin → admin_dashboard
 
 -- シーケンスマスタ（ID採番用）
 INSERT OR IGNORE INTO seq_master (key, next_id, created_at, updated_at) VALUES
