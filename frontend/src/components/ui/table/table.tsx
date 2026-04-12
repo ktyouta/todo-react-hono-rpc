@@ -4,7 +4,7 @@ import { HiOutlineArchiveBoxXMark } from 'react-icons/hi2';
 
 type BaseEntity = {
   id: string | number;
-  createdAt: string | number;
+  createdAt?: string | number;
 };
 
 const TableElement = React.forwardRef<
