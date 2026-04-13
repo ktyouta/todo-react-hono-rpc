@@ -20,7 +20,7 @@ export function ScrollToTopButton() {
             type="button"
             onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
             aria-label="ページトップへ戻る"
-            className="fixed bottom-6 right-6 z-50 flex items-center justify-center w-11 h-11 rounded-lg bg-cyan-500 text-white shadow-md hover:bg-cyan-600 transition-colors"
+            className="fixed bottom-6 right-6 z-50 flex items-center justify-center w-11 h-11 rounded-lg bg-cyan-500 text-white shadow-md [@media(hover:hover)]:hover:bg-cyan-600 transition-colors"
         >
             <HiArrowUp className="size-5" />
         </button>
