@@ -51,34 +51,38 @@ export function Dashboard(props: PropsType) {
                 'lg:relative lg:inset-auto lg:z-auto',
                 isSidebarOpen ? 'w-60' : 'w-0 lg:w-20',
             )}>
+                {/* ハンバーガーボタン（常に固定） */}
                 <button
                     onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-                    className={`flex items-center ${isSidebarOpen ? 'justify-end' : 'justify-center'} w-full px-6 py-3 text-white/80 hover:text-white mb-[45px]`}
+                    className={`shrink-0 flex items-center ${isSidebarOpen ? 'justify-end' : 'justify-center'} w-full px-6 py-3 text-white/80 hover:text-white mb-[45px]`}
                     aria-label={isSidebarOpen ? 'サイドバーを閉じる' : 'サイドバーを開く'}
                 >
                     <LuMenu className='h-6 w-6' />
                 </button>
-                {
-                    props.navigationList.map((e) => (
-                        <NavLink
-                            key={e.path}
-                            to={e.path}
-                            className={({ isActive }) =>
-                                `flex items-center ${isSidebarOpen ? '' : 'justify-center'} px-6 py-4 text-sm font-medium transition-colors whitespace-nowrap
-                                ${isActive
-                                    ? 'bg-white/20 text-white shadow-[inset_3px_0px_0px_white]'
-                                    : 'text-white/80 hover:bg-white/10 hover:text-white'
-                                }`
-                            }
-                            onClick={() => {
-                                if (window.innerWidth < 1024) setIsSidebarOpen(false);
-                            }}
-                        >
-                            {e.icon && <span className={`shrink-0 ${isSidebarOpen ? 'mr-3' : ''}`}>{e.icon}</span>}
-                            <span className={`transition-opacity duration-300 text-[16px] ${isSidebarOpen ? 'block' : 'hidden'}`}>{e.name}</span>
-                        </NavLink>
-                    ))
-                }
+                {/* メニューリスト（縦スクロール可能） */}
+                <div className='flex-1 overflow-y-auto'>
+                    {
+                        props.navigationList.map((e) => (
+                            <NavLink
+                                key={e.path}
+                                to={e.path}
+                                className={({ isActive }) =>
+                                    `flex items-center ${isSidebarOpen ? '' : 'justify-center'} px-6 py-4 text-sm font-medium transition-colors whitespace-nowrap
+                                    ${isActive
+                                        ? 'bg-white/20 text-white shadow-[inset_3px_0px_0px_white]'
+                                        : 'text-white/80 hover:bg-white/10 hover:text-white'
+                                    }`
+                                }
+                                onClick={() => {
+                                    if (window.innerWidth < 1024) setIsSidebarOpen(false);
+                                }}
+                            >
+                                {e.icon && <span className={`shrink-0 ${isSidebarOpen ? 'mr-3' : ''}`}>{e.icon}</span>}
+                                <span className={`transition-opacity duration-300 text-[16px] ${isSidebarOpen ? 'block' : 'hidden'}`}>{e.name}</span>
+                            </NavLink>
+                        ))
+                    }
+                </div>
             </nav>
 
             {/* メインエリア
