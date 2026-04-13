@@ -60,7 +60,7 @@ export function Dashboard(props: PropsType) {
                     <LuMenu className='h-6 w-6' />
                 </button>
                 {/* メニューリスト（縦スクロール可能） */}
-                <div className='flex-1 overflow-y-auto'>
+                <div className='flex-1 overflow-y-auto pb-3'>
                     {
                         props.navigationList.map((e) => (
                             <NavLink
