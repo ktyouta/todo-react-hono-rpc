@@ -1,0 +1,28 @@
+import { useEffect, useState } from "react";
+import { HiArrowUp } from "react-icons/hi2";
+
+export function ScrollToTopButton() {
+    // アイコン表示フラグ
+    const [isVisible, setIsVisible] = useState(false);
+
+    useEffect(() => {
+        function handleScroll() {
+            setIsVisible(window.scrollY > 300);
+        }
+        window.addEventListener("scroll", handleScroll);
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, []);
+
+    if (!isVisible) return null;
+
+    return (
+        <button
+            type="button"
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            aria-label="ページトップへ戻る"
+            className="fixed bottom-6 right-6 z-50 flex items-center justify-center w-11 h-11 rounded-lg bg-cyan-500 text-white shadow-md hover:bg-cyan-600 transition-colors"
+        >
+            <HiArrowUp className="size-5" />
+        </button>
+    );
+}
