@@ -17,6 +17,8 @@ export type TodoTrashItem = {
     dueDate: string | null;
     userId: number | null;
     deleteFlg: boolean;
+    parentId: number | null;
+    parentTitle: string | null;
     createdAt: string;
     updatedAt: string;
 };

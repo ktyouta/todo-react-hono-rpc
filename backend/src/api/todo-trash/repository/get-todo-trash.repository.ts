@@ -1,4 +1,5 @@
 import { and, eq, sql } from "drizzle-orm";
+import { alias } from "drizzle-orm/sqlite-core";
 import { FrontUserId } from "../../../domain";
 import { TaskId } from "../../../domain/task-id";
 import type { Database } from "../../../infrastructure/db";
@@ -9,7 +10,11 @@ import type { IGetTodoTrashRepository, TodoTrashItem } from "./get-todo-trash.re
  * ゴミ箱タスク取得リポジトリ実装（一般ユーザー用）
  */
 export class GetTodoTrashRepository implements IGetTodoTrashRepository {
-    constructor(private readonly db: Database) { }
+    private readonly parentTaskAlias: ReturnType<typeof alias<typeof taskTransaction, "parent_task">>;
+
+    constructor(private readonly db: Database) {
+        this.parentTaskAlias = alias(taskTransaction, "parent_task");
+    }
 
     /**
      * ゴミ箱タスク取得（ログインユーザー自身のタスクのみ）
@@ -29,6 +34,8 @@ export class GetTodoTrashRepository implements IGetTodoTrashRepository {
                 dueDate: taskTransaction.dueDate,
                 userId: taskTransaction.userId,
                 deleteFlg: taskTransaction.deleteFlg,
+                parentId: taskTransaction.parentId,
+                parentTitle: sql<string | null>`${this.parentTaskAlias.title}`,
                 createdAt: taskTransaction.createdAt,
                 updatedAt: taskTransaction.updatedAt,
             })
@@ -36,6 +43,7 @@ export class GetTodoTrashRepository implements IGetTodoTrashRepository {
             .leftJoin(categoryMaster, eq(taskTransaction.categoryId, categoryMaster.id))
             .leftJoin(statusMaster, eq(taskTransaction.statusId, statusMaster.id))
             .leftJoin(priorityMaster, eq(taskTransaction.priorityId, priorityMaster.id))
+            .leftJoin(this.parentTaskAlias, eq(taskTransaction.parentId, this.parentTaskAlias.id))
             .where(
                 and(
                     eq(taskTransaction.deleteFlg, true),
