@@ -174,6 +174,7 @@ export const taskTransaction = sqliteTable("task_transaction", {
   userId: integer("user_id"),
   isFavorite: integer("is_favorite", { mode: "boolean" }).notNull().default(false),
   deleteFlg: integer("delete_flg", { mode: "boolean" }).notNull().default(false),
+  parentId: integer("parent_id"),
   createdAt: text("created_at").notNull(),
   updatedAt: text("updated_at").notNull(),
 });
