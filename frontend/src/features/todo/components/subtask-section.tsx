@@ -1,6 +1,7 @@
 import { Button, Table } from "@/components";
 import { TableProps } from "@/components/ui/table/table";
 import { SubtaskListDataType } from "../api/get-subtask-list";
+import { SubtaskCard } from "./subtask-card";
 
 type PropsType = {
     subtasks: SubtaskListDataType;
@@ -11,20 +12,12 @@ type PropsType = {
 
 const columns: TableProps<SubtaskListDataType[number]>['columns'] = [
     { title: 'ID', field: 'id', className: 'w-[6%] whitespace-nowrap pl-4' },
-    {
-        title: 'タイトル',
-        field: 'title',
-        className: 'max-w-0',
-        Cell: ({ entry }) => <span className="block truncate">{entry.title}</span>,
-    },
-    { title: 'ステータス', field: 'statusName', className: 'w-28 whitespace-nowrap' },
-    { title: '優先度', field: 'priorityName', className: 'w-20 whitespace-nowrap' },
-    {
-        title: '期限',
-        field: 'dueDate',
-        className: 'w-28 whitespace-nowrap',
-        Cell: ({ entry }) => <span>{entry.dueDate ?? '-'}</span>,
-    },
+    { title: 'タイトル', field: 'title', className: 'max-w-0', Cell: ({ entry }) => <span className="block truncate">{entry.title}</span>, },
+    { title: 'ステータス', field: 'statusName', className: 'w-[10%] whitespace-nowrap' },
+    { title: '優先度', field: 'priorityName', className: 'w-[10%] whitespace-nowrap' },
+    { title: '期限', field: 'dueDate', className: 'w-[9%] whitespace-nowrap', Cell: ({ entry }) => <span>{entry.dueDate ?? '-'}</span>, },
+    { title: '登録日', field: 'createdAt', className: 'w-[9%] whitespace-nowrap hidden md:table-cell', Cell: ({ entry }) => <span>{entry.createdAt.slice(0, 10)}</span> },
+    { title: '更新日', field: 'updatedAt', className: 'w-[9%] whitespace-nowrap hidden md:table-cell', Cell: ({ entry }) => <span>{entry.updatedAt.slice(0, 10)}</span> },
 ];
 
 export function SubtaskSection(props: PropsType) {
@@ -39,8 +32,8 @@ export function SubtaskSection(props: PropsType) {
                 <div className="flex-1" />
                 <Button
                     colorType={"blue"}
-                    sizeType={"small"}
-                    className="bg-blue-500 text-white rounded px-3 sm:px-4 py-1 sm:py-2 text-sm hover:bg-blue-600"
+                    sizeType={"medium"}
+                    className="bg-blue-500 text-white rounded px-3 sm:px-4 py-1 sm:py-2 hover:bg-blue-600"
                     onClick={onClickAdd}
                 >
                     + 追加
@@ -58,11 +51,12 @@ export function SubtaskSection(props: PropsType) {
                         <Table
                             data={subtasks}
                             columns={columns}
-                            className="text-sm table-fixed
-                                [&_thead]:bg-gray-50/90
-                                [&_thead_tr]:border-b
-                                [&_thead_tr]:border-gray-200"
-                            rowClassName="cursor-pointer hover:bg-gray-50 transition-colors"
+                            className="text-[16px] table-fixed
+                                    [&_thead]:bg-gray-200/70
+                                      [&_thead_tr]:border-b
+                                    [&_thead_tr]:border-gray-400/60
+                                      [&_thead_tr]:hover:bg-transparent"
+                            rowClassName="h-[50px] border-gray-300/80 bg-white/50 cursor-pointer"
                             onRowClick={(entry) => onClickSubtask(entry.id)}
                         />
                     </div>
@@ -70,20 +64,11 @@ export function SubtaskSection(props: PropsType) {
                     {/* スマホ: カード表示 */}
                     <div className="sm:hidden flex flex-col gap-2">
                         {subtasks.map((subtask) => (
-                            <button
+                            <SubtaskCard
                                 key={subtask.id}
-                                type="button"
+                                entry={subtask}
                                 onClick={() => onClickSubtask(subtask.id)}
-                                className="w-full text-left p-3 border border-gray-200 rounded bg-white hover:bg-gray-50 transition-colors"
-                            >
-                                <p className="text-sm font-medium text-gray-800 truncate">{subtask.title}</p>
-                                <p className="text-xs text-gray-500 mt-1">
-                                    {subtask.statusName} / {subtask.priorityName}
-                                </p>
-                                {subtask.dueDate && (
-                                    <p className="text-xs text-gray-500 mt-0.5">期限: {subtask.dueDate}</p>
-                                )}
-                            </button>
+                            />
                         ))}
                     </div>
                 </>

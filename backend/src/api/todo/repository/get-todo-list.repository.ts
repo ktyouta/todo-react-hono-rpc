@@ -1,4 +1,4 @@
-import { and, eq, gte, like, lte, sql } from "drizzle-orm";
+import { and, eq, gte, isNull, like, lte, sql } from "drizzle-orm";
 import { FrontUserId } from "../../../domain";
 import type { Database } from "../../../infrastructure/db";
 import { categoryMaster, priorityMaster, statusMaster, taskTransaction } from "../../../infrastructure/db";
@@ -70,6 +70,7 @@ export class GetTodoListRepository implements IGetTodoListRepository {
     return [
       eq(taskTransaction.deleteFlg, false),
       eq(taskTransaction.userId, userId.value),
+      isNull(taskTransaction.parentId),
       ...(query.title ? [like(taskTransaction.title, `%${query.title}%`)] : []),
       ...(query.categoryId ? [eq(taskTransaction.categoryId, query.categoryId)] : []),
       ...(query.statusId ? [eq(taskTransaction.statusId, query.statusId)] : []),
