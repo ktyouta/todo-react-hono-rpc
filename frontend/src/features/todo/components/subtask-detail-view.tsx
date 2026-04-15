@@ -4,13 +4,12 @@ import { CATEGORY_ID } from "@/constants/master";
 import { CategoryReturnType } from "@/features/api/get-category";
 import { PriorityReturnType } from "@/features/api/get-priority";
 import { StatusReturnType } from "@/features/api/get-status";
-import { HiArrowLeft, HiOutlineStar, HiStar } from "react-icons/hi2";
-import { TaskDataType } from "../api/get-todo";
+import { HiArrowLeft } from "react-icons/hi2";
+import { SubtaskDataType } from "../api/get-subtask";
 import { getDueDateStatus } from "@/utils/due-date-status";
-import { SubtaskSectionContainer } from "./subtask-section-container";
 
 type PropsType = {
-    task: TaskDataType;
+    task: SubtaskDataType;
     statusList: StatusReturnType;
     categoryList: CategoryReturnType;
     priorityList: PriorityReturnType;
@@ -20,11 +19,10 @@ type PropsType = {
     onClickDelete: () => void;
     onCancelDelete: () => void;
     onConfirmDelete: () => void;
-    onFavoriteToggle: () => void;
     isLoading: boolean;
-}
+};
 
-export function TodoDetailView(props: PropsType) {
+export function SubtaskDetailView(props: PropsType) {
 
     const {
         task,
@@ -34,7 +32,6 @@ export function TodoDetailView(props: PropsType) {
         onClickDelete,
         onCancelDelete,
         onConfirmDelete,
-        onFavoriteToggle,
         isLoading,
     } = props;
 
@@ -42,7 +39,7 @@ export function TodoDetailView(props: PropsType) {
 
     return (
         <div className="w-full min-h-full flex flex-col pb-4">
-            {/* 一覧に戻る */}
+            {/* 親タスク詳細に戻る */}
             <div className="mb-4">
                 <button
                     type="button"
@@ -50,7 +47,7 @@ export function TodoDetailView(props: PropsType) {
                     className="flex items-center gap-1 text-sm text-gray-500 hover:text-gray-700"
                 >
                     <HiArrowLeft />
-                    <span>一覧に戻る</span>
+                    <span>親タスク詳細に戻る</span>
                 </button>
             </div>
 
@@ -78,16 +75,6 @@ export function TodoDetailView(props: PropsType) {
                         <p className="flex-1 px-0.5 text-2xl font-semibold break-words">
                             {task.title}
                         </p>
-                        <button
-                            type="button"
-                            onClick={onFavoriteToggle}
-                            className="shrink-0 mt-1"
-                        >
-                            {task.isFavorite
-                                ? <HiStar className="size-7 text-amber-400" />
-                                : <HiOutlineStar className="size-7 text-gray-400" />
-                            }
-                        </button>
                     </div>
                 </div>
                 <div className="w-full p-3 sm:p-[20px] border border-[#c0c0c0] rounded mt-3 sm:mt-[20px] bg-white">
@@ -146,15 +133,12 @@ export function TodoDetailView(props: PropsType) {
                 </div>
             </div>
 
-            {/* サブタスクセクション */}
-            <SubtaskSectionContainer />
-
             {/* 削除エリア */}
             <div className="mt-8 sm:mt-[60px] pt-4 sm:pt-[30px] border-t border-gray-200">
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 p-3 sm:p-5 border border-red-200 rounded bg-red-50">
                     <div>
-                        <p className="text-sm font-medium text-red-700">{`${task.categoryName}の削除`}</p>
-                        <p className="text-sm text-gray-500 mt-1">{`この${task.categoryName}を削除します。削除後は元に戻せません。`}</p>
+                        <p className="text-sm font-medium text-red-700">サブタスクの削除</p>
+                        <p className="text-sm text-gray-500 mt-1">このサブタスクを削除します。削除後は元に戻せません。</p>
                     </div>
                     <Button
                         colorType={"red"}
@@ -162,7 +146,7 @@ export function TodoDetailView(props: PropsType) {
                         className="shrink-0"
                         onClick={onClickDelete}
                     >
-                        {`${task.categoryName}を削除する`}
+                        サブタスクを削除する
                     </Button>
                 </div>
             </div>
@@ -171,12 +155,12 @@ export function TodoDetailView(props: PropsType) {
             <Dialog
                 isOpen={isDeleteDialogOpen}
                 onClose={onCancelDelete}
-                title={`${task.categoryName}の削除`}
+                title="サブタスクの削除"
                 size="small"
             >
                 <div className="space-y-4">
                     <p className="text-gray-700">
-                        {`この${task.categoryName}を削除しますか？`}<br />
+                        このサブタスクを削除しますか？<br />
                         この操作は取り消せません。
                     </p>
                     <div className="flex justify-end gap-2">

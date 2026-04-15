@@ -83,4 +83,12 @@ export const paths = {
         path: '/todo-trash/:id',
         getHref: (id: number) => `/todo-trash/${id}`,
     },
+    subtaskCreate: {
+        path: '/todo/:id/subtasks/new',
+        getHref: (taskId: number) => `/todo/${taskId}/subtasks/new`,
+    },
+    subtaskDetail: {
+        path: '/todo/:id/subtasks/:subId',
+        getHref: (taskId: number, subId: number) => `/todo/${taskId}/subtasks/${subId}`,
+    },
 } as const;
