@@ -6,7 +6,7 @@ import { getStatus } from "@/features/api/get-status";
 import { useAppNavigation } from "@/hooks/use-app-navigation";
 import { toast } from "react-toastify";
 import { useCreateSubtaskMutation } from "../api/create-subtask";
-import { useSubtaskCreateForm } from "./use-subtask-create.form";
+import { SUBTASK_CREATE_FORM_DEFAULT_VALUES, useSubtaskCreateForm } from "./use-subtask-create.form";
 import { useTaskId } from "./use-task-id";
 
 export function useSubtaskCreate() {
@@ -14,7 +14,7 @@ export function useSubtaskCreate() {
     // 親タスクID
     const taskId = useTaskId();
     // フォーム
-    const { register, control, handleSubmit, formState: { errors }, watch } = useSubtaskCreateForm();
+    const { register, control, handleSubmit, formState: { errors }, watch, reset } = useSubtaskCreateForm();
     // ステータスリスト
     const { data: status } = getStatus();
     // カテゴリリスト
@@ -36,6 +36,13 @@ export function useSubtaskCreate() {
             toast.error(message);
         },
     });
+
+    /**
+     * クリアボタン押下
+     */
+    function clickClear() {
+        reset(SUBTASK_CREATE_FORM_DEFAULT_VALUES);
+    }
 
     /**
      * 親タスク詳細に戻る
@@ -63,6 +70,7 @@ export function useSubtaskCreate() {
         control,
         errors,
         clickCreate,
+        clickClear,
         onClickBack,
         statusList: status.data,
         categoryList: category.data,

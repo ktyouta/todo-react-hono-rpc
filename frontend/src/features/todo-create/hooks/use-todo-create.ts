@@ -7,7 +7,7 @@ import { useAppNavigation } from "@/hooks/use-app-navigation";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { useCreateTodoMutation } from "../api/create-todo";
-import { useTodoCreateForm } from "./use-todo-create.form";
+import { TODO_CREATE_FORM_DEFAULT_VALUES, useTodoCreateForm } from "./use-todo-create.form";
 
 export function useTodoCreate() {
 
@@ -41,14 +41,7 @@ export function useTodoCreate() {
      * クリアボタン押下
      */
     function clickClear() {
-        reset({
-            title: ``,
-            content: ``,
-            category: 1,
-            status: 1,
-            priority: 1,
-            dueDate: null,
-        });
+        reset(TODO_CREATE_FORM_DEFAULT_VALUES);
     };
 
     /**
@@ -72,14 +65,7 @@ export function useTodoCreate() {
     function clickContinue() {
         setIsCompleted(false);
         setCreatedTitle("");
-        reset({
-            title: ``,
-            content: ``,
-            category: 1,
-            status: 1,
-            priority: 1,
-            dueDate: null,
-        });
+        reset(TODO_CREATE_FORM_DEFAULT_VALUES);
     }
 
     /**

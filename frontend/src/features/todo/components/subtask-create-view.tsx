@@ -13,6 +13,7 @@ type PropsType = {
     control: Control<TodoDetailEditType>;
     errors: FieldErrors<TodoDetailEditType>;
     clickCreate: (e?: BaseSyntheticEvent<object, any, any> | undefined) => Promise<void>;
+    clickClear: () => void;
     onClickBack: () => void;
     statusList: StatusReturnType;
     categoryList: CategoryReturnType;
@@ -28,6 +29,7 @@ export function SubtaskCreateView(props: PropsType) {
         control,
         errors,
         clickCreate,
+        clickClear,
         onClickBack,
         statusList,
         categoryList,
@@ -55,6 +57,25 @@ export function SubtaskCreateView(props: PropsType) {
                 <span className="font-bold text-[18px] sm:text-[22px]">
                     サブタスク作成
                 </span>
+                <div className="flex-1" />
+                <div className="flex gap-2 sm:gap-3">
+                    <Button
+                        colorType={"green"}
+                        sizeType={"large"}
+                        className="px-4 sm:px-6 bg-gray-400 hover:bg-gray-500"
+                        onClick={clickClear}
+                    >
+                        クリア
+                    </Button>
+                    <Button
+                        colorType={"green"}
+                        sizeType={"large"}
+                        className="px-4 sm:px-10 bg-cyan-500 hover:bg-cyan-600"
+                        onClick={clickCreate}
+                    >
+                        作成
+                    </Button>
+                </div>
             </div>
 
             {/* コンテンツ */}
@@ -128,18 +149,6 @@ export function SubtaskCreateView(props: PropsType) {
                         </div>
                     )}
                 </div>
-            </div>
-
-            {/* 作成ボタン */}
-            <div className="mt-8 flex justify-end">
-                <Button
-                    colorType={"green"}
-                    sizeType={"large"}
-                    className="px-10 bg-cyan-500 hover:bg-cyan-600"
-                    onClick={clickCreate}
-                >
-                    作成する
-                </Button>
             </div>
 
             {isLoading && <LoadingOverlay />}
