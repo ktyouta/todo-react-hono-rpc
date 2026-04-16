@@ -56,6 +56,10 @@ export function TodoTrashCard({ entry, onClick, isBulkMode = false, isSelected =
                     );
                 })()}
                 <div>
+                    <span className="text-gray-400">親タスクID</span>
+                    <span className="ml-1.5 text-gray-500">{entry.parentId ?? `-`}</span>
+                </div>
+                <div>
                     <span className="text-gray-400">登録日</span>
                     <span className="ml-1.5 text-gray-500">{entry.createdAt.slice(0, 10)}</span>
                 </div>

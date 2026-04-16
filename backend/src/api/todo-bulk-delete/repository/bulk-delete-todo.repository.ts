@@ -1,4 +1,4 @@
-import { and, eq, inArray } from "drizzle-orm";
+import { and, eq, inArray, or } from "drizzle-orm";
 import { FrontUserId } from "../../../domain";
 import type { Database } from "../../../infrastructure/db";
 import { taskTransaction } from "../../../infrastructure/db";
@@ -8,7 +8,7 @@ import { IBulkDeleteTodoRepository } from "./bulk-delete-todo.repository.interfa
  * タスク一括削除リポジトリ実装
  */
 export class BulkDeleteTodoRepository implements IBulkDeleteTodoRepository {
-  constructor(private readonly db: Database) {}
+  constructor(private readonly db: Database) { }
 
   /**
    * お気に入りタスクのIDを取得
@@ -39,7 +39,10 @@ export class BulkDeleteTodoRepository implements IBulkDeleteTodoRepository {
         and(
           eq(taskTransaction.userId, userId.value),
           eq(taskTransaction.deleteFlg, false),
-          inArray(taskTransaction.id, ids)
+          or(
+            inArray(taskTransaction.id, ids),
+            inArray(taskTransaction.parentId, ids)
+          ),
         )
       );
   }
