@@ -23,6 +23,25 @@ export type TodoTrashItem = {
     updatedAt: string;
 };
 
+/**
+ * ゴミ箱タスク詳細のサブタスク型（読み取り専用）
+ */
+export type TodoTrashSubtaskItem = {
+    id: number;
+    title: string;
+    statusId: number | null;
+    statusName: string;
+    priorityId: number | null;
+    priorityName: string;
+    dueDate: string | null;
+    deleteFlg: boolean;
+};
+
+export interface IGetTodoTrashRepository {
+    find(taskId: TaskId, userId: FrontUserId): Promise<TodoTrashItem | undefined>;
+    findSubtasks(parentTaskId: TaskId, userId: FrontUserId): Promise<TodoTrashSubtaskItem[]>;
+}
+
 export interface IGetTodoTrashRepository {
     find(taskId: TaskId, userId: FrontUserId): Promise<TodoTrashItem | undefined>;
 }

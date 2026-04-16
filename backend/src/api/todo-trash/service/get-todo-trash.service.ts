@@ -14,4 +14,11 @@ export class GetTodoTrashService {
     async find(taskId: TaskId, userId: FrontUserId) {
         return await this.repository.find(taskId, userId);
     }
+
+    /**
+     * 削除済み親タスクに紐づく全サブタスクを取得する
+     */
+    async findSubtasks(parentTaskId: TaskId, userId: FrontUserId) {
+        return await this.repository.findSubtasks(parentTaskId, userId);
+    }
 }

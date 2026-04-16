@@ -1,5 +1,4 @@
 import { FrontUserId, TaskId } from "../../../domain";
-import type { SubtaskListItem } from "../repository/get-subtask-list.repository.interface";
 import type { IGetSubtaskRepository } from "../repository/get-subtask.repository.interface";
 
 /**
@@ -11,7 +10,7 @@ export class GetSubtaskService {
   /**
    * サブタスク取得
    */
-  async find(userId: FrontUserId, parentTaskId: TaskId, subtaskId: TaskId): Promise<SubtaskListItem | undefined> {
+  async find(userId: FrontUserId, parentTaskId: TaskId, subtaskId: TaskId) {
     return await this.repository.find(userId, parentTaskId, subtaskId);
   }
 }

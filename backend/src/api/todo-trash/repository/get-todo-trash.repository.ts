@@ -4,7 +4,7 @@ import { FrontUserId } from "../../../domain";
 import { TaskId } from "../../../domain/task-id";
 import type { Database } from "../../../infrastructure/db";
 import { categoryMaster, priorityMaster, statusMaster, taskTransaction } from "../../../infrastructure/db";
-import type { IGetTodoTrashRepository, TodoTrashItem } from "./get-todo-trash.repository.interface";
+import type { IGetTodoTrashRepository, TodoTrashItem, TodoTrashSubtaskItem } from "./get-todo-trash.repository.interface";
 
 /**
  * ゴミ箱タスク取得リポジトリ実装（一般ユーザー用）
@@ -52,5 +52,31 @@ export class GetTodoTrashRepository implements IGetTodoTrashRepository {
                 )
             )
             .get();
+    }
+
+    /**
+     * 削除済み親タスクに紐づく全サブタスクを取得する（deleteFlg 問わず）
+     */
+    async findSubtasks(parentTaskId: TaskId, userId: FrontUserId): Promise<TodoTrashSubtaskItem[]> {
+        return await this.db
+            .select({
+                id: taskTransaction.id,
+                title: taskTransaction.title,
+                statusId: taskTransaction.statusId,
+                statusName: sql<string>`coalesce(${statusMaster.name}, 'なし')`,
+                priorityId: taskTransaction.priorityId,
+                priorityName: sql<string>`coalesce(${priorityMaster.name}, 'なし')`,
+                dueDate: taskTransaction.dueDate,
+                deleteFlg: taskTransaction.deleteFlg,
+            })
+            .from(taskTransaction)
+            .leftJoin(statusMaster, eq(taskTransaction.statusId, statusMaster.id))
+            .leftJoin(priorityMaster, eq(taskTransaction.priorityId, priorityMaster.id))
+            .where(
+                and(
+                    eq(taskTransaction.parentId, parentTaskId.value),
+                    eq(taskTransaction.userId, userId.value),
+                )
+            );
     }
 }

@@ -30,16 +30,19 @@ const getTodoTrash = new Hono<AppEnv>().get(
             return c.json({ message: "認証エラー" }, HTTP_STATUS.UNAUTHORIZED);
         }
 
-        const repository = new GetTodoTrashRepository(db);
-        const service = new GetTodoTrashService(repository);
-
+        const service = new GetTodoTrashService(new GetTodoTrashRepository(db));
         const task = await service.find(taskId, userId);
 
         if (!task) {
             return c.json({ message: "Not Found", data: task }, HTTP_STATUS.NOT_FOUND);
         }
 
-        return c.json({ message: "ゴミ箱タスクを取得しました。", data: task }, HTTP_STATUS.OK);
+        // 親タスクの場合のみサブタスクを取得する
+        const subtasks = task.parentId === null
+            ? await service.findSubtasks(taskId, userId)
+            : [];
+
+        return c.json({ message: "ゴミ箱タスクを取得しました。", data: { ...task, subtasks } }, HTTP_STATUS.OK);
     }
 );
 

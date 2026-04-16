@@ -85,6 +85,14 @@ export function SubtaskDetailView(props: PropsType) {
                         {task.content}
                     </p>
                     <div className="flex flex-col sm:flex-row gap-4 sm:gap-[3%] pt-[20px] mt-[20px] border-t border-[#e8e8e8]">
+                        <div className="flex flex-1 items-start gap-2">
+                            <span className="whitespace-nowrap w-[5em] text-gray-500 text-base pt-2">親タスク</span>
+                            <span className="flex-1 px-3 py-2 bg-gray-50 border border-[#e0e0e0] rounded text-lg break-words">
+                                {task.parentTitle}
+                            </span>
+                        </div>
+                    </div>
+                    <div className="flex flex-col sm:flex-row gap-4 sm:gap-[3%] pt-[20px] mt-[20px] border-t border-[#e8e8e8]">
                         <div className="flex flex-1 items-center gap-2 sm:max-w-[48%]">
                             <span className="whitespace-nowrap w-[5em] text-gray-500 text-base">カテゴリ</span>
                             <span className="flex-1 px-3 py-2 bg-gray-50 border border-[#e0e0e0] rounded text-lg">
