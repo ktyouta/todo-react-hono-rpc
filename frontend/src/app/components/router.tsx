@@ -1,5 +1,7 @@
 import { NotFound } from '@/components';
 import { paths } from '@/config/paths';
+import { AdminDashboardPage } from '@/features/admin-dashboard/components/admin-dashboard-page';
+import { DashboardPage } from '@/features/dashboard/components/dashboard-page';
 import { LoginContainer } from '@/features/login/components/login-container';
 import { RoleCreatePage } from '@/features/role-create/components/role-create-page';
 import { RoleManagementDetailPage } from '@/features/role-management/components/role-management-detail-page';
@@ -14,6 +16,9 @@ import { TodoManagementDetailPage } from '@/features/todo-management/components/
 import { TodoManagementLayout } from '@/features/todo-management/components/todo-management-layout';
 import { TodoManagementPage } from '@/features/todo-management/components/todo-management-page';
 import { TodoManagementSubtaskDetailPage } from '@/features/todo-management/components/todo-management-subtask-detail-page';
+import { TodoTrashDetailPage } from '@/features/todo-trash/components/todo-trash-detail-page';
+import { TodoTrashLayout } from '@/features/todo-trash/components/todo-trash-layout';
+import { TodoTrashPage } from '@/features/todo-trash/components/todo-trash-page';
 import { SubtaskCreatePage } from '@/features/todo/components/subtask-create-page';
 import { SubtaskDetailPage } from '@/features/todo/components/subtask-detail-page';
 import { TodoDetailPage } from '@/features/todo/components/todo-detail-page';
@@ -25,15 +30,11 @@ import { UserCreatePage } from '@/features/user-create/components/user-create-pa
 import { UserDeletedManagementDetailPage } from '@/features/user-deleted-management/components/user-deleted-management-detail-page';
 import { UserDeletedManagementLayout } from '@/features/user-deleted-management/components/user-deleted-management-layout';
 import { UserDeletedManagementPage } from '@/features/user-deleted-management/components/user-deleted-management-page';
-import { TodoTrashDetailPage } from '@/features/todo-trash/components/todo-trash-detail-page';
-import { TodoTrashLayout } from '@/features/todo-trash/components/todo-trash-layout';
-import { TodoTrashPage } from '@/features/todo-trash/components/todo-trash-page';
 import { UserManagementDetailPage } from '@/features/user-management/components/user-management-detail-page';
 import { UserManagementLayout } from '@/features/user-management/components/user-management-layout';
 import { UserManagementPage } from '@/features/user-management/components/user-management-page';
-import { AdminDashboardPage } from '@/features/admin-dashboard/components/admin-dashboard-page';
-import { DashboardPage } from '@/features/dashboard/components/dashboard-page';
-import { Navigate, useRoutes } from 'react-router-dom';
+import { useEffect } from 'react';
+import { Navigate, useLocation, useRoutes } from 'react-router-dom';
 import { DashboardContainer } from './dashboard-container';
 import { GuestRoute } from './guest-route';
 import { ProtectedRoute } from './protected-route';
@@ -376,6 +377,13 @@ const routerList = [
 ];
 
 export const AppRouter = () => {
+    // ルーティング用
     const router = useRoutes(routerList);
+    // パス
+    const { pathname } = useLocation();
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [pathname]);
+
     return router;
 };
