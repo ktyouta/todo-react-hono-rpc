@@ -29,7 +29,7 @@ export function useTodoManagementDetail() {
     // 優先度
     const { data: priority } = getPriority();
     // ルーティング用
-    const { appGoBack } = useAppNavigation();
+    const { appNavigate } = useAppNavigation();
     // 編集モード
     const [isEditMode, setIsEditMode] = useState(false);
     // 削除確認ダイアログ
@@ -60,7 +60,7 @@ export function useTodoManagementDetail() {
         id: taskId,
         onSuccess: (message) => {
             toast.success(message);
-            appGoBack(paths.todoManagement.path);
+            appNavigate(paths.todoManagement.path);
         },
         onError: () => {
             toast.error(`タスクの削除に失敗しました。時間をおいて再度お試しください。`);
@@ -71,7 +71,7 @@ export function useTodoManagementDetail() {
      * 一覧に戻る
      */
     function onClickBack() {
-        appGoBack(paths.todoManagement.path);
+        appNavigate(paths.todoManagement.path);
     }
 
     /**

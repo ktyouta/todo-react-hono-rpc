@@ -1,0 +1,68 @@
+import { Table } from "@/components";
+import { TableProps } from "@/components/ui/table/table";
+import { ManagementSubtaskListDataType } from "../api/get-todo-management-subtask-list";
+import { TodoManagementSubtaskCard } from "./todo-management-subtask-card";
+
+type PropsType = {
+    subtasks: ManagementSubtaskListDataType;
+    onClickSubtask: (subId: number) => void;
+    isLoading: boolean;
+};
+
+const columns: TableProps<ManagementSubtaskListDataType[number]>['columns'] = [
+    { title: 'ID', field: 'id', className: 'w-[6%] whitespace-nowrap pl-4' },
+    { title: 'タイトル', field: 'title', className: 'max-w-0', Cell: ({ entry }) => <span className="block truncate">{entry.title}</span> },
+    { title: 'ステータス', field: 'statusName', className: 'w-[10%] whitespace-nowrap' },
+    { title: '優先度', field: 'priorityName', className: 'w-[10%] whitespace-nowrap' },
+    { title: '期限', field: 'dueDate', className: 'w-[9%] whitespace-nowrap', Cell: ({ entry }) => <span>{entry.dueDate ?? '-'}</span> },
+    { title: '登録日', field: 'createdAt', className: 'w-[9%] whitespace-nowrap hidden md:table-cell', Cell: ({ entry }) => <span>{entry.createdAt.slice(0, 10)}</span> },
+    { title: '更新日', field: 'updatedAt', className: 'w-[9%] whitespace-nowrap hidden md:table-cell', Cell: ({ entry }) => <span>{entry.updatedAt.slice(0, 10)}</span> },
+];
+
+export function TodoManagementSubtaskSection(props: PropsType) {
+
+    const { subtasks, onClickSubtask, isLoading } = props;
+
+    return (
+        <div className="mt-8 sm:mt-[60px]">
+            {/* ヘッダー */}
+            <div className="flex items-center mb-3 pr-1">
+                <span className="font-semibold text-base text-gray-700">サブタスク</span>
+            </div>
+
+            {isLoading ? (
+                <div className="py-6 text-center text-sm text-gray-400">読み込み中...</div>
+            ) : subtasks.length === 0 ? (
+                <div className="py-6 text-center text-sm text-gray-400">サブタスクはありません</div>
+            ) : (
+                <>
+                    {/* PC: テーブル表示 */}
+                    <div className="hidden sm:block border border-gray-200 rounded overflow-hidden">
+                        <Table
+                            data={subtasks}
+                            columns={columns}
+                            className="text-[16px] table-fixed
+                                    [&_thead]:bg-gray-200/70
+                                      [&_thead_tr]:border-b
+                                    [&_thead_tr]:border-gray-400/60
+                                      [&_thead_tr]:hover:bg-transparent"
+                            rowClassName="h-[50px] border-gray-300/80 bg-white/50 cursor-pointer"
+                            onRowClick={(entry) => onClickSubtask(entry.id)}
+                        />
+                    </div>
+
+                    {/* スマホ: カード表示 */}
+                    <div className="sm:hidden flex flex-col gap-2">
+                        {subtasks.map((subtask) => (
+                            <TodoManagementSubtaskCard
+                                key={subtask.id}
+                                entry={subtask}
+                                onClick={() => onClickSubtask(subtask.id)}
+                            />
+                        ))}
+                    </div>
+                </>
+            )}
+        </div>
+    );
+}

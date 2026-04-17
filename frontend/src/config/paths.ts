@@ -91,4 +91,8 @@ export const paths = {
         path: '/todo/:id/subtasks/:subId',
         getHref: (taskId: number, subId: number) => `/todo/${taskId}/subtasks/${subId}`,
     },
+    todoManagementSubtaskDetail: {
+        path: '/todo-management/:id/subtasks/:subId',
+        getHref: (id: number, subId: number) => `/todo-management/${id}/subtasks/${subId}`,
+    },
 } as const;
