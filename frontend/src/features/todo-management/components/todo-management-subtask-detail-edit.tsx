@@ -1,17 +1,17 @@
 import { Button, DatePicker, LoadingOverlay, Select, Textarea, Textbox } from "@/components";
 import { CATEGORY_ID } from "@/constants/master";
+import { getFormatDatetime } from "@/utils/date-util";
 import { CategoryReturnType } from "@/features/api/get-category";
 import { PriorityReturnType } from "@/features/api/get-priority";
 import { StatusReturnType } from "@/features/api/get-status";
-import { getFormatDatetime } from "@/utils/date-util";
+import { TodoDetailEditType } from "@/features/todo/types/todo-detail-edit-type";
 import { BaseSyntheticEvent } from "react";
 import { Control, Controller, FieldErrors, UseFormRegister } from "react-hook-form";
 import { HiArrowLeft } from "react-icons/hi2";
-import { SubtaskDataType } from "../api/get-subtask";
-import { TodoDetailEditType } from "../types/todo-detail-edit-type";
+import { ManagementSubtaskDataType } from "../api/get-todo-management-subtask";
 
 type PropsType = {
-    task: SubtaskDataType;
+    task: ManagementSubtaskDataType;
     statusList: StatusReturnType;
     categoryList: CategoryReturnType;
     priorityList: PriorityReturnType;
@@ -25,9 +25,10 @@ type PropsType = {
     isLoading: boolean;
 };
 
-export function SubtaskDetailEdit(props: PropsType) {
+export function TodoManagementSubtaskDetailEdit(props: PropsType) {
 
     const {
+        task,
         statusList,
         categoryList,
         priorityList,
@@ -155,13 +156,13 @@ export function SubtaskDetailEdit(props: PropsType) {
                         <div className="flex flex-1 items-center gap-2 sm:max-w-[48%]">
                             <span className="whitespace-nowrap w-[5em] text-gray-500 text-base">登録日</span>
                             <span className="flex-1 px-3 py-2 text-base text-gray-700">
-                                {getFormatDatetime(new Date(props.task.createdAt), 'yyyy-MM-dd HH:mm:ss')}
+                                {getFormatDatetime(new Date(task.createdAt), 'yyyy-MM-dd HH:mm:ss')}
                             </span>
                         </div>
                         <div className="flex flex-1 items-center gap-2 sm:max-w-[48%]">
                             <span className="whitespace-nowrap w-[5em] text-gray-500 text-base">更新日</span>
                             <span className="flex-1 px-3 py-2 text-base text-gray-700">
-                                {getFormatDatetime(new Date(props.task.updatedAt), 'yyyy-MM-dd HH:mm:ss')}
+                                {getFormatDatetime(new Date(task.updatedAt), 'yyyy-MM-dd HH:mm:ss')}
                             </span>
                         </div>
                     </div>

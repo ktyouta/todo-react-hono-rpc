@@ -1,3 +1,4 @@
+import { Button, Dialog, LoadingOverlay } from "@/components";
 import { CATEGORY_ID } from "@/constants/master";
 import { getFormatDatetime } from "@/utils/date-util";
 import { getDueDateStatus } from "@/utils/due-date-status";
@@ -6,12 +7,27 @@ import { ManagementSubtaskDataType } from "../api/get-todo-management-subtask";
 
 type PropsType = {
     task: ManagementSubtaskDataType;
+    isDeleteDialogOpen: boolean;
     onClickBack: () => void;
+    onClickEdit: () => void;
+    onClickDelete: () => void;
+    onCancelDelete: () => void;
+    onConfirmDelete: () => void;
+    isLoading: boolean;
 };
 
 export function TodoManagementSubtaskDetailView(props: PropsType) {
 
-    const { task, onClickBack } = props;
+    const {
+        task,
+        isDeleteDialogOpen,
+        onClickBack,
+        onClickEdit,
+        onClickDelete,
+        onCancelDelete,
+        onConfirmDelete,
+        isLoading,
+    } = props;
 
     const dueDateStatus = getDueDateStatus(task.dueDate);
 
@@ -34,6 +50,15 @@ export function TodoManagementSubtaskDetailView(props: PropsType) {
                 <span className="font-bold text-[18px] sm:text-[22px]">
                     サブタスク詳細
                 </span>
+                <div className="flex-1" />
+                <Button
+                    colorType={"blue"}
+                    sizeType={"large"}
+                    className="px-4 sm:px-10"
+                    onClick={onClickEdit}
+                >
+                    編集
+                </Button>
             </div>
 
             {/* コンテンツ */}
@@ -56,6 +81,14 @@ export function TodoManagementSubtaskDetailView(props: PropsType) {
                             <span className="whitespace-nowrap w-[5em] text-gray-500 text-base pt-2">親タスク</span>
                             <span className="flex-1 px-3 py-2 bg-gray-50 border border-[#e0e0e0] rounded text-lg break-words">
                                 {task.parentTitle}
+                            </span>
+                        </div>
+                    </div>
+                    <div className="flex flex-col sm:flex-row gap-4 sm:gap-[3%] pt-[20px] mt-[20px] border-t border-[#e8e8e8]">
+                        <div className="flex flex-1 items-center gap-2 sm:max-w-[48%]">
+                            <span className="whitespace-nowrap w-[5em] text-gray-500 text-base">ユーザー</span>
+                            <span className="flex-1 px-3 py-2 bg-gray-50 border border-[#e0e0e0] rounded text-lg">
+                                {task.userName}
                             </span>
                         </div>
                     </div>
@@ -107,6 +140,57 @@ export function TodoManagementSubtaskDetailView(props: PropsType) {
                     </div>
                 </div>
             </div>
+
+            {/* 削除エリア */}
+            <div className="mt-8 sm:mt-[60px] pt-4 sm:pt-[30px] border-t border-gray-200">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 p-3 sm:p-5 border border-red-200 rounded bg-red-50">
+                    <div>
+                        <p className="text-sm font-medium text-red-700">サブタスクの削除</p>
+                        <p className="text-sm text-gray-500 mt-1">このサブタスクを削除します。削除後は元に戻せません。</p>
+                    </div>
+                    <Button
+                        colorType={"red"}
+                        sizeType={"large"}
+                        className="shrink-0"
+                        onClick={onClickDelete}
+                    >
+                        サブタスクを削除する
+                    </Button>
+                </div>
+            </div>
+
+            {/* 削除確認ダイアログ */}
+            <Dialog
+                isOpen={isDeleteDialogOpen}
+                onClose={onCancelDelete}
+                title="サブタスクの削除"
+                size="small"
+            >
+                <div className="space-y-4">
+                    <p className="text-gray-700">
+                        このサブタスクを削除しますか？<br />
+                        この操作は取り消せません。
+                    </p>
+                    <div className="flex justify-end gap-2">
+                        <Button
+                            colorType={"blue"}
+                            sizeType={"medium"}
+                            onClick={onCancelDelete}
+                        >
+                            キャンセル
+                        </Button>
+                        <Button
+                            colorType={"red"}
+                            sizeType={"medium"}
+                            onClick={onConfirmDelete}
+                        >
+                            削除する
+                        </Button>
+                    </div>
+                </div>
+            </Dialog>
+
+            {isLoading && <LoadingOverlay />}
         </div>
     );
 }

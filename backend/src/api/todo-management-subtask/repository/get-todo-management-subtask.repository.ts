@@ -2,7 +2,7 @@ import { and, eq, sql } from "drizzle-orm";
 import { alias } from "drizzle-orm/sqlite-core";
 import { TaskId } from "../../../domain";
 import type { Database } from "../../../infrastructure/db";
-import { categoryMaster, priorityMaster, statusMaster, taskTransaction } from "../../../infrastructure/db";
+import { categoryMaster, frontUserMaster, priorityMaster, statusMaster, taskTransaction } from "../../../infrastructure/db";
 import { IGetTodoManagementSubtaskRepository, ManagementSubtaskItem } from "./get-todo-management-subtask.repository.interface";
 
 /**
@@ -35,12 +35,14 @@ export class GetTodoManagementSubtaskRepository implements IGetTodoManagementSub
         parentTitle: sql<string>`coalesce(${this.parentTaskAlias.title}, '')`,
         createdAt: taskTransaction.createdAt,
         updatedAt: taskTransaction.updatedAt,
+        userName: sql<string>`coalesce(${frontUserMaster.name}, '')`,
       })
       .from(taskTransaction)
       .leftJoin(categoryMaster, eq(taskTransaction.categoryId, categoryMaster.id))
       .leftJoin(statusMaster, eq(taskTransaction.statusId, statusMaster.id))
       .leftJoin(priorityMaster, eq(taskTransaction.priorityId, priorityMaster.id))
       .leftJoin(this.parentTaskAlias, eq(taskTransaction.parentId, this.parentTaskAlias.id))
+      .leftJoin(frontUserMaster, eq(taskTransaction.userId, frontUserMaster.id))
       .where(
         and(
           eq(taskTransaction.deleteFlg, false),

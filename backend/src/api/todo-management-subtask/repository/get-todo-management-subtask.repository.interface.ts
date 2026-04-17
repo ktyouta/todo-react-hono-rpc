@@ -17,6 +17,7 @@ export type ManagementSubtaskItem = {
   parentTitle: string;
   createdAt: string;
   updatedAt: string;
+  userName: string;
 };
 
 /**
