@@ -48,6 +48,8 @@ export const API_ENDPOINT = {
   ADMIN_DASHBOARD_STATS: "/api/v1/admin-dashboard/stats",
   TODO_SUBTASK: "/api/v1/todo/:id/subtasks",
   TODO_SUBTASK_ID: "/api/v1/todo/:id/subtasks/:subId",
+  TODO_MANAGEMENT_SUBTASK: "/api/v1/todo-management/:id/subtasks",
+  TODO_MANAGEMENT_SUBTASK_ID: "/api/v1/todo-management/:id/subtasks/:subId",
 } as const;
 
 export type ApiEndpointType = (typeof API_ENDPOINT)[keyof typeof API_ENDPOINT];
