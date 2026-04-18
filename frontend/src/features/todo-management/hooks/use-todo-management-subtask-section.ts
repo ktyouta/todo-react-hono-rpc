@@ -1,5 +1,6 @@
 import { paths } from "@/config/paths";
 import { useAppNavigation } from "@/hooks/use-app-navigation";
+import { useState } from "react";
 import { useGetTodoManagementSubtaskList } from "../api/get-todo-management-subtask-list";
 import { useTaskManagementId } from "./use-task-management-id";
 
@@ -7,8 +8,9 @@ export function useTodoManagementSubtaskSection() {
 
     // タスクID
     const taskId = useTaskManagementId();
+    const [page, setPage] = useState(1);
     // サブタスク一覧
-    const { data, isLoading } = useGetTodoManagementSubtaskList({ taskId });
+    const { data, isLoading } = useGetTodoManagementSubtaskList({ taskId, page });
     // 画面遷移用
     const { appNavigate } = useAppNavigation();
 
@@ -20,7 +22,10 @@ export function useTodoManagementSubtaskSection() {
     }
 
     return {
-        subtasks: data?.data ?? [],
+        subtasks: data?.data.list ?? [],
+        currentPage: page,
+        totalPages: data?.data.totalPages ?? 1,
+        onPageChange: setPage,
         onClickSubtask,
         isLoading,
     };

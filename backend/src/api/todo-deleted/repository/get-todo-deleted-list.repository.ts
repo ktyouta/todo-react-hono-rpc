@@ -1,4 +1,5 @@
-import { and, eq, gte, like, lte, sql } from "drizzle-orm";
+import { and, eq, gte, isNull, like, lte, or, sql } from "drizzle-orm";
+import { alias } from "drizzle-orm/sqlite-core";
 import type { Database } from "../../../infrastructure/db";
 import { categoryMaster, frontUserMaster, priorityMaster, statusMaster, taskTransaction } from "../../../infrastructure/db";
 import { GetTodoDeletedListQuerySchemaType } from "../schema/get-todo-deleted-list-query.schema";
@@ -11,6 +12,8 @@ export class GetTodoDeletedListRepository implements IGetTodoDeletedListReposito
 
     // 最大取得件数
     static readonly LIMIT = 30;
+
+    private readonly parentTaskAlias = alias(taskTransaction, "parent_task");
 
     constructor(private readonly db: Database) { }
 
@@ -43,6 +46,7 @@ export class GetTodoDeletedListRepository implements IGetTodoDeletedListReposito
             .leftJoin(statusMaster, eq(taskTransaction.statusId, statusMaster.id))
             .leftJoin(priorityMaster, eq(taskTransaction.priorityId, priorityMaster.id))
             .leftJoin(frontUserMaster, eq(taskTransaction.userId, frontUserMaster.id))
+            .leftJoin(this.parentTaskAlias, eq(taskTransaction.parentId, this.parentTaskAlias.id))
             .where(and(...conditions))
             .limit(GetTodoDeletedListRepository.LIMIT)
             .offset((query.page - 1) * GetTodoDeletedListRepository.LIMIT);
@@ -55,6 +59,7 @@ export class GetTodoDeletedListRepository implements IGetTodoDeletedListReposito
             .select({ total: sql<number>`count(*)` })
             .from(taskTransaction)
             .leftJoin(frontUserMaster, eq(taskTransaction.userId, frontUserMaster.id))
+            .leftJoin(this.parentTaskAlias, eq(taskTransaction.parentId, this.parentTaskAlias.id))
             .where(and(...conditions));
 
         return total;
@@ -64,6 +69,10 @@ export class GetTodoDeletedListRepository implements IGetTodoDeletedListReposito
         return [
             eq(taskTransaction.deleteFlg, true),
             eq(frontUserMaster.deleteFlg, false),
+            or(
+                isNull(taskTransaction.parentId),
+                eq(this.parentTaskAlias.deleteFlg, false),
+            ),
             ...(query.userId ? [eq(taskTransaction.userId, query.userId)] : []),
             ...(query.title ? [like(taskTransaction.title, `%${query.title}%`)] : []),
             ...(query.categoryId ? [eq(taskTransaction.categoryId, query.categoryId)] : []),

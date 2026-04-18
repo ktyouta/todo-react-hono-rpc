@@ -1,10 +1,13 @@
-import { Button, Table } from "@/components";
+import { Button, Pagination, Table } from "@/components";
 import { TableProps } from "@/components/ui/table/table";
 import { SubtaskListDataType } from "../api/get-subtask-list";
 import { SubtaskCard } from "./subtask-card";
 
 type PropsType = {
     subtasks: SubtaskListDataType;
+    currentPage: number;
+    totalPages: number;
+    onPageChange: (page: number) => void;
     onClickAdd: () => void;
     onClickSubtask: (subId: number) => void;
     isLoading: boolean;
@@ -22,7 +25,7 @@ const columns: TableProps<SubtaskListDataType[number]>['columns'] = [
 
 export function SubtaskSection(props: PropsType) {
 
-    const { subtasks, onClickAdd, onClickSubtask, isLoading } = props;
+    const { subtasks, currentPage, totalPages, onPageChange, onClickAdd, onClickSubtask, isLoading } = props;
 
     return (
         <div className="mt-8 sm:mt-[60px]">
@@ -71,6 +74,14 @@ export function SubtaskSection(props: PropsType) {
                             />
                         ))}
                     </div>
+                    {totalPages > 1 && (
+                        <Pagination
+                            currentPage={currentPage}
+                            totalPages={totalPages}
+                            onPageChange={onPageChange}
+                            className="mt-3"
+                        />
+                    )}
                 </>
             )}
         </div>

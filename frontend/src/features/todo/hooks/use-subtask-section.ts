@@ -1,5 +1,6 @@
 import { paths } from "@/config/paths";
 import { useAppNavigation } from "@/hooks/use-app-navigation";
+import { useState } from "react";
 import { useGetSubtaskList } from "../api/get-subtask-list";
 import { useTaskId } from "./use-task-id";
 
@@ -7,8 +8,9 @@ export function useSubtaskSection() {
 
     // タスクID
     const taskId = useTaskId();
+    const [page, setPage] = useState(1);
     // サブタスク
-    const { data, isLoading } = useGetSubtaskList({ taskId });
+    const { data, isLoading } = useGetSubtaskList({ taskId, page });
     // 画面遷移用
     const { appNavigate } = useAppNavigation();
 
@@ -27,7 +29,10 @@ export function useSubtaskSection() {
     }
 
     return {
-        subtasks: data?.data ?? [],
+        subtasks: data?.data.list ?? [],
+        currentPage: page,
+        totalPages: data?.data.totalPages ?? 1,
+        onPageChange: setPage,
         onClickAdd,
         onClickSubtask,
         isLoading,

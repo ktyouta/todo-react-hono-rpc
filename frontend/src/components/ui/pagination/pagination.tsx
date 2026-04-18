@@ -5,6 +5,7 @@ type PropsType = {
     currentPage: number;
     totalPages: number;
     onPageChange: (page: number) => void;
+    className?: string;
 }
 
 // 常に7スロット固定で返す（totalPages > 7 の場合）
@@ -26,12 +27,12 @@ function getPageNumbers(currentPage: number, totalPages: number): (number | '...
     return [1, '...', currentPage - 1, currentPage, currentPage + 1, '...', totalPages];
 }
 
-export function Pagination({ currentPage, totalPages, onPageChange }: PropsType) {
+export function Pagination({ currentPage, totalPages, onPageChange, className }: PropsType) {
 
     const pages = getPageNumbers(currentPage, totalPages);
 
     return (
-        <div className="flex items-center justify-center gap-1 py-2">
+        <div className={cn("flex items-center justify-center gap-1 py-2", className)}>
             <button
                 type="button"
                 onClick={() => onPageChange(currentPage - 1)}

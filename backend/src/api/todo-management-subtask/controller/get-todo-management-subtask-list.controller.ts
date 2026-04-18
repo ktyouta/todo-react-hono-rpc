@@ -7,6 +7,7 @@ import type { AppEnv } from "../../../types";
 import { formatZodErrors } from "../../../util";
 import { TaskIdParamSchema } from "../../todo-management/schema/task-id-param.schema";
 import { GetTodoManagementSubtaskListRepository } from "../repository/get-todo-management-subtask-list.repository";
+import { GetTodoManagementSubtaskListQuerySchema } from "../schema/get-todo-management-subtask-list-query.schema";
 import { GetTodoManagementSubtaskListService } from "../service/get-todo-management-subtask-list.service";
 
 /**
@@ -21,14 +22,21 @@ const getTodoManagementSubtaskList = new Hono<AppEnv>().get(
             return c.json({ message: "パラメータが不正です。", data: formatZodErrors(result.error) }, HTTP_STATUS.BAD_REQUEST);
         }
     }),
+    zValidator("query", GetTodoManagementSubtaskListQuerySchema, (result, c) => {
+        if (!result.success) {
+            return c.json({ message: "クエリが不正です。", data: formatZodErrors(result.error) }, HTTP_STATUS.BAD_REQUEST);
+        }
+    }),
     async (c) => {
         const db = c.get("db");
+        const query = c.req.valid("query");
         const parentTaskId = new TaskId(c.req.valid("param").id);
         const repository = new GetTodoManagementSubtaskListRepository(db);
         const service = new GetTodoManagementSubtaskListService(repository);
-        const list = await service.findAll(parentTaskId);
+        const { list, total } = await service.findAll(parentTaskId, query);
+        const totalPages = Math.ceil(total / GetTodoManagementSubtaskListRepository.LIMIT);
 
-        return c.json({ message: "サブタスク一覧を取得しました。", data: list }, HTTP_STATUS.OK);
+        return c.json({ message: "サブタスク一覧を取得しました。", data: { list, total, totalPages } }, HTTP_STATUS.OK);
     }
 );
 

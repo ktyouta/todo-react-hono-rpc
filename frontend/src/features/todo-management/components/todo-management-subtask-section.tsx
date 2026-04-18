@@ -1,10 +1,13 @@
-import { Table } from "@/components";
+import { Pagination, Table } from "@/components";
 import { TableProps } from "@/components/ui/table/table";
 import { ManagementSubtaskListDataType } from "../api/get-todo-management-subtask-list";
 import { TodoManagementSubtaskCard } from "./todo-management-subtask-card";
 
 type PropsType = {
     subtasks: ManagementSubtaskListDataType;
+    currentPage: number;
+    totalPages: number;
+    onPageChange: (page: number) => void;
     onClickSubtask: (subId: number) => void;
     isLoading: boolean;
 };
@@ -21,7 +24,7 @@ const columns: TableProps<ManagementSubtaskListDataType[number]>['columns'] = [
 
 export function TodoManagementSubtaskSection(props: PropsType) {
 
-    const { subtasks, onClickSubtask, isLoading } = props;
+    const { subtasks, currentPage, totalPages, onPageChange, onClickSubtask, isLoading } = props;
 
     return (
         <div className="mt-8 sm:mt-[60px]">
@@ -61,6 +64,14 @@ export function TodoManagementSubtaskSection(props: PropsType) {
                             />
                         ))}
                     </div>
+                    {totalPages > 1 && (
+                        <Pagination
+                            currentPage={currentPage}
+                            totalPages={totalPages}
+                            onPageChange={onPageChange}
+                            className="mt-3"
+                        />
+                    )}
                 </>
             )}
         </div>

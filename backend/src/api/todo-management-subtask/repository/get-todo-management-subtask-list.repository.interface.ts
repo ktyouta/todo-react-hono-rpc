@@ -1,4 +1,5 @@
 import { TaskId } from "../../../domain";
+import { GetTodoManagementSubtaskListQuerySchemaType } from "../schema/get-todo-management-subtask-list-query.schema";
 
 export type ManagementSubtaskListItem = {
   id: number;
@@ -18,6 +19,11 @@ export type ManagementSubtaskListItem = {
   updatedAt: string;
 };
 
+export type ManagementSubtaskListResult = {
+  list: ManagementSubtaskListItem[];
+  total: number;
+};
+
 /**
  * サブタスク一覧取得リポジトリインターフェース（管理者用）
  */
@@ -25,5 +31,9 @@ export interface IGetTodoManagementSubtaskListRepository {
   /**
    * サブタスク一覧取得（ユーザーフィルタなし）
    */
-  findAll(parentTaskId: TaskId): Promise<ManagementSubtaskListItem[]>;
+  findAll(parentTaskId: TaskId, query: GetTodoManagementSubtaskListQuerySchemaType): Promise<ManagementSubtaskListItem[]>;
+  /**
+   * サブタスク件数取得
+   */
+  count(parentTaskId: TaskId): Promise<number>;
 }

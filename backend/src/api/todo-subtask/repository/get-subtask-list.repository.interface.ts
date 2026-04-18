@@ -1,4 +1,5 @@
 import { FrontUserId, TaskId } from "../../../domain";
+import { GetSubtaskListQuerySchemaType } from "../schema/get-subtask-list-query.schema";
 
 export type SubtaskListItem = {
   id: number;
@@ -18,6 +19,11 @@ export type SubtaskListItem = {
   updatedAt: string;
 };
 
+export type SubtaskListResult = {
+  list: SubtaskListItem[];
+  total: number;
+};
+
 /**
  * サブタスク一覧取得リポジトリインターフェース
  */
@@ -25,5 +31,9 @@ export interface IGetSubtaskListRepository {
   /**
    * サブタスク一覧取得
    */
-  findAll(userId: FrontUserId, parentTaskId: TaskId): Promise<SubtaskListItem[]>;
+  findAll(userId: FrontUserId, parentTaskId: TaskId, query: GetSubtaskListQuerySchemaType): Promise<SubtaskListItem[]>;
+  /**
+   * サブタスク件数取得
+   */
+  count(userId: FrontUserId, parentTaskId: TaskId): Promise<number>;
 }

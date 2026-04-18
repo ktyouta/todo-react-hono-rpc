@@ -2,18 +2,22 @@ import { and, eq, sql } from "drizzle-orm";
 import { FrontUserId, TaskId } from "../../../domain";
 import type { Database } from "../../../infrastructure/db";
 import { categoryMaster, priorityMaster, statusMaster, taskTransaction } from "../../../infrastructure/db";
+import { GetSubtaskListQuerySchemaType } from "../schema/get-subtask-list-query.schema";
 import type { IGetSubtaskListRepository, SubtaskListItem } from "./get-subtask-list.repository.interface";
 
 /**
  * サブタスク一覧取得リポジトリ実装
  */
 export class GetSubtaskListRepository implements IGetSubtaskListRepository {
+
+  static readonly LIMIT = 10;
+
   constructor(private readonly db: Database) { }
 
   /**
    * サブタスク一覧取得
    */
-  async findAll(userId: FrontUserId, parentTaskId: TaskId): Promise<SubtaskListItem[]> {
+  async findAll(userId: FrontUserId, parentTaskId: TaskId, query: GetSubtaskListQuerySchemaType): Promise<SubtaskListItem[]> {
     return await this.db
       .select({
         id: taskTransaction.id,
@@ -42,6 +46,25 @@ export class GetSubtaskListRepository implements IGetSubtaskListRepository {
           eq(taskTransaction.userId, userId.value),
           eq(taskTransaction.parentId, parentTaskId.value),
         )
+      )
+      .limit(GetSubtaskListRepository.LIMIT)
+      .offset((query.page - 1) * GetSubtaskListRepository.LIMIT);
+  }
+
+  /**
+   * サブタスク件数取得
+   */
+  async count(userId: FrontUserId, parentTaskId: TaskId): Promise<number> {
+    const [{ total }] = await this.db
+      .select({ total: sql<number>`count(*)` })
+      .from(taskTransaction)
+      .where(
+        and(
+          eq(taskTransaction.deleteFlg, false),
+          eq(taskTransaction.userId, userId.value),
+          eq(taskTransaction.parentId, parentTaskId.value),
+        )
       );
+    return total;
   }
 }

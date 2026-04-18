@@ -5,6 +5,7 @@ export const todoManagementKeys = {
     details: () => [...todoManagementKeys.all, 'detail'] as const,
     detail: (id: string) => [...todoManagementKeys.details(), id] as const,
     subtaskLists: (taskId: string) => [...todoManagementKeys.all, 'subtask-list', taskId] as const,
+    subtaskList: (taskId: string, page: number) => [...todoManagementKeys.subtaskLists(taskId), page] as const,
     subtaskDetails: (taskId: string) => [...todoManagementKeys.all, 'subtask-detail', taskId] as const,
     subtaskDetail: (taskId: string, subId: string) => [...todoManagementKeys.subtaskDetails(taskId), subId] as const,
 };
