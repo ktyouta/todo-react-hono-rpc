@@ -34,7 +34,7 @@ import { UserManagementDetailPage } from '@/features/user-management/components/
 import { UserManagementLayout } from '@/features/user-management/components/user-management-layout';
 import { UserManagementPage } from '@/features/user-management/components/user-management-page';
 import { useEffect } from 'react';
-import { Navigate, useLocation, useRoutes } from 'react-router-dom';
+import { Navigate, useLocation, useNavigationType, useRoutes } from 'react-router-dom';
 import { DashboardContainer } from './dashboard-container';
 import { GuestRoute } from './guest-route';
 import { ProtectedRoute } from './protected-route';
@@ -379,10 +379,15 @@ const routerList = [
 export const AppRouter = () => {
     // ルーティング用
     const router = useRoutes(routerList);
-    // パス
+    // 現在のパス
     const { pathname } = useLocation();
+    // ナビゲーション種別
+    const navigationType = useNavigationType();
+
     useEffect(() => {
-        window.scrollTo(0, 0);
+        if (navigationType !== "POP") {
+            window.scrollTo(0, 0);
+        }
     }, [pathname]);
 
     return router;
