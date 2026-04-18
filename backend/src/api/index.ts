@@ -36,3 +36,5 @@ export * from "./todo-stats";
 export * from "./admin-dashboard-stats";
 export * from "./todo-subtask";
 export * from "./todo-management-subtask";
+export * from "./todo-trash-subtask";
+export * from "./todo-deleted-subtask";

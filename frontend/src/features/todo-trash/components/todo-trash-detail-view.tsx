@@ -1,10 +1,10 @@
-import { Button, Dialog, LoadingOverlay, Table } from "@/components";
-import { TableProps } from "@/components/ui/table/table";
+import { Button, Dialog, LoadingOverlay } from "@/components";
 import { CATEGORY_ID } from "@/constants/master";
 import { getFormatDatetime } from "@/utils/date-util";
 import { getDueDateStatus } from "@/utils/due-date-status";
 import { HiArrowLeft } from "react-icons/hi2";
 import { TodoTrashReturnType } from "../api/get-todo-trash";
+import { TodoTrashSubtaskSectionContainer } from "./todo-trash-subtask-section-container";
 
 type PropsType = {
     task: TodoTrashReturnType;
@@ -38,15 +38,6 @@ export function TodoTrashDetailView(props: PropsType) {
 
     // 期限ステータス
     const dueDateStatus = getDueDateStatus(task.dueDate);
-
-    // サブタスクテーブルカラム（読み取り専用）
-    const subtaskColumns: TableProps<TodoTrashReturnType['subtasks'][number]>['columns'] = [
-        { title: 'ID', field: 'id', className: 'w-[6%] whitespace-nowrap pl-4' },
-        { title: 'タイトル', field: 'title', className: 'max-w-0', Cell: ({ entry }) => <span className="block truncate">{entry.title}</span> },
-        { title: 'ステータス', field: 'statusName', className: 'w-[12%] whitespace-nowrap' },
-        { title: '優先度', field: 'priorityName', className: 'w-[10%] whitespace-nowrap' },
-        { title: '期限日', field: 'dueDate', className: 'w-[10%] whitespace-nowrap', Cell: ({ entry }) => <span>{entry.dueDate ?? '—'}</span> },
-    ];
 
     return (
         <div className="w-full min-h-full flex flex-col pb-4">
@@ -149,60 +140,7 @@ export function TodoTrashDetailView(props: PropsType) {
 
             {/* 親タスクの場合：サブタスクセクション */}
             {task.parentId === null && (
-                <div className="mt-8 sm:mt-[60px]">
-                    <div className="flex items-center mb-3 pr-1">
-                        <span className="font-semibold text-base text-gray-700">サブタスク</span>
-                    </div>
-                    {task.subtasks.length === 0 ? (
-                        <div className="py-6 text-center text-sm text-gray-400">サブタスクはありません</div>
-                    ) : (
-                        <>
-                            {/* PC: テーブル表示 */}
-                            <div className="hidden sm:block border border-gray-200 rounded overflow-hidden">
-                                <Table
-                                    data={task.subtasks}
-                                    columns={subtaskColumns}
-                                    className="text-[16px] table-fixed
-                                        [&_thead]:bg-gray-200/70
-                                        [&_thead_tr]:border-b
-                                        [&_thead_tr]:border-gray-400/60
-                                        [&_thead_tr]:hover:bg-transparent"
-                                    rowClassName="h-[50px] border-gray-300/80 bg-white/50"
-                                />
-                            </div>
-                            {/* スマホ: カード表示 */}
-                            <div className="sm:hidden flex flex-col gap-2">
-                                {task.subtasks.map((subtask) => (
-                                    <div
-                                        key={subtask.id}
-                                        className="bg-white border border-gray-200 rounded-lg p-4"
-                                    >
-                                        <div className="flex items-start gap-3">
-                                            <p className="text-[17px] font-medium text-gray-800 break-words min-w-0 flex-1">{subtask.title}</p>
-                                            <span className="text-xs text-gray-400 whitespace-nowrap shrink-0 mt-0.5">#{subtask.id}</span>
-                                        </div>
-                                        <div className="flex flex-wrap gap-x-4 gap-y-2 mt-3 pt-3 border-t border-gray-100 text-xs">
-                                            <div>
-                                                <span className="text-gray-400">ステータス</span>
-                                                <span className="ml-1.5 text-gray-500">{subtask.statusName}</span>
-                                            </div>
-                                            <div>
-                                                <span className="text-gray-400">優先度</span>
-                                                <span className="ml-1.5 text-gray-500">{subtask.priorityName}</span>
-                                            </div>
-                                            {subtask.dueDate && (
-                                                <div>
-                                                    <span className="text-gray-400">期限日</span>
-                                                    <span className="ml-1.5 text-gray-500">{subtask.dueDate}</span>
-                                                </div>
-                                            )}
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                        </>
-                    )}
-                </div>
+                <TodoTrashSubtaskSectionContainer />
             )}
 
             {/* 復元エリア・物理削除エリア */}
