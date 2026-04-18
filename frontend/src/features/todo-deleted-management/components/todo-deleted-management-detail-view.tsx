@@ -5,6 +5,7 @@ import { getFormatDatetime } from "@/utils/date-util";
 import { getDueDateStatus } from "@/utils/due-date-status";
 import { HiArrowLeft } from "react-icons/hi2";
 import { TodoDeletedManagementReturnType } from "../api/get-todo-deleted-management";
+import { TodoDeletedManagementSubtaskSectionContainer } from "./todo-deleted-management-subtask-section-container";
 
 type PropsType = {
     task: TodoDeletedManagementReturnType;
@@ -134,6 +135,9 @@ export function TodoDeletedManagementDetailView(props: PropsType) {
                     </div>
                 </div>
             </div>
+
+            {/* サブタスクセクション */}
+            <TodoDeletedManagementSubtaskSectionContainer />
 
             {/* 復元エリア・物理削除エリア */}
             <div className="mt-8 sm:mt-[60px] pt-4 sm:pt-[30px] border-t border-gray-200 flex flex-col gap-4">

@@ -29,6 +29,8 @@ export class GetTodoDeletedSubtaskListRepository implements IGetTodoDeletedSubta
                 priorityName: sql<string>`coalesce(${priorityMaster.name}, 'なし')`,
                 dueDate: taskTransaction.dueDate,
                 deleteFlg: taskTransaction.deleteFlg,
+                createdAt: taskTransaction.createdAt,
+                updatedAt: taskTransaction.updatedAt,
             })
             .from(taskTransaction)
             .leftJoin(statusMaster, eq(taskTransaction.statusId, statusMaster.id))

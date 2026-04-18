@@ -10,6 +10,8 @@ export type DeletedSubtaskListItem = {
     priorityName: string;
     dueDate: string | null;
     deleteFlg: boolean;
+    createdAt: string;
+    updatedAt: string;
 };
 
 export type DeletedSubtaskListResult = {

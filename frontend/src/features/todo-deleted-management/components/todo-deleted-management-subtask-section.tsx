@@ -1,17 +1,17 @@
 import { Pagination, Table } from "@/components";
 import { TableProps } from "@/components/ui/table/table";
-import { TodoTrashSubtaskListDataType } from "../api/get-todo-trash-subtask-list";
-import { TodoTrashSubtaskCard } from "./todo-trash-subtask-card";
+import { TodoDeletedSubtaskListDataType } from "../api/get-todo-deleted-subtask-list";
+import { TodoDeletedManagementSubtaskCard } from "./todo-deleted-management-subtask-card";
 
 type PropsType = {
-    subtasks: TodoTrashSubtaskListDataType;
+    subtasks: TodoDeletedSubtaskListDataType;
     currentPage: number;
     totalPages: number;
     onPageChange: (page: number) => void;
     isLoading: boolean;
 };
 
-const columns: TableProps<TodoTrashSubtaskListDataType[number]>['columns'] = [
+const columns: TableProps<TodoDeletedSubtaskListDataType[number]>['columns'] = [
     { title: 'ID', field: 'id', className: 'w-[6%] whitespace-nowrap pl-4' },
     { title: 'タイトル', field: 'title', className: 'max-w-0', Cell: ({ entry }) => <span className="block truncate">{entry.title}</span> },
     { title: 'ステータス', field: 'statusName', className: 'w-[12%] whitespace-nowrap' },
@@ -21,7 +21,7 @@ const columns: TableProps<TodoTrashSubtaskListDataType[number]>['columns'] = [
     { title: '更新日', field: 'updatedAt', className: 'w-[9%] whitespace-nowrap hidden md:table-cell', Cell: ({ entry }) => <span>{entry.updatedAt.slice(0, 10)}</span> },
 ];
 
-export function TodoTrashSubtaskSection(props: PropsType) {
+export function TodoDeletedManagementSubtaskSection(props: PropsType) {
 
     const { subtasks, currentPage, totalPages, onPageChange, isLoading } = props;
 
@@ -53,7 +53,7 @@ export function TodoTrashSubtaskSection(props: PropsType) {
                     {/* スマホ: カード表示 */}
                     <div className="sm:hidden flex flex-col gap-2">
                         {subtasks.map((subtask) => (
-                            <TodoTrashSubtaskCard key={subtask.id} entry={subtask} />
+                            <TodoDeletedManagementSubtaskCard key={subtask.id} entry={subtask} />
                         ))}
                     </div>
                     {totalPages > 1 && (
@@ -61,6 +61,7 @@ export function TodoTrashSubtaskSection(props: PropsType) {
                             currentPage={currentPage}
                             totalPages={totalPages}
                             onPageChange={onPageChange}
+                            className="mt-3"
                         />
                     )}
                 </>

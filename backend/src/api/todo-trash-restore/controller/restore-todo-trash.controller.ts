@@ -1,5 +1,5 @@
 import { zValidator } from "@hono/zod-validator";
-import { and, eq } from "drizzle-orm";
+import { and, eq, or } from "drizzle-orm";
 import { Hono } from "hono";
 import { API_ENDPOINT, HTTP_STATUS } from "../../../constant";
 import { TaskId } from "../../../domain/task-id";
@@ -38,7 +38,10 @@ const restoreTodoTrash = new Hono<AppEnv>().patch(
                 })
                 .where(
                     and(
-                        eq(taskTransaction.id, taskId.value),
+                        or(
+                            eq(taskTransaction.id, taskId.value),
+                            eq(taskTransaction.parentId, taskId.value),
+                        ),
                         eq(taskTransaction.deleteFlg, true),
                         eq(taskTransaction.userId, userId.value),
                     )

@@ -1,20 +1,12 @@
-import { dateColorMap, getDueDateStatus } from "@/utils/due-date-status";
-import { ManagementSubtaskListDataType } from "../api/get-todo-management-subtask-list";
+import { TodoDeletedSubtaskListDataType } from "../api/get-todo-deleted-subtask-list";
 
 type PropsType = {
-    entry: ManagementSubtaskListDataType[number];
-    onClick: () => void;
+    entry: TodoDeletedSubtaskListDataType[number];
 };
 
-export function TodoManagementSubtaskCard({ entry, onClick }: PropsType) {
-    const status = getDueDateStatus(entry.dueDate);
-    const dateColor = dateColorMap[status];
-
+export function TodoDeletedManagementSubtaskCard({ entry }: PropsType) {
     return (
-        <div
-            onClick={onClick}
-            className="bg-white border border-gray-200 rounded-lg p-4 cursor-pointer hover:bg-gray-50 transition-colors"
-        >
+        <div className="bg-white border border-gray-200 rounded-lg p-4">
             <div className="flex items-start gap-3">
                 <p className="text-[17px] font-medium text-gray-800 break-words min-w-0 flex-1">{entry.title}</p>
                 <span className="text-xs text-gray-400 whitespace-nowrap shrink-0 mt-0.5">#{entry.id}</span>
@@ -31,7 +23,7 @@ export function TodoManagementSubtaskCard({ entry, onClick }: PropsType) {
                 {entry.dueDate && (
                     <div>
                         <span className="text-gray-400">期限日</span>
-                        <span className={`ml-1.5 ${dateColor}`}>{entry.dueDate}</span>
+                        <span className="ml-1.5 text-gray-500">{entry.dueDate}</span>
                     </div>
                 )}
                 <div>
