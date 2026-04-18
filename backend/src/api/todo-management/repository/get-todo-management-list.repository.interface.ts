@@ -1,7 +1,22 @@
 import { GetTodoManagementListQuerySchemaType } from "../schema/get-todo-management-list-query.schema";
-import { TodoManagementItem } from "./get-todo-management.repository.interface";
 
-export type TodoManagementListItem = TodoManagementItem;
+export type TodoManagementListItem = {
+    id: number;
+    title: string;
+    content: string | null;
+    categoryId: number;
+    categoryName: string;
+    statusId: number | null;
+    statusName: string;
+    priorityId: number | null;
+    priorityName: string;
+    dueDate: string | null;
+    userId: number | null;
+    userName: string;
+    deleteFlg: boolean;
+    createdAt: string;
+    updatedAt: string;
+};;
 
 export type TodoManagementListResult = {
     list: TodoManagementListItem[];

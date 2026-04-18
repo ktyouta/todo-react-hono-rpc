@@ -27,6 +27,7 @@ const dummyTaskBase = {
     deleteFlg: false,
     createdAt: '2026-01-01T10:00:00.000Z',
     updatedAt: '2026-03-01T12:00:00.000Z',
+    parentId: null,
 };
 
 const dummyTask = {
@@ -45,12 +46,12 @@ const commonProps = {
     categoryList: dummyCategoryList,
     priorityList: dummyPriorityList,
     isDeleteDialogOpen: false,
-    onClickBack: () => {},
-    onClickEdit: () => {},
-    onClickDelete: () => {},
-    onCancelDelete: () => {},
-    onConfirmDelete: () => {},
-    onFavoriteToggle: () => {},
+    onClickBack: () => { },
+    onClickEdit: () => { },
+    onClickDelete: () => { },
+    onCancelDelete: () => { },
+    onConfirmDelete: () => { },
+    onFavoriteToggle: () => { },
     isLoading: false,
 };
 

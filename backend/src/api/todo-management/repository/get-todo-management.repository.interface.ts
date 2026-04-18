@@ -19,6 +19,7 @@ export type TodoManagementItem = {
     deleteFlg: boolean;
     createdAt: string;
     updatedAt: string;
+    parentId: number | null;
 };
 
 export interface IGetTodoManagementRepository {

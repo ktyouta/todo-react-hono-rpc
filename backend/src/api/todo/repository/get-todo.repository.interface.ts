@@ -17,6 +17,7 @@ export type TodoItem = {
   deleteFlg: boolean;
   createdAt: string;
   updatedAt: string;
+  parentId: number | null;
 };
 
 /**
