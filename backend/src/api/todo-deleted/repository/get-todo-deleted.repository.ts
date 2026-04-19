@@ -31,6 +31,7 @@ export class GetTodoDeletedRepository implements IGetTodoDeletedRepository {
                 deleteFlg: taskTransaction.deleteFlg,
                 createdAt: taskTransaction.createdAt,
                 updatedAt: taskTransaction.updatedAt,
+                parentId: taskTransaction.parentId,
             })
             .from(taskTransaction)
             .leftJoin(categoryMaster, eq(taskTransaction.categoryId, categoryMaster.id))

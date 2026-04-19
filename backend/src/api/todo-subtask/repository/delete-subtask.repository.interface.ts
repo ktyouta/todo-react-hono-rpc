@@ -1,7 +1,7 @@
 import { FrontUserId, TaskId } from "../../../domain";
 
 export type SubtaskItem = {
-  isFavorite: boolean;
+  id: number;
 };
 
 /**

@@ -43,10 +43,6 @@ const deleteSubtask = new Hono<AppEnv>().delete(
             return c.json({ message: "削除対象のサブタスクが存在しません。" }, HTTP_STATUS.NOT_FOUND);
         }
 
-        if (subtask.isFavorite) {
-            return c.json({ message: "お気に入りのサブタスクは削除できません。" }, HTTP_STATUS.UNPROCESSABLE_ENTITY);
-        }
-
         const now = new Date().toISOString();
 
         await db.batch([

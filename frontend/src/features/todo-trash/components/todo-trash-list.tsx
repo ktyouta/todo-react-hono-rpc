@@ -72,7 +72,7 @@ export function TodoTrashList(props: PropsType) {
         { title: 'ステータス', field: 'statusName', className: 'w-[10%] whitespace-nowrap' },
         { title: '優先度', field: 'priorityName', className: 'w-[8%] whitespace-nowrap' },
         {
-            title: '期限日', field: 'dueDate', className: 'w-[10%] whitespace-nowrap', Cell: ({ entry }) => {
+            title: '期限日', field: 'dueDate', className: 'w-[8%] whitespace-nowrap', Cell: ({ entry }) => {
                 if (!entry.dueDate) {
                     return <span>—</span>;
                 }

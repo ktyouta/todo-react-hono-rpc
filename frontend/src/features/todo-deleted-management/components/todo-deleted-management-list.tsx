@@ -76,7 +76,7 @@ export function TodoDeletedManagementList(props: PropsType) {
         { title: 'ステータス', field: 'statusName', className: 'w-[10%] whitespace-nowrap' },
         { title: '優先度', field: 'priorityName', className: 'w-[8%] whitespace-nowrap' },
         {
-            title: '期限日', field: 'dueDate', className: 'w-[10%] whitespace-nowrap', Cell: ({ entry }) => {
+            title: '期限日', field: 'dueDate', className: 'w-[8%] whitespace-nowrap', Cell: ({ entry }) => {
                 if (!entry.dueDate) {
                     return <span>—</span>;
                 }
@@ -90,6 +90,11 @@ export function TodoDeletedManagementList(props: PropsType) {
                 }
                 return <span>{dateStr}</span>;
             }
+        },
+        {
+            title: '親タスクID', field: 'parentId', className: 'w-[8%] whitespace-nowrap hidden md:table-cell', Cell: ({ entry }) => (
+                <span>{entry.parentId ?? '—'}</span>
+            )
         },
         { title: '登録日', field: 'createdAt', className: 'w-[10%] whitespace-nowrap hidden md:table-cell', Cell: ({ entry }) => <span>{entry.createdAt.slice(0, 10)}</span> },
         { title: '更新日', field: 'updatedAt', className: 'w-[10%] whitespace-nowrap hidden md:table-cell', Cell: ({ entry }) => <span>{entry.updatedAt.slice(0, 10)}</span> },

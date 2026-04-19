@@ -1,5 +1,5 @@
 import { zValidator } from "@hono/zod-validator";
-import { and, eq } from "drizzle-orm";
+import { and, eq, isNull } from "drizzle-orm";
 import { Hono } from "hono";
 import { API_ENDPOINT, HTTP_STATUS } from "../../../constant";
 import { TaskId } from "../../../domain";
@@ -46,7 +46,8 @@ const updateTodoFavorite = new Hono<AppEnv>().patch(
                 and(
                     eq(taskTransaction.id, taskId.value),
                     eq(taskTransaction.userId, userId.value),
-                    eq(taskTransaction.deleteFlg, false)
+                    eq(taskTransaction.deleteFlg, false),
+                    isNull(taskTransaction.parentId)
                 )
             )
             .returning();

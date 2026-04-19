@@ -1,12 +1,12 @@
 import { Button, Dialog, LoadingOverlay } from "@/components";
-import { getFormatDatetime } from "@/utils/date-util";
 import { CATEGORY_ID } from "@/constants/master";
 import { CategoryReturnType } from "@/features/api/get-category";
 import { PriorityReturnType } from "@/features/api/get-priority";
 import { StatusReturnType } from "@/features/api/get-status";
+import { getFormatDatetime } from "@/utils/date-util";
+import { getDueDateStatus } from "@/utils/due-date-status";
 import { HiArrowLeft } from "react-icons/hi2";
 import { SubtaskDataType } from "../api/get-subtask";
-import { getDueDateStatus } from "@/utils/due-date-status";
 
 type PropsType = {
     task: SubtaskDataType;
@@ -54,7 +54,7 @@ export function SubtaskDetailView(props: PropsType) {
             {/* ヘッダー */}
             <div className="flex items-center pr-[10px]">
                 <span className="font-bold text-[18px] sm:text-[22px]">
-                    タスク詳細
+                    サブタスク詳細
                 </span>
                 <div className="flex-1" />
                 <Button

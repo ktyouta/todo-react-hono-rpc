@@ -1,5 +1,5 @@
 import { zValidator } from "@hono/zod-validator";
-import { and, eq, inArray } from "drizzle-orm";
+import { and, eq, inArray, or } from "drizzle-orm";
 import { Hono } from "hono";
 import { API_ENDPOINT, HTTP_STATUS } from "../../../constant";
 import { taskTransaction } from "../../../infrastructure";
@@ -31,7 +31,10 @@ const bulkDeleteTodoManagement = new Hono<AppEnv>().delete(
       .where(
         and(
           eq(taskTransaction.deleteFlg, false),
-          inArray(taskTransaction.id, ids)
+          or(
+            inArray(taskTransaction.id, ids),
+            inArray(taskTransaction.parentId, ids)
+          )
         )
       );
 

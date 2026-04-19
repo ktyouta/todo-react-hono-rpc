@@ -56,7 +56,7 @@ export function TodoTrashDetailView(props: PropsType) {
             {/* ヘッダー */}
             <div className="flex items-center pr-[10px]">
                 <span className="font-bold text-[18px] sm:text-[22px]">
-                    タスク詳細
+                    {task.parentId ? `サブ` : ``}タスク詳細
                 </span>
             </div>
 

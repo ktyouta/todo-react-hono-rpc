@@ -1,7 +1,23 @@
 import { GetTodoDeletedListQuerySchemaType } from "../schema/get-todo-deleted-list-query.schema";
-import { TodoDeletedItem } from "./get-todo-deleted.repository.interface";
 
-export type TodoDeletedListItem = TodoDeletedItem;
+export type TodoDeletedListItem = {
+    id: number;
+    title: string;
+    content: string | null;
+    categoryId: number;
+    categoryName: string;
+    statusId: number | null;
+    statusName: string;
+    priorityId: number | null;
+    priorityName: string;
+    dueDate: string | null;
+    userId: number | null;
+    userName: string;
+    deleteFlg: boolean;
+    createdAt: string;
+    updatedAt: string;
+    parentId: number | null;
+};;
 
 export type TodoDeletedListResult = {
     list: TodoDeletedListItem[];

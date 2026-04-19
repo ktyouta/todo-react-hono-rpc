@@ -16,7 +16,7 @@ export class DeleteSubtaskRepository implements IDeleteSubtaskRepository {
   async find(userId: FrontUserId, parentTaskId: TaskId, subtaskId: TaskId): Promise<SubtaskItem | undefined> {
     return await this.db
       .select({
-        isFavorite: taskTransaction.isFavorite,
+        id: taskTransaction.id,
       })
       .from(taskTransaction)
       .where(
