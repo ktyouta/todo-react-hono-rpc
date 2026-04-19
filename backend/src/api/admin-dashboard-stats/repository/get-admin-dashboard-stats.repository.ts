@@ -1,7 +1,6 @@
 import { and, asc, desc, eq, sql } from "drizzle-orm";
 import type { Database } from "../../../infrastructure/db";
 import {
-  categoryMaster,
   frontUserMaster,
   permissionMaster,
   roleMaster,
@@ -29,7 +28,6 @@ export class GetAdminDashboardStatsRepository implements IGetAdminDashboardStats
       userStatsResult,
       userByRoleResult,
       taskStatsResult,
-      taskByCategoryResult,
       overdueListResult,
       dueTodayListResult,
       dueSoonListResult,
@@ -37,7 +35,7 @@ export class GetAdminDashboardStatsRepository implements IGetAdminDashboardStats
       roleCountResult,
       permissionCountResult,
     ] = await Promise.all([
-      // 1. ユーザー集計
+      // ユーザー集計
       this.db
         .select({
           total: sql<number>`COUNT(*)`,
@@ -47,7 +45,7 @@ export class GetAdminDashboardStatsRepository implements IGetAdminDashboardStats
         })
         .from(frontUserMaster),
 
-      // 2. ロール別ユーザー数
+      // ロール別ユーザー数
       this.db
         .select({
           roleId: roleMaster.id,
@@ -64,7 +62,7 @@ export class GetAdminDashboardStatsRepository implements IGetAdminDashboardStats
         )
         .groupBy(roleMaster.id, roleMaster.name),
 
-      // 3. タスク集計（全ユーザー合計）
+      // タスク集計（全ユーザー合計）
       this.db
         .select({
           total: sql<number>`COUNT(CASE WHEN ${taskTransaction.deleteFlg} = 0 THEN 1 END)`,
@@ -76,22 +74,13 @@ export class GetAdminDashboardStatsRepository implements IGetAdminDashboardStats
           mediumPriority: sql<number>`COUNT(CASE WHEN ${taskTransaction.deleteFlg} = 0 AND ${taskTransaction.categoryId} = 1 AND ${taskTransaction.priorityId} = 2 THEN 1 END)`,
           lowPriority: sql<number>`COUNT(CASE WHEN ${taskTransaction.deleteFlg} = 0 AND ${taskTransaction.categoryId} = 1 AND ${taskTransaction.priorityId} = 1 THEN 1 END)`,
           overdue: sql<number>`COUNT(CASE WHEN ${taskTransaction.deleteFlg} = 0 AND ${taskTransaction.categoryId} = 1 AND ${taskTransaction.dueDate} < date('now') AND ${taskTransaction.statusId} != 3 THEN 1 END)`,
+          tasks: sql<number>`COUNT(CASE WHEN ${taskTransaction.deleteFlg} = 0 AND ${taskTransaction.categoryId} = 1 AND ${taskTransaction.parentId} IS NULL THEN 1 END)`,
+          subTasks: sql<number>`COUNT(CASE WHEN ${taskTransaction.deleteFlg} = 0 AND ${taskTransaction.categoryId} = 1 AND ${taskTransaction.parentId} IS NOT NULL THEN 1 END)`,
+          memos: sql<number>`COUNT(CASE WHEN ${taskTransaction.deleteFlg} = 0 AND ${taskTransaction.categoryId} = 2 THEN 1 END)`,
         })
         .from(taskTransaction),
 
-      // 4. カテゴリ別タスク数
-      this.db
-        .select({
-          categoryId: categoryMaster.id,
-          categoryName: categoryMaster.name,
-          count: sql<number>`COUNT(CASE WHEN ${taskTransaction.deleteFlg} = 0 THEN 1 END)`,
-        })
-        .from(categoryMaster)
-        .leftJoin(taskTransaction, eq(taskTransaction.categoryId, categoryMaster.id))
-        .groupBy(categoryMaster.id, categoryMaster.name)
-        .orderBy(categoryMaster.sortOrder),
-
-      // 5. 期限切れタスク上位5件（期日昇順）
+      // 期限切れタスク上位5件（期日昇順）
       this.db
         .select({
           id: taskTransaction.id,
@@ -112,7 +101,7 @@ export class GetAdminDashboardStatsRepository implements IGetAdminDashboardStats
         .orderBy(asc(taskTransaction.dueDate))
         .limit(5),
 
-      // 6. 今日が期日のタスク上位5件
+      // 今日が期日のタスク上位5件
       this.db
         .select({
           id: taskTransaction.id,
@@ -133,7 +122,7 @@ export class GetAdminDashboardStatsRepository implements IGetAdminDashboardStats
         .orderBy(asc(taskTransaction.id))
         .limit(5),
 
-      // 7. 今週が期日のタスク上位5件（明日〜7日以内）
+      // 今週が期日のタスク上位5件（明日〜7日以内）
       this.db
         .select({
           id: taskTransaction.id,
@@ -155,7 +144,7 @@ export class GetAdminDashboardStatsRepository implements IGetAdminDashboardStats
         .orderBy(asc(taskTransaction.dueDate))
         .limit(5),
 
-      // 8. ユーザー別タスク状況（タスク数降順）
+      // ユーザー別タスク状況（タスク数降順）
       this.db
         .select({
           userId: frontUserMaster.id,
@@ -170,12 +159,12 @@ export class GetAdminDashboardStatsRepository implements IGetAdminDashboardStats
         .groupBy(frontUserMaster.id, frontUserMaster.name)
         .orderBy(desc(sql<number>`COUNT(CASE WHEN ${taskTransaction.deleteFlg} = 0 THEN 1 END)`)),
 
-      // 9. ロール数
+      // ロール数
       this.db
         .select({ count: sql<number>`COUNT(*)` })
         .from(roleMaster),
 
-      // 10. パーミッション数（permission_master の総件数）
+      // パーミッション数（permission_master の総件数）
       this.db
         .select({ count: sql<number>`COUNT(*)` })
         .from(permissionMaster),
@@ -190,7 +179,6 @@ export class GetAdminDashboardStatsRepository implements IGetAdminDashboardStats
       userStats,
       userByRole: userByRoleResult,
       taskStats,
-      taskByCategory: taskByCategoryResult,
       overdueList: overdueListResult,
       dueTodayList: dueTodayListResult,
       dueSoonList: dueSoonListResult,

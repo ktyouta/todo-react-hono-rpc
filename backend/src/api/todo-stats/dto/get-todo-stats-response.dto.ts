@@ -14,6 +14,8 @@ export type GetTodoStatsResponseType = {
   byPriority: { high: number; medium: number; low: number };
   favorites: number;
   trash: number;
+  tasks: number;
+  subTasks: number;
   memos: number;
   noDueDate: number;
   noPriority: number;
@@ -59,6 +61,8 @@ export class GetTodoStatsResponseDto {
       },
       favorites: row.favorites,
       trash: row.trash,
+      tasks: row.tasks,
+      subTasks: row.subTasks,
       memos: row.memos,
       noDueDate: row.noDueDate,
       noPriority: row.noPriority,

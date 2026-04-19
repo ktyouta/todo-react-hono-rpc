@@ -21,12 +21,9 @@ export type AdminDashboardTaskStats = {
   mediumPriority: number;
   lowPriority: number;
   overdue: number;
-};
-
-export type AdminDashboardTaskByCategory = {
-  categoryId: number;
-  categoryName: string;
-  count: number;
+  tasks: number;
+  subTasks: number;
+  memos: number;
 };
 
 export type AdminDashboardDeadlineItem = {
@@ -48,7 +45,6 @@ export type AdminDashboardStats = {
   userStats: AdminDashboardUserStats;
   userByRole: AdminDashboardUserByRole[];
   taskStats: AdminDashboardTaskStats;
-  taskByCategory: AdminDashboardTaskByCategory[];
   overdueList: AdminDashboardDeadlineItem[];
   dueTodayList: AdminDashboardDeadlineItem[];
   dueSoonList: AdminDashboardDeadlineItem[];

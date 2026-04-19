@@ -18,6 +18,8 @@ export type StatType = {
   lowPriority: number;
   favorites: number;
   trash: number;
+  tasks: number;
+  subTasks: number;
   memos: number;
   noDueDate: number;
   noPriority: number;

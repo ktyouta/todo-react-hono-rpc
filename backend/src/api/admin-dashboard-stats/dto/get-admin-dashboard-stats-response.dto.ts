@@ -17,8 +17,10 @@ export type GetAdminDashboardStatsResponseType = {
     byStatus: { notStarted: number; inProgress: number; done: number };
     byPriority: { high: number; medium: number; low: number };
     overdue: number;
+    tasks: number;
+    subTasks: number;
+    memos: number;
   };
-  taskByCategory: { categoryId: number; categoryName: string; count: number }[];
   taskDeadlines: {
     overdueList: { id: number; title: string; dueDate: string; userName: string }[];
     dueTodayList: { id: number; title: string; dueDate: string; userName: string }[];
@@ -77,12 +79,10 @@ export class GetAdminDashboardStatsResponseDto {
           low: stats.taskStats.lowPriority,
         },
         overdue: stats.taskStats.overdue,
+        tasks: stats.taskStats.tasks,
+        subTasks: stats.taskStats.subTasks,
+        memos: stats.taskStats.memos,
       },
-      taskByCategory: stats.taskByCategory.map((c) => ({
-        categoryId: c.categoryId,
-        categoryName: c.categoryName,
-        count: c.count,
-      })),
       taskDeadlines: {
         overdueList: stats.overdueList.map(mapDeadlineItem),
         dueTodayList: stats.dueTodayList.map(mapDeadlineItem),

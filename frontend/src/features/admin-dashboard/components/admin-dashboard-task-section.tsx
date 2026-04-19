@@ -2,9 +2,9 @@ import { DonutChart } from '@/features/dashboard/components/donut-chart';
 import { StatCard } from '@/features/dashboard/components/stat-card';
 import { AdminDashboardStatsType } from '../api/get-admin-dashboard-stats';
 
-type PropsType = Pick<AdminDashboardStatsType, 'taskStats' | 'taskByCategory'>;
+type PropsType = Pick<AdminDashboardStatsType, 'taskStats'>;
 
-export function AdminDashboardTaskSection({ taskStats, taskByCategory }: PropsType) {
+export function AdminDashboardTaskSection({ taskStats }: PropsType) {
     const total = taskStats.byStatus.notStarted + taskStats.byStatus.inProgress + taskStats.byStatus.done;
     const completionRate = total === 0 ? 0 : Math.round((taskStats.byStatus.done / total) * 100);
 
@@ -40,9 +40,9 @@ export function AdminDashboardTaskSection({ taskStats, taskByCategory }: PropsTy
                     </div>
                 </div>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                    {taskByCategory.map((category) => (
-                        <StatCard key={category.categoryId} value={category.count} label={category.categoryName} />
-                    ))}
+                    <StatCard value={taskStats.tasks} label="タスク" />
+                    <StatCard value={taskStats.subTasks} label="サブタスク" />
+                    <StatCard value={taskStats.memos} label="メモ" />
                     <StatCard value={taskStats.overdue} label="期限切れ" variant="red" />
                     <StatCard value={taskStats.trash} label="ゴミ箱" />
                 </div>

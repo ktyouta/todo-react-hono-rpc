@@ -26,6 +26,8 @@ export function DashboardContentContainer() {
             {/* その他 */}
             <DashboardOtherSection
                 favorites={stats.favorites}
+                tasks={stats.tasks}
+                subTasks={stats.subTasks}
                 memos={stats.memos}
                 trash={stats.trash}
                 noDueDate={stats.noDueDate}

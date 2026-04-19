@@ -18,7 +18,6 @@ export function AdminDashboardContentContainer() {
             {/* タスク概況 */}
             <AdminDashboardTaskSection
                 taskStats={stats.taskStats}
-                taskByCategory={stats.taskByCategory}
             />
             {/* 期限切れタスク詳細 */}
             <AdminDashboardDeadlineSection
