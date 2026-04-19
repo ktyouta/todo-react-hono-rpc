@@ -1,7 +1,15 @@
 import type { GetUserDeletedListQuerySchemaType } from "../schema/get-user-deleted-list-query.schema";
-import type { UserDeletedDetail } from "./get-user-deleted.repository.interface";
 
-export type UserDeletedListItem = UserDeletedDetail;
+export type UserDeletedListItem = {
+    id: number;
+    name: string;
+    birthday: string;
+    roleId: number;
+    roleName: string;
+    lastLoginDate: string | null;
+    createdAt: string;
+    updatedAt: string;
+};
 
 export type UserDeletedListResult = {
     list: UserDeletedListItem[];

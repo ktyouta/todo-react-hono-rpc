@@ -10,6 +10,7 @@ export type UserManagementItem = {
     roleName: string;
     createdAt: string;
     updatedAt: string;
+    lastLoginDate: string | null;
 };
 
 export type UserManagementListResult = {

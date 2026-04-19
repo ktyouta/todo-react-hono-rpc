@@ -39,6 +39,10 @@ export function UserDeletedManagementCard({ entry, onClick, isBulkMode = false, 
                     <span className="ml-1.5 text-gray-500">{`${entry.birthday.slice(0, 4)}-${entry.birthday.slice(4, 6)}-${entry.birthday.slice(6, 8)}`}</span>
                 </div>
                 <div>
+                    <span className="text-gray-400">最終ログイン</span>
+                    <span className="ml-1.5 text-gray-500">{entry.lastLoginDate?.slice(0, 10) || `—`}</span>
+                </div>
+                <div>
                     <span className="text-gray-400">登録日</span>
                     <span className="ml-1.5 text-gray-500">{entry.createdAt.slice(0, 10)}</span>
                 </div>

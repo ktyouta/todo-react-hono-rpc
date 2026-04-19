@@ -33,6 +33,7 @@ const baseColumns: TableProps<UserManagementListReturnType['list'][number]>['col
     { title: 'ユーザー名', field: 'name', className: 'max-w-0', Cell: ({ entry }) => <span className="block truncate">{entry.name}</span> },
     { title: '生年月日', field: 'birthday', className: 'w-[12%] whitespace-nowrap', Cell: ({ entry }) => <span>{`${entry.birthday.slice(0, 4)}-${entry.birthday.slice(4, 6)}-${entry.birthday.slice(6, 8)}`}</span> },
     { title: 'ロール', field: 'roleName', className: 'w-[10%] whitespace-nowrap' },
+    { title: '最終ログイン', field: 'lastLoginDate', className: 'w-[12%] whitespace-nowrap hidden md:table-cell', Cell: ({ entry }) => <span>{entry.lastLoginDate?.slice(0, 10) || `—`}</span> },
     { title: '登録日', field: 'createdAt', className: 'w-[12%] whitespace-nowrap hidden md:table-cell', Cell: ({ entry }) => <span>{entry.createdAt.slice(0, 10)}</span> },
     { title: '更新日', field: 'updatedAt', className: 'w-[12%] whitespace-nowrap hidden md:table-cell', Cell: ({ entry }) => <span>{entry.updatedAt.slice(0, 10)}</span> },
 ];

@@ -80,7 +80,6 @@ export class FrontUserLoginRepository implements IFrontUserLoginRepository {
       .update(frontUserMaster)
       .set({
         lastLoginDate: now,
-        updatedAt: now,
       })
       .where(eq(frontUserMaster.id, userId.value));
   }

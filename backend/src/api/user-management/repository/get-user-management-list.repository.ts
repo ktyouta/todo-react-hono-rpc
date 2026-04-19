@@ -24,6 +24,7 @@ export class GetUserManagementListRepository implements IGetUserManagementListRe
                 roleName: roleMaster.name,
                 createdAt: frontUserMaster.createdAt,
                 updatedAt: frontUserMaster.updatedAt,
+                lastLoginDate: frontUserMaster.lastLoginDate,
             })
             .from(frontUserMaster)
             .innerJoin(roleMaster, eq(frontUserMaster.roleId, roleMaster.id))

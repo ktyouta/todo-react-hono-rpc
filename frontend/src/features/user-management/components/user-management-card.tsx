@@ -39,6 +39,10 @@ export function UserManagementCard({ entry, onClick, isBulkMode, isSelected, isD
                     <span className="ml-1.5 text-gray-500">{entry.roleName}</span>
                 </div>
                 <div>
+                    <span className="text-gray-400">最終ログイン</span>
+                    <span className="ml-1.5 text-gray-500">{entry.lastLoginDate?.slice(0, 10) || `—`}</span>
+                </div>
+                <div>
                     <span className="text-gray-400">登録日</span>
                     <span className="ml-1.5 text-gray-500">{entry.createdAt.slice(0, 10)}</span>
                 </div>
