@@ -24,7 +24,7 @@ export function App() {
 
   return (
     <BrowserRouter>
-      <div className="sticky top-0 left-0 right-0 bg-white z-[9999] h-[44px] md:hidden" />
+      <div className="sticky top-0 left-0 right-0 bg-white z-[9999] h-[18px] md:hidden" />
       <ErrorBoundary
         FallbackComponent={Errors}
       >
