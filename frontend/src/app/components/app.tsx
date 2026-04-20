@@ -24,7 +24,7 @@ export function App() {
 
   return (
     <BrowserRouter>
-      <div className="sticky top-0 left-0 right-0 bg-white z-[9999]" style={{ paddingTop: 'env(safe-area-inset-top)' }} />
+      <div className="sticky top-0 left-0 right-0 bg-red-300 z-[9999]" style={{ paddingTop: 'env(safe-area-inset-top)' }} />
       <ErrorBoundary
         FallbackComponent={Errors}
       >
