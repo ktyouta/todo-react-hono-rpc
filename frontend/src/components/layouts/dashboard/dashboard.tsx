@@ -45,13 +45,15 @@ export function Dashboard(props: PropsType) {
                 lg以上: flex レイアウト内に常時表示。閉じた状態=w-20(アイコン表示)、開いた状態=w-60。
                 ※ position を切り替えないため、幅の transition が常に滑らかに動作する
             */}
-            <nav className={cn(
-                'flex flex-col overflow-hidden bg-cyan-500 shadow-md transition-all duration-300',
-                'fixed inset-y-0 left-0 z-40',
-                'lg:relative lg:inset-auto lg:z-auto',
-                isSidebarOpen ? 'w-60' : 'w-0 lg:w-20',
-                '[padding-top:max(env(safe-area-inset-top),1.5rem)]',
-            )}>
+            <nav
+                className={cn(
+                    'flex flex-col overflow-hidden bg-cyan-500 shadow-md transition-all duration-300',
+                    'fixed inset-y-0 left-0 z-40',
+                    'lg:relative lg:inset-auto lg:z-auto',
+                    isSidebarOpen ? 'w-60' : 'w-0 lg:w-20',
+                )}
+                style={{ paddingTop: 'max(env(safe-area-inset-top), 1.5rem)' }}
+            >
                 {/* ハンバーガーボタン（常に固定） */}
                 <button
                     onClick={() => setIsSidebarOpen(!isSidebarOpen)}

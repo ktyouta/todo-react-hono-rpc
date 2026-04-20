@@ -24,7 +24,7 @@ export function App() {
 
   return (
     <BrowserRouter>
-      <div className="fixed top-0 left-0 right-0 bg-white z-[9999] [height:env(safe-area-inset-top)]" />
+      <div className="fixed top-0 left-0 right-0 bg-white z-[9999]" style={{ height: 'env(safe-area-inset-top)' }} />
       <ErrorBoundary
         FallbackComponent={Errors}
       >
