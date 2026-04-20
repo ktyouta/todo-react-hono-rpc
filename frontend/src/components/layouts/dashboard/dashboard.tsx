@@ -94,7 +94,7 @@ export function Dashboard(props: PropsType) {
             */}
             <div className='flex flex-col flex-1 min-w-0 lg:pl-0'>
                 {/* ヘッダー */}
-                <header className='h-14 bg-white border-b border-gray-200 flex items-center pl-6 pr-4 sm:pr-[70px]'>
+                <header className='sticky top-0 z-20 md:relative h-14 bg-white border-b border-gray-200 flex items-center pl-6 pr-4 sm:pr-[70px]'>
                     {/* ハンバーガーメニュー (モバイルのみ) */}
                     <button
                         className="lg:hidden mr-3 text-gray-600 hover:text-gray-800"
