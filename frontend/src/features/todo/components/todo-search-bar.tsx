@@ -3,6 +3,7 @@ import { CategoryReturnType } from "@/features/api/get-category";
 import { PriorityReturnType } from "@/features/api/get-priority";
 import { StatusReturnType } from "@/features/api/get-status";
 import { useState } from "react";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { HiChevronDown, HiChevronUp, HiMagnifyingGlass } from "react-icons/hi2";
 import { MdFilterAlt } from "react-icons/md";
 import { FAVORITE_OPTIONS } from "../constants/todo-filter-options";
@@ -18,12 +19,14 @@ type PropsType = {
     priorityList: PriorityReturnType;
     handleKeyPress: (event: React.KeyboardEvent<HTMLInputElement>) => void;
     onToggleBulkMode: () => void;
+    onExport: () => void;
+    isExporting: boolean;
 };
 
 const LABEL_CLASS = "text-sm text-gray-500 whitespace-nowrap w-[5em]";
 const SELECT_CLASS = "flex-1 px-3 py-2 text-base bg-white border-[#c0c0c0]";
 
-export function TodoSearchBar({ searchCondition, onChange, onSearch, onClear, categoryList, statusList, priorityList, handleKeyPress, onToggleBulkMode }: PropsType) {
+export function TodoSearchBar({ searchCondition, onChange, onSearch, onClear, categoryList, statusList, priorityList, handleKeyPress, onToggleBulkMode, onExport, isExporting }: PropsType) {
 
     // 詳細フィルター開閉フラグ
     const [isDetailOpen, setIsDetailOpen] = useState(false);
@@ -103,6 +106,20 @@ export function TodoSearchBar({ searchCondition, onChange, onSearch, onClear, ca
                         className="h-9 py-0 font-medium whitespace-nowrap"
                     >
                         検索
+                    </Button>
+                    <Button
+                        colorType="blue"
+                        sizeType="medium"
+                        onClick={onExport}
+                        disabled={isExporting}
+                        className="px-3 h-9 py-0 font-medium whitespace-nowrap disabled:opacity-50"
+                    >
+                        {isExporting ? (
+                            <span className="flex items-center gap-1.5">
+                                <AiOutlineLoading3Quarters className="animate-spin size-4" />
+                                出力中...
+                            </span>
+                        ) : 'CSV出力'}
                     </Button>
                     <Button
                         colorType="green"

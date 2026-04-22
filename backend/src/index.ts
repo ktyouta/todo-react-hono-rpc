@@ -33,6 +33,7 @@ app.use(
       'Accept',
       'Authorization',
     ],
+    exposeHeaders: ['Content-Disposition'],
   })
 );
 app.use("*", requestIdMiddleware);

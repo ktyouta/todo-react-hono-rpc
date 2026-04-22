@@ -33,8 +33,7 @@ const getTodoExport = new Hono<AppEnv>().get(
 
         const items = await service.fetchData(userId, query);
         const csv = service.convertToCsv(items);
-
-        const date = new Date().toISOString().slice(0, 10).replace(/-/g, '');
+        const date = new Date().toISOString().slice(0, 19).replace(/[-T:]/g, '');
 
         return c.text(csv, HTTP_STATUS.OK, {
             'Content-Type': 'text/csv; charset=utf-8',

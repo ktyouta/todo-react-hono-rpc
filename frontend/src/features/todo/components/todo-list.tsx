@@ -31,6 +31,8 @@ type PropsType = {
     changePage: (page: number) => void;
     isShowOverlay: boolean;
     bulk: UseTodoBulkReturn;
+    onExport: () => void;
+    isExporting: boolean;
 }
 
 export function TodoList(props: PropsType) {
@@ -51,6 +53,8 @@ export function TodoList(props: PropsType) {
         changePage,
         isShowOverlay,
         bulk,
+        onExport,
+        isExporting,
     } = props;
 
     // テーブルカラム
@@ -140,6 +144,8 @@ export function TodoList(props: PropsType) {
                     priorityList={priorityList}
                     handleKeyPress={handleKeyPress}
                     onToggleBulkMode={bulk.onToggleBulkMode}
+                    onExport={onExport}
+                    isExporting={isExporting}
                 />
             )}
 

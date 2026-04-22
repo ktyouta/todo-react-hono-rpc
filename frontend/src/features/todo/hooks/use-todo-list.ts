@@ -8,6 +8,7 @@ import { useTransitionSearchParams } from "@/hooks/use-transition-search-params"
 import { useQueryClient } from "@tanstack/react-query";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
+import { downloadTodoExport } from "../api/get-todo-export";
 import { TaskListDataType, TaskListResponseType, useGetTodoList } from "../api/get-todo-list";
 import { todoKeys } from "../api/query-key";
 import { useUpdateTodoFavoriteMutation } from "../api/update-todo-favorite";
@@ -95,6 +96,8 @@ export function useTodoList() {
             toast.error('お気に入りの更新に失敗しました。時間をおいて再度お試しください。');
         },
     });
+    // CSVエクスポート中フラグ
+    const [isExporting, setIsExporting] = useState(false);
     // オーバーレイ表示フラグ
     const isShowOverlay = useDelayedFlag(isPending, 250);
     // ページ切り替え判定フラグ
@@ -179,6 +182,21 @@ export function useTodoList() {
     }
 
     /**
+     * CSVエクスポートイベント
+     */
+    async function onExport() {
+        setIsExporting(true);
+        try {
+            await downloadTodoExport(searchParams);
+        } catch (error) {
+            const message = error instanceof Error ? error.message : 'CSVエクスポートに失敗しました。時間をおいて再度お試しください。';
+            toast.error(message);
+        } finally {
+            setIsExporting(false);
+        }
+    }
+
+    /**
      * エンターキー押下時イベント
      */
     function handleKeyPress(event: React.KeyboardEvent<HTMLInputElement>) {
@@ -218,5 +236,7 @@ export function useTodoList() {
         changePage,
         isShowOverlay,
         bulk,
+        onExport,
+        isExporting,
     };
 }
