@@ -112,7 +112,7 @@ export function TodoSearchBar({ searchCondition, onChange, onSearch, onClear, ca
                         sizeType="medium"
                         onClick={onExport}
                         disabled={isExporting}
-                        className="px-3 h-9 py-0 font-medium whitespace-nowrap disabled:opacity-50"
+                        className="px-3 h-9 py-0 font-medium whitespace-nowrap disabled:opacity-50 hidden lg:flex items-center"
                     >
                         {isExporting ? (
                             <span className="flex items-center gap-1.5">
