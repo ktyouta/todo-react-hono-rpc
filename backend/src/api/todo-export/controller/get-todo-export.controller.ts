@@ -31,7 +31,9 @@ const getTodoExport = new Hono<AppEnv>().get(
             return c.json({ message: "認証エラー" }, HTTP_STATUS.UNAUTHORIZED);
         }
 
+        // タスク一覧取得
         const items = await service.fetchData(userId, query);
+        // CSVに変換
         const csv = service.convertToCsv(items);
         const date = new Date().toISOString().slice(0, 19).replace(/[-T:]/g, '');
 
