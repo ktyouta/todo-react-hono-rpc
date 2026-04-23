@@ -32,6 +32,8 @@ type PropsType = {
     changePage: (page: number) => void;
     isShowOverlay: boolean;
     bulk: UseTodoManagementBulkReturn;
+    onExport: () => void;
+    isExporting: boolean;
 };
 
 // テーブルカラム（通常モード）
@@ -80,6 +82,8 @@ export function TodoManagementList(props: PropsType) {
         changePage,
         isShowOverlay,
         bulk,
+        onExport,
+        isExporting,
     } = props;
 
     // テーブルカラム（一括操作モード時はチェックボックス列を先頭に追加）
@@ -127,6 +131,8 @@ export function TodoManagementList(props: PropsType) {
                     priorityList={priorityList}
                     handleKeyPress={handleKeyPress}
                     onToggleBulkMode={bulk.onToggleBulkMode}
+                    onExport={onExport}
+                    isExporting={isExporting}
                 />
             )}
 

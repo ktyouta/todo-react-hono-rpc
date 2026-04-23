@@ -7,6 +7,8 @@ import { useAppNavigation } from "@/hooks/use-app-navigation";
 import { useDelayedFlag } from "@/hooks/use-delayed-flag";
 import { useTransitionSearchParams } from "@/hooks/use-transition-search-params";
 import { useEffect, useRef, useState } from "react";
+import { toast } from "react-toastify";
+import { downloadTodoManagementExport } from "../api/get-todo-management-export";
 import { TaskManagementListReturnType, useGetTodoManagementList } from "../api/get-todo-management-list";
 import { TODO_MANAGEMENT_QUERY_KEY } from "../constants/todo-management-query-params";
 import { initialTodoManagementSearchFilter, TodoManagementSearchFilter } from "../types/todo-management-search-filter";
@@ -56,6 +58,8 @@ export function useTodoManagementList() {
     const { appNavigate } = useAppNavigation();
     // オーバーレイ表示フラグ
     const isShowOverlay = useDelayedFlag(isPending, 250);
+    // CSVエクスポート中フラグ
+    const [isExporting, setIsExporting] = useState(false);
     // ページ切り替え判定フラグ
     const wasPageChanging = useRef(false);
 
@@ -136,6 +140,21 @@ export function useTodoManagementList() {
     }
 
     /**
+     * CSVエクスポートイベント
+     */
+    async function onExport() {
+        setIsExporting(true);
+        try {
+            await downloadTodoManagementExport(searchParams);
+        } catch (error) {
+            const message = error instanceof Error ? error.message : 'CSVエクスポートに失敗しました。時間をおいて再度お試しください。';
+            toast.error(message);
+        } finally {
+            setIsExporting(false);
+        }
+    }
+
+    /**
      * ページ切り替えイベント
      */
     function changePage(page: number) {
@@ -166,5 +185,7 @@ export function useTodoManagementList() {
         changePage,
         isShowOverlay,
         bulk,
+        onExport,
+        isExporting,
     };
 }
