@@ -69,7 +69,7 @@ export class ImportTodoService {
   parse(csvRows: string[][]) {
 
     // 重複IDを検出
-    const idOccurrences = new Map<number, number[]>();
+    const duplicateIdList = new Map<number, number[]>();
     const parsedRows: Array<{ row: number; columns: string[]; rawId: number | null }> = [];
 
     for (let i = 0; i < csvRows.length; i++) {
@@ -81,15 +81,15 @@ export class ImportTodoService {
       parsedRows.push({ row: rowNumber, columns, rawId });
 
       if (rawId) {
-        const existingNumberList = idOccurrences.get(rawId) ?? [];
-        existingNumberList.push(rowNumber);
-        idOccurrences.set(rawId, existingNumberList);
+        const existNumberList = duplicateIdList.get(rawId) ?? [];
+        existNumberList.push(rowNumber);
+        duplicateIdList.set(rawId, existNumberList);
       }
     }
 
     // 重複しているIDの行番号セットを作成
     const duplicateRows = new Set<number>();
-    for (const [, rows] of idOccurrences) {
+    for (const [, rows] of duplicateIdList) {
       if (rows.length > 1) {
         rows.forEach((r) => {
           duplicateRows.add(r)
@@ -101,19 +101,32 @@ export class ImportTodoService {
     const errors: RowError[] = [];
 
     for (const { row, columns, rawId } of parsedRows) {
+
+      // ID欠落エラー
+      if (!rawId) {
+        errors.push({ row, id: rawId, message: "IDが入力されていません" });
+        continue;
+      }
+
       // 重複IDエラー
-      if (rawId && duplicateRows.has(row)) {
+      if (duplicateRows.has(row)) {
         errors.push({ row, id: rawId, message: "IDが重複しています" });
         continue;
       }
 
+      // バリデーションチェック
       const result = this.validateRow(row, columns, rawId);
-      if ("error" in result) {
-        errors.push(result.error);
+      // エラー
+      if (typeof result === 'string') {
+        errors.push({
+          row,
+          id: null,
+          message: result
+        });
+        continue;
       }
-      else {
-        validRows.push(result.row);
-      }
+
+      validRows.push(result);
     }
 
     return { validRows, errors };
@@ -121,92 +134,93 @@ export class ImportTodoService {
 
   /**
    * 行単位のバリデーション
+   * @param row 
+   * @param columns 
+   * @param rawId 
+   * @returns 
    */
   private validateRow(
     row: number,
     columns: string[],
-    rawId: number | null,
-  ): { row: ValidatedRow } | { error: RowError } {
-    const error = (message: string): { error: RowError } => ({
-      error: { row, id: rawId, message },
-    });
+    rawId: number,
+  ) {
 
     if (columns.length < CSV_COLUMN_COUNT) {
-      return error("カラム数が不正です");
+      return "カラム数が不正です";
     }
 
     // ID
-    if (rawId === null) {
-      return error("IDが不正です");
+    if (!rawId) {
+      return "IDが不正です";
     }
 
     // タイトル
     const title = columns[COL.TITLE].trim();
     if (title.length === 0) {
-      return error("タイトルを入力してください");
+      return "タイトルを入力してください";
     }
     if (title.length > 200) {
-      return error("タイトルは200文字以内で入力してください");
+      return "タイトルは200文字以内で入力してください";
     }
 
     // 内容（空はnull）
     const rawContent = columns[COL.CONTENT].trim();
     const content = rawContent.length > 0 ? rawContent : null;
     if (content !== null && content.length > 2000) {
-      return error("内容は2000文字以内で入力してください");
+      return "内容は2000文字以内で入力してください";
     }
 
     // カテゴリID
     const categoryId = this.parsePositiveInt(columns[COL.CATEGORY_ID]);
     if (categoryId === null || !Object.values(CategoryType).includes(categoryId)) {
-      return error(`カテゴリIDが不正です（使用可能な値: ${Object.values(CategoryType).join(", ")}）`);
+      return `カテゴリIDが不正です（使用可能な値: ${Object.values(CategoryType).join(", ")}）`;
     }
 
     // ステータスID（空はnull）
     const rawStatusId = columns[COL.STATUS_ID].trim();
     const statusId = rawStatusId === "" ? null : this.parsePositiveInt(rawStatusId);
     if (rawStatusId !== "" && statusId === null) {
-      return error("ステータスIDが不正です");
+      return "ステータスIDが不正です";
     }
 
     // 優先度ID（空はnull）
     const rawPriorityId = columns[COL.PRIORITY_ID].trim();
     const priorityId = rawPriorityId === "" ? null : this.parsePositiveInt(rawPriorityId);
     if (rawPriorityId !== "" && priorityId === null) {
-      return error("優先度IDが不正です");
+      return "優先度IDが不正です";
     }
 
     // 期日（空はnull）
     const rawDueDate = columns[COL.DUE_DATE].trim();
     const dueDate = rawDueDate === "" ? null : rawDueDate;
     if (dueDate !== null && !/^\d{4}-\d{2}-\d{2}$/.test(dueDate)) {
-      return error("期日はYYYY-MM-DD形式で入力してください");
+      return "期日はYYYY-MM-DD形式で入力してください";
     }
 
     // お気に入り
     const rawFavorite = columns[COL.IS_FAVORITE].trim();
     if (rawFavorite !== "0" && rawFavorite !== "1") {
-      return error("お気に入りは0または1で入力してください");
+      return "お気に入りは0または1で入力してください";
     }
+
     const isFavorite = rawFavorite === "1";
 
     // カテゴリがメモの場合はstatusId/priorityIdをnullにクリア
     const isMemo = categoryId === CategoryType.memo;
 
     return {
-      row: {
-        rowNumber: row,
-        id: rawId,
-        title,
-        content,
-        categoryId,
-        statusId: isMemo ? null : statusId,
-        priorityId: isMemo ? null : priorityId,
-        dueDate,
-        isFavorite,
-      },
+      rowNumber: row,
+      id: rawId,
+      title,
+      content,
+      categoryId,
+      statusId: isMemo ? null : statusId,
+      priorityId: isMemo ? null : priorityId,
+      dueDate,
+      isFavorite,
     };
   }
+
 
   /**
    * 文字列を正の整数に変換する（変換できない場合はnull）
