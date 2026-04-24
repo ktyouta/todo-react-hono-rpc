@@ -54,6 +54,7 @@ export const API_ENDPOINT = {
   TODO_DELETED_SUBTASK: "/api/v1/todo-deleted/:id/subtasks",
   TODO_EXPORT: "/api/v1/todo-export",
   TODO_MANAGEMENT_EXPORT: "/api/v1/todo-management-export",
+  TODO_IMPORT: "/api/v1/todo-import",
 } as const;
 
 export type ApiEndpointType = (typeof API_ENDPOINT)[keyof typeof API_ENDPOINT];

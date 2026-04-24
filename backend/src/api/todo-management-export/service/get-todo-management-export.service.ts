@@ -1,3 +1,4 @@
+import Papa from "papaparse";
 import { IGetTodoManagementExportRepository, TodoManagementExportItem } from "../repository/get-todo-management-export.repository.interface";
 import { GetTodoManagementExportQuerySchemaType } from "../schema/get-todo-management-export-query.schema";
 
@@ -21,30 +22,25 @@ export class GetTodoManagementExportService {
      */
     convertToCsv(items: TodoManagementExportItem[]): string {
         const BOM = '﻿';
-        const rows = items.map((item) => [
-            item.id.toString(),
-            this.escape(item.title),
-            this.escape(item.content ?? ''),
-            this.escape(item.categoryId),
-            this.escape(item.categoryName),
-            this.escape(item.statusId),
-            this.escape(item.statusName),
-            this.escape(item.priorityId),
-            this.escape(item.priorityName),
-            item.dueDate ?? '',
-            item.userId?.toString() ?? '',
-            this.escape(item.userName),
-            item.createdAt,
-            item.updatedAt,
-        ].join(','));
-
-        return BOM + [CSV_HEADERS.join(','), ...rows].join('\r\n');
-    }
-
-    private escape(value: string): string {
-        if (/[,"\r\n]/.test(value)) {
-            return `"${value.replace(/"/g, '""')}"`;
-        }
-        return value;
+        const csv = Papa.unparse({
+            fields: CSV_HEADERS,
+            data: items.map((item) => [
+                item.id.toString(),
+                item.title,
+                item.content ?? '',
+                item.categoryId,
+                item.categoryName,
+                item.statusId,
+                item.statusName,
+                item.priorityId,
+                item.priorityName,
+                item.dueDate ?? '',
+                item.userId?.toString() ?? '',
+                item.userName,
+                item.createdAt,
+                item.updatedAt,
+            ]),
+        });
+        return BOM + csv;
     }
 }

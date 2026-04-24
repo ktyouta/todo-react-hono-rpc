@@ -16,12 +16,14 @@
     "@hono/zod-validator": "^0.4.2",
     "drizzle-orm": "^0.38.4",
     "hono": "^4.11.3",
+    "papaparse": "^5.5.3",
     "zod": "^3.24.1"
   },
   "devDependencies": {
     "@cloudflare/vitest-pool-workers": "^0.6.4",
     "@cloudflare/workers-types": "^4.20250109.0",
     "@types/node": "^22.10.7",
+    "@types/papaparse": "^5.5.2",
     "drizzle-kit": "^0.30.4",
     "typescript": "^5.7.3",
     "vitest": "^2.1.8",
