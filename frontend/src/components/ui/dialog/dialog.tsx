@@ -1,6 +1,6 @@
-import { type ReactNode, useEffect, useCallback } from "react";
-import { createPortal } from "react-dom";
 import { cn } from "@/utils/cn";
+import { type ReactNode, useCallback, useEffect } from "react";
+import { createPortal } from "react-dom";
 
 type Size = "small" | "medium" | "large";
 
@@ -29,6 +29,10 @@ export function Dialog({
     closeOnOverlayClick = true,
     closeOnEscape = true,
 }: Props) {
+
+    /**
+     * エスケープボタン押下時にダイアログを閉じる
+     */
     const handleKeyDown = useCallback(
         (event: KeyboardEvent) => {
             if (closeOnEscape && event.key === "Escape") {
@@ -54,6 +58,9 @@ export function Dialog({
         return null;
     }
 
+    /**
+     * オーバーレイ領域クリック
+     */
     const handleOverlayClick = () => {
         if (closeOnOverlayClick) {
             onClose();

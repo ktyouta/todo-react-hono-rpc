@@ -8,11 +8,13 @@ import { getDueDateStatus } from "@/utils/due-date-status";
 import { HiOutlineArchiveBoxXMark, HiOutlineStar, HiStar } from "react-icons/hi2";
 import { TaskListDataType } from "../api/get-todo-list";
 import { UseTodoBulkReturn } from "../hooks/use-todo-bulk";
+import { UseTodoImportReturn } from "../hooks/use-todo-import";
 import { TodoSearchFilter } from "../types/todo-search-filter";
 import { TodoActionBar } from "./todo-action-bar";
 import { TodoBulkDeleteDialog } from "./todo-bulk-delete-dialog";
 import { TodoBulkUpdateDialogContainer } from "./todo-bulk-update-dialog-container";
 import { TodoCard } from "./todo-card";
+import { TodoImportDialog } from "./todo-import-dialog";
 import { TodoSearchBar } from "./todo-search-bar";
 
 type PropsType = {
@@ -33,6 +35,7 @@ type PropsType = {
     bulk: UseTodoBulkReturn;
     onExport: () => void;
     isExporting: boolean;
+    todoImport: UseTodoImportReturn;
 }
 
 export function TodoList(props: PropsType) {
@@ -55,6 +58,7 @@ export function TodoList(props: PropsType) {
         bulk,
         onExport,
         isExporting,
+        todoImport,
     } = props;
 
     // テーブルカラム
@@ -146,6 +150,7 @@ export function TodoList(props: PropsType) {
                     onToggleBulkMode={bulk.onToggleBulkMode}
                     onExport={onExport}
                     isExporting={isExporting}
+                    onImport={todoImport.onOpenDialog}
                 />
             )}
 
@@ -215,6 +220,22 @@ export function TodoList(props: PropsType) {
                 onClose={bulk.onCloseBulkUpdateDialog}
                 onConfirm={bulk.onConfirmBulkUpdate}
             />
+
+            {/* インポートダイアログ */}
+            {todoImport.isDialogOpen && (
+                <TodoImportDialog
+                    isLoading={todoImport.isLoading}
+                    result={todoImport.result}
+                    file={todoImport.file}
+                    isDragging={todoImport.isDragging}
+                    onClose={todoImport.onCloseDialog}
+                    onFileChange={todoImport.onFileChange}
+                    onDrop={todoImport.onDrop}
+                    onDragOver={todoImport.onDragOver}
+                    onDragLeave={todoImport.onDragLeave}
+                    onUpload={todoImport.onUpload}
+                />
+            )}
 
             {/* 一括削除ダイアログ */}
             <TodoBulkDeleteDialog

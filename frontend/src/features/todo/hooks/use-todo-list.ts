@@ -15,6 +15,7 @@ import { useUpdateTodoFavoriteMutation } from "../api/update-todo-favorite";
 import { TODO_LIST_QUERY_KEY } from "../constants/todo-list-query-params";
 import { initialTodoSearchFilter, TodoSearchFilter } from "../types/todo-search-filter";
 import { useTodoBulk } from "./use-todo-bulk";
+import { useTodoImport } from "./use-todo-import";
 
 export function useTodoList() {
 
@@ -96,6 +97,8 @@ export function useTodoList() {
             toast.error('お気に入りの更新に失敗しました。時間をおいて再度お試しください。');
         },
     });
+    // CSVインポート
+    const todoImport = useTodoImport();
     // CSVエクスポート中フラグ
     const [isExporting, setIsExporting] = useState(false);
     // オーバーレイ表示フラグ
@@ -238,5 +241,6 @@ export function useTodoList() {
         bulk,
         onExport,
         isExporting,
+        todoImport,
     };
 }
