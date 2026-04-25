@@ -1,8 +1,8 @@
 import type { FrontUserId } from "../../../domain";
 import type { ValidatedRow } from "../service/import-todo.service";
 
-export type ImportResult = {
-  successCount: number;
+export type TaskResult = {
+  id: number;
 };
 
 /**
@@ -10,10 +10,9 @@ export type ImportResult = {
  */
 export interface IImportTodoRepository {
   /**
-   * 指定IDのタスクが対象ユーザーに属するか確認する
-   * 存在しない・他ユーザーのIDはエラー行として返す
+   * タスク一覧を取得
    */
-  findInvalidIds(userId: FrontUserId, ids: number[]): Promise<{ id: number }[]>;
+  findTasks(userId: FrontUserId, ids: number[]): Promise<TaskResult[]>;
 
   /**
    * バリデーション済み行を一括更新する

@@ -12,9 +12,9 @@ export class ImportTodoRepository implements IImportTodoRepository {
   constructor(private readonly db: Database) { }
 
   /**
-   * 指定IDのうち、対象ユーザーに属さない（存在しない・他ユーザー・削除済み）IDを返す
+   * タスク一覧を取得
    */
-  async findInvalidIds(userId: FrontUserId, ids: number[]): Promise<{ id: number }[]> {
+  async findTasks(userId: FrontUserId, ids: number[]) {
     const result = await this.db
       .select({ id: taskTransaction.id })
       .from(taskTransaction)
@@ -30,11 +30,11 @@ export class ImportTodoRepository implements IImportTodoRepository {
   }
 
   /**
-   * バリデーション済み行を順次更新する
+   * バリデーション済み行を一括更新する
    */
   async bulkUpdate(userId: FrontUserId, rows: ValidatedRow[], now: string): Promise<void> {
-    for (const row of rows) {
-      await this.db
+    const statements = rows.map((row) =>
+      this.db
         .update(taskTransaction)
         .set({
           title: row.title,
@@ -52,7 +52,9 @@ export class ImportTodoRepository implements IImportTodoRepository {
             eq(taskTransaction.userId, userId.value),
             eq(taskTransaction.deleteFlg, false),
           )
-        );
-    }
+        )
+    );
+
+    await this.db.batch(statements as [typeof statements[0], ...typeof statements[0][]]);
   }
 }

@@ -1,9 +1,9 @@
 import Papa from "papaparse";
 import { CategoryType, FrontUserId, StatusType } from "../../../domain";
 import { PriorityType } from "../../../domain/task-priority";
-import { IImportTodoRepository } from "../repository/import-todo.repository.interface";
+import { IImportTodoRepository, TaskResult } from "../repository/import-todo.repository.interface";
 
-const MIN_ROWS = 2;
+const MIN_ROWS = 1;
 const MAX_ROWS = 200;
 const CSV_COLUMN_COUNT = 13;
 const CSV_START_ROWS = 2;
@@ -24,7 +24,7 @@ export type ValidatedRow = {
   rowNumber: number;
   id: number;
   title: string;
-  content: string | null;
+  content: string;
   categoryId: number;
   statusId: number | null;
   priorityId: number | null;
@@ -186,13 +186,13 @@ export class ImportTodoService {
 
     // ステータスID
     const statusId = this.parsePositiveInt(columns[COL.STATUS_ID]?.trim());
-    if (!statusId) {
+    if (statusId && !Object.values(StatusType).includes(statusId)) {
       return `ステータスIDが不正です（使用可能な値: 空欄,${Object.values(StatusType).join(", ")}）`;
     }
 
     // 優先度ID
-    const priorityId = this.parsePositiveInt(columns[COL.PRIORITY_ID].trim());
-    if (!priorityId) {
+    const priorityId = this.parsePositiveInt(columns[COL.PRIORITY_ID]?.trim());
+    if (priorityId && !Object.values(PriorityType).includes(priorityId)) {
       return `優先度IDが不正です（使用可能な値: 空欄,${Object.values(PriorityType).join(", ")}）`;
     }
 
@@ -220,7 +220,7 @@ export class ImportTodoService {
       categoryId,
       statusId: isMemo ? null : statusId,
       priorityId: isMemo ? null : priorityId,
-      dueDate,
+      dueDate: dueDate || null,
       isFavorite,
     };
   }
@@ -250,7 +250,43 @@ export class ImportTodoService {
    * @param ids 
    * @returns 
    */
-  async getTasks(userId: FrontUserId, validRows: ValidatedRow[]) {
-    return await this.repository.findInvalidIds(userId, validRows.map((e) => e.id));
+  async findTasks(userId: FrontUserId, validRows: ValidatedRow[]) {
+    return await this.repository.findTasks(userId, validRows.map((e) => e.id));
+  }
+
+  /**
+   * タスク一覧を元に更新対象を取得する
+   * @param parseResult 
+   * @param tasks 
+   */
+  getTargetRows(parseResult: ReturnType<typeof this.getValidateResult>, tasks: TaskResult[]) {
+
+    const errors = [...parseResult.errors];
+    const taskIds = new Set(tasks.map((e) => e.id));
+
+    // テーブルに含まれないタスクを取得
+    const validRows = parseResult.validRows.filter((e) => {
+      if (!taskIds.has(e.id)) {
+        errors.push({
+          rowNumber: e.rowNumber,
+          id: e.id,
+          message: "該当するタスクが見つかりません"
+        });
+        return false;
+      }
+      return true;
+    });
+
+    return { validRows, errors };
+  }
+
+  /**
+   * タスクを一括更新する
+   * @param userId 
+   * @param validRows 
+   */
+  async bulkUpdateTask(userId: FrontUserId, validRows: ValidatedRow[]) {
+    const now = new Date().toISOString();
+    await this.repository.bulkUpdate(userId, validRows, now);
   }
 }

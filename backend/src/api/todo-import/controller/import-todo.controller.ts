@@ -46,37 +46,40 @@ const importTodo = new Hono<AppEnv>().post(
       return c.json({ message: "一度にインポートできる最大行数は200行です" }, HTTP_STATUS.BAD_REQUEST);
     }
 
-    // CSVから更新・エラー対象を取得する
-    const parseResult = service.getValidateResult(csvRows);
+    // バリデーションチェック
+    const validateResult = service.getValidateResult(csvRows);
 
-    const { errors } = parseResult;
-    let { validRows } = parseResult;
-
-    // 更新対象なし
-    if (validRows.length === 0) {
-      return c.json({ message: "タスクの更新に失敗しました" }, HTTP_STATUS.BAD_REQUEST);
+    if (validateResult.validRows.length === 0) {
+      return c.json(
+        {
+          message: "タスクの更新に失敗しました",
+          successCount: 0,
+          errors: validateResult.errors,
+        },
+        HTTP_STATUS.BAD_REQUEST
+      );
     }
 
     // タスク一覧取得
-    const tasks = service.getTasks(userId, validRows);
+    const tasks = await service.findTasks(userId, validateResult.validRows);
 
-    // const validIds = validRows.map((r) => r.id);
-    //   const invalidIds = await repository.findInvalidIds(userId, validIds);
+    // 更新エラー対象を取得
+    const result = service.getTargetRows(validateResult, tasks);
+    const { validRows, errors } = result;
 
-    //   if (invalidIds.length > 0) {
-    //     const invalidIdSet = new Set(invalidIds);
-    //     validRows = validRows.filter((row) => {
-    //       if (invalidIdSet.has(row.id)) {
-    //         errors.push({ rowNumber: row.rowNumber, id: row.id, message: "該当するタスクが見つかりません" });
-    //         return false;
-    //       }
-    //       return true;
-    //     });
-    //   }
-
+    // 更新対象が存在
     if (validRows.length > 0) {
-      const now = new Date().toISOString();
-      await repository.bulkUpdate(userId, validRows, now);
+      await service.bulkUpdateTask(userId, validRows);
+    }
+    else {
+      return c.json(
+        {
+          message: "タスクの更新に失敗しました",
+          successCount: validRows.length,
+          errors,
+        },
+        HTTP_STATUS.BAD_REQUEST
+      );
     }
 
     return c.json(
