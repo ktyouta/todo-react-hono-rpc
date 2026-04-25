@@ -9,13 +9,13 @@ import type { IImportTodoRepository } from "./import-todo.repository.interface";
  * タスクCSVインポートリポジトリ実装
  */
 export class ImportTodoRepository implements IImportTodoRepository {
-  constructor(private readonly db: Database) {}
+  constructor(private readonly db: Database) { }
 
   /**
    * 指定IDのうち、対象ユーザーに属さない（存在しない・他ユーザー・削除済み）IDを返す
    */
-  async findInvalidIds(userId: FrontUserId, ids: number[]): Promise<number[]> {
-    const rows = await this.db
+  async findInvalidIds(userId: FrontUserId, ids: number[]): Promise<{ id: number }[]> {
+    const result = await this.db
       .select({ id: taskTransaction.id })
       .from(taskTransaction)
       .where(
@@ -26,8 +26,7 @@ export class ImportTodoRepository implements IImportTodoRepository {
         )
       );
 
-    const validIdSet = new Set(rows.map((r) => r.id));
-    return ids.filter((id) => !validIdSet.has(id));
+    return result;
   }
 
   /**

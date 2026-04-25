@@ -29,39 +29,50 @@ const importTodo = new Hono<AppEnv>().post(
 
     const { file } = c.req.valid("form");
     const csvText = await file.text();
-    const service = new ImportTodoService();
     const db = c.get("db");
     const repository = new ImportTodoRepository(db);
+    const service = new ImportTodoService(repository);
 
     // CSV行に変換
     const csvRows = service.toCsvRows(csvText);
+
+    // 行数不足エラー
+    if (service.isShortageRows(csvRows)) {
+      return c.json({ message: "インポートするデータが存在しません" }, HTTP_STATUS.BAD_REQUEST);
+    }
 
     // 200行超過はファイル全体のエラー
     if (service.isOverMaxRows(csvRows)) {
       return c.json({ message: "一度にインポートできる最大行数は200行です" }, HTTP_STATUS.BAD_REQUEST);
     }
 
-    // 重複ID・フィールド不正チェック
-    const parseResult = service.parse(csvRows);
+    // CSVから更新・エラー対象を取得する
+    const parseResult = service.getValidateResult(csvRows);
 
     const { errors } = parseResult;
     let { validRows } = parseResult;
 
-    if (validRows.length > 0) {
-      const validIds = validRows.map((r) => r.id);
-      const invalidIds = await repository.findInvalidIds(userId, validIds);
-
-      if (invalidIds.length > 0) {
-        const invalidIdSet = new Set(invalidIds);
-        validRows = validRows.filter((row) => {
-          if (invalidIdSet.has(row.id)) {
-            errors.push({ row: row.rowNumber, id: row.id, message: "該当するタスクが見つかりません" });
-            return false;
-          }
-          return true;
-        });
-      }
+    // 更新対象なし
+    if (validRows.length === 0) {
+      return c.json({ message: "タスクの更新に失敗しました" }, HTTP_STATUS.BAD_REQUEST);
     }
+
+    // タスク一覧取得
+    const tasks = service.getTasks(userId, validRows);
+
+    // const validIds = validRows.map((r) => r.id);
+    //   const invalidIds = await repository.findInvalidIds(userId, validIds);
+
+    //   if (invalidIds.length > 0) {
+    //     const invalidIdSet = new Set(invalidIds);
+    //     validRows = validRows.filter((row) => {
+    //       if (invalidIdSet.has(row.id)) {
+    //         errors.push({ rowNumber: row.rowNumber, id: row.id, message: "該当するタスクが見つかりません" });
+    //         return false;
+    //       }
+    //       return true;
+    //     });
+    //   }
 
     if (validRows.length > 0) {
       const now = new Date().toISOString();

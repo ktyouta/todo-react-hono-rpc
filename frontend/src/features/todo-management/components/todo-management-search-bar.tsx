@@ -120,7 +120,7 @@ export function TodoManagementSearchBar({ searchCondition, onChange, onSearch, o
                                 <AiOutlineLoading3Quarters className="animate-spin size-4" />
                                 出力中...
                             </span>
-                        ) : 'CSV出力'}
+                        ) : 'ダウンロード'}
                     </Button>
                     <Button
                         colorType="green"
