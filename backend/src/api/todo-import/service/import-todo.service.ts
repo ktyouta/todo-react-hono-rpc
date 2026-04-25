@@ -181,19 +181,19 @@ export class ImportTodoService {
     // カテゴリID
     const categoryId = this.parsePositiveInt(columns[COL.CATEGORY_ID]);
     if (!categoryId || !Object.values(CategoryType).includes(categoryId)) {
-      return `カテゴリIDが不正です（使用可能な値: ${Object.values(CategoryType).join(", ")}）`;
+      return `カテゴリIDが不正です（使用可能な値: ${Object.values(CategoryType).filter((v): v is number => typeof v === 'number').join(", ")}）`;
     }
 
     // ステータスID
     const statusId = this.parsePositiveInt(columns[COL.STATUS_ID]?.trim());
     if (statusId && !Object.values(StatusType).includes(statusId)) {
-      return `ステータスIDが不正です（使用可能な値: 空欄,${Object.values(StatusType).join(", ")}）`;
+      return `ステータスIDが不正です（使用可能な値: 空欄,${Object.values(StatusType).filter((v): v is number => typeof v === 'number').join(", ")}）`;
     }
 
     // 優先度ID
     const priorityId = this.parsePositiveInt(columns[COL.PRIORITY_ID]?.trim());
     if (priorityId && !Object.values(PriorityType).includes(priorityId)) {
-      return `優先度IDが不正です（使用可能な値: 空欄,${Object.values(PriorityType).join(", ")}）`;
+      return `優先度IDが不正です（使用可能な値: 空欄,${Object.values(PriorityType).filter((v): v is number => typeof v === 'number').join(", ")}）`;
     }
 
     // 期日

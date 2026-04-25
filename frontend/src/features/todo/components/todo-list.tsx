@@ -222,20 +222,19 @@ export function TodoList(props: PropsType) {
             />
 
             {/* インポートダイアログ */}
-            {todoImport.isDialogOpen && (
-                <TodoImportDialog
-                    isLoading={todoImport.isLoading}
-                    result={todoImport.result}
-                    file={todoImport.file}
-                    isDragging={todoImport.isDragging}
-                    onClose={todoImport.onCloseDialog}
-                    onFileChange={todoImport.onFileChange}
-                    onDrop={todoImport.onDrop}
-                    onDragOver={todoImport.onDragOver}
-                    onDragLeave={todoImport.onDragLeave}
-                    onUpload={todoImport.onUpload}
-                />
-            )}
+            <TodoImportDialog
+                isOpen={todoImport.isDialogOpen}
+                isLoading={todoImport.isLoading}
+                result={todoImport.result}
+                file={todoImport.file}
+                isDragging={todoImport.isDragging}
+                onClose={todoImport.onCloseDialog}
+                onFileChange={todoImport.onFileChange}
+                onDrop={todoImport.onDrop}
+                onDragOver={todoImport.onDragOver}
+                onDragLeave={todoImport.onDragLeave}
+                onUpload={todoImport.onUpload}
+            />
 
             {/* 一括削除ダイアログ */}
             <TodoBulkDeleteDialog

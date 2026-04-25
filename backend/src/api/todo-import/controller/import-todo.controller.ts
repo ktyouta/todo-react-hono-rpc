@@ -56,7 +56,7 @@ const importTodo = new Hono<AppEnv>().post(
           successCount: 0,
           errors: validateResult.errors,
         },
-        HTTP_STATUS.BAD_REQUEST
+        HTTP_STATUS.OK
       );
     }
 
@@ -78,7 +78,7 @@ const importTodo = new Hono<AppEnv>().post(
           successCount: validRows.length,
           errors,
         },
-        HTTP_STATUS.BAD_REQUEST
+        HTTP_STATUS.OK
       );
     }
 
