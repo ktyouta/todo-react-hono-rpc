@@ -43,7 +43,7 @@ const COLUMN_GUIDE: ColumnGuideRow[] = [
 
 // CSVプレビューテーブルのカラム定義
 const previewColumns: TableProps<CsvPreviewRow>['columns'] = [
-    { title: '行', field: 'id', className: 'w-[5%] whitespace-nowrap' },
+    { title: '行', field: 'id', className: 'w-[5%] whitespace-nowrap pl-4' },
     { title: 'ID', field: 'csvId', className: 'w-[6%] whitespace-nowrap' },
     { title: 'タイトル', field: 'title', className: 'max-w-0', Cell: ({ entry }) => <span className="block truncate">{entry.title}</span> },
     { title: 'カテゴリ', field: 'categoryName', className: 'w-[10%] whitespace-nowrap' },
@@ -90,7 +90,7 @@ export function TodoImportDialogUpload({ isLoading, file, isDragging, isDescript
                                     <thead className="bg-gray-50">
                                         <tr>
                                             <th className="px-3 py-2 text-left text-gray-600 font-medium text-sm border-b border-gray-200 w-28">カラム名</th>
-                                            <th className="px-3 py-2 text-center text-gray-600 font-medium text-sm border-b border-gray-200 w-12">必須</th>
+                                            <th className="px-3 py-2 text-center text-gray-600 font-medium text-sm border-b border-gray-200 w-16">必須</th>
                                             <th className="px-3 py-2 text-left text-gray-600 font-medium text-sm border-b border-gray-200">設定できる値</th>
                                         </tr>
                                     </thead>
@@ -145,7 +145,7 @@ export function TodoImportDialogUpload({ isLoading, file, isDragging, isDescript
                             </div>
                         ) : (
                             <div className="flex-none">
-                                <p className="text-sm text-red-600 mb-1.5">バリデーションエラー（{previewErrors.length}件）</p>
+                                <p className="text-base text-red-600 mb-1.5 font-medium">バリデーションエラー（{previewErrors.length}件）</p>
                                 <div className="max-h-[120px] overflow-y-auto border border-red-100 rounded-md bg-red-50">
                                     <table className="w-full text-sm">
                                         <thead className="sticky top-0 bg-red-50">
@@ -171,16 +171,9 @@ export function TodoImportDialogUpload({ isLoading, file, isDragging, isDescript
 
                         {/* ファイル名 + アップロードボタン */}
                         <div className="flex-none flex items-center justify-between gap-3">
-                            <div className="flex items-center gap-2 bg-gray-50 border border-gray-200 rounded px-3 h-9 min-w-0 flex-1">
+                            <div className="flex items-center gap-2 bg-gray-50 border border-gray-200 rounded px-3 h-11 min-w-0 flex-1">
                                 <HiOutlineDocument className="size-4 text-blue-400 shrink-0" />
                                 <p className="text-[17px] text-gray-700 truncate">{file?.name}</p>
-                                {file && (
-                                    <span className="text-[15px] text-gray-400 shrink-0">
-                                        {file.size >= 1024 * 1024
-                                            ? `${(file.size / (1024 * 1024)).toFixed(1)} MB`
-                                            : `${(file.size / 1024).toFixed(1)} KB`}
-                                    </span>
-                                )}
                             </div>
                             <Button
                                 colorType="blue"
