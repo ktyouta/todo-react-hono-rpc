@@ -16,6 +16,8 @@ export function useTodoImport() {
     const [file, setFile] = useState<File | null>(null);
     // ドラッグ中フラグ
     const [isDragging, setIsDragging] = useState(false);
+    // 説明セクション開閉フラグ
+    const [isDescriptionOpen, setIsDescriptionOpen] = useState(true);
     const queryClient = useQueryClient();
 
     /**
@@ -32,6 +34,14 @@ export function useTodoImport() {
         setIsDialogOpen(false);
         setResult(null);
         setFile(null);
+        setIsDescriptionOpen(true);
+    }
+
+    /**
+     * 説明セクションの開閉を切り替える
+     */
+    function onToggleDescription() {
+        setIsDescriptionOpen(prev => !prev);
     }
 
     /**
@@ -100,8 +110,10 @@ export function useTodoImport() {
         result,
         file,
         isDragging,
+        isDescriptionOpen,
         onOpenDialog,
         onCloseDialog,
+        onToggleDescription,
         onFileChange,
         onDrop,
         onDragOver,

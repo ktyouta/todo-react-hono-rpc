@@ -228,7 +228,9 @@ export function TodoList(props: PropsType) {
                 result={todoImport.result}
                 file={todoImport.file}
                 isDragging={todoImport.isDragging}
+                isDescriptionOpen={todoImport.isDescriptionOpen}
                 onClose={todoImport.onCloseDialog}
+                onToggleDescription={todoImport.onToggleDescription}
                 onFileChange={todoImport.onFileChange}
                 onDrop={todoImport.onDrop}
                 onDragOver={todoImport.onDragOver}
