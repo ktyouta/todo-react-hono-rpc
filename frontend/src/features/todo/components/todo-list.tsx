@@ -127,8 +127,8 @@ export function TodoList(props: PropsType) {
         <div className="w-full min-h-full p-1 sm:p-5 flex flex-col">
             {isShowOverlay && <LoadingOverlay />}
 
-            {/* 検索バー / アクションバー 切替 */}
             {bulk.isBulkMode ? (
+                // 一括操作アクションバー
                 <TodoActionBar
                     selectedCount={bulk.selectedIds.length}
                     isAllSelected={bulk.isAllSelected}
@@ -138,6 +138,7 @@ export function TodoList(props: PropsType) {
                     onCancel={bulk.onToggleBulkMode}
                 />
             ) : (
+                // 検索バー
                 <TodoSearchBar
                     searchCondition={searchCondition}
                     onChange={setSearchCondition}
@@ -229,6 +230,8 @@ export function TodoList(props: PropsType) {
                 file={todoImport.file}
                 isDragging={todoImport.isDragging}
                 isDescriptionOpen={todoImport.isDescriptionOpen}
+                previewRows={todoImport.previewRows}
+                previewErrors={todoImport.previewErrors}
                 onClose={todoImport.onCloseDialog}
                 onToggleDescription={todoImport.onToggleDescription}
                 onFileChange={todoImport.onFileChange}
@@ -236,6 +239,7 @@ export function TodoList(props: PropsType) {
                 onDragOver={todoImport.onDragOver}
                 onDragLeave={todoImport.onDragLeave}
                 onUpload={todoImport.onUpload}
+                onCancel={todoImport.onCancel}
             />
 
             {/* 一括削除ダイアログ */}

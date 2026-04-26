@@ -129,7 +129,7 @@ export type TableProps<Entry> = {
   data: Entry[];
   columns: TableColumn<Entry>[];
   className?: string;
-  rowClassName?: string;
+  rowClassName?: string | ((entry: Entry) => string);
   onRowClick?: (entry: Entry) => void;
 };
 
@@ -161,7 +161,7 @@ export function Table<Entry extends BaseEntity>({
       <TableBody>
         {data.map((entry, entryIndex) => (
           <TableRow key={entry?.id || entryIndex}
-            className={rowClassName}
+            className={typeof rowClassName === 'function' ? rowClassName(entry) : rowClassName}
             onClick={() => {
               if (onRowClick) {
                 onRowClick(entry);
