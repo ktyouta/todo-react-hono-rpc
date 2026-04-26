@@ -48,7 +48,7 @@ export function UpdatePassword(props: PropsType) {
                 )}
                 <div className="flex flex-col gap-6">
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                        <label className="block text-base font-medium text-gray-700 mb-2">
                             現在のパスワード
                         </label>
                         <Textbox
@@ -58,11 +58,11 @@ export function UpdatePassword(props: PropsType) {
                             registration={register("nowPassword")}
                         />
                         {errors.nowPassword?.message && (
-                            <p className="text-red-500 text-xs mt-2">{errors.nowPassword.message}</p>
+                            <p className="text-red-500 text-sm mt-2">{errors.nowPassword.message}</p>
                         )}
                     </div>
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                        <label className="block text-base font-medium text-gray-700 mb-2">
                             新しいパスワード
                         </label>
                         <Textbox
@@ -72,11 +72,11 @@ export function UpdatePassword(props: PropsType) {
                             registration={register("newPassword")}
                         />
                         {errors.newPassword?.message && (
-                            <p className="text-red-500 text-xs mt-2">{errors.newPassword.message}</p>
+                            <p className="text-red-500 text-sm mt-2">{errors.newPassword.message}</p>
                         )}
                     </div>
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                        <label className="block text-base font-medium text-gray-700 mb-2">
                             確認用パスワード
                         </label>
                         <Textbox
@@ -86,7 +86,7 @@ export function UpdatePassword(props: PropsType) {
                             registration={register("confirmPassword")}
                         />
                         {errors.confirmPassword?.message && (
-                            <p className="text-red-500 text-xs mt-2">{errors.confirmPassword.message}</p>
+                            <p className="text-red-500 text-sm mt-2">{errors.confirmPassword.message}</p>
                         )}
                     </div>
                     <div className="flex flex-col sm:flex-row gap-3 mt-4">

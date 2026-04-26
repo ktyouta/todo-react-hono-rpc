@@ -48,22 +48,22 @@ export function Login(props: PropsType) {
                 <div className="flex flex-col gap-6">
                     {/* ユーザー名 */}
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                        <label className="block text-base font-medium text-gray-700 mb-2">
                             ユーザー名
                         </label>
                         <Textbox
                             className={`w-full h-12 px-4 rounded-lg border-gray-300 ${errors.name ? 'border-red-500 focus:ring-red-500' : ''}`}
-                            autoComplete="off"
+                            autoComplete="username"
                             registration={register("name")}
                             onKeyDown={handleKeyPress}
                         />
                         {errors.name?.message && (
-                            <p className="text-red-500 text-xs mt-2">{errors.name.message}</p>
+                            <p className="text-red-500 text-sm mt-2">{errors.name.message}</p>
                         )}
                     </div>
                     {/* パスワード */}
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                        <label className="block text-base font-medium text-gray-700 mb-2">
                             パスワード
                         </label>
                         <Textbox
@@ -74,7 +74,7 @@ export function Login(props: PropsType) {
                             onKeyDown={handleKeyPress}
                         />
                         {errors.password?.message && (
-                            <p className="text-red-500 text-xs mt-2">{errors.password.message}</p>
+                            <p className="text-red-500 text-sm mt-2">{errors.password.message}</p>
                         )}
                     </div>
                     <div>

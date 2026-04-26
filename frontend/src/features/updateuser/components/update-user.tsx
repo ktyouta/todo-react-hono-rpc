@@ -70,7 +70,7 @@ export function UpdateUser(props: PropsType) {
                 )}
                 <div className="flex flex-col gap-6">
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                        <label className="block text-base font-medium text-gray-700 mb-2">
                             ユーザー名（3〜30文字）
                         </label>
                         <Textbox
@@ -82,11 +82,11 @@ export function UpdateUser(props: PropsType) {
                             registration={register("name")}
                         />
                         {errors.name?.message && (
-                            <p className="text-red-500 text-xs mt-2">{errors.name.message}</p>
+                            <p className="text-red-500 text-sm mt-2">{errors.name.message}</p>
                         )}
                     </div>
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                        <label className="block text-base font-medium text-gray-700 mb-2">
                             生年月日
                         </label>
                         <div className="flex items-center gap-2">
@@ -110,7 +110,7 @@ export function UpdateUser(props: PropsType) {
                             <span className="text-gray-600 shrink-0">日</span>
                         </div>
                         {errors.birthday?.message && (
-                            <p className="text-red-500 text-xs mt-2">{errors.birthday.message}</p>
+                            <p className="text-red-500 text-sm mt-2">{errors.birthday.message}</p>
                         )}
                     </div>
                     <div className="flex flex-col sm:flex-row gap-3 mt-4">
