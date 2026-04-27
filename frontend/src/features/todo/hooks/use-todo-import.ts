@@ -3,7 +3,7 @@ import { getPriority } from "@/features/api/get-priority";
 import { getStatus } from "@/features/api/get-status";
 import { useQueryClient } from "@tanstack/react-query";
 import Papa from "papaparse";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { toast } from "react-toastify";
 import { importTodo, ImportTodoResponseType } from "../api/import-todo";
 import { todoKeys } from "../api/query-key";
@@ -12,12 +12,6 @@ import { todoKeys } from "../api/query-key";
 const CSV_COLUMN_COUNT = 13;
 // 読み込み開始行
 const CSV_DATA_START_ROW = 2;
-// 有効カテゴリ値
-const VALID_CATEGORY_IDS = [1, 2];
-// 有効ステータス値
-const VALID_STATUS_IDS = [1, 2, 3];
-// 有効優先度値
-const VALID_PRIORITY_IDS = [1, 2, 3];
 
 // カラムインデックス
 const COL = {
@@ -32,6 +26,12 @@ const COL = {
     CREATED_AT: 11,
     UPDATED_AT: 12,
 } as const;
+
+export type ColumnGuideRow = {
+    name: string;
+    required: boolean;
+    values: string;
+};
 
 export type CsvPreviewRow = {
     id: number;
@@ -69,7 +69,8 @@ function parseCsvText(csvText: string): string[][] {
 /**
  * バリデーションチェック
  */
-function validateCsvRow(cols: string[], idCounts: Map<string, number>) {
+function validateCsvRow({ cols, idCounts, categoryIdList, statusIdList, priorityIdList }
+    : { cols: string[], idCounts: Map<string, number>, categoryIdList: number[], statusIdList: number[], priorityIdList: number[] }) {
 
     const errorMsgList: string[] = [];
 
@@ -77,7 +78,7 @@ function validateCsvRow(cols: string[], idCounts: Map<string, number>) {
         errorMsgList.push(`カラム数が不正です`);
     }
 
-    const id = cols[0]?.trim() ?? '';
+    const id = cols[COL.ID]?.trim() ?? '';
     if (!id) {
         errorMsgList.push(`IDが入力されていません`);
     }
@@ -91,7 +92,7 @@ function validateCsvRow(cols: string[], idCounts: Map<string, number>) {
         errorMsgList.push(`IDが重複しています`);
     }
 
-    const title = cols[COL.ID]?.trim() ?? '';
+    const title = cols[COL.TITLE]?.trim() ?? '';
     if (!title) {
         errorMsgList.push(`タイトルを入力してください`);
     }
@@ -109,25 +110,25 @@ function validateCsvRow(cols: string[], idCounts: Map<string, number>) {
         errorMsgList.push(`内容は2000文字以内で入力してください`);
     }
 
-    const categoryStr = cols[COL.CATEGORY_ID]?.trim() ?? '';
-    const categoryId = categoryStr ? Number(categoryStr) : NaN;
-    if (!Number.isInteger(categoryId) || !VALID_CATEGORY_IDS.includes(categoryId)) {
-        errorMsgList.push(`カテゴリIDが不正です（使用可能な値: ${VALID_CATEGORY_IDS.join(', ')}）`);
+    const categoryStr = cols[COL.CATEGORY_ID]?.trim();
+    const categoryId = Number(categoryStr);
+    if (!categoryIdList.includes(categoryId)) {
+        errorMsgList.push(`カテゴリIDが不正です（使用可能な値: ${categoryIdList.join(', ')}）`);
     }
 
-    const statusStr = cols[COL.STATUS_ID]?.trim() ?? '';
+    const statusStr = cols[COL.STATUS_ID]?.trim();
     if (statusStr) {
         const statusId = Number(statusStr);
-        if (!Number.isInteger(statusId) || !VALID_STATUS_IDS.includes(statusId)) {
-            errorMsgList.push(`ステータスIDが不正です（使用可能な値: 空欄, ${VALID_STATUS_IDS.join(', ')}）`);
+        if (!statusIdList.includes(statusId)) {
+            errorMsgList.push(`ステータスIDが不正です（使用可能な値: 空欄, ${statusIdList.join(', ')}）`);
         }
     }
 
-    const priorityStr = cols[COL.PRIORITY_ID]?.trim() ?? '';
+    const priorityStr = cols[COL.PRIORITY_ID]?.trim();
     if (priorityStr) {
         const priorityId = Number(priorityStr);
-        if (!Number.isInteger(priorityId) || !VALID_PRIORITY_IDS.includes(priorityId)) {
-            errorMsgList.push(`優先度IDが不正です（使用可能な値: 空欄, ${VALID_PRIORITY_IDS.join(', ')}）`);
+        if (!priorityIdList.includes(priorityId)) {
+            errorMsgList.push(`優先度IDが不正です（使用可能な値: 空欄, ${priorityIdList.join(', ')}）`);
         }
     }
 
@@ -170,6 +171,31 @@ export function useTodoImport() {
     const { data: priority } = getPriority();
     // タスク一覧再取得用
     const queryClient = useQueryClient();
+    // インポート説明用カラムガイド
+    const columnGuide = useMemo<ColumnGuideRow[]>(() => {
+        if (!category?.data) {
+            return [];
+        }
+        if (!status?.data) {
+            return [];
+        }
+        if (!priority?.data) {
+            return [];
+        }
+        const categoryValues = category.data.map(c => `${c.id} = ${c.name}`).join('　/　') ?? '';
+        const statusValues = `空欄 / ${status.data.map(s => `${s.id} = ${s.name}`).join(' / ')}　※カテゴリがメモの場合は無効`;
+        const priorityValues = `空欄 / ${priority.data.map(p => `${p.id} = ${p.name}`).join(' / ')}　※カテゴリがメモの場合は無効`;
+        return [
+            { name: 'ID', required: true, values: '更新対象タスクのID（変更しないでください）' },
+            { name: 'タイトル', required: true, values: 'テキスト（200文字以内）' },
+            { name: '内容', required: true, values: 'テキスト（2000文字以内）' },
+            { name: 'カテゴリID', required: true, values: categoryValues },
+            { name: 'ステータスID', required: false, values: statusValues },
+            { name: '優先度ID', required: false, values: priorityValues },
+            { name: '期日', required: false, values: 'YYYY-MM-DD 形式または空欄（例：2025-12-31）' },
+            { name: 'お気に入り', required: true, values: '0 = なし　/　1 = あり' },
+        ];
+    }, [category?.data, status?.data, priority?.data]);
 
     /**
      * ダイアログを開く
@@ -270,34 +296,42 @@ export function useTodoImport() {
 
         const errors: CsvValidationError[] = [];
         const errorRowNumbers = new Set<number>();
-
-        dataRows.forEach((cols, index) => {
-            const rowNumber = index + CSV_DATA_START_ROW;
-            const errorMsgList = validateCsvRow(cols, idCounts);
-            if (errorMsgList.length > 0) {
-                errorMsgList.forEach((e) => {
-                    errors.push({ rowNumber, id: cols[COL.ID]?.trim() || null, message: e });
-                })
-                errorRowNumbers.add(rowNumber);
-            }
-        });
-
         // カテゴリ
         const categoryMap = new Map<number, string>();
         category.data.forEach((e) => {
             categoryMap.set(e.id, e.name);
         });
+        const categoryIdList = Array.from(categoryMap.keys());
 
         // ステータス
         const statusMap = new Map<number, string>();
         status.data.forEach((e) => {
             statusMap.set(e.id, e.name);
         });
+        const statusIdList = Array.from(statusMap.keys());
 
         // 優先度
         const priorityMap = new Map<number, string>();
         priority.data.forEach((e) => {
             priorityMap.set(e.id, e.name);
+        });
+        const priorityIdList = Array.from(priorityMap.keys());
+
+        dataRows.forEach((cols, index) => {
+            const rowNumber = index + CSV_DATA_START_ROW;
+            const errorMsgList = validateCsvRow({
+                cols,
+                idCounts,
+                categoryIdList,
+                statusIdList,
+                priorityIdList
+            });
+            if (errorMsgList.length > 0) {
+                errorMsgList.forEach((e) => {
+                    errors.push({ rowNumber, id: cols[COL.ID]?.trim() || null, message: e });
+                })
+                errorRowNumbers.add(rowNumber);
+            }
         });
 
         const rows: CsvPreviewRow[] = dataRows.map((cols, index) => {
@@ -356,6 +390,7 @@ export function useTodoImport() {
         isDescriptionOpen,
         previewRows,
         previewErrors,
+        columnGuide,
         onOpenDialog,
         onCloseDialog,
         onToggleDescription,

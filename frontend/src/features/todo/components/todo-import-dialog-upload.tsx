@@ -4,7 +4,7 @@ import { useRef } from "react";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { HiChevronDown, HiOutlineCheckCircle, HiOutlineDocument, HiOutlineStar, HiStar } from "react-icons/hi2";
 import { MdOutlineUploadFile } from "react-icons/md";
-import type { CsvPreviewRow, CsvValidationError } from "../hooks/use-todo-import";
+import type { ColumnGuideRow, CsvPreviewRow, CsvValidationError } from "../hooks/use-todo-import";
 
 type PropsType = {
     isOpen: boolean;
@@ -14,6 +14,7 @@ type PropsType = {
     isDescriptionOpen: boolean;
     previewRows: CsvPreviewRow[] | null;
     previewErrors: CsvValidationError[];
+    columnGuide: ColumnGuideRow[];
     onToggleDescription: () => void;
     onFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
     onDrop: (e: React.DragEvent<HTMLDivElement>) => void;
@@ -23,27 +24,10 @@ type PropsType = {
     onCancel: () => void;
 };
 
-type ColumnGuideRow = {
-    name: string;
-    required: boolean;
-    values: string;
-};
-
-// インポート説明用
-const COLUMN_GUIDE: ColumnGuideRow[] = [
-    { name: 'ID', required: true, values: '更新対象タスクのID（変更しないでください）' },
-    { name: 'タイトル', required: true, values: 'テキスト（200文字以内）' },
-    { name: '内容', required: true, values: 'テキスト（2000文字以内）' },
-    { name: 'カテゴリID', required: true, values: '1 = タスク　/　2 = メモ' },
-    { name: 'ステータスID', required: false, values: '空欄 / 1 = 未着手 / 2 = 進行中 / 3 = 完了　※カテゴリがメモの場合は無効' },
-    { name: '優先度ID', required: false, values: '空欄 / 1 = 低 / 2 = 中 / 3 = 高　※カテゴリがメモの場合は無効' },
-    { name: '期日', required: false, values: 'YYYY-MM-DD 形式または空欄（例：2025-12-31）' },
-    { name: 'お気に入り', required: true, values: '0 = なし　/　1 = あり' },
-];
 
 // CSVプレビューテーブルのカラム定義
 const previewColumns: TableProps<CsvPreviewRow>['columns'] = [
-    { title: '行', field: 'id', className: 'w-[5%] whitespace-nowrap pl-4' },
+    { title: '行', field: 'id', className: 'w-[5%] whitespace-nowrap pl-6' },
     { title: 'ID', field: 'csvId', className: 'w-[6%] whitespace-nowrap' },
     { title: 'タイトル', field: 'title', className: 'max-w-0', Cell: ({ entry }) => <span className="block truncate">{entry.title}</span> },
     { title: 'カテゴリ', field: 'categoryName', className: 'w-[10%] whitespace-nowrap' },
@@ -53,7 +37,7 @@ const previewColumns: TableProps<CsvPreviewRow>['columns'] = [
     { title: '登録日', field: 'createdAt', className: 'w-[9%] whitespace-nowrap hidden md:table-cell', Cell: ({ entry }) => <span>{entry.createdAt.slice(0, 10)}</span> },
     { title: '更新日', field: 'updatedAt', className: 'w-[9%] whitespace-nowrap hidden md:table-cell', Cell: ({ entry }) => <span>{entry.updatedAt.slice(0, 10)}</span> },
     {
-        title: '', field: 'isFavorite', className: 'w-[4%] whitespace-nowrap text-center', Cell: ({ entry }) => (
+        title: 'お気に入り', field: 'isFavorite', className: 'w-[6%] whitespace-nowrap text-center', Cell: ({ entry }) => (
             entry.isFavorite === '1'
                 ? <HiStar className="size-5 text-amber-400 mx-auto" />
                 : <HiOutlineStar className="size-5 text-gray-400 mx-auto" />
@@ -61,7 +45,7 @@ const previewColumns: TableProps<CsvPreviewRow>['columns'] = [
     },
 ];
 
-export function TodoImportDialogUpload({ isLoading, file, isDragging, isDescriptionOpen, previewRows, previewErrors, onToggleDescription, onFileChange, onDrop, onDragOver, onDragLeave, onUpload, onCancel }: PropsType) {
+export function TodoImportDialogUpload({ isLoading, file, isDragging, isDescriptionOpen, previewRows, previewErrors, columnGuide, onToggleDescription, onFileChange, onDrop, onDragOver, onDragLeave, onUpload, onCancel }: PropsType) {
 
     // ファイル選択inputへの参照
     const inputRef = useRef<HTMLInputElement>(null);
@@ -95,8 +79,8 @@ export function TodoImportDialogUpload({ isLoading, file, isDragging, isDescript
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {COLUMN_GUIDE.map((row, i) => (
-                                            <tr key={row.name} className={i < COLUMN_GUIDE.length - 1 ? 'border-b border-gray-100' : ''}>
+                                        {columnGuide.map((row, i) => (
+                                            <tr key={row.name} className={i < columnGuide.length - 1 ? 'border-b border-gray-100' : ''}>
                                                 <td className="px-3 py-1.5 font-medium text-gray-700">{row.name}</td>
                                                 <td className="px-3 py-1.5 text-center text-gray-500">{row.required ? '○' : '—'}</td>
                                                 <td className="px-3 py-1.5 text-gray-600">{row.values}</td>

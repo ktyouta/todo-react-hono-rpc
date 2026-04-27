@@ -232,6 +232,7 @@ export function TodoList(props: PropsType) {
                 isDescriptionOpen={todoImport.isDescriptionOpen}
                 previewRows={todoImport.previewRows}
                 previewErrors={todoImport.previewErrors}
+                columnGuide={todoImport.columnGuide}
                 onClose={todoImport.onCloseDialog}
                 onToggleDescription={todoImport.onToggleDescription}
                 onFileChange={todoImport.onFileChange}
