@@ -7,25 +7,12 @@ import { useMemo, useState } from "react";
 import { toast } from "react-toastify";
 import { importTodo, ImportTodoResponseType } from "../api/import-todo";
 import { todoKeys } from "../api/query-key";
+import { COL } from "../constants/csv-import";
 
 // カラム数
 const CSV_COLUMN_COUNT = 13;
 // 読み込み開始行
 const CSV_DATA_START_ROW = 2;
-
-// カラムインデックス
-const COL = {
-    ID: 0,
-    TITLE: 1,
-    CONTENT: 2,
-    CATEGORY_ID: 3,
-    STATUS_ID: 5,
-    PRIORITY_ID: 7,
-    DUE_DATE: 9,
-    IS_FAVORITE: 10,
-    CREATED_AT: 11,
-    UPDATED_AT: 12,
-} as const;
 
 export type ColumnGuideRow = {
     name: string;
@@ -50,6 +37,7 @@ export type CsvPreviewRow = {
 export type CsvValidationError = {
     rowNumber: number;
     id: string | null;
+    col: number | undefined;
     message: string;
 };
 
@@ -72,55 +60,84 @@ function parseCsvText(csvText: string): string[][] {
 function validateCsvRow({ cols, idCounts, categoryIdList, statusIdList, priorityIdList }
     : { cols: string[], idCounts: Map<string, number>, categoryIdList: number[], statusIdList: number[], priorityIdList: number[] }) {
 
-    const errorMsgList: string[] = [];
+    const errorMsgList: { col?: number, message: string }[] = [];
 
     if (cols.length < CSV_COLUMN_COUNT) {
-        errorMsgList.push(`カラム数が不正です`);
+        errorMsgList.push({
+            message: `カラム数が不正です`
+        });
     }
 
     const id = cols[COL.ID]?.trim() ?? '';
     if (!id) {
-        errorMsgList.push(`IDが入力されていません`);
+        errorMsgList.push({
+            col: COL.ID,
+            message: `IDが入力されていません`
+        });
     }
 
     const idNum = Number(id);
     if (!Number.isInteger(idNum) || idNum <= 0) {
-        errorMsgList.push(`IDが不正です（正の整数を入力してください）`);
+        errorMsgList.push({
+            col: COL.ID,
+            message: `IDが不正です（正の整数を入力してください）`
+        });
     }
 
     if ((idCounts.get(id) ?? 0) > 1) {
-        errorMsgList.push(`IDが重複しています`);
+        errorMsgList.push({
+            col: COL.ID,
+            message: `IDが重複しています`
+        });
     }
 
     const title = cols[COL.TITLE]?.trim() ?? '';
     if (!title) {
-        errorMsgList.push(`タイトルを入力してください`);
+        errorMsgList.push({
+            col: COL.TITLE,
+            message: `タイトルを入力してください`
+        });
     }
 
     if (title.length > 200) {
-        errorMsgList.push(`タイトルは200文字以内で入力してください`);
+        errorMsgList.push({
+            col: COL.TITLE,
+            message: `タイトルは200文字以内で入力してください`
+        });
     }
 
     const content = cols[COL.CONTENT]?.trim() ?? '';
     if (!content) {
-        errorMsgList.push(`内容を入力してください`);
+        errorMsgList.push({
+            col: COL.CONTENT,
+            message: `内容を入力してください`
+        });
     }
 
     if (content.length > 2000) {
-        errorMsgList.push(`内容は2000文字以内で入力してください`);
+        errorMsgList.push({
+            col: COL.CONTENT,
+            message: `内容は2000文字以内で入力してください`
+        });
     }
 
     const categoryStr = cols[COL.CATEGORY_ID]?.trim();
     const categoryId = Number(categoryStr);
     if (!categoryIdList.includes(categoryId)) {
-        errorMsgList.push(`カテゴリIDが不正です（使用可能な値: ${categoryIdList.join(', ')}）`);
+        errorMsgList.push({
+            col: COL.CATEGORY_ID,
+            message: `カテゴリIDが不正です（使用可能な値: ${categoryIdList.join(', ')}）`
+        });
     }
 
     const statusStr = cols[COL.STATUS_ID]?.trim();
     if (statusStr) {
         const statusId = Number(statusStr);
         if (!statusIdList.includes(statusId)) {
-            errorMsgList.push(`ステータスIDが不正です（使用可能な値: 空欄, ${statusIdList.join(', ')}）`);
+            errorMsgList.push({
+                col: COL.STATUS_ID,
+                message: `ステータスIDが不正です（使用可能な値: 空欄, ${statusIdList.join(', ')}）`
+            });
         }
     }
 
@@ -128,18 +145,27 @@ function validateCsvRow({ cols, idCounts, categoryIdList, statusIdList, priority
     if (priorityStr) {
         const priorityId = Number(priorityStr);
         if (!priorityIdList.includes(priorityId)) {
-            errorMsgList.push(`優先度IDが不正です（使用可能な値: 空欄, ${priorityIdList.join(', ')}）`);
+            errorMsgList.push({
+                col: COL.PRIORITY_ID,
+                message: `優先度IDが不正です（使用可能な値: 空欄, ${priorityIdList.join(', ')}）`
+            });
         }
     }
 
     const dueDate = cols[COL.DUE_DATE]?.trim() ?? '';
     if (dueDate && !/^\d{4}-\d{2}-\d{2}$/.test(dueDate)) {
-        errorMsgList.push(`DD形式で入力してください`);
+        errorMsgList.push({
+            col: COL.DUE_DATE,
+            message: `DD形式で入力してください`
+        });
     }
 
     const favorite = cols[COL.IS_FAVORITE]?.trim() ?? '';
     if (favorite !== '0' && favorite !== '1') {
-        errorMsgList.push(`お気に入りは0または1で入力してください`);
+        errorMsgList.push({
+            col: COL.IS_FAVORITE,
+            message: `お気に入りは0または1で入力してください`
+        });
     }
 
     return errorMsgList;
@@ -285,7 +311,6 @@ export function useTodoImport() {
 
         const csvText = await file.text();
         const dataRows = parseCsvText(csvText);
-
         const idCounts = new Map<string, number>();
         dataRows.forEach(cols => {
             const id = cols[COL.ID]?.trim() ?? '';
@@ -293,7 +318,6 @@ export function useTodoImport() {
                 idCounts.set(id, (idCounts.get(id) ?? 0) + 1);
             }
         });
-
         const errors: CsvValidationError[] = [];
         const errorRowNumbers = new Set<number>();
         // カテゴリ
@@ -317,8 +341,12 @@ export function useTodoImport() {
         });
         const priorityIdList = Array.from(priorityMap.keys());
 
-        dataRows.forEach((cols, index) => {
+        const rows: CsvPreviewRow[] = dataRows.map((cols, index) => {
+
+            // エクセル行数
             const rowNumber = index + CSV_DATA_START_ROW;
+            const id = cols[COL.ID]?.trim();
+            // バリデーションチェック
             const errorMsgList = validateCsvRow({
                 cols,
                 idCounts,
@@ -328,33 +356,23 @@ export function useTodoImport() {
             });
             if (errorMsgList.length > 0) {
                 errorMsgList.forEach((e) => {
-                    errors.push({ rowNumber, id: cols[COL.ID]?.trim() || null, message: e });
+                    errors.push({ rowNumber, id, col: e.col, message: e.message });
                 })
                 errorRowNumbers.add(rowNumber);
             }
-        });
-
-        const rows: CsvPreviewRow[] = dataRows.map((cols, index) => {
-
-            const categoryId = cols[COL.CATEGORY_ID]?.trim() ?? '';
-            const categoryName = categoryMap.get(Number(categoryId)) ?? `入力値が不正です`;
-            const statusId = cols[COL.STATUS_ID]?.trim() ?? '';
-            const statusName = statusId ? statusMap.get(Number(statusId)) ?? `入力値が不正です` : ``;
-            const priorityId = cols[COL.PRIORITY_ID]?.trim() ?? '';
-            const priorityName = priorityId ? priorityMap.get(Number(priorityId)) ?? `入力値が不正です` : ``;
 
             return {
                 id: index + CSV_DATA_START_ROW,
-                csvId: cols[COL.ID]?.trim() ?? '',
+                csvId: id,
                 title: cols[COL.TITLE]?.trim() ?? '',
-                categoryName,
-                statusName,
-                priorityName,
+                categoryName: categoryMap.get(Number(cols[COL.CATEGORY_ID])) ?? '',
+                statusName: statusMap.get(Number(cols[COL.STATUS_ID])) ?? '',
+                priorityName: priorityMap.get(Number(cols[COL.PRIORITY_ID])) ?? '',
                 dueDate: cols[COL.DUE_DATE]?.trim() ?? '',
                 createdAt: cols[COL.CREATED_AT]?.trim() ?? '',
                 updatedAt: cols[COL.UPDATED_AT]?.trim() ?? '',
                 isFavorite: cols[COL.IS_FAVORITE]?.trim() ?? '',
-                hasError: errorRowNumbers.has(index + CSV_DATA_START_ROW),
+                hasError: errorMsgList.length > 0,
             }
         });
 

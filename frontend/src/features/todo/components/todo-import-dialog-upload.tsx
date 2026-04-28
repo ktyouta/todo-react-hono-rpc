@@ -1,9 +1,10 @@
 import { Button, Table } from "@/components";
 import { TableProps } from "@/components/ui/table/table";
-import { useRef } from "react";
+import { useMemo, useRef } from "react";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { HiChevronDown, HiOutlineCheckCircle, HiOutlineDocument, HiOutlineStar, HiStar } from "react-icons/hi2";
 import { MdOutlineUploadFile } from "react-icons/md";
+import { COL } from "../constants/csv-import";
 import type { ColumnGuideRow, CsvPreviewRow, CsvValidationError } from "../hooks/use-todo-import";
 
 type PropsType = {
@@ -24,31 +25,95 @@ type PropsType = {
     onCancel: () => void;
 };
 
+/**
+ * バリデーションエラーのあるセルを「行番号 → エラー列インデックスのSet」で管理するMapを作成
+ * @param previewErrors 
+ * @returns 
+ */
+function buildErrorCellMap(previewErrors: CsvValidationError[]): Map<number, Set<number>> {
+    const map = new Map<number, Set<number>>();
+    previewErrors.forEach(e => {
+        if (e.col === undefined) {
+            return;
+        }
+        if (!map.has(e.rowNumber)) {
+            map.set(e.rowNumber, new Set());
+        }
+        const rowMap = map.get(e.rowNumber);
+        if (rowMap) {
+            rowMap.add(e.col);
+        }
+    });
+    return map;
+}
 
-// CSVプレビューテーブルのカラム定義
-const previewColumns: TableProps<CsvPreviewRow>['columns'] = [
-    { title: '行', field: 'id', className: 'w-[5%] whitespace-nowrap pl-6' },
-    { title: 'ID', field: 'csvId', className: 'w-[6%] whitespace-nowrap' },
-    { title: 'タイトル', field: 'title', className: 'max-w-0', Cell: ({ entry }) => <span className="block truncate">{entry.title}</span> },
-    { title: 'カテゴリ', field: 'categoryName', className: 'w-[10%] whitespace-nowrap' },
-    { title: 'ステータス', field: 'statusName', className: 'w-[10%] whitespace-nowrap' },
-    { title: '優先度', field: 'priorityName', className: 'w-[8%] whitespace-nowrap' },
-    { title: '期日', field: 'dueDate', className: 'w-[9%] whitespace-nowrap', Cell: ({ entry }) => <span>{entry.dueDate || '—'}</span> },
-    { title: '登録日', field: 'createdAt', className: 'w-[9%] whitespace-nowrap hidden md:table-cell', Cell: ({ entry }) => <span>{entry.createdAt.slice(0, 10)}</span> },
-    { title: '更新日', field: 'updatedAt', className: 'w-[9%] whitespace-nowrap hidden md:table-cell', Cell: ({ entry }) => <span>{entry.updatedAt.slice(0, 10)}</span> },
-    {
-        title: 'お気に入り', field: 'isFavorite', className: 'w-[6%] whitespace-nowrap text-center', Cell: ({ entry }) => (
-            entry.isFavorite === '1'
-                ? <HiStar className="size-5 text-amber-400 mx-auto" />
-                : <HiOutlineStar className="size-5 text-gray-400 mx-auto" />
-        )
-    },
-];
+/**
+ * バリデーションエラー表示用セル
+ */
+function InvalidCell() {
+    return <span className="text-red-600">入力が不正です</span>;
+}
+
+/**
+ * プレビューテーブルのカラム定義を作成
+ * @param errorCellMap 
+ * @returns 
+ */
+function buildPreviewColumns(errorCellMap: Map<number, Set<number>>): TableProps<CsvPreviewRow>['columns'] {
+    function isError(rowNumber: number, col: number): boolean {
+        return errorCellMap.get(rowNumber)?.has(col) ?? false;
+    }
+    return [
+        { title: '行', field: 'id', className: 'w-[5%] whitespace-nowrap pl-6' },
+        {
+            title: 'ID', field: 'csvId', className: 'w-[6%] whitespace-nowrap',
+            Cell: ({ entry }) => isError(entry.id, COL.ID) ? <InvalidCell /> : <span>{entry.csvId}</span>
+        },
+        {
+            title: 'タイトル', field: 'title', className: 'max-w-0',
+            Cell: ({ entry }) => isError(entry.id, COL.TITLE)
+                ? <InvalidCell />
+                : <span className="block truncate">{entry.title}</span>
+        },
+        {
+            title: 'カテゴリ', field: 'categoryName', className: 'w-[10%] whitespace-nowrap',
+            Cell: ({ entry }) => isError(entry.id, COL.CATEGORY_ID) ? <InvalidCell /> : <span>{entry.categoryName}</span>
+        },
+        {
+            title: 'ステータス', field: 'statusName', className: 'w-[10%] whitespace-nowrap',
+            Cell: ({ entry }) => isError(entry.id, COL.STATUS_ID) ? <InvalidCell /> : <span>{entry.statusName}</span>
+        },
+        {
+            title: '優先度', field: 'priorityName', className: 'w-[8%] whitespace-nowrap',
+            Cell: ({ entry }) => isError(entry.id, COL.PRIORITY_ID) ? <InvalidCell /> : <span>{entry.priorityName}</span>
+        },
+        {
+            title: '期日', field: 'dueDate', className: 'w-[9%] whitespace-nowrap',
+            Cell: ({ entry }) => isError(entry.id, COL.DUE_DATE)
+                ? <InvalidCell />
+                : <span>{entry.dueDate || '—'}</span>
+        },
+        { title: '登録日', field: 'createdAt', className: 'w-[9%] whitespace-nowrap hidden md:table-cell', Cell: ({ entry }) => <span>{entry.createdAt.slice(0, 10)}</span> },
+        { title: '更新日', field: 'updatedAt', className: 'w-[9%] whitespace-nowrap hidden md:table-cell', Cell: ({ entry }) => <span>{entry.updatedAt.slice(0, 10)}</span> },
+        {
+            title: 'お気に入り', field: 'isFavorite', className: 'w-[6%] whitespace-nowrap text-center',
+            Cell: ({ entry }) => isError(entry.id, COL.IS_FAVORITE)
+                ? <InvalidCell />
+                : (entry.isFavorite === '1'
+                    ? <HiStar className="size-5 text-amber-400 mx-auto" />
+                    : <HiOutlineStar className="size-5 text-gray-400 mx-auto" />)
+        },
+    ];
+}
 
 export function TodoImportDialogUpload({ isLoading, file, isDragging, isDescriptionOpen, previewRows, previewErrors, columnGuide, onToggleDescription, onFileChange, onDrop, onDragOver, onDragLeave, onUpload, onCancel }: PropsType) {
 
     // ファイル選択inputへの参照
     const inputRef = useRef<HTMLInputElement>(null);
+    // エラーセルMap（行番号 → エラー列インデックスのSet）
+    const errorCellMap = useMemo(() => buildErrorCellMap(previewErrors), [previewErrors]);
+    // プレビューテーブルのカラム定義
+    const previewColumns = useMemo(() => buildPreviewColumns(errorCellMap), [errorCellMap]);
 
     return (
         <div className="flex-1 overflow-y-auto px-6 py-6 flex flex-col gap-4">
@@ -130,7 +195,7 @@ export function TodoImportDialogUpload({ isLoading, file, isDragging, isDescript
                         ) : (
                             <div className="flex-none">
                                 <p className="text-base text-red-600 mb-1.5 font-medium">バリデーションエラー（{previewErrors.length}件）</p>
-                                <div className="max-h-[120px] overflow-y-auto border border-red-100 rounded-md bg-red-50">
+                                <div className="max-h-[380px] overflow-y-auto border border-red-100 rounded-md bg-red-50">
                                     <table className="w-full text-sm">
                                         <thead className="sticky top-0 bg-red-50">
                                             <tr>
