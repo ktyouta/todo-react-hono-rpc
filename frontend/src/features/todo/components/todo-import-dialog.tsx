@@ -54,7 +54,6 @@ export function TodoImportDialog({ isOpen, isLoading, result, file, isDragging, 
                     />) : (
                     // アップロード前
                     <TodoImportDialogUpload
-                        isOpen={isOpen}
                         isLoading={isLoading}
                         file={file}
                         isDragging={isDragging}

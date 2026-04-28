@@ -8,7 +8,6 @@ import { COL } from "../constants/csv-import";
 import type { ColumnGuideRow, CsvPreviewRow, CsvValidationError } from "../hooks/use-todo-import";
 
 type PropsType = {
-    isOpen: boolean;
     isLoading: boolean;
     file: File | null;
     isDragging: boolean;
@@ -84,7 +83,7 @@ function buildPreviewColumns(errorCellMap: Map<number, Set<number>>): TableProps
             Cell: ({ entry }) => isError(entry.id, COL.STATUS_ID) ? <InvalidCell /> : <span>{entry.statusName}</span>
         },
         {
-            title: '優先度', field: 'priorityName', className: 'w-[8%] whitespace-nowrap',
+            title: '優先度', field: 'priorityName', className: 'w-[10%] whitespace-nowrap',
             Cell: ({ entry }) => isError(entry.id, COL.PRIORITY_ID) ? <InvalidCell /> : <span>{entry.priorityName}</span>
         },
         {
@@ -96,7 +95,7 @@ function buildPreviewColumns(errorCellMap: Map<number, Set<number>>): TableProps
         { title: '登録日', field: 'createdAt', className: 'w-[9%] whitespace-nowrap hidden md:table-cell', Cell: ({ entry }) => <span>{entry.createdAt.slice(0, 10)}</span> },
         { title: '更新日', field: 'updatedAt', className: 'w-[9%] whitespace-nowrap hidden md:table-cell', Cell: ({ entry }) => <span>{entry.updatedAt.slice(0, 10)}</span> },
         {
-            title: 'お気に入り', field: 'isFavorite', className: 'w-[6%] whitespace-nowrap text-center',
+            title: 'お気に入り', field: 'isFavorite', className: 'w-[9%] whitespace-nowrap text-center',
             Cell: ({ entry }) => isError(entry.id, COL.IS_FAVORITE)
                 ? <InvalidCell />
                 : (entry.isFavorite === '1'
@@ -197,11 +196,11 @@ export function TodoImportDialogUpload({ isLoading, file, isDragging, isDescript
                                 <p className="text-base text-red-600 mb-1.5 font-medium">バリデーションエラー（{previewErrors.length}件）</p>
                                 <div className="max-h-[380px] overflow-y-auto border border-red-100 rounded-md bg-red-50">
                                     <table className="w-full text-sm">
-                                        <thead className="sticky top-0 bg-red-50">
+                                        <thead className="sticky top-0 bg-red-100">
                                             <tr>
-                                                <th className="px-3 py-2 text-left text-red-700 font-medium w-14 border-b border-red-100">行</th>
-                                                <th className="px-3 py-2 text-left text-red-700 font-medium w-14 border-b border-red-100">ID</th>
-                                                <th className="px-3 py-2 text-left text-red-700 font-medium border-b border-red-100">エラー内容</th>
+                                                <th className="px-3 py-2 text-left text-red-700 font-medium w-14 border-b border-red-200">行</th>
+                                                <th className="px-3 py-2 text-left text-red-700 font-medium w-14 border-b border-red-200">ID</th>
+                                                <th className="px-3 py-2 text-left text-red-700 font-medium border-b border-red-200">エラー内容</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -236,7 +235,8 @@ export function TodoImportDialogUpload({ isLoading, file, isDragging, isDescript
                                 colorType="blue"
                                 sizeType="medium"
                                 onClick={onUpload}
-                                className="px-4 h-9 py-0 font-medium whitespace-nowrap shrink-0"
+                                disabled={previewErrors.length > 0}
+                                className="px-4 h-9 py-0 font-medium whitespace-nowrap shrink-0 disabled:opacity-80 disabled:hover:bg-blue-500"
                             >
                                 アップロード
                             </Button>

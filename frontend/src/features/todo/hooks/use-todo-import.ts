@@ -75,13 +75,14 @@ function validateCsvRow({ cols, idCounts, categoryIdList, statusIdList, priority
             message: `IDが入力されていません`
         });
     }
-
-    const idNum = Number(id);
-    if (!Number.isInteger(idNum) || idNum <= 0) {
-        errorMsgList.push({
-            col: COL.ID,
-            message: `IDが不正です（正の整数を入力してください）`
-        });
+    else {
+        const idNum = Number(id);
+        if (!Number.isInteger(idNum) || idNum <= 0) {
+            errorMsgList.push({
+                col: COL.ID,
+                message: `IDが不正です（正の整数を入力してください）`
+            });
+        }
     }
 
     if ((idCounts.get(id) ?? 0) > 1) {
@@ -294,7 +295,8 @@ export function useTodoImport() {
      * アップロード実行
      */
     function onUpload() {
-        if (file) onImport(file);
+        if (!file || previewErrors.length > 0) return;
+        onImport(file);
     }
 
     /**
@@ -302,6 +304,8 @@ export function useTodoImport() {
      */
     function onCancel() {
         setPreviewRows(null);
+        setFile(null);
+        setPreviewErrors([]);
     }
 
     /**
@@ -356,7 +360,7 @@ export function useTodoImport() {
             });
             if (errorMsgList.length > 0) {
                 errorMsgList.forEach((e) => {
-                    errors.push({ rowNumber, id, col: e.col, message: e.message });
+                    errors.push({ rowNumber, id: id || null, col: e.col, message: e.message });
                 })
                 errorRowNumbers.add(rowNumber);
             }

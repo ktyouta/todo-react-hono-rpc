@@ -1,5 +1,5 @@
 import { Button } from "@/components";
-import { HiOutlineCheckCircle } from "react-icons/hi2";
+import { HiOutlineCheckCircle, HiOutlineExclamationCircle } from "react-icons/hi2";
 import type { ImportTodoResponseType } from "../api/import-todo";
 
 type PropsType = {
@@ -14,7 +14,10 @@ export function TodoImportDialogResult({ result, onClose }: PropsType) {
             <div className="flex-1 overflow-y-auto px-6 py-6 flex flex-col gap-4">
                 <div className="flex flex-col gap-4">
                     <div className={`flex items-center gap-2 ${result.errors.length > 0 ? 'text-red-600' : 'text-green-600'}`}>
-                        <HiOutlineCheckCircle className="size-6 shrink-0" />
+                        {result.errors.length > 0
+                            ? <HiOutlineExclamationCircle className="size-6 shrink-0" />
+                            : <HiOutlineCheckCircle className="size-6 shrink-0" />
+                        }
                         <p className="font-medium text-[17px]">{result.message}（{result.successCount}件更新）</p>
                     </div>
                     {result.errors.length > 0 && (
