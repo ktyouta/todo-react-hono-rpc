@@ -2,10 +2,10 @@ import { Button, Table } from "@/components";
 import { TableProps } from "@/components/ui/table/table";
 import { useMemo, useRef } from "react";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
-import { HiChevronDown, HiOutlineCheckCircle, HiOutlineDocument, HiOutlineStar, HiStar } from "react-icons/hi2";
+import { HiChevronDown, HiOutlineCheckCircle, HiOutlineDocument } from "react-icons/hi2";
 import { MdOutlineUploadFile } from "react-icons/md";
 import { COL } from "../constants/csv-import";
-import type { ColumnGuideRow, CsvPreviewRow, CsvValidationError } from "../hooks/use-todo-import";
+import { ColumnGuideRow, CsvPreviewRow, CsvValidationError } from "../hooks/use-todo-management-import";
 
 type PropsType = {
     isLoading: boolean;
@@ -94,18 +94,10 @@ function buildPreviewColumns(errorCellMap: Map<number, Set<number>>): TableProps
         },
         { title: '登録日', field: 'createdAt', className: 'w-[9%] whitespace-nowrap hidden md:table-cell', Cell: ({ entry }) => <span>{entry.createdAt.slice(0, 10)}</span> },
         { title: '更新日', field: 'updatedAt', className: 'w-[9%] whitespace-nowrap hidden md:table-cell', Cell: ({ entry }) => <span>{entry.updatedAt.slice(0, 10)}</span> },
-        {
-            title: 'お気に入り', field: 'isFavorite', className: 'w-[9%] whitespace-nowrap text-center',
-            Cell: ({ entry }) => isError(entry.id, COL.IS_FAVORITE)
-                ? <InvalidCell />
-                : (entry.isFavorite === '1'
-                    ? <HiStar className="size-5 text-amber-400 mx-auto" />
-                    : <HiOutlineStar className="size-5 text-gray-400 mx-auto" />)
-        },
     ];
 }
 
-export function TodoImportDialogUpload({ isLoading, file, isDragging, isDescriptionOpen, previewRows, previewErrors, columnGuide, onToggleDescription, onFileChange, onDrop, onDragOver, onDragLeave, onUpload, onCancel }: PropsType) {
+export function TodoManagementImportDialogUpload({ isLoading, file, isDragging, isDescriptionOpen, previewRows, previewErrors, columnGuide, onToggleDescription, onFileChange, onDrop, onDragOver, onDragLeave, onUpload, onCancel }: PropsType) {
 
     // ファイル選択inputへの参照
     const inputRef = useRef<HTMLInputElement>(null);

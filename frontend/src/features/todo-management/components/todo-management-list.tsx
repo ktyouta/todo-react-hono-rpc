@@ -9,11 +9,13 @@ import { getDueDateStatus } from "@/utils/due-date-status";
 import { HiOutlineArchiveBoxXMark } from "react-icons/hi2";
 import { TaskManagementListReturnType } from "../api/get-todo-management-list";
 import { UseTodoManagementBulkReturn } from "../hooks/use-todo-management-bulk";
+import { UseTodoManagementImportReturn } from "../hooks/use-todo-management-import";
 import { TodoManagementSearchFilter } from "../types/todo-management-search-filter";
 import { TodoManagementActionBar } from "./todo-management-action-bar";
 import { TodoManagementBulkDeleteDialog } from "./todo-management-bulk-delete-dialog";
 import { TodoManagementBulkUpdateDialogContainer } from "./todo-management-bulk-update-dialog-container";
 import { TodoManagementCard } from "./todo-management-card";
+import { TodoManagementImportDialog } from "./todo-management-import-dialog";
 import { TodoManagementSearchBar } from "./todo-management-search-bar";
 
 type PropsType = {
@@ -34,6 +36,7 @@ type PropsType = {
     bulk: UseTodoManagementBulkReturn;
     onExport: () => void;
     isExporting: boolean;
+    todoManagementImport: UseTodoManagementImportReturn;
 };
 
 // テーブルカラム（通常モード）
@@ -84,6 +87,7 @@ export function TodoManagementList(props: PropsType) {
         bulk,
         onExport,
         isExporting,
+        todoManagementImport,
     } = props;
 
     // テーブルカラム（一括操作モード時はチェックボックス列を先頭に追加）
@@ -133,6 +137,7 @@ export function TodoManagementList(props: PropsType) {
                     onToggleBulkMode={bulk.onToggleBulkMode}
                     onExport={onExport}
                     isExporting={isExporting}
+                    onImport={todoManagementImport.onOpenDialog}
                 />
             )}
 
@@ -201,6 +206,27 @@ export function TodoManagementList(props: PropsType) {
                 priorityList={bulk.priorityList}
                 onClose={bulk.onCloseBulkUpdateDialog}
                 onConfirm={bulk.onConfirmBulkUpdate}
+            />
+
+            {/* インポートダイアログ */}
+            <TodoManagementImportDialog
+                isOpen={todoManagementImport.isDialogOpen}
+                isLoading={todoManagementImport.isLoading}
+                result={todoManagementImport.result}
+                file={todoManagementImport.file}
+                isDragging={todoManagementImport.isDragging}
+                isDescriptionOpen={todoManagementImport.isDescriptionOpen}
+                previewRows={todoManagementImport.previewRows}
+                previewErrors={todoManagementImport.previewErrors}
+                columnGuide={todoManagementImport.columnGuide}
+                onClose={todoManagementImport.onCloseDialog}
+                onToggleDescription={todoManagementImport.onToggleDescription}
+                onFileChange={todoManagementImport.onFileChange}
+                onDrop={todoManagementImport.onDrop}
+                onDragOver={todoManagementImport.onDragOver}
+                onDragLeave={todoManagementImport.onDragLeave}
+                onUpload={todoManagementImport.onUpload}
+                onCancel={todoManagementImport.onCancel}
             />
 
             {/* 一括削除ダイアログ */}

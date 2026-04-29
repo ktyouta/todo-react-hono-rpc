@@ -22,12 +22,13 @@ type PropsType = {
     onToggleBulkMode: () => void;
     onExport: () => void;
     isExporting: boolean;
+    onImport: () => void;
 };
 
 const LABEL_CLASS = "text-sm text-gray-500 whitespace-nowrap w-[5em]";
 const SELECT_CLASS = "flex-1 px-3 py-2 text-base bg-white border-[#c0c0c0]";
 
-export function TodoManagementSearchBar({ searchCondition, onChange, onSearch, onClear, userList, categoryList, statusList, priorityList, handleKeyPress, onToggleBulkMode, onExport, isExporting }: PropsType) {
+export function TodoManagementSearchBar({ searchCondition, onChange, onSearch, onClear, userList, categoryList, statusList, priorityList, handleKeyPress, onToggleBulkMode, onExport, isExporting, onImport }: PropsType) {
 
     // 詳細フィルター開閉フラグ
     const [isDetailOpen, setIsDetailOpen] = useState(false);
@@ -121,6 +122,14 @@ export function TodoManagementSearchBar({ searchCondition, onChange, onSearch, o
                                 出力中...
                             </span>
                         ) : 'ダウンロード'}
+                    </Button>
+                    <Button
+                        colorType="blue"
+                        sizeType="medium"
+                        onClick={onImport}
+                        className="px-3 h-9 py-0 font-medium whitespace-nowrap hidden lg:flex items-center"
+                    >
+                        インポート
                     </Button>
                     <Button
                         colorType="green"

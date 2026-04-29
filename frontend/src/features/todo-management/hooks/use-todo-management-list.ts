@@ -13,6 +13,7 @@ import { TaskManagementListReturnType, useGetTodoManagementList } from "../api/g
 import { TODO_MANAGEMENT_QUERY_KEY } from "../constants/todo-management-query-params";
 import { initialTodoManagementSearchFilter, TodoManagementSearchFilter } from "../types/todo-management-search-filter";
 import { useTodoManagementBulk } from "./use-todo-management-bulk";
+import { useTodoManagementImport } from "./use-todo-management-import";
 
 export function useTodoManagementList() {
 
@@ -62,6 +63,8 @@ export function useTodoManagementList() {
     const [isExporting, setIsExporting] = useState(false);
     // ページ切り替え判定フラグ
     const wasPageChanging = useRef(false);
+    // CSVインポート
+    const todoManagementImport = useTodoManagementImport();
 
     // ページ切り替え完了後にページトップへスクロール
     useEffect(() => {
@@ -187,5 +190,6 @@ export function useTodoManagementList() {
         bulk,
         onExport,
         isExporting,
+        todoManagementImport,
     };
 }
