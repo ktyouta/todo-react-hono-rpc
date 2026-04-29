@@ -15,7 +15,7 @@ type PropsType = {
 
 const columns: TableProps<SubtaskListDataType[number]>['columns'] = [
     { title: 'ID', field: 'id', className: 'w-[6%] whitespace-nowrap pl-4' },
-    { title: 'タイトル', field: 'title', className: 'max-w-0', Cell: ({ entry }) => <span className="block truncate">{entry.title}</span>, },
+    { title: 'タイトル', field: 'title', Cell: ({ entry }) => <span className="whitespace-nowrap">{entry.title}</span>, },
     { title: 'ステータス', field: 'statusName', className: 'w-[10%] whitespace-nowrap' },
     { title: '優先度', field: 'priorityName', className: 'w-[10%] whitespace-nowrap' },
     { title: '期限', field: 'dueDate', className: 'w-[9%] whitespace-nowrap', Cell: ({ entry }) => <span>{entry.dueDate ?? '-'}</span>, },
@@ -54,7 +54,7 @@ export function SubtaskSection(props: PropsType) {
                         <Table
                             data={subtasks}
                             columns={columns}
-                            className="text-[16px] table-fixed
+                            className="text-[16px] min-w-[700px]
                                     [&_thead]:bg-gray-200/70
                                       [&_thead_tr]:border-b
                                     [&_thead_tr]:border-gray-400/60

@@ -21,7 +21,7 @@ type PropsType = {
 
 const columns: TableProps<RoleManagementListReturnType['list'][number]>['columns'] = [
     { title: 'ID', field: 'id', className: 'w-[5%] whitespace-nowrap pl-4' },
-    { title: 'ロール名', field: 'name', className: 'max-w-0', Cell: ({ entry }) => <span className="block truncate">{entry.name}</span> },
+    { title: 'ロール名', field: 'name', Cell: ({ entry }) => <span className="whitespace-nowrap">{entry.name}</span> },
     { title: '登録日', field: 'createdAt', className: 'w-[15%] whitespace-nowrap hidden md:table-cell', Cell: ({ entry }) => <span>{entry.createdAt.slice(0, 10)}</span> },
     { title: '更新日', field: 'updatedAt', className: 'w-[15%] whitespace-nowrap hidden md:table-cell', Cell: ({ entry }) => <span>{entry.updatedAt.slice(0, 10)}</span> },
 ];
@@ -64,7 +64,7 @@ export function RoleManagementList(props: PropsType) {
                             <Table
                                 data={roleData.list}
                                 columns={columns}
-                                className="text-[17px] table-fixed
+                                className="text-[17px] min-w-[700px]
                                     [&_thead]:bg-gray-50/90
                                     [&_thead_tr]:border-b
                                     [&_thead_tr]:border-gray-400/60"

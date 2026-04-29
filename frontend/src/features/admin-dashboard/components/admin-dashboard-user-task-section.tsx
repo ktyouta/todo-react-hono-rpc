@@ -56,7 +56,7 @@ export function AdminDashboardUserTaskSection({ userTaskStats }: PropsType) {
                 <Table
                     data={tableData}
                     columns={columns}
-                    className="text-[17px] table-fixed
+                    className="text-[17px] min-w-[700px]
                         [&_thead]:bg-gray-200/70
                         [&_thead_tr]:border-b
                         [&_thead_tr]:border-gray-400/60

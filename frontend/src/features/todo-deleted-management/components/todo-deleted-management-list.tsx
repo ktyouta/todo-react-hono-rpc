@@ -70,7 +70,7 @@ export function TodoDeletedManagementList(props: PropsType) {
             ),
         }] : []),
         { title: 'ID', field: 'id', className: 'w-[5%] whitespace-nowrap pl-4' },
-        { title: 'タイトル', field: 'title', className: 'max-w-0', Cell: ({ entry }) => <span className="block truncate">{entry.title}</span> },
+        { title: 'タイトル', field: 'title', Cell: ({ entry }) => <span className="whitespace-nowrap">{entry.title}</span> },
         { title: 'ユーザー', field: 'userName', className: 'w-[10%] whitespace-nowrap' },
         { title: 'カテゴリ', field: 'categoryName', className: 'w-[9%] whitespace-nowrap' },
         { title: 'ステータス', field: 'statusName', className: 'w-[10%] whitespace-nowrap' },
@@ -142,7 +142,7 @@ export function TodoDeletedManagementList(props: PropsType) {
                             <Table
                                 data={taskData.list}
                                 columns={columns}
-                                className="text-[17px] table-fixed
+                                className="text-[17px] min-w-[1000px]
                                     [&_thead]:bg-gray-50/90
                                     [&_thead_tr]:border-b
                                     [&_thead_tr]:border-gray-400/60"
