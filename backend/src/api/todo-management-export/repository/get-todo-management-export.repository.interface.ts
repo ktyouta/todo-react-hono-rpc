@@ -11,7 +11,6 @@ export type TodoManagementExportItem = {
     priorityId: string;
     priorityName: string;
     dueDate: string | null;
-    userId: number | null;
     userName: string;
     createdAt: string;
     updatedAt: string;

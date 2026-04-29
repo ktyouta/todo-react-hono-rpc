@@ -2,7 +2,7 @@ import Papa from "papaparse";
 import { IGetTodoManagementExportRepository, TodoManagementExportItem } from "../repository/get-todo-management-export.repository.interface";
 import { GetTodoManagementExportQuerySchemaType } from "../schema/get-todo-management-export-query.schema";
 
-const CSV_HEADERS = ['ID', 'タイトル', '内容', 'カテゴリID', 'カテゴリ', 'ステータスID', 'ステータス', '優先度ID', '優先度', '期日', 'ユーザーID', 'ユーザー名', '作成日時', '更新日時'];
+const CSV_HEADERS = ['ID', 'タイトル', '内容', 'カテゴリID', 'カテゴリ', 'ステータスID', 'ステータス', '優先度ID', '優先度', '期日', 'ユーザー名', '作成日時', '更新日時'];
 
 /**
  * タスク管理CSVエクスポートサービス（管理者用）
@@ -35,7 +35,6 @@ export class GetTodoManagementExportService {
                 item.priorityId,
                 item.priorityName,
                 item.dueDate ?? '',
-                item.userId?.toString() ?? '',
                 item.userName,
                 item.createdAt,
                 item.updatedAt,

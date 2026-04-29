@@ -30,7 +30,7 @@ export async function downloadTodoManagementExport(searchParams: URLSearchParams
     const disposition = res.headers.get("Content-Disposition");
     const match = disposition?.match(/filename="(.+?)"/);
     const date = new Date().toISOString().slice(0, 19).replace(/[-T:]/g, '');
-    a.download = match?.[1] ?? `tasks_${date}.csv`;
+    a.download = match?.[1] ?? `tasks_management_${date}.csv`;
 
     document.body.appendChild(a);
     a.click();

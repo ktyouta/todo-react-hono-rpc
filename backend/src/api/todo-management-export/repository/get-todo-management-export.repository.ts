@@ -28,7 +28,6 @@ export class GetTodoManagementExportRepository implements IGetTodoManagementExpo
                 priorityId: sql<string>`coalesce(${priorityMaster.id}, '')`,
                 priorityName: sql<string>`coalesce(${priorityMaster.name}, 'なし')`,
                 dueDate: taskTransaction.dueDate,
-                userId: taskTransaction.userId,
                 userName: sql<string>`coalesce(${frontUserMaster.name}, '')`,
                 createdAt: taskTransaction.createdAt,
                 updatedAt: taskTransaction.updatedAt,
