@@ -1,6 +1,7 @@
 import Papa from "papaparse";
 import { CategoryType, StatusType } from "../../../domain";
 import { PriorityType } from "../../../domain/task-priority";
+import { parseDueDate } from "../../../util";
 import { IImportTodoManagementRepository, TaskResult } from "../repository/import-todo-management.repository.interface";
 
 const MIN_ROWS = 1;
@@ -184,9 +185,10 @@ export class ImportTodoManagementService {
     }
 
     // 期日
-    const dueDate = columns[COL.DUE_DATE].trim();
-    if (dueDate && !/^\d{4}-\d{2}-\d{2}$/.test(dueDate)) {
-      return "期日はYYYY-MM-DD形式で入力してください";
+    const rawDueDate = columns[COL.DUE_DATE].trim();
+    const dueDate = rawDueDate ? parseDueDate(rawDueDate) : '';
+    if (rawDueDate && !dueDate) {
+      return "期日はYYYY-MM-DD または YYYY/M/D 形式で入力してください";
     }
 
     // カテゴリがメモの場合はstatusId/priorityIdをnullにクリア

@@ -1,6 +1,7 @@
 import { getCategory } from "@/features/api/get-category";
 import { getPriority } from "@/features/api/get-priority";
 import { getStatus } from "@/features/api/get-status";
+import { parseDueDate } from "@/utils/date-util";
 import { useQueryClient } from "@tanstack/react-query";
 import Papa from "papaparse";
 import { useMemo, useState } from "react";
@@ -153,11 +154,11 @@ function validateCsvRow({ cols, idCounts, categoryIdList, statusIdList, priority
         }
     }
 
-    const dueDate = cols[COL.DUE_DATE]?.trim() ?? '';
-    if (dueDate && !/^\d{4}-\d{2}-\d{2}$/.test(dueDate)) {
+    const rawDueDate = cols[COL.DUE_DATE]?.trim() ?? '';
+    if (rawDueDate && !parseDueDate(rawDueDate)) {
         errorMsgList.push({
             col: COL.DUE_DATE,
-            message: `DD形式で入力してください`
+            message: `期日はYYYY-MM-DD または YYYY/M/D 形式で入力してください`
         });
     }
 
@@ -372,7 +373,10 @@ export function useTodoImport() {
                 categoryName: categoryMap.get(Number(cols[COL.CATEGORY_ID])) ?? '',
                 statusName: statusMap.get(Number(cols[COL.STATUS_ID])) ?? '',
                 priorityName: priorityMap.get(Number(cols[COL.PRIORITY_ID])) ?? '',
-                dueDate: cols[COL.DUE_DATE]?.trim() ?? '',
+                dueDate: (() => {
+                    const rawDueDate = cols[COL.DUE_DATE]?.trim() ?? '';
+                    return rawDueDate ? (parseDueDate(rawDueDate) ?? rawDueDate) : '';
+                })(),
                 createdAt: cols[COL.CREATED_AT]?.trim() ?? '',
                 updatedAt: cols[COL.UPDATED_AT]?.trim() ?? '',
                 isFavorite: cols[COL.IS_FAVORITE]?.trim() ?? '',

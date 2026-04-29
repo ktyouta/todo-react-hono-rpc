@@ -7,6 +7,7 @@ export const COL = {
     STATUS_ID: 5,
     PRIORITY_ID: 7,
     DUE_DATE: 9,
+    USER_NAME: 10,
     CREATED_AT: 11,
     UPDATED_AT: 12,
 } as const;

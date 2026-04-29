@@ -115,7 +115,8 @@ export function TodoImportDialogUpload({ isLoading, file, isDragging, isDescript
     const previewColumns = useMemo(() => buildPreviewColumns(errorCellMap), [errorCellMap]);
 
     return (
-        <div className="flex-1 overflow-y-auto px-6 py-6 flex flex-col gap-4">
+        <div className="flex-1 overflow-y-auto">
+            <div className="px-6 py-6 flex flex-col gap-4 min-h-full">
             {/* 説明セクション */}
             <div className="flex-none border border-gray-200 rounded-md">
                 <button
@@ -271,6 +272,7 @@ export function TodoImportDialogUpload({ isLoading, file, isDragging, isDescript
                         </div>
                     </div>
                 )}
+            </div>
             </div>
         </div>
     );

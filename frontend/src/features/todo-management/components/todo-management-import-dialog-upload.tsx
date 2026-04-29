@@ -92,6 +92,7 @@ function buildPreviewColumns(errorCellMap: Map<number, Set<number>>): TableProps
                 ? <InvalidCell />
                 : <span>{entry.dueDate || '—'}</span>
         },
+        { title: 'ユーザー', field: 'userName', className: 'w-[9%] whitespace-nowrap hidden md:table-cell', Cell: ({ entry }) => <span>{entry.userName}</span> },
         { title: '登録日', field: 'createdAt', className: 'w-[9%] whitespace-nowrap hidden md:table-cell', Cell: ({ entry }) => <span>{entry.createdAt.slice(0, 10)}</span> },
         { title: '更新日', field: 'updatedAt', className: 'w-[9%] whitespace-nowrap hidden md:table-cell', Cell: ({ entry }) => <span>{entry.updatedAt.slice(0, 10)}</span> },
     ];
@@ -107,7 +108,8 @@ export function TodoManagementImportDialogUpload({ isLoading, file, isDragging, 
     const previewColumns = useMemo(() => buildPreviewColumns(errorCellMap), [errorCellMap]);
 
     return (
-        <div className="flex-1 overflow-y-auto px-6 py-6 flex flex-col gap-4">
+        <div className="flex-1 overflow-y-auto">
+            <div className="px-6 py-6 flex flex-col gap-4 min-h-full">
             {/* 説明セクション */}
             <div className="flex-none border border-gray-200 rounded-md">
                 <button
@@ -263,6 +265,7 @@ export function TodoManagementImportDialogUpload({ isLoading, file, isDragging, 
                         </div>
                     </div>
                 )}
+            </div>
             </div>
         </div>
     );
