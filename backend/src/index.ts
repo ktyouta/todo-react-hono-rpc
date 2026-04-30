@@ -1,6 +1,6 @@
 import { Context, Hono } from "hono";
 import { cors } from "hono/cors";
-import { adminDashboardStats, category, frontUser, frontUserLogin, frontUserLogout, frontUserPassword, health, priority, refresh, roleManagement, sample, status, todo, todoBulkDelete, todoBulkUpdate, todoDeleted, todoDeletedBulkRestore, todoDeletedRestore, todoDeletedSubtask, todoExport, todoFavorite, todoImport, todoManagement, todoManagementBulkDelete, todoManagementBulkUpdate, todoManagementExport, todoManagementImport, todoManagementSubtask, todoStats, todoSubtask, todoTrash, todoTrashBulkRestore, todoTrashRestore, todoTrashSubtask, userDeleted, userDeletedBulkRestore, userDeletedRestore, userList, userManagement, userManagementBulkDelete, userManagementBulkRole, userManagementPassword, userManagementRole, verify } from "./api";
+import { adminDashboardStats, category, frontUser, frontUserLogin, frontUserLogout, frontUserPassword, health, priority, refresh, roleManagement, sample, status, todo, todoAssist, todoBulkDelete, todoBulkUpdate, todoDeleted, todoDeletedBulkRestore, todoDeletedRestore, todoDeletedSubtask, todoExport, todoFavorite, todoImport, todoManagement, todoManagementBulkDelete, todoManagementBulkUpdate, todoManagementExport, todoManagementImport, todoManagementSubtask, todoStats, todoSubtask, todoTrash, todoTrashBulkRestore, todoTrashRestore, todoTrashSubtask, userDeleted, userDeletedBulkRestore, userDeletedRestore, userList, userManagement, userManagementBulkDelete, userManagementBulkRole, userManagementPassword, userManagementRole, verify } from "./api";
 import { permissionList } from "./api/permission-list";
 import { roleList } from "./api/role-list";
 import {
@@ -92,6 +92,7 @@ const routes = app
   .route("/", userDeletedBulkRestore)
   .route("/", userDeleted)
   .route("/", userDeletedRestore)
+  .route("/", todoAssist)
 
 // RPC用の型エクスポート
 export type AppType = typeof routes;

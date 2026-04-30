@@ -1,20 +1,21 @@
 import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
 import { API_ENDPOINT, HTTP_STATUS } from "../../../constant";
-import { TaskContent, TaskTitle } from "../../../domain";
 import { authMiddleware } from "../../../middleware";
 import type { AppEnv } from "../../../types";
 import { formatZodErrors } from "../../../util";
-import { TodoAssistSchema } from "../schema/todo-assist-schema";
+import { TodoAssistSchema } from "../schema";
+import { TodoAssistService } from "../service";
+
 
 /**
  * タスク作成アシスト
- * @route GET /api/v1/todo-assist
+ * @route POST /api/v1/todo-assist
  */
-const todoAssist = new Hono<AppEnv>().get(
+const todoAssist = new Hono<AppEnv>().post(
     API_ENDPOINT.TODO_ASSIST,
     authMiddleware,
-    zValidator("query", TodoAssistSchema, (result, c) => {
+    zValidator("json", TodoAssistSchema, (result, c) => {
         if (!result.success) {
             const data = formatZodErrors(result.error);
             const message = data.map((e) => e.message);
@@ -22,18 +23,19 @@ const todoAssist = new Hono<AppEnv>().get(
         }
     }),
     async (c) => {
-        const body = c.req.valid("query");
-        //const ai = c.env.AI;
-        const taskTitle = new TaskTitle(body.title);
-        const taskContent = new TaskContent(body.content);
+        const service = new TodoAssistService(c.env.AI);
 
-        // const aiResult = await ai.run("@cf/meta/llama-3-8b-instruct", {
-        //     messages: [{ role: "user", content: `` }],
-        // });
+        // メッセージ作成
+        const userMessage = service.buildUserMessage(c.req.valid("json"));
 
-        return c.json({ message: "タスク案を生成しました。", data: '' }, HTTP_STATUS.CREATED);
+        // AIテキストを出力
+        const rawText = await service.assist(userMessage);
+
+        // 出力テキストをパース
+        const assisted = service.parseAiResponse(rawText);
+
+        return c.json({ message: "タスク案を生成しました。", data: assisted }, HTTP_STATUS.OK);
     }
 );
 
 export { todoAssist };
-
