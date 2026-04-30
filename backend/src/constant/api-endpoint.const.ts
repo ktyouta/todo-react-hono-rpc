@@ -56,6 +56,7 @@ export const API_ENDPOINT = {
   TODO_MANAGEMENT_EXPORT: "/api/v1/todo-management-export",
   TODO_IMPORT: "/api/v1/todo-import",
   TODO_MANAGEMENT_IMPORT: "/api/v1/todo-management-import",
+  TODO_ASSIST: "/api/v1/todo-assist",
 } as const;
 
 export type ApiEndpointType = (typeof API_ENDPOINT)[keyof typeof API_ENDPOINT];

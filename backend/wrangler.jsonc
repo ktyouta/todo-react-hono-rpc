@@ -3,7 +3,9 @@
   "name": "todo-react-hono-rpc-backend",
   "main": "src/index.ts",
   "compatibility_date": "2025-12-31",
-
+  "ai": {
+    "binding": "AI"
+  },
   // ──────────────────────────────────────
   // デフォルト（ローカル開発用）
   // wrangler dev で使用される設定
