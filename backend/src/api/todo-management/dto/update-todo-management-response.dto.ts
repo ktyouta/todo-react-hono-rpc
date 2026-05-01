@@ -6,7 +6,7 @@ import { TaskEntity } from "../entity/task.entity";
  */
 export type UpdateTodoManagementResponseType = {
     title: string;
-    content: string;
+    content: string | null;
     category: CategoryType;
     status: StatusType | null;
 };

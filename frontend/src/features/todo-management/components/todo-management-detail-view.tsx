@@ -82,8 +82,8 @@ export function TodoManagementDetailView(props: PropsType) {
                         {task.categoryId === CATEGORY_ID.TASK && <p className="text-base text-gray-500">タスク内容</p>}
                         {task.categoryId === CATEGORY_ID.MEMO && <p className="text-base text-gray-500">メモ内容</p>}
                     </div>
-                    <p className="w-full min-h-[450px] text-lg whitespace-pre-wrap leading-relaxed text-gray-800 break-words">
-                        {task.content}
+                    <p className={`w-full min-h-[450px] text-lg whitespace-pre-wrap leading-relaxed break-words ${task.content ? "text-gray-800" : "text-gray-400"}`}>
+                        {task.content ?? "なし"}
                     </p>
                     <div className="flex flex-col sm:flex-row gap-4 sm:gap-[3%] pt-[20px] mt-[20px] border-t border-[#e8e8e8]">
                         <div className="flex flex-1 items-center gap-2 sm:max-w-[48%]">

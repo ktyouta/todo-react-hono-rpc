@@ -25,7 +25,7 @@ export type ValidatedManagementRow = {
   rowNumber: number;
   id: number;
   title: string;
-  content: string;
+  content: string | null;
   categoryId: number;
   statusId: number | null;
   priorityId: number | null;
@@ -159,10 +159,7 @@ export class ImportTodoManagementService {
 
     // 内容
     const rawContent = columns[COL.CONTENT]?.trim();
-    if (!rawContent) {
-      return "内容を入力してください"
-    }
-    if (rawContent.length > 2000) {
+    if (rawContent && rawContent.length > 2000) {
       return "内容は2000文字以内で入力してください";
     }
 
@@ -198,7 +195,7 @@ export class ImportTodoManagementService {
       rowNumber,
       id,
       title,
-      content: rawContent,
+      content: rawContent || null,
       categoryId,
       statusId: isMemo ? null : statusId,
       priorityId: isMemo ? null : priorityId,

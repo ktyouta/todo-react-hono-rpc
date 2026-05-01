@@ -1,15 +1,10 @@
 export class TaskContent {
 
     // タスク内容
-    private readonly _value: string;
+    private readonly _value: string | null;
 
-    constructor(content: string) {
-
-        if (!content) {
-            throw Error(`タスク内容が存在しません。`);
-        }
-
-        this._value = content;
+    constructor(content: string | undefined) {
+        this._value = content || null;
     }
 
     get value() {
