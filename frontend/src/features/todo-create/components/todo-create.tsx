@@ -5,6 +5,7 @@ import { PriorityReturnType } from "@/features/api/get-priority";
 import { StatusReturnType } from "@/features/api/get-status";
 import { BaseSyntheticEvent } from "react";
 import { Control, Controller, FieldErrors, UseFormRegister } from "react-hook-form";
+import { TodoAssistResultType } from "../api/todo-assist";
 import { TodoCreateRequestType } from "../types/todo-create-request-type";
 
 type PropsType = {
@@ -18,6 +19,12 @@ type PropsType = {
     priorityList: PriorityReturnType;
     selectedCategoryId: number;
     isLoading: boolean;
+    assistResult: TodoAssistResultType | null;
+    isAssistLoading: boolean;
+    isAssistEnabled: boolean;
+    clickAssist: () => void;
+    applyAssist: () => void;
+    cancelAssist: () => void;
 }
 
 export function TodoCreate(props: PropsType) {
@@ -32,7 +39,14 @@ export function TodoCreate(props: PropsType) {
         categoryList,
         priorityList,
         selectedCategoryId,
-        isLoading, } = props;
+        isLoading,
+        assistResult,
+        isAssistLoading,
+        isAssistEnabled,
+        clickAssist,
+        applyAssist,
+        cancelAssist,
+    } = props;
 
     return (
         <div className="w-full min-h-full">
@@ -84,7 +98,49 @@ export function TodoCreate(props: PropsType) {
                     {errors.content?.message && (
                         <p className="text-red-500 pl-1 mt-2">{errors.content.message}</p>
                     )}
-                    <div className="flex flex-col sm:flex-row gap-4 sm:gap-[3%] mt-[25px] pt-[20px] border-t border-[#e8e8e8]">
+                    <div className="flex justify-end mt-2">
+                        <Button
+                            colorType="blue"
+                            sizeType="medium"
+                            onClick={clickAssist}
+                            disabled={!isAssistEnabled || isAssistLoading}
+                            className="disabled:opacity-70"
+                        >
+                            {isAssistLoading ? "生成中..." : "AIで整える"}
+                        </Button>
+                    </div>
+                    {assistResult && (
+                        <div className="mt-3 p-3 border border-blue-200 rounded bg-blue-50 flex flex-col gap-3">
+                            <p className="text-base font-bold text-blue-600 mb-2">AI提案</p>
+                            <div className="mb-2">
+                                <span className="text-base text-gray-500">タイトル</span>
+                                <p className="text-base mt-0.5">{assistResult.title}</p>
+                            </div>
+                            <div className="mb-2">
+                                <span className="text-base text-gray-500">詳細</span>
+                                <p className="text-base mt-0.5 whitespace-pre-wrap">{assistResult.content}</p>
+                            </div>
+                            <div className="flex justify-end gap-2">
+                                <Button
+                                    colorType="green"
+                                    sizeType="medium"
+                                    className="bg-gray-400 hover:bg-gray-500"
+                                    onClick={cancelAssist}
+                                >
+                                    キャンセル
+                                </Button>
+                                <Button
+                                    colorType="green"
+                                    sizeType="medium"
+                                    className="bg-cyan-500 hover:bg-cyan-600"
+                                    onClick={applyAssist}
+                                >
+                                    適用する
+                                </Button>
+                            </div>
+                        </div>
+                    )}
+                    <div className="flex flex-col sm:flex-row gap-4 sm:gap-[3%] mt-[15px] pt-[20px] border-t border-[#e8e8e8]">
                         <div className="flex flex-1 items-center gap-2 sm:max-w-[48%]">
                             <span className="whitespace-nowrap w-[5em]">カテゴリ</span>
                             <Select

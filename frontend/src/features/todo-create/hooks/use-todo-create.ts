@@ -7,12 +7,13 @@ import { useAppNavigation } from "@/hooks/use-app-navigation";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { useCreateTodoMutation } from "../api/create-todo";
+import { TodoAssistResultType, useTodoAssistMutation } from "../api/todo-assist";
 import { TODO_CREATE_FORM_DEFAULT_VALUES, useTodoCreateForm } from "./use-todo-create.form";
 
 export function useTodoCreate() {
 
     // 入力フォーム用
-    const { register, control, handleSubmit, formState: { errors }, reset, watch } = useTodoCreateForm();
+    const { register, control, handleSubmit, formState: { errors }, reset, watch, setValue, getValues } = useTodoCreateForm();
     // ステータスリスト
     const { data: status } = getStatus();
     // カテゴリリスト
@@ -22,6 +23,8 @@ export function useTodoCreate() {
     // 作成完了状態
     const [isCompleted, setIsCompleted] = useState(false);
     const [createdTitle, setCreatedTitle] = useState("");
+    // AI提案の結果
+    const [assistResult, setAssistResult] = useState<TodoAssistResultType | null>(null);
     // タスク作成リクエスト
     const postMutation = useCreateTodoMutation({
         onSuccess: (response) => {
@@ -32,16 +35,31 @@ export function useTodoCreate() {
             toast.error(errMessage);
         }
     });
+    // AIアシストリクエスト
+    const assistMutation = useTodoAssistMutation({
+        onSuccess: (data) => {
+            setAssistResult(data);
+        },
+        onError: (errMessage) => {
+            toast.error(errMessage);
+        }
+    });
     // 選択中のカテゴリID
     const selectedCategoryId = watch("category");
+    // AIで整えるボタンの活性判定用
+    const watchedTitle = watch("title");
+    const watchedContent = watch("content");
     // ルーティング用
     const { appNavigate } = useAppNavigation();
+    // AIで整形ボタン活性フラグ
+    const isAssistEnabled = !!(watchedTitle?.trim() || watchedContent?.trim());
 
     /**
      * クリアボタン押下
      */
     function clickClear() {
         reset(TODO_CREATE_FORM_DEFAULT_VALUES);
+        setAssistResult(null);
     };
 
     /**
@@ -75,6 +93,41 @@ export function useTodoCreate() {
         appNavigate(paths.todo.path);
     }
 
+    /**
+     * AIで整えるボタン押下
+     */
+    function clickAssist() {
+        const { title, content } = getValues();
+
+        if (!isAssistEnabled) {
+            return;
+        }
+
+        assistMutation.mutate({
+            title: title,
+            content: content,
+        });
+    }
+
+    /**
+     * AI提案をフォームに適用
+     */
+    function applyAssist() {
+        if (!assistResult) {
+            return;
+        }
+        setValue("title", assistResult.title);
+        setValue("content", assistResult.content);
+        setAssistResult(null);
+    }
+
+    /**
+     * AI提案をキャンセル
+     */
+    function cancelAssist() {
+        setAssistResult(null);
+    }
+
     return {
         register,
         control,
@@ -90,5 +143,11 @@ export function useTodoCreate() {
         isCompleted,
         createdTitle,
         clickGoToList,
+        assistResult,
+        isAssistLoading: assistMutation.isPending,
+        isAssistEnabled,
+        clickAssist,
+        applyAssist,
+        cancelAssist,
     };
 }

@@ -1,0 +1,33 @@
+import { rpc } from '@/lib/rpc-client';
+import { useMutation } from '@tanstack/react-query';
+import type { InferRequestType, InferResponseType } from 'hono/client';
+
+const endpoint = rpc.api.v1["todo-assist"].$post;
+
+export type TodoAssistResultType = InferResponseType<typeof endpoint, 200>['data'];
+type RequestType = InferRequestType<typeof endpoint>['json'];
+
+type PropsType = {
+    onSuccess: (data: TodoAssistResultType) => void;
+    onError: (message: string) => void;
+};
+
+export function useTodoAssistMutation(props: PropsType) {
+    return useMutation({
+        mutationFn: async (data: RequestType) => {
+            const res = await endpoint({ json: data });
+            if (!res.ok) {
+                const error = await res.json();
+                throw new Error(error.message);
+            }
+            const json = await res.json();
+            return json.data;
+        },
+        onSuccess: (data) => {
+            props.onSuccess(data);
+        },
+        onError: (error: Error) => {
+            props.onError(error.message);
+        },
+    });
+}
