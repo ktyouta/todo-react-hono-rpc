@@ -34,6 +34,9 @@ const todoAssist = new Hono<AppEnv>().post(
         // 出力テキストをパース
         const assisted = service.parseAiResponse(rawText);
 
+        // AI出力の安全チェック
+        await service.checkOutput(assisted);
+
         return c.json({ message: "タスク案を生成しました。", data: assisted }, HTTP_STATUS.OK);
     }
 );
