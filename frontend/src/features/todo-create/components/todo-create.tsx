@@ -1,11 +1,11 @@
-import { Button, DatePicker, LoadingOverlay, Select, Textarea, Textbox } from "@/components";
+import { Button, DatePicker, LoadingOverlay, Select, Spinner, Textarea, Textbox } from "@/components";
 import { CATEGORY_ID } from "@/constants/master";
 import { CategoryReturnType } from "@/features/api/get-category";
 import { PriorityReturnType } from "@/features/api/get-priority";
 import { StatusReturnType } from "@/features/api/get-status";
 import { BaseSyntheticEvent } from "react";
 import { Control, Controller, FieldErrors, UseFormRegister } from "react-hook-form";
-import { TodoAssistResultType } from "../api/todo-assist";
+import { TodoAssistResponseType } from "../api/todo-assist";
 import { TodoCreateRequestType } from "../types/todo-create-request-type";
 
 type PropsType = {
@@ -19,7 +19,7 @@ type PropsType = {
     priorityList: PriorityReturnType;
     selectedCategoryId: number;
     isLoading: boolean;
-    assistResult: TodoAssistResultType | null;
+    assistResult: TodoAssistResponseType | null;
     isAssistLoading: boolean;
     isAssistEnabled: boolean;
     clickAssist: () => void;
@@ -110,33 +110,47 @@ export function TodoCreate(props: PropsType) {
                         </Button>
                     </div>
                     {assistResult && (
-                        <div className="mt-3 p-3 border border-blue-200 rounded bg-blue-50 flex flex-col gap-3">
+                        <div className={`mt-3 p-3 border border-blue-200 rounded bg-blue-50 flex flex-col gap-3 relative transition-opacity duration-200 ${isAssistLoading ? "opacity-60 pointer-events-none" : ""}`}>
+                            {isAssistLoading && (
+                                <div className="absolute inset-0 flex items-center justify-center">
+                                    <Spinner size={28} />
+                                </div>
+                            )}
                             <p className="text-base font-bold text-blue-600 mb-2">AI提案</p>
-                            <div className="mb-2">
-                                <span className="text-base text-gray-500">タイトル</span>
-                                <p className="text-base mt-0.5">{assistResult.title}</p>
-                            </div>
-                            <div className="mb-2">
-                                <span className="text-base text-gray-500">詳細</span>
-                                <p className="text-base mt-0.5 whitespace-pre-wrap">{assistResult.content}</p>
-                            </div>
-                            <div className="flex justify-end gap-2">
-                                <Button
-                                    colorType="green"
-                                    sizeType="medium"
-                                    className="bg-gray-400 hover:bg-gray-500"
-                                    onClick={cancelAssist}
-                                >
-                                    キャンセル
-                                </Button>
-                                <Button
-                                    colorType="green"
-                                    sizeType="medium"
-                                    className="bg-cyan-500 hover:bg-cyan-600"
-                                    onClick={applyAssist}
-                                >
-                                    適用する
-                                </Button>
+                            <div className="flex flex-col gap-5">
+                                {assistResult.canApply ? (
+                                    <>
+                                        <div>
+                                            <span className="text-base text-gray-500">タイトル</span>
+                                            <p className="text-base mt-0.5">{assistResult.data.title}</p>
+                                        </div>
+                                        <div>
+                                            <span className="text-base text-gray-500">詳細</span>
+                                            <p className="text-base mt-0.5 whitespace-pre-wrap">{assistResult.data.content}</p>
+                                        </div>
+                                    </>
+                                ) : (
+                                    <p className="text-base text-gray-600">{assistResult.data.content}</p>
+                                )}
+                                <div className="flex justify-end gap-2">
+                                    <Button
+                                        colorType="green"
+                                        sizeType="medium"
+                                        className="bg-gray-400 hover:bg-gray-500"
+                                        onClick={cancelAssist}
+                                    >
+                                        キャンセル
+                                    </Button>
+                                    <Button
+                                        colorType="green"
+                                        sizeType="medium"
+                                        className="bg-cyan-500 hover:bg-cyan-600 disabled:opacity-50"
+                                        disabled={!assistResult.canApply}
+                                        onClick={applyAssist}
+                                    >
+                                        適用する
+                                    </Button>
+                                </div>
                             </div>
                         </div>
                     )}

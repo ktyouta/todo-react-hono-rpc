@@ -7,7 +7,7 @@ import { useAppNavigation } from "@/hooks/use-app-navigation";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { useCreateTodoMutation } from "../api/create-todo";
-import { TodoAssistResultType, useTodoAssistMutation } from "../api/todo-assist";
+import { TodoAssistResponseType, useTodoAssistMutation } from "../api/todo-assist";
 import { TODO_CREATE_FORM_DEFAULT_VALUES, useTodoCreateForm } from "./use-todo-create.form";
 
 export function useTodoCreate() {
@@ -22,9 +22,10 @@ export function useTodoCreate() {
     const { data: priority } = getPriority();
     // 作成完了状態
     const [isCompleted, setIsCompleted] = useState(false);
+    // タスク作成後のタイトル
     const [createdTitle, setCreatedTitle] = useState("");
     // AI提案の結果
-    const [assistResult, setAssistResult] = useState<TodoAssistResultType | null>(null);
+    const [assistResult, setAssistResult] = useState<TodoAssistResponseType | null>(null);
     // タスク作成リクエスト
     const postMutation = useCreateTodoMutation({
         onSuccess: (response) => {
@@ -32,15 +33,17 @@ export function useTodoCreate() {
             setIsCompleted(true);
         },
         onError: (errMessage) => {
+            setAssistResult(null);
             toast.error(errMessage);
         }
     });
     // AIアシストリクエスト
     const assistMutation = useTodoAssistMutation({
-        onSuccess: (data) => {
-            setAssistResult(data);
+        onSuccess: (response) => {
+            setAssistResult(response);
         },
         onError: (errMessage) => {
+            setAssistResult(null);
             toast.error(errMessage);
         }
     });
@@ -113,12 +116,11 @@ export function useTodoCreate() {
      * AI提案をフォームに適用
      */
     function applyAssist() {
-        if (!assistResult) {
+        if (!assistResult || !assistResult.canApply) {
             return;
         }
-        setValue("title", assistResult.title);
-        setValue("content", assistResult.content);
-        setAssistResult(null);
+        setValue("title", assistResult.data.title);
+        setValue("content", assistResult.data.content);
     }
 
     /**

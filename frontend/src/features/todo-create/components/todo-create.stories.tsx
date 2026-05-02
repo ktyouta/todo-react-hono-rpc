@@ -35,7 +35,7 @@ export const Default: Story = {
     render: () => {
         const { register, control, formState: { errors } } = useForm<{
             title: string;
-            content: string;
+            content?: string;
             category: number;
             status?: number;
             priority?: number;
@@ -64,6 +64,12 @@ export const Default: Story = {
                 priorityList={priorityList}
                 selectedCategoryId={1}
                 isLoading={false}
+                assistResult={null}
+                isAssistLoading={false}
+                isAssistEnabled={false}
+                clickAssist={() => {}}
+                applyAssist={() => {}}
+                cancelAssist={() => {}}
             />
         );
     },
@@ -73,7 +79,7 @@ export const WithValidationErrors: Story = {
     render: () => {
         const { register, control, formState: { errors }, setError } = useForm<{
             title: string;
-            content: string;
+            content?: string;
             category: number;
             status?: number;
             priority?: number;
@@ -106,6 +112,12 @@ export const WithValidationErrors: Story = {
                 priorityList={priorityList}
                 selectedCategoryId={1}
                 isLoading={false}
+                assistResult={null}
+                isAssistLoading={false}
+                isAssistEnabled={false}
+                clickAssist={() => {}}
+                applyAssist={() => {}}
+                cancelAssist={() => {}}
             />
         );
     },

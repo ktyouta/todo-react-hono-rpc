@@ -4,11 +4,11 @@ import type { InferRequestType, InferResponseType } from 'hono/client';
 
 const endpoint = rpc.api.v1["todo-assist"].$post;
 
-export type TodoAssistResultType = InferResponseType<typeof endpoint, 200>['data'];
+export type TodoAssistResponseType = InferResponseType<typeof endpoint, 200>;
 type RequestType = InferRequestType<typeof endpoint>['json'];
 
 type PropsType = {
-    onSuccess: (data: TodoAssistResultType) => void;
+    onSuccess: (response: TodoAssistResponseType) => void;
     onError: (message: string) => void;
 };
 
@@ -20,11 +20,10 @@ export function useTodoAssistMutation(props: PropsType) {
                 const error = await res.json();
                 throw new Error(error.message);
             }
-            const json = await res.json();
-            return json.data;
+            return await res.json();
         },
-        onSuccess: (data) => {
-            props.onSuccess(data);
+        onSuccess: (response) => {
+            props.onSuccess(response);
         },
         onError: (error: Error) => {
             props.onError(error.message);

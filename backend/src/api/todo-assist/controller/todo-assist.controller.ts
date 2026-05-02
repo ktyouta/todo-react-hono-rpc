@@ -35,9 +35,15 @@ const todoAssist = new Hono<AppEnv>().post(
         const assisted = service.parseAiResponse(rawText);
 
         // AI出力の安全チェック
-        await service.checkOutput(assisted);
+        const isSafe = await service.checkOutput(assisted);
+        if (!isSafe) {
+            return c.json(
+                { message: "タスク案を生成しました。", data: { title: "", content: "その質問にはお答えできません。" }, canApply: false },
+                HTTP_STATUS.OK
+            );
+        }
 
-        return c.json({ message: "タスク案を生成しました。", data: assisted }, HTTP_STATUS.OK);
+        return c.json({ message: "タスク案を生成しました。", data: assisted, canApply: true }, HTTP_STATUS.OK);
     }
 );
 
