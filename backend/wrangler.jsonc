@@ -4,7 +4,8 @@
   "main": "src/index.ts",
   "compatibility_date": "2025-12-31",
   "ai": {
-    "binding": "AI"
+    "binding": "AI",
+    "remote": true
   },
   // ──────────────────────────────────────
   // デフォルト（ローカル開発用）
