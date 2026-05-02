@@ -1,5 +1,6 @@
 import { Button, Pagination, Table } from "@/components";
 import { TableProps } from "@/components/ui/table/table";
+import { getDueDateStatus } from "@/utils/due-date-status";
 import { SubtaskListDataType } from "../api/get-subtask-list";
 import { SubtaskCard } from "./subtask-card";
 
@@ -16,9 +17,29 @@ type PropsType = {
 const columns: TableProps<SubtaskListDataType[number]>['columns'] = [
     { title: 'ID', field: 'id', className: 'w-[6%] whitespace-nowrap pl-4' },
     { title: 'タイトル', field: 'title', Cell: ({ entry }) => <span className="whitespace-nowrap">{entry.title}</span>, },
-    { title: 'ステータス', field: 'statusName', className: 'w-[10%] whitespace-nowrap' },
-    { title: '優先度', field: 'priorityName', className: 'w-[10%] whitespace-nowrap' },
-    { title: '期限', field: 'dueDate', className: 'w-[9%] whitespace-nowrap', Cell: ({ entry }) => <span>{entry.dueDate ?? '-'}</span>, },
+    { title: 'カテゴリ', field: 'categoryName', className: 'w-[9%] whitespace-nowrap' },
+    { title: 'ステータス', field: 'statusName', className: 'w-[9%] whitespace-nowrap' },
+    { title: '優先度', field: 'priorityName', className: 'w-[9%] whitespace-nowrap' },
+    {
+        title: '期限日', field: 'dueDate', className: 'w-[9%] whitespace-nowrap', Cell: ({ entry }) => {
+            if (!entry.dueDate) {
+                return <span>—</span>;
+            }
+
+            const status = getDueDateStatus(entry.dueDate);
+            const dateStr = entry.dueDate;
+
+            if (status === 'overdue') {
+                return <span className="text-red-600">{dateStr}</span>;
+            }
+
+            if (status === 'warning') {
+                return <span className="text-amber-500">{dateStr}</span>;
+            }
+
+            return <span>{dateStr}</span>;
+        }
+    },
     { title: '登録日', field: 'createdAt', className: 'w-[9%] whitespace-nowrap hidden md:table-cell', Cell: ({ entry }) => <span>{entry.createdAt.slice(0, 10)}</span> },
     { title: '更新日', field: 'updatedAt', className: 'w-[9%] whitespace-nowrap hidden md:table-cell', Cell: ({ entry }) => <span>{entry.updatedAt.slice(0, 10)}</span> },
 ];
