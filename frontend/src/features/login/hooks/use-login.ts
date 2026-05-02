@@ -2,6 +2,7 @@ import { LoginUserContext, SetLoginUserContext } from '@/app/components/login-us
 import { paths } from '@/config/paths';
 import { useAppNavigation } from '@/hooks/use-app-navigation';
 import { updateAccessToken } from '@/stores/access-token-store';
+import { useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useLoginMutation } from '../api/login';
@@ -21,6 +22,8 @@ export function useLogin() {
     const loginUser = LoginUserContext.useCtx();
     // ルーティング用
     const { appNavigate } = useAppNavigation();
+    // QueryClientインスタンス
+    const queryClient = useQueryClient();
     // リダイレクト先
     const [searchParams] = useSearchParams();
     const redirectTo = searchParams.get('redirectTo') || paths.home.path;
@@ -34,6 +37,8 @@ export function useLogin() {
             const data = res.data;
             setLoginUserInfo(data.user);
             updateAccessToken(data.accessToken);
+            // 前セッションのエラーキャッシュを除去するため全キャッシュをクリア
+            queryClient.clear();
             appNavigate(redirectTo);
         },
         // 失敗後の処理
