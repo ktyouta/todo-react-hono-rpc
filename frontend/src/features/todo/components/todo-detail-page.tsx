@@ -1,4 +1,5 @@
 import { Loading, NotFound } from "@/components";
+import { ScrollToTopButton } from "@/components/ui/scroll-to-top-button/scroll-to-top-button";
 import { Suspense } from "react";
 import { useTaskId } from "../hooks/use-task-id";
 import { TodoDetailContainer } from "./todo-detail-container";
@@ -18,6 +19,7 @@ export function TodoDetailPage() {
             >
                 <TodoDetailContainer />
             </Suspense>
+            <ScrollToTopButton />
         </div>
     );
 }

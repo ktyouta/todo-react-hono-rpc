@@ -1,4 +1,5 @@
 import { Loading, NotFound } from "@/components";
+import { ScrollToTopButton } from "@/components/ui/scroll-to-top-button/scroll-to-top-button";
 import { Suspense } from "react";
 import { useUserManagementId } from "../hooks/use-user-management-id";
 import { UserManagementDetailContainer } from "./user-management-detail-container";
@@ -11,8 +12,11 @@ export function UserManagementDetailPage() {
     }
 
     return (
-        <Suspense fallback={<Loading />}>
-            <UserManagementDetailContainer />
-        </Suspense>
+        <>
+            <Suspense fallback={<Loading />}>
+                <UserManagementDetailContainer />
+            </Suspense>
+            <ScrollToTopButton />
+        </>
     );
 }

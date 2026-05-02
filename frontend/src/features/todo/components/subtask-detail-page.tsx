@@ -1,4 +1,5 @@
 import { Loading, NotFound } from "@/components";
+import { ScrollToTopButton } from "@/components/ui/scroll-to-top-button/scroll-to-top-button";
 import { Suspense } from "react";
 import { useSubtaskId } from "../hooks/use-subtask-id";
 import { useTaskId } from "../hooks/use-task-id";
@@ -18,6 +19,7 @@ export function SubtaskDetailPage() {
             <Suspense fallback={<Loading className="w-full min-h-full" />}>
                 <SubtaskDetailContainer />
             </Suspense>
+            <ScrollToTopButton />
         </div>
     );
 }
