@@ -3,6 +3,7 @@ import { CATEGORY_ID } from "@/constants/master";
 import { getCategory } from "@/features/api/get-category";
 import { getPriority } from "@/features/api/get-priority";
 import { getStatus } from "@/features/api/get-status";
+import { TodoAssistResponseType, useTodoAssistMutation } from "@/features/api/todo-assist";
 import { useAppNavigation } from "@/hooks/use-app-navigation";
 import { useSwitch } from "@/hooks/use-switch";
 import { useState } from "react";
@@ -36,9 +37,16 @@ export function useSubtaskDetail() {
     // 削除確認ダイアログ
     const deleteDialog = useSwitch();
     // フォーム
-    const { register, control, handleSubmit, formState: { errors }, reset, watch } = useSubtaskUpdateForm({ task });
+    const { register, control, handleSubmit, formState: { errors }, reset, watch, getValues, setValue } = useSubtaskUpdateForm({ task });
     // 選択中のカテゴリ
     const selectedCategoryId = watch("category");
+    // AIで整えるボタンの活性判定用
+    const watchedTitle = watch("title");
+    const watchedContent = watch("content");
+    // AIで整形ボタン活性フラグ
+    const isAssistEnabled = !!(watchedTitle?.trim() || watchedContent?.trim());
+    // AI提案の結果
+    const [assistResult, setAssistResult] = useState<TodoAssistResponseType | null>(null);
     // サブタスク更新ミューテーション
     const updateSubtaskMutation = useUpdateSubtaskMutation({
         taskId,
@@ -62,6 +70,16 @@ export function useSubtaskDetail() {
         onError: (message) => {
             toast.error(message ?? `サブタスクの削除に失敗しました。時間をおいて再度お試しください。`);
         },
+    });
+    // AIアシストリクエスト
+    const assistMutation = useTodoAssistMutation({
+        onSuccess: (response) => {
+            setAssistResult(response);
+        },
+        onError: (errMessage) => {
+            setAssistResult(null);
+            toast.error(errMessage);
+        }
     });
 
     /**
@@ -128,6 +146,41 @@ export function useSubtaskDetail() {
         deleteSubtaskMutation.mutate();
     }
 
+
+    /**
+     * AIで整えるボタン押下
+     */
+    function clickAssist() {
+        const { title, content } = getValues();
+
+        if (!isAssistEnabled) {
+            return;
+        }
+
+        assistMutation.mutate({
+            title: title,
+            content: content,
+        });
+    }
+
+    /**
+     * AI提案をフォームに適用
+     */
+    function applyAssist() {
+        if (!assistResult || !assistResult.canApply) {
+            return;
+        }
+        setValue("title", assistResult.data.title);
+        setValue("content", assistResult.data.content);
+    }
+
+    /**
+     * AI提案をキャンセル
+     */
+    function cancelAssist() {
+        setAssistResult(null);
+    }
+
     return {
         task,
         statusList: status.data,
@@ -147,5 +200,11 @@ export function useSubtaskDetail() {
         errors,
         selectedCategoryId,
         isLoading: updateSubtaskMutation.isPending || deleteSubtaskMutation.isPending,
+        assistResult,
+        isAssistLoading: assistMutation.isPending,
+        isAssistEnabled,
+        clickAssist,
+        applyAssist,
+        cancelAssist,
     };
 }

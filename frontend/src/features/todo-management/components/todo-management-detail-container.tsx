@@ -21,8 +21,16 @@ export function TodoManagementDetailContainer() {
     }
 
     if (props.isEditMode) {
-        return <TodoManagementDetailEdit {...props} />;
+        return (
+            <TodoManagementDetailEdit
+                {...props}
+            />
+        )
     }
 
-    return <TodoManagementDetailView {...props} />;
+    return (
+        <TodoManagementDetailView
+            {...props}
+        />
+    )
 }

@@ -5,7 +5,7 @@ import { PriorityReturnType } from "@/features/api/get-priority";
 import { StatusReturnType } from "@/features/api/get-status";
 import { BaseSyntheticEvent } from "react";
 import { Control, Controller, FieldErrors, UseFormRegister } from "react-hook-form";
-import { TodoAssistResponseType } from "../api/todo-assist";
+import { TodoAssistResponseType } from "../../api/todo-assist";
 import { TodoCreateRequestType } from "../types/todo-create-request-type";
 
 type PropsType = {

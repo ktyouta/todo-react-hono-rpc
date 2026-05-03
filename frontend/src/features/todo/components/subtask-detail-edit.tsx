@@ -1,8 +1,9 @@
-import { Button, DatePicker, LoadingOverlay, Select, Textarea, Textbox } from "@/components";
+import { Button, DatePicker, LoadingOverlay, Select, Spinner, Textarea, Textbox } from "@/components";
 import { CATEGORY_ID } from "@/constants/master";
 import { CategoryReturnType } from "@/features/api/get-category";
 import { PriorityReturnType } from "@/features/api/get-priority";
 import { StatusReturnType } from "@/features/api/get-status";
+import { TodoAssistResponseType } from "@/features/api/todo-assist";
 import { getFormatDatetime } from "@/utils/date-util";
 import { BaseSyntheticEvent } from "react";
 import { Control, Controller, FieldErrors, UseFormRegister } from "react-hook-form";
@@ -23,6 +24,12 @@ type PropsType = {
     errors: FieldErrors<TodoDetailEditType>;
     selectedCategoryId: number;
     isLoading: boolean;
+    assistResult: TodoAssistResponseType | null;
+    isAssistLoading: boolean;
+    isAssistEnabled: boolean;
+    clickAssist: () => void;
+    applyAssist: () => void;
+    cancelAssist: () => void;
 };
 
 export function SubtaskDetailEdit(props: PropsType) {
@@ -39,6 +46,12 @@ export function SubtaskDetailEdit(props: PropsType) {
         errors,
         selectedCategoryId,
         isLoading,
+        assistResult,
+        isAssistLoading,
+        isAssistEnabled,
+        clickAssist,
+        applyAssist,
+        cancelAssist,
     } = props;
 
     return (
@@ -125,6 +138,62 @@ export function SubtaskDetailEdit(props: PropsType) {
                     />
                     {errors.content?.message && (
                         <p className="text-red-500 pl-1 mt-2">{errors.content.message}</p>
+                    )}
+                    <div className="flex justify-end mt-2">
+                        <Button
+                            colorType="blue"
+                            sizeType="medium"
+                            onClick={clickAssist}
+                            disabled={!isAssistEnabled || isAssistLoading}
+                            className="disabled:opacity-70"
+                        >
+                            {isAssistLoading ? "生成中..." : "AIで整える"}
+                        </Button>
+                    </div>
+                    {assistResult && (
+                        <div className={`mt-3 p-3 border border-blue-200 rounded bg-blue-50 flex flex-col gap-3 relative transition-opacity duration-200 ${isAssistLoading ? "opacity-60 pointer-events-none" : ""}`}>
+                            {isAssistLoading && (
+                                <div className="absolute inset-0 flex items-center justify-center">
+                                    <Spinner size={28} />
+                                </div>
+                            )}
+                            <p className="text-base font-bold text-blue-600 mb-2">AI提案</p>
+                            <div className="flex flex-col gap-5">
+                                {assistResult.canApply ? (
+                                    <>
+                                        <div>
+                                            <span className="text-base text-gray-500">タイトル</span>
+                                            <p className="text-base mt-0.5">{assistResult.data.title}</p>
+                                        </div>
+                                        <div>
+                                            <span className="text-base text-gray-500">詳細</span>
+                                            <p className="text-base mt-0.5 whitespace-pre-wrap">{assistResult.data.content}</p>
+                                        </div>
+                                    </>
+                                ) : (
+                                    <p className="text-base text-gray-600">{assistResult.data.content}</p>
+                                )}
+                                <div className="flex justify-end gap-2">
+                                    <Button
+                                        colorType="green"
+                                        sizeType="medium"
+                                        className="bg-gray-400 hover:bg-gray-500"
+                                        onClick={cancelAssist}
+                                    >
+                                        キャンセル
+                                    </Button>
+                                    <Button
+                                        colorType="green"
+                                        sizeType="medium"
+                                        className="bg-cyan-500 hover:bg-cyan-600 disabled:opacity-50"
+                                        disabled={!assistResult.canApply}
+                                        onClick={applyAssist}
+                                    >
+                                        適用する
+                                    </Button>
+                                </div>
+                            </div>
+                        </div>
                     )}
                     <div className="flex flex-col sm:flex-row gap-4 sm:gap-[3%] pt-[20px] mt-[25px] border-t border-[#e8e8e8]">
                         <div className="flex flex-1 items-center gap-2 sm:max-w-[48%]">

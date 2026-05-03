@@ -4,6 +4,7 @@ import { CATEGORY_ID } from "@/constants/master";
 import { getCategory } from "@/features/api/get-category";
 import { getPriority } from "@/features/api/get-priority";
 import { getStatus } from "@/features/api/get-status";
+import { TodoAssistResponseType, useTodoAssistMutation } from "@/features/api/todo-assist";
 import { useAppNavigation } from "@/hooks/use-app-navigation";
 import { useSwitch } from "@/hooks/use-switch";
 import { useState } from "react";
@@ -35,13 +36,20 @@ export function useTodoManagementDetail() {
     // 削除確認ダイアログ
     const deleteDialog = useSwitch();
     // タスク更新フォーム
-    const { register, control, handleSubmit, formState: { errors }, reset, watch } = useTodoManagementUpdateForm({ task });
+    const { register, control, handleSubmit, formState: { errors }, reset, watch, getValues, setValue } = useTodoManagementUpdateForm({ task });
     // 選択中のカテゴリ
     const selectedCategoryId = watch("category");
     // ログインユーザー情報
     const loginUser = LoginUserContext.useCtx();
     // 保存確認ダイアログ
     const saveDialog = useSwitch();
+    // AIで整えるボタンの活性判定用
+    const watchedTitle = watch("title");
+    const watchedContent = watch("content");
+    // AIで整形ボタン活性フラグ
+    const isAssistEnabled = !!(watchedTitle?.trim() || watchedContent?.trim());
+    // AI提案の結果
+    const [assistResult, setAssistResult] = useState<TodoAssistResponseType | null>(null);
 
     // タスク更新用ミューテーション
     const updateMutation = useUpdateTodoManagementMutation({
@@ -65,6 +73,17 @@ export function useTodoManagementDetail() {
         onError: () => {
             toast.error(`タスクの削除に失敗しました。時間をおいて再度お試しください。`);
         },
+    });
+
+    // AIアシストリクエスト
+    const assistMutation = useTodoAssistMutation({
+        onSuccess: (response) => {
+            setAssistResult(response);
+        },
+        onError: (errMessage) => {
+            setAssistResult(null);
+            toast.error(errMessage);
+        }
     });
 
     /**
@@ -162,6 +181,40 @@ export function useTodoManagementDetail() {
         saveDialog.off();
     });
 
+    /**
+     * AIで整えるボタン押下
+     */
+    function clickAssist() {
+        const { title, content } = getValues();
+
+        if (!isAssistEnabled) {
+            return;
+        }
+
+        assistMutation.mutate({
+            title: title,
+            content: content,
+        });
+    }
+
+    /**
+     * AI提案をフォームに適用
+     */
+    function applyAssist() {
+        if (!assistResult || !assistResult.canApply) {
+            return;
+        }
+        setValue("title", assistResult.data.title);
+        setValue("content", assistResult.data.content);
+    }
+
+    /**
+     * AI提案をキャンセル
+     */
+    function cancelAssist() {
+        setAssistResult(null);
+    }
+
     return {
         task,
         statusList: status.data,
@@ -184,5 +237,11 @@ export function useTodoManagementDetail() {
         isSaveDialogOpen: saveDialog.flag,
         onCancelSave,
         onConfirmSave,
+        assistResult,
+        isAssistLoading: assistMutation.isPending,
+        isAssistEnabled,
+        clickAssist,
+        applyAssist,
+        cancelAssist,
     };
 }
