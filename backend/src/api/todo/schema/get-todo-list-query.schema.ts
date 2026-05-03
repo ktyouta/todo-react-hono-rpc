@@ -29,6 +29,7 @@ export const GetTodoListQuerySchema = z.object({
         },
         z.boolean()
     ),
+    sortId: coerceOptionalId,
 });
 
 export type GetTodoListQuerySchemaType = z.infer<typeof GetTodoListQuerySchema>;
