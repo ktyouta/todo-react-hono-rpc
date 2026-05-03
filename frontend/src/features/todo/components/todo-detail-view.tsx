@@ -1,12 +1,12 @@
 import { Button, Dialog, LoadingOverlay } from "@/components";
-import { getFormatDatetime } from "@/utils/date-util";
 import { CATEGORY_ID } from "@/constants/master";
 import { CategoryReturnType } from "@/features/api/get-category";
 import { PriorityReturnType } from "@/features/api/get-priority";
 import { StatusReturnType } from "@/features/api/get-status";
+import { getFormatDatetime } from "@/utils/date-util";
+import { getDueDateStatus } from "@/utils/due-date-status";
 import { HiArrowLeft, HiOutlineStar, HiStar } from "react-icons/hi2";
 import { TaskDataType } from "../api/get-todo";
-import { getDueDateStatus } from "@/utils/due-date-status";
 import { SubtaskSectionContainer } from "./subtask-section-container";
 
 type PropsType = {
@@ -43,7 +43,7 @@ export function TodoDetailView(props: PropsType) {
     return (
         <div className="w-full min-h-full flex flex-col pb-4">
             {/* 一覧に戻る */}
-            <div className="mb-4">
+            <div className="flex items-center mb-5">
                 <button
                     type="button"
                     onClick={onClickBack}
@@ -52,18 +52,37 @@ export function TodoDetailView(props: PropsType) {
                     <HiArrowLeft />
                     <span>一覧に戻る</span>
                 </button>
-            </div>
-
-            {/* ヘッダー */}
-            <div className="flex items-center pr-[10px]">
-                <span className="font-bold text-[18px] sm:text-[22px]">
-                    タスク詳細
-                </span>
                 <div className="flex-1" />
                 <Button
                     colorType={"blue"}
                     sizeType={"large"}
-                    className="px-4 sm:px-10"
+                    className="px-4 sm:hidden"
+                    onClick={onClickEdit}
+                >
+                    編集
+                </Button>
+            </div>
+
+            {/* ヘッダー */}
+            <div className="flex items-center pr-[10px]">
+                <span className="text-2xl font-semibold">
+                    {task.title}
+                </span>
+                <div className="flex-1" />
+                <button
+                    type="button"
+                    onClick={onFavoriteToggle}
+                    className="sm:mr-6"
+                >
+                    {task.isFavorite
+                        ? <HiStar className="size-7 text-amber-400" />
+                        : <HiOutlineStar className="size-7 text-gray-400" />
+                    }
+                </button>
+                <Button
+                    colorType={"blue"}
+                    sizeType={"large"}
+                    className="hidden sm:block px-10"
                     onClick={onClickEdit}
                 >
                     編集
@@ -71,25 +90,7 @@ export function TodoDetailView(props: PropsType) {
             </div>
 
             {/* コンテンツ */}
-            <div className="w-full pt-7 sm:pt-[50px] text-[15px] flex-1">
-                <div className="w-full">
-                    <p className="text-base text-gray-400 mb-1 pl-0.5">タイトル</p>
-                    <div className="flex items-start gap-2 pr-1">
-                        <p className="flex-1 px-0.5 text-2xl font-semibold break-words">
-                            {task.title}
-                        </p>
-                        <button
-                            type="button"
-                            onClick={onFavoriteToggle}
-                            className="shrink-0 mt-1"
-                        >
-                            {task.isFavorite
-                                ? <HiStar className="size-7 text-amber-400" />
-                                : <HiOutlineStar className="size-7 text-gray-400" />
-                            }
-                        </button>
-                    </div>
-                </div>
+            <div className="w-full pt-7 sm:pt-[1px] text-[15px] flex-1">
                 <div className="w-full p-3 sm:p-[20px] border border-[#c0c0c0] rounded mt-3 sm:mt-[20px] bg-white">
                     <div className="mb-3">
                         <p className="text-base text-gray-500">{task.categoryName}内容</p>

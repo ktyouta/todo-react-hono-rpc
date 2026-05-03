@@ -34,7 +34,7 @@ export function UserManagementDetail(props: PropsType) {
     return (
         <div className="w-full min-h-full flex flex-col pb-4">
             {/* 一覧に戻る */}
-            <div className="mb-4">
+            <div className="mb-6 sm:mb-8">
                 <button
                     type="button"
                     onClick={onClickBack}
@@ -43,11 +43,6 @@ export function UserManagementDetail(props: PropsType) {
                     <HiArrowLeft />
                     <span>一覧に戻る</span>
                 </button>
-            </div>
-
-            {/* ヘッダー */}
-            <div className="flex items-center pr-[10px] mb-6 sm:mb-8">
-                <span className="font-bold text-[18px] sm:text-[22px]">ユーザー詳細</span>
             </div>
 
             {/* ユーザー情報（読み取り専用） */}

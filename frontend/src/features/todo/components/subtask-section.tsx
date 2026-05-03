@@ -49,7 +49,7 @@ export function SubtaskSection(props: PropsType) {
     const { subtasks, currentPage, totalPages, onPageChange, onClickAdd, onClickSubtask, isLoading } = props;
 
     return (
-        <div className="mt-8 sm:mt-[60px]">
+        <div className="mt-8 sm:mt-[50px]">
             {/* ヘッダー */}
             <div className="flex items-center mb-3 pr-1">
                 <span className="font-semibold text-base text-gray-700">サブタスク</span>

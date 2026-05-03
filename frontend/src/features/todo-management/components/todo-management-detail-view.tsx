@@ -42,7 +42,7 @@ export function TodoManagementDetailView(props: PropsType) {
     return (
         <div className="w-full min-h-full flex flex-col pb-4">
             {/* 一覧に戻る */}
-            <div className="mb-4">
+            <div className="flex items-center mb-5">
                 <button
                     type="button"
                     onClick={onClickBack}
@@ -51,18 +51,27 @@ export function TodoManagementDetailView(props: PropsType) {
                     <HiArrowLeft />
                     <span>一覧に戻る</span>
                 </button>
+                <div className="flex-1" />
+                <Button
+                    colorType={"blue"}
+                    sizeType={"large"}
+                    className="px-4 sm:hidden"
+                    onClick={onClickEdit}
+                >
+                    編集
+                </Button>
             </div>
 
             {/* ヘッダー */}
             <div className="flex items-center pr-[10px]">
-                <span className="font-bold text-[18px] sm:text-[22px]">
-                    タスク詳細
+                <span className="text-2xl font-semibold">
+                    {task.title}
                 </span>
                 <div className="flex-1" />
                 <Button
                     colorType={"blue"}
                     sizeType={"large"}
-                    className="px-4 sm:px-10"
+                    className="hidden sm:block px-10"
                     onClick={onClickEdit}
                 >
                     編集
@@ -70,17 +79,10 @@ export function TodoManagementDetailView(props: PropsType) {
             </div>
 
             {/* コンテンツ */}
-            <div className="w-full pt-7 sm:pt-[50px] text-[15px] flex-1">
-                <div className="w-full">
-                    <p className="text-base text-gray-400 mb-1 pl-0.5">タイトル</p>
-                    <p className="w-full px-0.5 text-2xl font-semibold break-words">
-                        {task.title}
-                    </p>
-                </div>
+            <div className="w-full pt-7 sm:pt-[1px] text-[15px] flex-1">
                 <div className="w-full p-3 sm:p-[20px] border border-[#c0c0c0] rounded mt-3 sm:mt-[20px] bg-white">
                     <div className="mb-3">
-                        {task.categoryId === CATEGORY_ID.TASK && <p className="text-base text-gray-500">タスク内容</p>}
-                        {task.categoryId === CATEGORY_ID.MEMO && <p className="text-base text-gray-500">メモ内容</p>}
+                        <p className="text-base text-gray-500">{task.categoryName}内容</p>
                     </div>
                     <p className={`w-full min-h-[450px] text-lg whitespace-pre-wrap leading-relaxed break-words ${task.content ? "text-gray-800" : "text-gray-400"}`}>
                         {task.content ?? "なし"}

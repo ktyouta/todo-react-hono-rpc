@@ -1,9 +1,9 @@
 import { Button, DatePicker, LoadingOverlay, Select, Textarea, Textbox } from "@/components";
-import { getFormatDatetime } from "@/utils/date-util";
 import { CATEGORY_ID } from "@/constants/master";
 import { CategoryReturnType } from "@/features/api/get-category";
 import { PriorityReturnType } from "@/features/api/get-priority";
 import { StatusReturnType } from "@/features/api/get-status";
+import { getFormatDatetime } from "@/utils/date-util";
 import { BaseSyntheticEvent } from "react";
 import { Control, Controller, FieldErrors, UseFormRegister } from "react-hook-form";
 import { HiArrowLeft } from "react-icons/hi2";
@@ -44,7 +44,7 @@ export function TodoDetailEdit(props: PropsType) {
     return (
         <div className="w-full min-h-full flex flex-col pb-4">
             {/* 一覧に戻る */}
-            <div className="mb-4">
+            <div className="flex items-center mb-5">
                 <button
                     type="button"
                     onClick={onClickBack}
@@ -53,19 +53,12 @@ export function TodoDetailEdit(props: PropsType) {
                     <HiArrowLeft />
                     <span>一覧に戻る</span>
                 </button>
-            </div>
-
-            {/* ヘッダー */}
-            <div className="flex items-center pr-[10px]">
-                <span className="font-bold text-[18px] sm:text-[22px]">
-                    タスク詳細
-                </span>
                 <div className="flex-1" />
-                <div className="flex gap-2">
+                <div className="flex gap-2 sm:hidden">
                     <Button
                         colorType={"red"}
                         sizeType={"large"}
-                        className="px-4 sm:px-10"
+                        className="px-4"
                         onClick={onClickCancel}
                     >
                         キャンセル
@@ -73,7 +66,30 @@ export function TodoDetailEdit(props: PropsType) {
                     <Button
                         colorType={"green"}
                         sizeType={"large"}
-                        className="px-4 sm:px-10 bg-cyan-500 hover:bg-cyan-600"
+                        className="px-4 bg-cyan-500 hover:bg-cyan-600"
+                        onClick={clickSave}
+                    >
+                        保存
+                    </Button>
+                </div>
+            </div>
+
+            {/* ヘッダー */}
+            <div className="hidden sm:flex items-center pr-[10px]">
+                <div className="flex-1" />
+                <div className="flex gap-2">
+                    <Button
+                        colorType={"red"}
+                        sizeType={"large"}
+                        className="px-10"
+                        onClick={onClickCancel}
+                    >
+                        キャンセル
+                    </Button>
+                    <Button
+                        colorType={"green"}
+                        sizeType={"large"}
+                        className="px-10 bg-cyan-500 hover:bg-cyan-600"
                         onClick={clickSave}
                     >
                         保存
@@ -82,7 +98,7 @@ export function TodoDetailEdit(props: PropsType) {
             </div>
 
             {/* コンテンツ */}
-            <div className="w-full pt-7 sm:pt-[50px] text-[15px] flex-1">
+            <div className="w-full pt-7 sm:pt-[30px] text-[15px] flex-1">
                 {Object.keys(errors).length > 0 && (
                     <div className="flex items-center gap-2 px-3 py-2.5 mb-5 bg-red-50 border border-red-200 rounded text-sm text-red-600">
                         <span>入力内容にエラーがあります。確認してください。</span>

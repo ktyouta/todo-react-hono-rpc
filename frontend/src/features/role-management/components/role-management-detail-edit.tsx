@@ -26,7 +26,7 @@ export function RoleManagementDetailEdit(props: PropsType) {
     return (
         <div className="w-full min-h-full flex flex-col pb-4">
             {/* 一覧に戻る */}
-            <div className="mb-4">
+            <div className="flex items-center mb-5">
                 <button
                     type="button"
                     onClick={onClickBack}
@@ -35,17 +35,12 @@ export function RoleManagementDetailEdit(props: PropsType) {
                     <HiArrowLeft />
                     <span>一覧に戻る</span>
                 </button>
-            </div>
-
-            {/* ヘッダー */}
-            <div className="flex items-center pr-[10px] mb-10">
-                <span className="font-bold text-[18px] sm:text-[22px]">ロール詳細</span>
                 <div className="flex-1" />
-                <div className="flex gap-2 sm:gap-3">
+                <div className="flex gap-2 sm:hidden">
                     <Button
                         colorType="green"
                         sizeType="large"
-                        className="px-4 sm:px-6 bg-gray-400 hover:bg-gray-500"
+                        className="px-4 bg-gray-400 hover:bg-gray-500"
                         onClick={onClickCancel}
                     >
                         キャンセル
@@ -53,7 +48,30 @@ export function RoleManagementDetailEdit(props: PropsType) {
                     <Button
                         colorType="green"
                         sizeType="large"
-                        className="px-4 sm:px-10 bg-cyan-500 hover:bg-cyan-600"
+                        className="px-4 bg-cyan-500 hover:bg-cyan-600"
+                        onClick={clickSave}
+                    >
+                        保存
+                    </Button>
+                </div>
+            </div>
+
+            {/* ヘッダー */}
+            <div className="hidden sm:flex items-center pr-[10px] mb-10">
+                <div className="flex-1" />
+                <div className="flex gap-2 sm:gap-3">
+                    <Button
+                        colorType="green"
+                        sizeType="large"
+                        className="px-6 bg-gray-400 hover:bg-gray-500"
+                        onClick={onClickCancel}
+                    >
+                        キャンセル
+                    </Button>
+                    <Button
+                        colorType="green"
+                        sizeType="large"
+                        className="px-10 bg-cyan-500 hover:bg-cyan-600"
                         onClick={clickSave}
                     >
                         保存

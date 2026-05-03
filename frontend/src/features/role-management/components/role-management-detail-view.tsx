@@ -20,7 +20,7 @@ export function RoleManagementDetailView(props: PropsType) {
     return (
         <div className="w-full min-h-full flex flex-col pb-4">
             {/* 一覧に戻る */}
-            <div className="mb-4">
+            <div className="flex items-center mb-5">
                 <button
                     type="button"
                     onClick={onClickBack}
@@ -29,17 +29,27 @@ export function RoleManagementDetailView(props: PropsType) {
                     <HiArrowLeft />
                     <span>一覧に戻る</span>
                 </button>
-            </div>
-
-            {/* ヘッダー */}
-            <div className="flex items-center pr-[10px] mb-10">
-                <span className="font-bold text-[18px] sm:text-[22px]">ロール詳細</span>
                 <div className="flex-1" />
                 {!role.isImmutable && (
                     <Button
                         colorType="green"
                         sizeType="large"
-                        className="px-4 sm:px-8 bg-cyan-500 hover:bg-cyan-600"
+                        className="px-4 sm:hidden bg-cyan-500 hover:bg-cyan-600"
+                        onClick={onClickEdit}
+                    >
+                        編集
+                    </Button>
+                )}
+            </div>
+
+            {/* ヘッダー */}
+            <div className="hidden sm:flex items-center pr-[10px] mb-10">
+                <div className="flex-1" />
+                {!role.isImmutable && (
+                    <Button
+                        colorType="green"
+                        sizeType="large"
+                        className="px-8 bg-cyan-500 hover:bg-cyan-600"
                         onClick={onClickEdit}
                     >
                         編集

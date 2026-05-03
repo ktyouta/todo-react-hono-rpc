@@ -42,7 +42,7 @@ export function TodoTrashDetailView(props: PropsType) {
     return (
         <div className="w-full min-h-full flex flex-col pb-4">
             {/* 一覧に戻る */}
-            <div className="mb-4">
+            <div className="mb-5">
                 <button
                     type="button"
                     onClick={onClickBack}
@@ -55,23 +55,16 @@ export function TodoTrashDetailView(props: PropsType) {
 
             {/* ヘッダー */}
             <div className="flex items-center pr-[10px]">
-                <span className="font-bold text-[18px] sm:text-[22px]">
-                    {task.parentId ? `サブ` : ``}タスク詳細
+                <span className="text-2xl font-semibold">
+                    {task.title}
                 </span>
             </div>
 
             {/* コンテンツ */}
-            <div className="w-full pt-7 sm:pt-[35px] text-[15px] flex-1">
-                <div className="w-full">
-                    <p className="text-base text-gray-400 mb-1 pl-0.5">タイトル</p>
-                    <p className="w-full px-0.5 text-2xl font-semibold break-words">
-                        {task.title}
-                    </p>
-                </div>
+            <div className="w-full pt-7 sm:pt-[1px] text-[15px] flex-1">
                 <div className="w-full p-3 sm:p-[20px] border border-[#c0c0c0] rounded mt-3 sm:mt-[20px] bg-white">
                     <div className="mb-3">
-                        {task.categoryId === CATEGORY_ID.TASK && <p className="text-base text-gray-500">タスク内容</p>}
-                        {task.categoryId === CATEGORY_ID.MEMO && <p className="text-base text-gray-500">メモ内容</p>}
+                        <p className="text-base text-gray-500">{task.categoryName}内容</p>
                     </div>
                     <p className={`w-full min-h-[450px] text-lg whitespace-pre-wrap leading-relaxed break-words ${task.content ? "text-gray-800" : "text-gray-400"}`}>
                         {task.content ?? "なし"}
