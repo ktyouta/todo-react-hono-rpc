@@ -5,8 +5,9 @@ import { StatusReturnType } from "@/features/api/get-status";
 import { useState } from "react";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { HiChevronDown, HiChevronUp, HiMagnifyingGlass } from "react-icons/hi2";
-import { MdFilterAlt } from "react-icons/md";
+import { MdFilterAlt, MdSort } from "react-icons/md";
 import { FAVORITE_OPTIONS } from "../constants/todo-filter-options";
+import { SORT_OPTIONS } from "../constants/todo-sort-options";
 import { TodoSearchFilter } from "../types/todo-search-filter";
 
 type PropsType = {
@@ -22,15 +23,21 @@ type PropsType = {
     onExport: () => void;
     isExporting: boolean;
     onImport: () => void;
+    onSortChange: (sortId: string) => void;
 };
 
 const LABEL_CLASS = "text-sm text-gray-500 whitespace-nowrap w-[5em]";
 const SELECT_CLASS = "flex-1 px-3 py-2 text-base bg-white border-[#c0c0c0]";
 
-export function TodoSearchBar({ searchCondition, onChange, onSearch, onClear, categoryList, statusList, priorityList, handleKeyPress, onToggleBulkMode, onExport, isExporting, onImport }: PropsType) {
+export function TodoSearchBar({ searchCondition, onChange, onSearch, onClear, categoryList, statusList, priorityList, handleKeyPress, onToggleBulkMode, onExport, isExporting, onImport, onSortChange }: PropsType) {
 
     // 詳細フィルター開閉フラグ
     const [isDetailOpen, setIsDetailOpen] = useState(false);
+    // 並び替えパネル開閉フラグ
+    const [isSortOpen, setIsSortOpen] = useState(false);
+
+    // ソートが有効かどうか
+    const isSortActive = searchCondition.sortId !== '';
 
     const activeCount = [
         searchCondition.categoryId !== '',
@@ -41,7 +48,7 @@ export function TodoSearchBar({ searchCondition, onChange, onSearch, onClear, ca
         searchCondition.updatedAtFrom !== null || searchCondition.updatedAtTo !== null,
         searchCondition.isFavorite,
     ].filter(Boolean).length;
-    const isEmpty = searchCondition.title === '' && activeCount === 0;
+    const isEmpty = searchCondition.title === '' && activeCount === 0 && !isSortActive;
 
     return (
         <div className="pb-4 border-b border-gray-300 mb-3 sm:mb-6">
@@ -91,6 +98,27 @@ export function TodoSearchBar({ searchCondition, onChange, onSearch, onClear, ca
                             {activeCount}
                         </span>
                     )}
+                    {/* モバイル: 並び替えアイコンボタン */}
+                    <button
+                        type="button"
+                        onClick={() => setIsSortOpen(!isSortOpen)}
+                        className="relative sm:hidden flex items-center justify-center h-9 w-9 rounded border border-gray-300 bg-[#fcfdfd] hover:bg-gray-200 shrink-0"
+                    >
+                        <MdSort className={`size-5 ${isSortOpen || isSortActive ? 'text-blue-500' : 'text-gray-500'}`} />
+                    </button>
+                    {/* sm以上: 並び替えテキストボタン */}
+                    <Button
+                        colorType="blue"
+                        sizeType="small"
+                        onClick={() => setIsSortOpen(!isSortOpen)}
+                        className="hidden sm:flex items-center gap-1.5 px-3 h-9 py-0 bg-[#fcfdfd] border border-gray-300 text-sm text-gray-600 hover:bg-gray-200 whitespace-nowrap"
+                    >
+                        <span>並び替え</span>
+                        {isSortOpen
+                            ? <HiChevronUp className="size-4" />
+                            : <HiChevronDown className="size-4" />
+                        }
+                    </Button>
                     <Button
                         colorType="blue"
                         sizeType="small"
@@ -140,6 +168,27 @@ export function TodoSearchBar({ searchCondition, onChange, onSearch, onClear, ca
                     </Button>
                 </div>
             </div>
+
+            {/* 並び替えパネル */}
+            {isSortOpen && (
+                <div className="mt-3 pt-3 border-t border-gray-100">
+                    <div className="grid grid-cols-3 lg:flex lg:flex-wrap gap-2">
+                        {SORT_OPTIONS.map((option) => (
+                            <button
+                                key={option.value}
+                                type="button"
+                                onClick={() => onSortChange(option.value)}
+                                className={`px-3 py-1.5 text-sm rounded border whitespace-nowrap transition-colors ${searchCondition.sortId === option.value
+                                    ? 'bg-blue-100 border-blue-500 text-blue-700'
+                                    : 'bg-[#fcfdfd] border-gray-300 text-gray-600 hover:bg-gray-100'
+                                    }`}
+                            >
+                                {option.label}
+                            </button>
+                        ))}
+                    </div>
+                </div>
+            )}
 
             {/* 詳細フィルターパネル */}
             {isDetailOpen && (

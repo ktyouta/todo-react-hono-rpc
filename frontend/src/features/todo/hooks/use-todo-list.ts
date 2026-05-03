@@ -34,6 +34,7 @@ export function useTodoList() {
         updatedAtFrom: searchParams.get(TODO_LIST_QUERY_KEY.UPDATED_AT_FROM),
         updatedAtTo: searchParams.get(TODO_LIST_QUERY_KEY.UPDATED_AT_TO),
         isFavorite: searchParams.get(TODO_LIST_QUERY_KEY.IS_FAVORITE) === `true`,
+        sortId: searchParams.get(TODO_LIST_QUERY_KEY.SORT_ID) ?? '',
     };
     // タスク検索条件
     const [searchCondition, setSearchCondition] = useState<TodoSearchFilter>(initSearchCondition);
@@ -144,44 +145,63 @@ export function useTodoList() {
     }
 
     /**
+     * 検索条件からURLSearchParamsを構築
+     */
+    function buildSearchParams(condition: TodoSearchFilter): Record<string, string> {
+        const params: Record<string, string> = {};
+        if (condition.title) {
+            params[TODO_LIST_QUERY_KEY.TITLE] = condition.title;
+        }
+        if (condition.categoryId) {
+            params[TODO_LIST_QUERY_KEY.CATEGORY] = condition.categoryId;
+        }
+        if (condition.statusId) {
+            params[TODO_LIST_QUERY_KEY.STATUS] = condition.statusId;
+        }
+        if (condition.priorityId) {
+            params[TODO_LIST_QUERY_KEY.PRIORITY] = condition.priorityId;
+        }
+        if (condition.dueDateFrom) {
+            params[TODO_LIST_QUERY_KEY.DUE_DATE_FROM] = condition.dueDateFrom;
+        }
+        if (condition.dueDateTo) {
+            params[TODO_LIST_QUERY_KEY.DUE_DATE_TO] = condition.dueDateTo;
+        }
+        if (condition.createdAtFrom) {
+            params[TODO_LIST_QUERY_KEY.CREATED_AT_FROM] = condition.createdAtFrom;
+        }
+        if (condition.createdAtTo) {
+            params[TODO_LIST_QUERY_KEY.CREATED_AT_TO] = condition.createdAtTo;
+        }
+        if (condition.updatedAtFrom) {
+            params[TODO_LIST_QUERY_KEY.UPDATED_AT_FROM] = condition.updatedAtFrom;
+        }
+        if (condition.updatedAtTo) {
+            params[TODO_LIST_QUERY_KEY.UPDATED_AT_TO] = condition.updatedAtTo;
+        }
+        if (condition.isFavorite) {
+            params[TODO_LIST_QUERY_KEY.IS_FAVORITE] = `true`;
+        }
+        if (condition.sortId) {
+            params[TODO_LIST_QUERY_KEY.SORT_ID] = condition.sortId;
+        }
+        return params;
+    }
+
+    /**
      * 検索ボタン押下イベント
      */
     function clickSearch() {
-        const params: Record<string, string> = {};
-        if (searchCondition.title) {
-            params[TODO_LIST_QUERY_KEY.TITLE] = searchCondition.title;
-        }
-        if (searchCondition.categoryId) {
-            params[TODO_LIST_QUERY_KEY.CATEGORY] = searchCondition.categoryId;
-        }
-        if (searchCondition.statusId) {
-            params[TODO_LIST_QUERY_KEY.STATUS] = searchCondition.statusId;
-        }
-        if (searchCondition.priorityId) {
-            params[TODO_LIST_QUERY_KEY.PRIORITY] = searchCondition.priorityId;
-        }
-        if (searchCondition.dueDateFrom) {
-            params[TODO_LIST_QUERY_KEY.DUE_DATE_FROM] = searchCondition.dueDateFrom;
-        }
-        if (searchCondition.dueDateTo) {
-            params[TODO_LIST_QUERY_KEY.DUE_DATE_TO] = searchCondition.dueDateTo;
-        }
-        if (searchCondition.createdAtFrom) {
-            params[TODO_LIST_QUERY_KEY.CREATED_AT_FROM] = searchCondition.createdAtFrom;
-        }
-        if (searchCondition.createdAtTo) {
-            params[TODO_LIST_QUERY_KEY.CREATED_AT_TO] = searchCondition.createdAtTo;
-        }
-        if (searchCondition.updatedAtFrom) {
-            params[TODO_LIST_QUERY_KEY.UPDATED_AT_FROM] = searchCondition.updatedAtFrom;
-        }
-        if (searchCondition.updatedAtTo) {
-            params[TODO_LIST_QUERY_KEY.UPDATED_AT_TO] = searchCondition.updatedAtTo;
-        }
-        if (searchCondition.isFavorite) {
-            params[TODO_LIST_QUERY_KEY.IS_FAVORITE] = `true`;
-        }
-        setSearchParams(params);
+        setSearchParams(buildSearchParams(searchCondition));
+    }
+
+    /**
+     * 並び替え変更イベント（即時反映）
+     */
+    function onSortChange(sortId: string) {
+        const newCondition = { ...searchCondition, sortId };
+        setSearchCondition(newCondition);
+        setSearchParams(buildSearchParams(newCondition));
     }
 
     /**
@@ -242,5 +262,6 @@ export function useTodoList() {
         onExport,
         isExporting,
         todoImport,
+        onSortChange,
     };
 }

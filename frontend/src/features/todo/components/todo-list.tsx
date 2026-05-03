@@ -36,6 +36,7 @@ type PropsType = {
     onExport: () => void;
     isExporting: boolean;
     todoImport: UseTodoImportReturn;
+    onSortChange: (sortId: string) => void;
 }
 
 export function TodoList(props: PropsType) {
@@ -59,6 +60,7 @@ export function TodoList(props: PropsType) {
         onExport,
         isExporting,
         todoImport,
+        onSortChange,
     } = props;
 
     // テーブルカラム
@@ -152,6 +154,7 @@ export function TodoList(props: PropsType) {
                     onExport={onExport}
                     isExporting={isExporting}
                     onImport={todoImport.onOpenDialog}
+                    onSortChange={onSortChange}
                 />
             )}
 

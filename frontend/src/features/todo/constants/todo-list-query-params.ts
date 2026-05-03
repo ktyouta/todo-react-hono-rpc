@@ -24,4 +24,6 @@ export const TODO_LIST_QUERY_KEY = {
     PAGE: `page`,
     // お気に入り
     IS_FAVORITE: `isFavorite`,
+    // ソート
+    SORT_ID: `sortId`,
 } as const;
