@@ -1,6 +1,6 @@
 import { Button, Dialog, LoadingOverlay, Textbox } from "@/components";
 import { getFormatDatetime } from "@/utils/date-util";
-import { HiArrowLeft, HiLockClosed } from "react-icons/hi2";
+import { HiArrowLeft, HiLockClosed, HiPencil } from "react-icons/hi2";
 import { useRoleManagementDetail } from "../hooks/use-role-management-detail";
 
 type PropsType = ReturnType<typeof useRoleManagementDetail>;
@@ -58,6 +58,10 @@ export function RoleManagementDetailEdit(props: PropsType) {
 
             {/* ヘッダー */}
             <div className="hidden sm:flex items-center pr-[10px] mb-10">
+                <span className="flex items-center gap-1 text-sm text-gray-400">
+                    <HiPencil className="size-4" />
+                    編集中
+                </span>
                 <div className="flex-1" />
                 <div className="flex gap-2 sm:gap-3">
                     <Button

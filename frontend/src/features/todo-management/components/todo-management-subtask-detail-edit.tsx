@@ -7,7 +7,7 @@ import { StatusReturnType } from "@/features/api/get-status";
 import { TodoDetailEditType } from "@/features/todo/types/todo-detail-edit-type";
 import { BaseSyntheticEvent } from "react";
 import { Control, Controller, FieldErrors, UseFormRegister } from "react-hook-form";
-import { HiArrowLeft } from "react-icons/hi2";
+import { HiArrowLeft, HiPencil } from "react-icons/hi2";
 import { ManagementSubtaskDataType } from "../api/get-todo-management-subtask";
 
 type PropsType = {
@@ -77,6 +77,10 @@ export function TodoManagementSubtaskDetailEdit(props: PropsType) {
 
             {/* ヘッダー */}
             <div className="hidden sm:flex items-center pr-[10px]">
+                <span className="flex items-center gap-1 text-sm text-gray-400">
+                    <HiPencil className="size-4" />
+                    編集中
+                </span>
                 <div className="flex-1" />
                 <div className="flex gap-2">
                     <Button

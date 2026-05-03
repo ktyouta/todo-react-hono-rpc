@@ -6,7 +6,7 @@ import { StatusReturnType } from "@/features/api/get-status";
 import { getFormatDatetime } from "@/utils/date-util";
 import { BaseSyntheticEvent } from "react";
 import { Control, Controller, FieldErrors, UseFormRegister } from "react-hook-form";
-import { HiArrowLeft } from "react-icons/hi2";
+import { HiArrowLeft, HiPencil } from "react-icons/hi2";
 import { SubtaskDataType } from "../api/get-subtask";
 import { TodoDetailEditType } from "../types/todo-detail-edit-type";
 
@@ -76,6 +76,10 @@ export function SubtaskDetailEdit(props: PropsType) {
 
             {/* ヘッダー */}
             <div className="hidden sm:flex items-center pr-[10px]">
+                <span className="flex items-center gap-1 text-sm text-gray-400">
+                    <HiPencil className="size-4" />
+                    編集中
+                </span>
                 <div className="flex-1" />
                 <div className="flex gap-2">
                     <Button
