@@ -1,8 +1,7 @@
 import { zValidator } from "@hono/zod-validator";
-import { and, eq, inArray, or } from "drizzle-orm";
+import { sql } from "drizzle-orm";
 import { Hono } from "hono";
 import { API_ENDPOINT, HTTP_STATUS } from "../../../constant";
-import { taskTransaction } from "../../../infrastructure";
 import { authMiddleware } from "../../../middleware";
 import type { AppEnv } from "../../../types";
 import { formatZodErrors } from "../../../util";
@@ -29,23 +28,22 @@ const restoreTodoTrashBulk = new Hono<AppEnv>().patch(
             return c.json({ message: "認証エラー" }, HTTP_STATUS.UNAUTHORIZED);
         }
 
-        await db.batch([
-            db.update(taskTransaction)
-                .set({
-                    updatedAt: new Date().toISOString(),
-                    deleteFlg: false,
-                })
-                .where(
-                    and(
-                        or(
-                            inArray(taskTransaction.id, ids),
-                            inArray(taskTransaction.parentId, ids),
-                        ),
-                        eq(taskTransaction.deleteFlg, true),
-                        eq(taskTransaction.userId, userId.value),
-                    )
-                ),
-        ]);
+        const valuesSql = sql.join(ids.map(id => sql`(${id})`), sql`, `);
+        await db.run(sql`
+            WITH RECURSIVE
+            base_ids(id) AS (VALUES ${valuesSql}),
+            descendants(id) AS (
+                SELECT id FROM task_transaction WHERE id IN (SELECT id FROM base_ids)
+                UNION ALL
+                SELECT t.id FROM task_transaction t
+                INNER JOIN descendants d ON t.parent_id = d.id
+            )
+            UPDATE task_transaction
+            SET delete_flg = 0, updated_at = ${new Date().toISOString()}
+            WHERE id IN (SELECT id FROM descendants)
+            AND delete_flg = 1
+            AND user_id = ${userId.value}
+        `);
 
         return c.json({ message: "タスクを復元しました。" }, HTTP_STATUS.OK);
     }

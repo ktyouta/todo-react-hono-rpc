@@ -1,9 +1,8 @@
 import { zValidator } from "@hono/zod-validator";
-import { and, eq, or } from "drizzle-orm";
+import { sql } from "drizzle-orm";
 import { Hono } from "hono";
 import { API_ENDPOINT, HTTP_STATUS } from "../../../constant";
 import { TaskId } from "../../../domain/task-id";
-import { taskTransaction } from "../../../infrastructure";
 import { requirePermission } from "../../../middleware";
 import type { AppEnv } from "../../../types";
 import { formatZodErrors } from "../../../util";
@@ -26,22 +25,18 @@ const restoreTodoDeleted = new Hono<AppEnv>().patch(
         const taskId = new TaskId(c.req.valid("param").id);
         const now = new Date().toISOString();
 
-        await db.batch([
-            db.update(taskTransaction)
-                .set({
-                    updatedAt: now,
-                    deleteFlg: false,
-                })
-                .where(
-                    and(
-                        or(
-                            eq(taskTransaction.id, taskId.value),
-                            eq(taskTransaction.parentId, taskId.value),
-                        ),
-                        eq(taskTransaction.deleteFlg, true)
-                    )
-                ),
-        ]);
+        await db.run(sql`
+            WITH RECURSIVE descendants(id) AS (
+                SELECT id FROM task_transaction WHERE id = ${taskId.value}
+                UNION ALL
+                SELECT t.id FROM task_transaction t
+                INNER JOIN descendants d ON t.parent_id = d.id
+            )
+            UPDATE task_transaction
+            SET delete_flg = 0, updated_at = ${now}
+            WHERE id IN (SELECT id FROM descendants)
+            AND delete_flg = 1
+        `);
 
         return c.json({ message: "タスクを復元しました。" }, HTTP_STATUS.OK);
     }
