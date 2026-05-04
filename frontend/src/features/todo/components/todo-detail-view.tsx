@@ -69,16 +69,18 @@ export function TodoDetailView(props: PropsType) {
                     {task.title}
                 </span>
                 <div className="flex-1" />
-                <button
-                    type="button"
-                    onClick={onFavoriteToggle}
-                    className="sm:mr-6"
-                >
-                    {task.isFavorite
-                        ? <HiStar className="size-7 text-amber-400" />
-                        : <HiOutlineStar className="size-7 text-gray-400" />
-                    }
-                </button>
+                {!task.parentId &&
+                    <button
+                        type="button"
+                        onClick={onFavoriteToggle}
+                        className="sm:mr-6"
+                    >
+                        {task.isFavorite
+                            ? <HiStar className="size-7 text-amber-400" />
+                            : <HiOutlineStar className="size-7 text-gray-400" />
+                        }
+                    </button>
+                }
                 <Button
                     colorType={"blue"}
                     sizeType={"large"}
