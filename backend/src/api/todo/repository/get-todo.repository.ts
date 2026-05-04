@@ -1,4 +1,5 @@
 import { and, eq, sql } from "drizzle-orm";
+import { alias } from "drizzle-orm/sqlite-core";
 import { FrontUserId } from "../../../domain";
 import { TaskId } from "../../../domain/task-id";
 import type { Database } from "../../../infrastructure/db";
@@ -15,6 +16,7 @@ export class GetTodoRepository implements IGetTodoRepository {
    * タスク取得
    */
   async find(userId: FrontUserId, taskId: TaskId): Promise<TodoItem | undefined> {
+    const parentTask = alias(taskTransaction, 'parent_task');
     return await this.db
       .select({
         id: taskTransaction.id,
@@ -33,11 +35,13 @@ export class GetTodoRepository implements IGetTodoRepository {
         createdAt: taskTransaction.createdAt,
         updatedAt: taskTransaction.updatedAt,
         parentId: taskTransaction.parentId,
+        parentTitle: parentTask.title,
       })
       .from(taskTransaction)
       .leftJoin(categoryMaster, eq(taskTransaction.categoryId, categoryMaster.id))
       .leftJoin(statusMaster, eq(taskTransaction.statusId, statusMaster.id))
       .leftJoin(priorityMaster, eq(taskTransaction.priorityId, priorityMaster.id))
+      .leftJoin(parentTask, eq(taskTransaction.parentId, parentTask.id))
       .where(
         and(
           eq(taskTransaction.deleteFlg, false),
