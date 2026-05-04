@@ -3,7 +3,9 @@ import { CATEGORY_ID } from "@/constants/master";
 import { getCategory } from "@/features/api/get-category";
 import { getPriority } from "@/features/api/get-priority";
 import { getStatus } from "@/features/api/get-status";
+import { TodoAssistResponseType, useTodoAssistMutation } from "@/features/api/todo-assist";
 import { useAppNavigation } from "@/hooks/use-app-navigation";
+import { useState } from "react";
 import { toast } from "react-toastify";
 import { useCreateSubtaskMutation } from "../api/create-subtask";
 import { SUBTASK_CREATE_FORM_DEFAULT_VALUES, useSubtaskCreateForm } from "./use-subtask-create.form";
@@ -14,7 +16,7 @@ export function useSubtaskCreate() {
     // 親タスクID
     const taskId = useTaskId();
     // フォーム
-    const { register, control, handleSubmit, formState: { errors }, watch, reset } = useSubtaskCreateForm();
+    const { register, control, handleSubmit, formState: { errors }, watch, reset, getValues, setValue } = useSubtaskCreateForm();
     // ステータスリスト
     const { data: status } = getStatus();
     // カテゴリリスト
@@ -25,6 +27,13 @@ export function useSubtaskCreate() {
     const selectedCategoryId = watch("category");
     // ルーティング用
     const { appGoBack } = useAppNavigation();
+    // AIで整えるボタンの活性判定用
+    const watchedTitle = watch("title");
+    const watchedContent = watch("content");
+    // AIで整形ボタン活性フラグ
+    const isAssistEnabled = !!(watchedTitle?.trim() || watchedContent?.trim());
+    // AI提案の結果
+    const [assistResult, setAssistResult] = useState<TodoAssistResponseType | null>(null);
     // サブタスク作成ミューテーション
     const createSubtaskMutation = useCreateSubtaskMutation({
         taskId,
@@ -35,6 +44,16 @@ export function useSubtaskCreate() {
         onError: (message) => {
             toast.error(message);
         },
+    });
+    // AIアシストリクエスト
+    const assistMutation = useTodoAssistMutation({
+        onSuccess: (response) => {
+            setAssistResult(response);
+        },
+        onError: (errMessage) => {
+            setAssistResult(null);
+            toast.error(errMessage);
+        }
     });
 
     /**
@@ -65,6 +84,40 @@ export function useSubtaskCreate() {
         });
     });
 
+    /**
+     * AIで整えるボタン押下
+     */
+    function clickAssist() {
+        const { title, content } = getValues();
+
+        if (!isAssistEnabled) {
+            return;
+        }
+
+        assistMutation.mutate({
+            title: title,
+            content: content,
+        });
+    }
+
+    /**
+     * AI提案をフォームに適用
+     */
+    function applyAssist() {
+        if (!assistResult || !assistResult.canApply) {
+            return;
+        }
+        setValue("title", assistResult.data.title);
+        setValue("content", assistResult.data.content);
+    }
+
+    /**
+     * AI提案をキャンセル
+     */
+    function cancelAssist() {
+        setAssistResult(null);
+    }
+
     return {
         register,
         control,
@@ -77,5 +130,11 @@ export function useSubtaskCreate() {
         priorityList: priority.data,
         selectedCategoryId,
         isLoading: createSubtaskMutation.isPending,
+        assistResult,
+        isAssistLoading: assistMutation.isPending,
+        isAssistEnabled,
+        clickAssist,
+        applyAssist,
+        cancelAssist,
     };
 }
