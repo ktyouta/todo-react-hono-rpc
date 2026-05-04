@@ -7,6 +7,4 @@ export const todoKeys = {
     detail: (id: string) => [...todoKeys.details(), id] as const,
     subtaskLists: (taskId: string) => [...todoKeys.all, 'subtask-list', taskId] as const,
     subtaskList: (taskId: string, page: number) => [...todoKeys.subtaskLists(taskId), page] as const,
-    subtaskDetails: (taskId: string) => [...todoKeys.all, 'subtask-detail', taskId] as const,
-    subtaskDetail: (taskId: string, subId: string) => [...todoKeys.subtaskDetails(taskId), subId] as const,
 };
