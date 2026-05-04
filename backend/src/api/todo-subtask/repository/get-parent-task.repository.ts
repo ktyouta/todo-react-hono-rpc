@@ -1,4 +1,4 @@
-import { and, eq, isNull } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { FrontUserId, TaskId } from "../../../domain";
 import type { Database } from "../../../infrastructure/db";
 import { taskTransaction } from "../../../infrastructure/db";
@@ -22,7 +22,6 @@ export class GetParentTaskRepository implements IGetParentTaskRepository {
           eq(taskTransaction.id, parentTaskId.value),
           eq(taskTransaction.userId, userId.value),
           eq(taskTransaction.deleteFlg, false),
-          isNull(taskTransaction.parentId),
         )
       )
       .get();
