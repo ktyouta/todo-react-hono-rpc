@@ -4,7 +4,7 @@ import { FrontUserId } from "../../../domain";
 import { TaskId } from "../../../domain/task-id";
 import type { Database } from "../../../infrastructure/db";
 import { categoryMaster, priorityMaster, statusMaster, taskTransaction } from "../../../infrastructure/db";
-import { IGetTodoRepository, TodoItem } from "./get-todo.repository.interface";
+import { AncestorItem, IGetTodoRepository, TodoItem } from "./get-todo.repository.interface";
 
 /**
  * タスク一覧取得リポジトリ実装
@@ -17,7 +17,7 @@ export class GetTodoRepository implements IGetTodoRepository {
    */
   async find(userId: FrontUserId, taskId: TaskId): Promise<TodoItem | undefined> {
     const parentTask = alias(taskTransaction, 'parent_task');
-    return await this.db
+    const task = await this.db
       .select({
         id: taskTransaction.id,
         title: taskTransaction.title,
@@ -50,5 +50,26 @@ export class GetTodoRepository implements IGetTodoRepository {
         )
       )
       .get();
+
+    return task ?? undefined;
+  }
+
+  /**
+   * 祖先タスクをルートから直近の親の順で取得
+   */
+  async findAncestors(parentId: number): Promise<AncestorItem[]> {
+    return this.db.all<AncestorItem>(sql`
+      WITH RECURSIVE ancestor_cte(id, title, parent_id, depth) AS (
+        SELECT id, title, parent_id, 0
+        FROM task_transaction
+        WHERE id = ${parentId}
+        UNION ALL
+        SELECT t.id, t.title, t.parent_id, a.depth + 1
+        FROM task_transaction t
+        INNER JOIN ancestor_cte a ON t.id = a.parent_id
+        WHERE a.depth < 20
+      )
+      SELECT id, title FROM ancestor_cte ORDER BY depth DESC
+    `);
   }
 }

@@ -1,6 +1,11 @@
 import { FrontUserId } from "../../../domain";
 import { TaskId } from "../../../domain/task-id";
 
+export type AncestorItem = {
+  id: number;
+  title: string;
+};
+
 export type TodoItem = {
   id: number;
   title: string;
@@ -29,4 +34,8 @@ export interface IGetTodoRepository {
    * タスク取得
    */
   find(userId: FrontUserId, taskId: TaskId): Promise<TodoItem | undefined>;
+  /**
+   * 祖先タスク取得（ルート→直近の親の順）
+   */
+  findAncestors(parentId: number): Promise<AncestorItem[]>;
 }

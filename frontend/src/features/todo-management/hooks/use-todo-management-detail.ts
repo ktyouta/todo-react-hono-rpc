@@ -8,6 +8,7 @@ import { TodoAssistResponseType, useTodoAssistMutation } from "@/features/api/to
 import { useAppNavigation } from "@/hooks/use-app-navigation";
 import { useSwitch } from "@/hooks/use-switch";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useDeleteTodoManagementMutation } from "../api/delete-todo-management";
 import { useGetTodoManagement } from "../api/get-todo-management";
@@ -30,6 +31,7 @@ export function useTodoManagementDetail() {
     // 優先度
     const { data: priority } = getPriority();
     // ルーティング用
+    const navigate = useNavigate();
     const { appGoBack } = useAppNavigation();
     // 編集モード
     const [isEditMode, setIsEditMode] = useState(false);
@@ -87,10 +89,10 @@ export function useTodoManagementDetail() {
     });
 
     /**
-     * 一覧 or 親タスクへ戻る
+     * 一覧へ戻る
      */
     function onClickBack() {
-        appGoBack(task.parentId ? paths.todoManagementDetail.getHref(task.parentId) : paths.todoManagement.path);
+        navigate(paths.todoManagement.path);
     }
 
     /**

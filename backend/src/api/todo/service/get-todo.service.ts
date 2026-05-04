@@ -12,7 +12,13 @@ export class GetTodoService {
    * タスク取得
    */
   async find(userId: FrontUserId, taskId: TaskId) {
-    const records = await this.repository.find(userId, taskId);
-    return records;
+    return this.repository.find(userId, taskId);
+  }
+
+  /**
+   * 祖先タスク取得
+   */
+  async findAncestors(parentId: number) {
+    return this.repository.findAncestors(parentId);
   }
 }

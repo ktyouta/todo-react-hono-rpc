@@ -1,4 +1,5 @@
-import { Button, DatePicker, Dialog, LoadingOverlay, Select, Spinner, Textarea, Textbox } from "@/components";
+import { Breadcrumb, Button, DatePicker, Dialog, LoadingOverlay, Select, Spinner, Textarea, Textbox } from "@/components";
+import { paths } from "@/config/paths";
 import { CATEGORY_ID } from "@/constants/master";
 import { CategoryReturnType } from "@/features/api/get-category";
 import { PriorityReturnType } from "@/features/api/get-priority";
@@ -63,16 +64,28 @@ export function TodoManagementDetailEdit(props: PropsType) {
 
     return (
         <div className="w-full min-h-full flex flex-col pb-4">
-            {/* 一覧に戻る */}
+            {/* ナビゲーション */}
             <div className="flex items-center mb-5">
-                <button
-                    type="button"
-                    onClick={onClickBack}
-                    className="flex items-center gap-1 text-sm text-gray-500 hover:text-gray-700"
-                >
-                    <HiArrowLeft />
-                    <span>一覧に戻る</span>
-                </button>
+                {task.parentId ? (
+                    <Breadcrumb
+                        items={[
+                            { label: "タスク管理", href: paths.todoManagement.path },
+                            ...task.ancestors.map((a) => ({
+                                label: a.title,
+                                href: paths.todoManagementDetail.getHref(a.id),
+                            })),
+                        ]}
+                    />
+                ) : (
+                    <button
+                        type="button"
+                        onClick={onClickBack}
+                        className="flex items-center gap-1 text-sm text-gray-500 hover:text-gray-700"
+                    >
+                        <HiArrowLeft />
+                        <span>一覧に戻る</span>
+                    </button>
+                )}
                 <div className="flex-1" />
                 <div className="flex gap-2 sm:hidden">
                     <Button

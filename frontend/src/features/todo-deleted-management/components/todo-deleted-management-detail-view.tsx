@@ -1,5 +1,6 @@
 import { LoginUserType } from "@/app/api/verify";
-import { Button, Dialog, LoadingOverlay } from "@/components";
+import { Breadcrumb, Button, Dialog, LoadingOverlay } from "@/components";
+import { paths } from "@/config/paths";
 import { CATEGORY_ID } from "@/constants/master";
 import { getFormatDatetime } from "@/utils/date-util";
 import { getDueDateStatus } from "@/utils/due-date-status";
@@ -44,16 +45,28 @@ export function TodoDeletedManagementDetailView(props: PropsType) {
 
     return (
         <div className="w-full min-h-full flex flex-col pb-4">
-            {/* 一覧に戻る */}
+            {/* ナビゲーション */}
             <div className="mb-5">
-                <button
-                    type="button"
-                    onClick={onClickBack}
-                    className="flex items-center gap-1 text-sm text-gray-500 hover:text-gray-700"
-                >
-                    <HiArrowLeft />
-                    <span>一覧に戻る</span>
-                </button>
+                {task.parentId ? (
+                    <Breadcrumb
+                        items={[
+                            { label: "削除タスク管理", href: paths.todoDeletedManagement.path },
+                            ...task.ancestors.map((a) => ({
+                                label: a.title,
+                                href: paths.todoDeletedManagementDetail.getHref(a.id),
+                            })),
+                        ]}
+                    />
+                ) : (
+                    <button
+                        type="button"
+                        onClick={onClickBack}
+                        className="flex items-center gap-1 text-sm text-gray-500 hover:text-gray-700"
+                    >
+                        <HiArrowLeft />
+                        <span>一覧に戻る</span>
+                    </button>
+                )}
             </div>
 
             {/* ヘッダー */}
@@ -72,6 +85,16 @@ export function TodoDeletedManagementDetailView(props: PropsType) {
                     <p className={`w-full min-h-[450px] text-lg whitespace-pre-wrap leading-relaxed break-words ${task.content ? "text-gray-800" : "text-gray-400"}`}>
                         {task.content ?? "なし"}
                     </p>
+                    {task.parentId !== null && (
+                        <div className="flex flex-col sm:flex-row gap-4 sm:gap-[3%] pt-[20px] mt-[20px] border-t border-[#e8e8e8]">
+                            <div className="flex flex-1 items-start gap-2">
+                                <span className="whitespace-nowrap w-[5em] text-gray-500 text-base pt-2">親タスク</span>
+                                <span className="flex-1 px-3 py-2 bg-gray-50 border border-[#e0e0e0] rounded text-lg break-words">
+                                    {task.parentTitle}
+                                </span>
+                            </div>
+                        </div>
+                    )}
                     <div className="flex flex-col sm:flex-row gap-4 sm:gap-[3%] pt-[20px] mt-[20px] border-t border-[#e8e8e8]">
                         <div className="flex flex-1 items-center gap-2 sm:max-w-[48%]">
                             <span className="whitespace-nowrap w-[5em] text-gray-500 text-base">ユーザー</span>

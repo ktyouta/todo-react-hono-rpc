@@ -2,6 +2,7 @@ import { LoginUserContext } from "@/app/components/login-user-provider";
 import { paths } from "@/config/paths";
 import { useAppNavigation } from "@/hooks/use-app-navigation";
 import { useSwitch } from "@/hooks/use-switch";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useDeleteTodoDeletedManagementMutation } from "../api/delete-todo-deleted-management";
 import { useGetTodoDeletedManagement } from "../api/get-todo-deleted-management";
@@ -16,6 +17,7 @@ export function useTodoDeletedManagementDetail() {
     const { data } = useGetTodoDeletedManagement({ id: taskId });
     const task = data.data;
     // ルーティング用
+    const navigate = useNavigate();
     const { appGoBack } = useAppNavigation();
     // 復元確認ダイアログ
     const restoreDialog = useSwitch();
@@ -49,10 +51,10 @@ export function useTodoDeletedManagementDetail() {
     });
 
     /**
-     * 一覧に戻る
+     * 一覧へ戻る
      */
     function onClickBack() {
-        appGoBack(paths.todoDeletedManagement.path);
+        navigate(paths.todoDeletedManagement.path);
     }
 
     /**

@@ -11,6 +11,13 @@ export class GetTodoDeletedService {
      * 削除済みタスク取得
      */
     async find(taskId: TaskId) {
-        return await this.repository.find(taskId);
+        return this.repository.find(taskId);
+    }
+
+    /**
+     * 祖先タスク取得
+     */
+    async findAncestors(parentId: number) {
+        return this.repository.findAncestors(parentId);
     }
 }

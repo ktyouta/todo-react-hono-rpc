@@ -33,7 +33,11 @@ const getTodoDeleted = new Hono<AppEnv>().get(
             return c.json({ message: "Not Found", data: task }, HTTP_STATUS.NOT_FOUND);
         }
 
-        return c.json({ message: "削除済みタスクを取得しました。", data: task }, HTTP_STATUS.OK);
+        const ancestors = task.parentId !== null
+            ? await service.findAncestors(task.parentId)
+            : [];
+
+        return c.json({ message: "削除済みタスクを取得しました。", data: { ...task, ancestors } }, HTTP_STATUS.OK);
     }
 );
 
