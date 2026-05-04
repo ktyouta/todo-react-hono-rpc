@@ -25,7 +25,7 @@ export function useSubtaskSection() {
      * サブタスク詳細画面に遷移
      */
     function onClickSubtask(subId: number) {
-        appNavigate(paths.subtaskDetail.getHref(Number(taskId), subId));
+        appNavigate(paths.todoDetail.getHref(subId));
     }
 
     return {

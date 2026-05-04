@@ -18,7 +18,7 @@ export function useTodoManagementSubtaskSection() {
      * サブタスク詳細画面に遷移
      */
     function onClickSubtask(subId: number) {
-        appNavigate(paths.todoManagementSubtaskDetail.getHref(Number(taskId), subId));
+        appNavigate(paths.todoManagementDetail.getHref(subId));
     }
 
     return {

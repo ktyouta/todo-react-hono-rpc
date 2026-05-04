@@ -100,7 +100,7 @@ export function useTodoDetail() {
         id: taskId,
         onSuccess: (message) => {
             toast.success(message);
-            appGoBack(paths.todo.path);
+            appGoBack(task.parentId ? paths.todoDetail.getHref(task.parentId) : paths.todo.path);
         },
         onError: (message) => {
             toast.error(message ?? `タスクの削除に失敗しました。時間をおいて再度お試しください。`);
@@ -128,10 +128,10 @@ export function useTodoDetail() {
     }
 
     /**
-     * 一覧に戻る
+     * 一覧 or 親タスクへ戻る
      */
     function onClickBack() {
-        appGoBack(paths.todo.path);
+        appGoBack(task.parentId ? paths.todoDetail.getHref(task.parentId) : paths.todo.path);
     }
 
     /**

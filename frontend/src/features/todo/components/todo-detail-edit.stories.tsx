@@ -37,6 +37,8 @@ const dummyTask = {
     deleteFlg: false,
     createdAt: '2026-01-01T10:00:00.000Z',
     updatedAt: '2026-03-01T12:00:00.000Z',
+    parentId: null,
+    parentTitle: null,
 };
 
 const meta: Meta<typeof TodoDetailEdit> = {
@@ -76,6 +78,12 @@ export const Default: Story = {
                 errors={errors}
                 selectedCategoryId={1}
                 isLoading={false}
+                assistResult={null}
+                isAssistLoading={false}
+                isAssistEnabled={false}
+                clickAssist={() => {}}
+                applyAssist={() => {}}
+                cancelAssist={() => {}}
             />
         );
     },
@@ -114,6 +122,12 @@ export const MemoCategory: Story = {
                 errors={errors}
                 selectedCategoryId={2}
                 isLoading={false}
+                assistResult={null}
+                isAssistLoading={false}
+                isAssistEnabled={false}
+                clickAssist={() => {}}
+                applyAssist={() => {}}
+                cancelAssist={() => {}}
             />
         );
     },
@@ -151,6 +165,12 @@ export const WithValidationErrors: Story = {
                 errors={errors}
                 selectedCategoryId={1}
                 isLoading={false}
+                assistResult={null}
+                isAssistLoading={false}
+                isAssistEnabled={false}
+                clickAssist={() => {}}
+                applyAssist={() => {}}
+                cancelAssist={() => {}}
             />
         );
     },

@@ -15,12 +15,10 @@ import { TodoDeletedManagementPage } from '@/features/todo-deleted-management/co
 import { TodoManagementDetailPage } from '@/features/todo-management/components/todo-management-detail-page';
 import { TodoManagementLayout } from '@/features/todo-management/components/todo-management-layout';
 import { TodoManagementPage } from '@/features/todo-management/components/todo-management-page';
-import { TodoManagementSubtaskDetailPage } from '@/features/todo-management/components/todo-management-subtask-detail-page';
 import { TodoTrashDetailPage } from '@/features/todo-trash/components/todo-trash-detail-page';
 import { TodoTrashLayout } from '@/features/todo-trash/components/todo-trash-layout';
 import { TodoTrashPage } from '@/features/todo-trash/components/todo-trash-page';
 import { SubtaskCreatePage } from '@/features/todo/components/subtask-create-page';
-import { SubtaskDetailPage } from '@/features/todo/components/subtask-detail-page';
 import { TodoDetailPage } from '@/features/todo/components/todo-detail-page';
 import { TodoLayout } from '@/features/todo/components/todo-layout';
 import { TodoPage } from '@/features/todo/components/todo-page';
@@ -114,13 +112,6 @@ const routerList = [
                                     <SubtaskCreatePage />
                                 )
                             },
-                            {
-                                // サブタスク詳細
-                                path: paths.subtaskDetail.path,
-                                element: (
-                                    <SubtaskDetailPage />
-                                )
-                            }
                         ]
                     },
                     {
@@ -172,13 +163,6 @@ const routerList = [
                                             <TodoManagementDetailPage />
                                         )
                                     },
-                                    {
-                                        // タスク管理サブタスク詳細
-                                        path: paths.todoManagementSubtaskDetail.path,
-                                        element: (
-                                            <TodoManagementSubtaskDetailPage />
-                                        )
-                                    }
                                 ]
                             }
                         ]

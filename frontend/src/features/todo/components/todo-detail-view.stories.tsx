@@ -28,6 +28,7 @@ const dummyTaskBase = {
     createdAt: '2026-01-01T10:00:00.000Z',
     updatedAt: '2026-03-01T12:00:00.000Z',
     parentId: null,
+    parentTitle: null,
 };
 
 const dummyTask = {

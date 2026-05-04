@@ -49,7 +49,7 @@ export function TodoManagementDetailView(props: PropsType) {
                     className="flex items-center gap-1 text-sm text-gray-500 hover:text-gray-700"
                 >
                     <HiArrowLeft />
-                    <span>一覧に戻る</span>
+                    <span>{task.parentId ? "親タスクへ戻る" : "一覧に戻る"}</span>
                 </button>
                 <div className="flex-1" />
                 <Button
