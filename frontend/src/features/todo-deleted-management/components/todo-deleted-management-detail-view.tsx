@@ -152,10 +152,8 @@ export function TodoDeletedManagementDetailView(props: PropsType) {
                 </div>
             </div>
 
-            {/* 親タスクの場合：サブタスクセクション */}
-            {task.parentId === null && (
-                <TodoDeletedManagementSubtaskSectionContainer />
-            )}
+            {/* サブタスクセクション */}
+            <TodoDeletedManagementSubtaskSectionContainer />
 
             {/* 復元エリア・物理削除エリア */}
             <div className="mt-8 sm:mt-[60px] pt-4 sm:pt-[30px] border-t border-gray-200 flex flex-col gap-4">

@@ -4,8 +4,11 @@ import { useTodoTrashId } from "./use-todo-trash-id";
 
 export function useTodoTrashSubtaskSection() {
 
+    // タスクID
     const taskId = useTodoTrashId();
+    // ページ
     const [page, setPage] = useState(1);
+    // サブタスク
     const { data, isLoading } = useGetTodoTrashSubtaskList({ taskId, page });
 
     return {
