@@ -1,4 +1,4 @@
-import { and, eq, inArray, or } from "drizzle-orm";
+import { and, eq, inArray, sql } from "drizzle-orm";
 import { FrontUserId } from "../../../domain";
 import type { Database } from "../../../infrastructure/db";
 import { taskTransaction } from "../../../infrastructure/db";
@@ -32,18 +32,21 @@ export class BulkDeleteTodoRepository implements IBulkDeleteTodoRepository {
    * タスクを一括論理削除
    */
   async bulkDelete(userId: FrontUserId, ids: number[], now: string): Promise<void> {
-    await this.db
-      .update(taskTransaction)
-      .set({ deleteFlg: true, updatedAt: now })
-      .where(
-        and(
-          eq(taskTransaction.userId, userId.value),
-          eq(taskTransaction.deleteFlg, false),
-          or(
-            inArray(taskTransaction.id, ids),
-            inArray(taskTransaction.parentId, ids)
-          ),
-        )
-      );
+    const valuesSql = sql.join(ids.map(id => sql`(${id})`), sql`, `);
+    await this.db.run(sql`
+      WITH RECURSIVE
+      base_ids(id) AS (VALUES ${valuesSql}),
+      descendants(id) AS (
+        SELECT id FROM task_transaction WHERE id IN (SELECT id FROM base_ids)
+        UNION ALL
+        SELECT t.id FROM task_transaction t
+        INNER JOIN descendants d ON t.parent_id = d.id
+      )
+      UPDATE task_transaction
+      SET delete_flg = 1, updated_at = ${now}
+      WHERE id IN (SELECT id FROM descendants)
+      AND user_id = ${userId.value}
+      AND delete_flg = 0
+    `);
   }
 }
