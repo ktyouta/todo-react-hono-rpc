@@ -1,5 +1,6 @@
 import { Badge } from "@/components/ui/badge/badge";
 import { CATEGORY_COLOR_MAP, PRIORITY_COLOR_MAP, STATUS_COLOR_MAP } from "@/constants/task-attribute-colors";
+import { getFormatDatetime } from "@/utils/date-util";
 import { dateColorMap, getDueDateStatus } from "@/utils/due-date-status";
 import { SubtaskListDataType } from "../api/get-subtask-list";
 
@@ -43,11 +44,11 @@ export function SubtaskCard({ entry, onClick }: PropsType) {
                 })()}
                 <div>
                     <span className="text-gray-400">登録日</span>
-                    <span className="ml-1.5 text-gray-500">{entry.createdAt.slice(0, 10)}</span>
+                    <span className="ml-1.5 text-gray-500">{getFormatDatetime(new Date(entry.createdAt), 'yyyy-MM-dd')}</span>
                 </div>
                 <div>
                     <span className="text-gray-400">更新日</span>
-                    <span className="ml-1.5 text-gray-500">{entry.updatedAt.slice(0, 10)}</span>
+                    <span className="ml-1.5 text-gray-500">{getFormatDatetime(new Date(entry.updatedAt), 'yyyy-MM-dd')}</span>
                 </div>
             </div>
         </div>

@@ -10,6 +10,7 @@ import { UserManagementActionBar } from "./user-management-action-bar";
 import { UserManagementBulkDeleteDialog } from "./user-management-bulk-delete-dialog";
 import { UserManagementBulkRoleDialog } from "./user-management-bulk-role-dialog";
 import { UserManagementCard } from "./user-management-card";
+import { getFormatDatetime } from "@/utils/date-util";
 import { UserManagementSearchBar } from "./user-management-search-bar";
 
 type PropsType = {
@@ -33,9 +34,9 @@ const baseColumns: TableProps<UserManagementListReturnType['list'][number]>['col
     { title: 'ユーザー名', field: 'name', Cell: ({ entry }) => <span className="whitespace-nowrap">{entry.name}</span> },
     { title: '生年月日', field: 'birthday', className: 'w-[12%] whitespace-nowrap', Cell: ({ entry }) => <span>{`${entry.birthday.slice(0, 4)}-${entry.birthday.slice(4, 6)}-${entry.birthday.slice(6, 8)}`}</span> },
     { title: 'ロール', field: 'roleName', className: 'w-[10%] whitespace-nowrap' },
-    { title: '最終ログイン', field: 'lastLoginDate', className: 'w-[12%] whitespace-nowrap hidden md:table-cell', Cell: ({ entry }) => <span>{entry.lastLoginDate?.slice(0, 10) || `—`}</span> },
-    { title: '登録日', field: 'createdAt', className: 'w-[12%] whitespace-nowrap hidden md:table-cell', Cell: ({ entry }) => <span>{entry.createdAt.slice(0, 10)}</span> },
-    { title: '更新日', field: 'updatedAt', className: 'w-[12%] whitespace-nowrap hidden md:table-cell', Cell: ({ entry }) => <span>{entry.updatedAt.slice(0, 10)}</span> },
+    { title: '最終ログイン', field: 'lastLoginDate', className: 'w-[12%] whitespace-nowrap hidden md:table-cell', Cell: ({ entry }) => <span>{entry.lastLoginDate ? getFormatDatetime(new Date(entry.lastLoginDate), 'yyyy-MM-dd') : `—`}</span> },
+    { title: '登録日', field: 'createdAt', className: 'w-[12%] whitespace-nowrap hidden md:table-cell', Cell: ({ entry }) => <span>{getFormatDatetime(new Date(entry.createdAt), 'yyyy-MM-dd')}</span> },
+    { title: '更新日', field: 'updatedAt', className: 'w-[12%] whitespace-nowrap hidden md:table-cell', Cell: ({ entry }) => <span>{getFormatDatetime(new Date(entry.updatedAt), 'yyyy-MM-dd')}</span> },
 ];
 
 export function UserManagementList(props: PropsType) {

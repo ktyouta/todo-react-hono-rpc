@@ -2,6 +2,7 @@ import { Button, Pagination, Table } from "@/components";
 import { Badge } from "@/components/ui/badge/badge";
 import { CATEGORY_COLOR_MAP, PRIORITY_COLOR_MAP, STATUS_COLOR_MAP } from "@/constants/task-attribute-colors";
 import { TableProps } from "@/components/ui/table/table";
+import { getFormatDatetime } from "@/utils/date-util";
 import { getDueDateStatus } from "@/utils/due-date-status";
 import { SubtaskListDataType } from "../api/get-subtask-list";
 import { SubtaskCard } from "./subtask-card";
@@ -42,8 +43,8 @@ const columns: TableProps<SubtaskListDataType[number]>['columns'] = [
             return <span>{dateStr}</span>;
         }
     },
-    { title: '登録日', field: 'createdAt', className: 'w-[9%] whitespace-nowrap hidden md:table-cell', Cell: ({ entry }) => <span>{entry.createdAt.slice(0, 10)}</span> },
-    { title: '更新日', field: 'updatedAt', className: 'w-[9%] whitespace-nowrap hidden md:table-cell', Cell: ({ entry }) => <span>{entry.updatedAt.slice(0, 10)}</span> },
+    { title: '登録日', field: 'createdAt', className: 'w-[9%] whitespace-nowrap hidden md:table-cell', Cell: ({ entry }) => <span>{getFormatDatetime(new Date(entry.createdAt), 'yyyy-MM-dd')}</span> },
+    { title: '更新日', field: 'updatedAt', className: 'w-[9%] whitespace-nowrap hidden md:table-cell', Cell: ({ entry }) => <span>{getFormatDatetime(new Date(entry.updatedAt), 'yyyy-MM-dd')}</span> },
 ];
 
 export function SubtaskSection(props: PropsType) {

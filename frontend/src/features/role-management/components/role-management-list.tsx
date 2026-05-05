@@ -4,6 +4,7 @@ import { HiOutlineKey } from "react-icons/hi2";
 import type { RoleManagementListReturnType } from "../api/get-role-management-list";
 import type { RoleManagementSearchFilter } from "../types/role-management-search-filter";
 import { RoleManagementCard } from "./role-management-card";
+import { getFormatDatetime } from "@/utils/date-util";
 import { RoleManagementSearchBar } from "./role-management-search-bar";
 
 type PropsType = {
@@ -22,8 +23,8 @@ type PropsType = {
 const columns: TableProps<RoleManagementListReturnType['list'][number]>['columns'] = [
     { title: 'ID', field: 'id', className: 'w-[5%] whitespace-nowrap pl-4' },
     { title: 'ロール名', field: 'name', Cell: ({ entry }) => <span className="whitespace-nowrap">{entry.name}</span> },
-    { title: '登録日', field: 'createdAt', className: 'w-[15%] whitespace-nowrap hidden md:table-cell', Cell: ({ entry }) => <span>{entry.createdAt.slice(0, 10)}</span> },
-    { title: '更新日', field: 'updatedAt', className: 'w-[15%] whitespace-nowrap hidden md:table-cell', Cell: ({ entry }) => <span>{entry.updatedAt.slice(0, 10)}</span> },
+    { title: '登録日', field: 'createdAt', className: 'w-[15%] whitespace-nowrap hidden md:table-cell', Cell: ({ entry }) => <span>{getFormatDatetime(new Date(entry.createdAt), 'yyyy-MM-dd')}</span> },
+    { title: '更新日', field: 'updatedAt', className: 'w-[15%] whitespace-nowrap hidden md:table-cell', Cell: ({ entry }) => <span>{getFormatDatetime(new Date(entry.updatedAt), 'yyyy-MM-dd')}</span> },
 ];
 
 export function RoleManagementList(props: PropsType) {

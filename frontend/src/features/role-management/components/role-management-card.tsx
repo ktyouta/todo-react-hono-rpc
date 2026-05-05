@@ -1,3 +1,4 @@
+import { getFormatDatetime } from "@/utils/date-util";
 import type { RoleManagementListReturnType } from "../api/get-role-management-list";
 
 type PropsType = {
@@ -18,11 +19,11 @@ export function RoleManagementCard({ entry, onClick }: PropsType) {
             <div className="flex flex-wrap gap-x-4 gap-y-2 mt-3 pt-3 border-t border-gray-100 text-xs">
                 <div>
                     <span className="text-gray-400">登録日</span>
-                    <span className="ml-1.5 text-gray-500">{entry.createdAt.slice(0, 10)}</span>
+                    <span className="ml-1.5 text-gray-500">{getFormatDatetime(new Date(entry.createdAt), 'yyyy-MM-dd')}</span>
                 </div>
                 <div>
                     <span className="text-gray-400">更新日</span>
-                    <span className="ml-1.5 text-gray-500">{entry.updatedAt.slice(0, 10)}</span>
+                    <span className="ml-1.5 text-gray-500">{getFormatDatetime(new Date(entry.updatedAt), 'yyyy-MM-dd')}</span>
                 </div>
             </div>
         </div>

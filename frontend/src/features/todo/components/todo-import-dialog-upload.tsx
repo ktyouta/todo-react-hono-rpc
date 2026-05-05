@@ -5,6 +5,7 @@ import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { HiChevronDown, HiOutlineCheckCircle, HiOutlineDocument, HiOutlineStar, HiStar } from "react-icons/hi2";
 import { MdOutlineUploadFile } from "react-icons/md";
 import { COL } from "../constants/csv-import";
+import { getFormatDatetime } from "@/utils/date-util";
 import type { ColumnGuideRow, CsvPreviewRow, CsvValidationError } from "../hooks/use-todo-import";
 
 type PropsType = {
@@ -92,8 +93,8 @@ function buildPreviewColumns(errorCellMap: Map<number, Set<number>>): TableProps
                 ? <InvalidCell />
                 : <span>{entry.dueDate || '—'}</span>
         },
-        { title: '登録日', field: 'createdAt', className: 'w-[9%] whitespace-nowrap hidden md:table-cell', Cell: ({ entry }) => <span>{entry.createdAt.slice(0, 10)}</span> },
-        { title: '更新日', field: 'updatedAt', className: 'w-[9%] whitespace-nowrap hidden md:table-cell', Cell: ({ entry }) => <span>{entry.updatedAt.slice(0, 10)}</span> },
+        { title: '登録日', field: 'createdAt', className: 'w-[9%] whitespace-nowrap hidden md:table-cell', Cell: ({ entry }) => <span>{getFormatDatetime(new Date(entry.createdAt), 'yyyy-MM-dd')}</span> },
+        { title: '更新日', field: 'updatedAt', className: 'w-[9%] whitespace-nowrap hidden md:table-cell', Cell: ({ entry }) => <span>{getFormatDatetime(new Date(entry.updatedAt), 'yyyy-MM-dd')}</span> },
         {
             title: 'お気に入り', field: 'isFavorite', className: 'w-[9%] whitespace-nowrap text-center',
             Cell: ({ entry }) => isError(entry.id, COL.IS_FAVORITE)

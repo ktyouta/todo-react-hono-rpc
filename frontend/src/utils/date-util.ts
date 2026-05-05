@@ -1,4 +1,4 @@
-type DateFormat = 'yyyy-MM-dd HH:mm:ss' | 'yyyy/MM/dd' | 'HH:mm:ss' | 'dd-MM-yyyy HH:mm' | 'yyyyMMdd' | 'yyyyMMddHHmmss';
+type DateFormat = 'yyyy-MM-dd HH:mm:ss' | 'yyyy-MM-dd' | 'yyyy/MM/dd' | 'HH:mm:ss' | 'dd-MM-yyyy HH:mm' | 'yyyyMMdd' | 'yyyyMMddHHmmss';
 
 /**
  * 現在日時を取得
@@ -27,11 +27,9 @@ export function getFormatDatetime(date: Date, format: DateFormat): string {
     let retDate = "";
 
     if (format === 'yyyyMMdd') {
-
         retDate = `${year}${month}${day}`;
     }
     else {
-
         retDate = format.replace('yyyy', String(year))
             .replace('MM', String(month).padStart(2, '0'))
             .replace('dd', String(day).padStart(2, '0'))

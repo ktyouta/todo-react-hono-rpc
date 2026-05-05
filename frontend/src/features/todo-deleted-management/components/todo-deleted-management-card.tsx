@@ -1,4 +1,5 @@
 import { Checkbox } from "@/components/ui/checkbox/checkbox";
+import { getFormatDatetime } from "@/utils/date-util";
 import { dateColorMap, getDueDateStatus } from "@/utils/due-date-status";
 import { TodoDeletedManagementListReturnType } from "../api/get-todo-deleted-management-list";
 
@@ -61,11 +62,11 @@ export function TodoDeletedManagementCard({ entry, onClick, isBulkMode = false, 
                 })()}
                 <div>
                     <span className="text-gray-400">登録日</span>
-                    <span className="ml-1.5 text-gray-500">{entry.createdAt.slice(0, 10)}</span>
+                    <span className="ml-1.5 text-gray-500">{getFormatDatetime(new Date(entry.createdAt), 'yyyy-MM-dd')}</span>
                 </div>
                 <div>
                     <span className="text-gray-400">更新日</span>
-                    <span className="ml-1.5 text-gray-500">{entry.updatedAt.slice(0, 10)}</span>
+                    <span className="ml-1.5 text-gray-500">{getFormatDatetime(new Date(entry.updatedAt), 'yyyy-MM-dd')}</span>
                 </div>
             </div>
         </div>

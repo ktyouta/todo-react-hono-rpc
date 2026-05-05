@@ -7,6 +7,7 @@ import { PriorityReturnType } from "@/features/api/get-priority";
 import { StatusReturnType } from "@/features/api/get-status";
 import { UserManagementListReturnType } from "@/features/api/get-user-list";
 import { CATEGORY_COLOR_MAP, PRIORITY_COLOR_MAP, STATUS_COLOR_MAP } from "@/constants/task-attribute-colors";
+import { getFormatDatetime } from "@/utils/date-util";
 import { getDueDateStatus } from "@/utils/due-date-status";
 import { HiOutlineArchiveBoxXMark } from "react-icons/hi2";
 import { TaskManagementListReturnType } from "../api/get-todo-management-list";
@@ -65,8 +66,8 @@ const baseColumns: TableProps<TaskManagementListReturnType['list'][number]>['col
             return <span>{dateStr}</span>;
         }
     },
-    { title: '登録日', field: 'createdAt', className: 'w-[10%] whitespace-nowrap hidden md:table-cell', Cell: ({ entry }) => <span>{entry.createdAt.slice(0, 10)}</span> },
-    { title: '更新日', field: 'updatedAt', className: 'w-[10%] whitespace-nowrap hidden md:table-cell', Cell: ({ entry }) => <span>{entry.updatedAt.slice(0, 10)}</span> },
+    { title: '登録日', field: 'createdAt', className: 'w-[10%] whitespace-nowrap hidden md:table-cell', Cell: ({ entry }) => <span>{getFormatDatetime(new Date(entry.createdAt), 'yyyy-MM-dd')}</span> },
+    { title: '更新日', field: 'updatedAt', className: 'w-[10%] whitespace-nowrap hidden md:table-cell', Cell: ({ entry }) => <span>{getFormatDatetime(new Date(entry.updatedAt), 'yyyy-MM-dd')}</span> },
 ];
 
 export function TodoManagementList(props: PropsType) {

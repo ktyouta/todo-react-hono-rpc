@@ -9,6 +9,7 @@ import { UserDeletedManagementSearchFilter } from "../types/user-deleted-managem
 import { UserDeletedManagementActionBar } from "./user-deleted-management-action-bar";
 import { UserDeletedManagementBulkRestoreDialog } from "./user-deleted-management-bulk-restore-dialog";
 import { UserDeletedManagementCard } from "./user-deleted-management-card";
+import { getFormatDatetime } from "@/utils/date-util";
 import { UserDeletedManagementSearchBar } from "./user-deleted-management-search-bar";
 
 type PropsType = {
@@ -62,10 +63,10 @@ export function UserDeletedManagementList(props: PropsType) {
         { title: 'ID', field: 'id', className: 'w-[5%] whitespace-nowrap pl-4' },
         { title: 'ユーザー名', field: 'name', Cell: ({ entry }) => <span className="whitespace-nowrap">{entry.name}</span> },
         { title: 'ロール', field: 'roleName', className: 'w-[12%] whitespace-nowrap' },
-        { title: '最終ログイン', field: 'lastLoginDate', className: 'w-[12%] whitespace-nowrap hidden md:table-cell', Cell: ({ entry }) => <span>{entry.lastLoginDate?.slice(0, 10) || `—`}</span> },
+        { title: '最終ログイン', field: 'lastLoginDate', className: 'w-[12%] whitespace-nowrap hidden md:table-cell', Cell: ({ entry }) => <span>{entry.lastLoginDate ? getFormatDatetime(new Date(entry.lastLoginDate), 'yyyy-MM-dd') : `—`}</span> },
         { title: '生年月日', field: 'birthday', className: 'w-[12%] whitespace-nowrap', Cell: ({ entry }) => <span>{`${entry.birthday.slice(0, 4)}-${entry.birthday.slice(4, 6)}-${entry.birthday.slice(6, 8)}`}</span> },
-        { title: '登録日', field: 'createdAt', className: 'w-[11%] whitespace-nowrap hidden md:table-cell', Cell: ({ entry }) => <span>{entry.createdAt.slice(0, 10)}</span> },
-        { title: '更新日', field: 'updatedAt', className: 'w-[11%] whitespace-nowrap hidden md:table-cell', Cell: ({ entry }) => <span>{entry.updatedAt.slice(0, 10)}</span> },
+        { title: '登録日', field: 'createdAt', className: 'w-[11%] whitespace-nowrap hidden md:table-cell', Cell: ({ entry }) => <span>{getFormatDatetime(new Date(entry.createdAt), 'yyyy-MM-dd')}</span> },
+        { title: '更新日', field: 'updatedAt', className: 'w-[11%] whitespace-nowrap hidden md:table-cell', Cell: ({ entry }) => <span>{getFormatDatetime(new Date(entry.updatedAt), 'yyyy-MM-dd')}</span> },
     ];
 
     return (
