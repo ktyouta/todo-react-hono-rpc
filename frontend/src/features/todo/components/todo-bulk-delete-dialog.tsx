@@ -23,6 +23,8 @@ export function TodoBulkDeleteDialog({
                     {selectedCount}件のタスクを削除します。
                     <br />
                     削除済み管理から復元できます。
+                    <br />
+                    ※サブタスクが存在する場合は一緒に削除されます
                 </p>
                 <div className="flex justify-end gap-2">
                     <Button

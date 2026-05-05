@@ -24,6 +24,7 @@ export type TodoItem = {
   updatedAt: string;
   parentId: number | null;
   parentTitle: string | null;
+  subtaskCount: number;
 };
 
 /**

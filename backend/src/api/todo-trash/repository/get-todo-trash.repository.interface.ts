@@ -21,6 +21,7 @@ export type TodoTrashItem = {
     parentTitle: string | null;
     createdAt: string;
     updatedAt: string;
+    subtaskCount: number;
 };
 
 export interface IGetTodoTrashRepository {

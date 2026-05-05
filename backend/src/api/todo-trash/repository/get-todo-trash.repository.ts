@@ -20,35 +20,40 @@ export class GetTodoTrashRepository implements IGetTodoTrashRepository {
      * ゴミ箱タスク取得（ログインユーザー自身のタスクのみ）
      */
     async find(taskId: TaskId, userId: FrontUserId): Promise<TodoTrashItem | undefined> {
+        const outerTask = alias(taskTransaction, 'outer_task');
         return await this.db
             .select({
-                id: taskTransaction.id,
-                title: taskTransaction.title,
-                content: taskTransaction.content,
-                categoryId: taskTransaction.categoryId,
+                id: outerTask.id,
+                title: outerTask.title,
+                content: outerTask.content,
+                categoryId: outerTask.categoryId,
                 categoryName: sql<string>`coalesce(${categoryMaster.name}, '')`,
-                statusId: taskTransaction.statusId,
+                statusId: outerTask.statusId,
                 statusName: sql<string>`coalesce(${statusMaster.name}, 'なし')`,
-                priorityId: taskTransaction.priorityId,
+                priorityId: outerTask.priorityId,
                 priorityName: sql<string>`coalesce(${priorityMaster.name}, 'なし')`,
-                dueDate: taskTransaction.dueDate,
-                userId: taskTransaction.userId,
-                deleteFlg: taskTransaction.deleteFlg,
-                parentId: taskTransaction.parentId,
+                dueDate: outerTask.dueDate,
+                userId: outerTask.userId,
+                deleteFlg: outerTask.deleteFlg,
+                parentId: outerTask.parentId,
                 parentTitle: sql<string | null>`${this.parentTaskAlias.title}`,
-                createdAt: taskTransaction.createdAt,
-                updatedAt: taskTransaction.updatedAt,
+                createdAt: outerTask.createdAt,
+                updatedAt: outerTask.updatedAt,
+                subtaskCount: sql<number>`(
+                    SELECT COUNT(*) FROM task_transaction
+                    WHERE parent_id = ${outerTask.id}
+                )`,
             })
-            .from(taskTransaction)
-            .leftJoin(categoryMaster, eq(taskTransaction.categoryId, categoryMaster.id))
-            .leftJoin(statusMaster, eq(taskTransaction.statusId, statusMaster.id))
-            .leftJoin(priorityMaster, eq(taskTransaction.priorityId, priorityMaster.id))
-            .leftJoin(this.parentTaskAlias, eq(taskTransaction.parentId, this.parentTaskAlias.id))
+            .from(outerTask)
+            .leftJoin(categoryMaster, eq(outerTask.categoryId, categoryMaster.id))
+            .leftJoin(statusMaster, eq(outerTask.statusId, statusMaster.id))
+            .leftJoin(priorityMaster, eq(outerTask.priorityId, priorityMaster.id))
+            .leftJoin(this.parentTaskAlias, eq(outerTask.parentId, this.parentTaskAlias.id))
             .where(
                 and(
-                    eq(taskTransaction.deleteFlg, true),
-                    eq(taskTransaction.id, taskId.value),
-                    eq(taskTransaction.userId, userId.value),
+                    eq(outerTask.deleteFlg, true),
+                    eq(outerTask.id, taskId.value),
+                    eq(outerTask.userId, userId.value),
                 )
             )
             .get();

@@ -208,6 +208,9 @@ export function TodoTrashDetailView(props: PropsType) {
                     <p className="text-gray-700">
                         このタスクを完全に削除しますか？<br />
                         この操作は取り消せません。
+                        {task.subtaskCount > 0 && (
+                            <><br /><span className="text-red-600">※{task.subtaskCount}件のサブタスクも削除されます</span></>
+                        )}
                     </p>
                     <div className="flex justify-end gap-2">
                         <Button

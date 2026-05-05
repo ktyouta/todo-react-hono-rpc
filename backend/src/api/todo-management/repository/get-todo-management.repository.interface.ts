@@ -26,6 +26,7 @@ export type TodoManagementItem = {
     updatedAt: string;
     parentId: number | null;
     parentTitle: string | null;
+    subtaskCount: number;
 };
 
 export interface IGetTodoManagementRepository {

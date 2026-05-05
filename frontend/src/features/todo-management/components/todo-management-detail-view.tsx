@@ -1,10 +1,10 @@
 import { Breadcrumb, Button, Dialog, LoadingOverlay } from "@/components";
 import { paths } from "@/config/paths";
 import { CATEGORY_ID } from "@/constants/master";
-import { getFormatDatetime } from "@/utils/date-util";
 import { CategoryReturnType } from "@/features/api/get-category";
 import { PriorityReturnType } from "@/features/api/get-priority";
 import { StatusReturnType } from "@/features/api/get-status";
+import { getFormatDatetime } from "@/utils/date-util";
 import { getDueDateStatus } from "@/utils/due-date-status";
 import { HiArrowLeft } from "react-icons/hi2";
 import { TaskManagementReturnType } from "../api/get-todo-management";
@@ -199,6 +199,9 @@ export function TodoManagementDetailView(props: PropsType) {
                     <p className="text-gray-700">
                         {`この${task.categoryName}を削除しますか？`}<br />
                         この操作は取り消せません。
+                        {task.subtaskCount > 0 && (
+                            <><br /><span className="text-red-600">※{task.subtaskCount}件のサブタスクも削除されます</span></>
+                        )}
                     </p>
                     <div className="flex justify-end gap-2">
                         <Button
