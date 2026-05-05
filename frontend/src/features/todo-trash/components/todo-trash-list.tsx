@@ -1,9 +1,11 @@
 import { LoadingOverlay, Pagination, Table } from "@/components";
+import { Badge } from "@/components/ui/badge/badge";
 import { Checkbox } from "@/components/ui/checkbox/checkbox";
 import { TableProps } from "@/components/ui/table/table";
 import { CategoryReturnType } from "@/features/api/get-category";
 import { PriorityReturnType } from "@/features/api/get-priority";
 import { StatusReturnType } from "@/features/api/get-status";
+import { CATEGORY_COLOR_MAP, PRIORITY_COLOR_MAP, STATUS_COLOR_MAP } from "@/constants/task-attribute-colors";
 import { getDueDateStatus } from "@/utils/due-date-status";
 import { HiOutlineArchiveBoxXMark } from "react-icons/hi2";
 import { TodoTrashListReturnType } from "../api/get-todo-trash-list";
@@ -68,9 +70,9 @@ export function TodoTrashList(props: PropsType) {
         }] : []),
         { title: 'ID', field: 'id', className: 'w-[5%] whitespace-nowrap pl-4' },
         { title: 'タイトル', field: 'title', Cell: ({ entry }) => <span className="whitespace-nowrap">{entry.title}</span> },
-        { title: 'カテゴリ', field: 'categoryName', className: 'w-[9%] whitespace-nowrap' },
-        { title: 'ステータス', field: 'statusName', className: 'w-[10%] whitespace-nowrap' },
-        { title: '優先度', field: 'priorityName', className: 'w-[8%] whitespace-nowrap' },
+        { title: 'カテゴリ', field: 'categoryName', className: 'w-[9%] whitespace-nowrap', Cell: ({ entry }) => <Badge label={entry.categoryName} bgColor={CATEGORY_COLOR_MAP[entry.categoryId]} /> },
+        { title: 'ステータス', field: 'statusName', className: 'w-[10%] whitespace-nowrap', Cell: ({ entry }) => <Badge label={entry.statusName} bgColor={entry.statusId != null ? STATUS_COLOR_MAP[entry.statusId] : undefined} /> },
+        { title: '優先度', field: 'priorityName', className: 'w-[8%] whitespace-nowrap', Cell: ({ entry }) => <Badge label={entry.priorityName} bgColor={entry.priorityId != null ? PRIORITY_COLOR_MAP[entry.priorityId] : undefined} /> },
         {
             title: '期限日', field: 'dueDate', className: 'w-[8%] whitespace-nowrap', Cell: ({ entry }) => {
                 if (!entry.dueDate) {

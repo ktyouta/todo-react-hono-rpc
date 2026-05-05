@@ -1,4 +1,6 @@
+import { Badge } from "@/components/ui/badge/badge";
 import { Checkbox } from "@/components/ui/checkbox/checkbox";
+import { CATEGORY_COLOR_MAP, PRIORITY_COLOR_MAP, STATUS_COLOR_MAP } from "@/constants/task-attribute-colors";
 import { dateColorMap, getDueDateStatus } from "@/utils/due-date-status";
 import { HiOutlineStar, HiStar } from "react-icons/hi2";
 import { TaskListDataType } from "../api/get-todo-list";
@@ -33,17 +35,17 @@ export function TodoCard({ entry, onClick, onFavoriteToggle, isBulkMode = false,
                 <span className="text-xs text-gray-400 whitespace-nowrap shrink-0 mt-0.5">#{entry.id}</span>
             </div>
             <div className="flex flex-wrap gap-x-4 gap-y-2 mt-3 pt-3 border-t border-gray-100 text-xs relative">
-                <div>
+                <div className="flex items-center gap-1.5">
                     <span className="text-gray-400">カテゴリ</span>
-                    <span className="ml-1.5 text-gray-500">{entry.categoryName}</span>
+                    <Badge label={entry.categoryName} bgColor={CATEGORY_COLOR_MAP[entry.categoryId]} />
                 </div>
-                <div>
+                <div className="flex items-center gap-1.5">
                     <span className="text-gray-400">ステータス</span>
-                    <span className="ml-1.5 text-gray-500">{entry.statusName}</span>
+                    <Badge label={entry.statusName} bgColor={entry.statusId != null ? STATUS_COLOR_MAP[entry.statusId] : undefined} />
                 </div>
-                <div>
+                <div className="flex items-center gap-1.5">
                     <span className="text-gray-400">優先度</span>
-                    <span className="ml-1.5 text-gray-500">{entry.priorityName}</span>
+                    <Badge label={entry.priorityName} bgColor={entry.priorityId != null ? PRIORITY_COLOR_MAP[entry.priorityId] : undefined} />
                 </div>
                 {entry.dueDate && (() => {
 
