@@ -40,7 +40,7 @@ export class GetTodoTreeRepository implements IGetTodoTreeRepository {
           INNER JOIN tree_cte tc ON t.parent_id = tc.id
           WHERE t.delete_flg = 0
         )
-      SELECT id, title, parent_id AS parentId FROM tree_cte
+      SELECT id, title, parent_id AS parentId FROM tree_cte ORDER BY id
     `);
   }
 }
