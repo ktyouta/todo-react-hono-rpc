@@ -137,6 +137,13 @@ export function useTodoDetail() {
     }
 
     /**
+     * ツリービューへ遷移
+     */
+    function onClickTree() {
+        navigate(paths.todoTree.getHref(task.id));
+    }
+
+    /**
      * 編集ボタン押下
      */
     function onClickEdit() {
@@ -236,6 +243,7 @@ export function useTodoDetail() {
         isEditMode,
         isDeleteDialogOpen: deleteDialog.flag,
         onClickBack,
+        onClickTree,
         onClickEdit,
         onClickCancel,
         clickSave,

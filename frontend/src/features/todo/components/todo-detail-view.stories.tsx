@@ -54,6 +54,7 @@ const commonProps = {
     onCancelDelete: () => { },
     onConfirmDelete: () => { },
     onFavoriteToggle: () => { },
+    onClickTree: () => { },
     isLoading: false,
 };
 

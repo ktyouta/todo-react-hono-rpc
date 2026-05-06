@@ -7,6 +7,7 @@ import { StatusReturnType } from "@/features/api/get-status";
 import { getFormatDatetime } from "@/utils/date-util";
 import { getDueDateStatus } from "@/utils/due-date-status";
 import { HiArrowLeft, HiOutlineStar, HiStar } from "react-icons/hi2";
+import { TbBinaryTree } from "react-icons/tb";
 import { TaskDataType } from "../api/get-todo";
 import { SubtaskSectionContainer } from "./subtask-section-container";
 
@@ -22,6 +23,7 @@ type PropsType = {
     onCancelDelete: () => void;
     onConfirmDelete: () => void;
     onFavoriteToggle: () => void;
+    onClickTree: () => void;
     isLoading: boolean;
 }
 
@@ -36,6 +38,7 @@ export function TodoDetailView(props: PropsType) {
         onCancelDelete,
         onConfirmDelete,
         onFavoriteToggle,
+        onClickTree,
         isLoading,
     } = props;
 
@@ -66,6 +69,14 @@ export function TodoDetailView(props: PropsType) {
                     </button>
                 )}
                 <div className="flex-1" />
+                {/* SP: ツリーを見る（アイコンのみ） */}
+                <button
+                    type="button"
+                    onClick={onClickTree}
+                    className="flex items-center sm:hidden bg-[#fcfdfd] border border-gray-300 text-sm text-gray-600 hover:bg-gray-200 rounded px-2 py-2.5 mr-2"
+                >
+                    <TbBinaryTree className="size-4" />
+                </button>
                 <Button
                     colorType={"blue"}
                     sizeType={"large"}
@@ -86,7 +97,7 @@ export function TodoDetailView(props: PropsType) {
                     <button
                         type="button"
                         onClick={onFavoriteToggle}
-                        className="sm:mr-6"
+                        className="sm:mr-5"
                     >
                         {task.isFavorite
                             ? <HiStar className="size-7 text-amber-400" />
@@ -94,6 +105,15 @@ export function TodoDetailView(props: PropsType) {
                         }
                     </button>
                 }
+                {/* PC: ツリーを見る（アイコン+テキスト） */}
+                <button
+                    type="button"
+                    onClick={onClickTree}
+                    className="hidden sm:flex items-center gap-1 text-base text-cyan-600 hover:text-cyan-700 mr-4"
+                >
+                    <TbBinaryTree className="size-4" />
+                    <span>タスクツリーを表示</span>
+                </button>
                 <Button
                     colorType={"blue"}
                     sizeType={"large"}

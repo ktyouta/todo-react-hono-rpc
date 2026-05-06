@@ -22,6 +22,7 @@ import { SubtaskCreatePage } from '@/features/todo/components/subtask-create-pag
 import { TodoDetailPage } from '@/features/todo/components/todo-detail-page';
 import { TodoLayout } from '@/features/todo/components/todo-layout';
 import { TodoPage } from '@/features/todo/components/todo-page';
+import { TodoTreePage } from '@/features/todo/components/todo-tree-page';
 import { UpdatePasswordContainer } from '@/features/updatepassword/components/update-password-container';
 import { UpdateUserContainer } from '@/features/updateuser/components/update-user-container';
 import { UserCreatePage } from '@/features/user-create/components/user-create-page';
@@ -110,6 +111,13 @@ const routerList = [
                                 path: paths.subtaskCreate.path,
                                 element: (
                                     <SubtaskCreatePage />
+                                )
+                            },
+                            {
+                                // ツリービュー
+                                path: paths.todoTree.path,
+                                element: (
+                                    <TodoTreePage />
                                 )
                             },
                         ]

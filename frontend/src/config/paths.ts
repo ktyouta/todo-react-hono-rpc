@@ -87,4 +87,8 @@ export const paths = {
         path: '/todo/:id/subtasks/new',
         getHref: (taskId: number) => `/todo/${taskId}/subtasks/new`,
     },
+    todoTree: {
+        path: '/todo/:id/tree',
+        getHref: (id: number) => `/todo/${id}/tree`,
+    },
 } as const;
