@@ -5,9 +5,13 @@ import { useNavigate } from "react-router-dom";
 import { TodoTreeItemType, useGetTodoTree } from "../api/get-todo-tree";
 import { useTaskId } from "./use-task-id";
 
+// ノード1つあたりの横幅
 const NODE_WIDTH = 220;
+// ノード1つあたりの高さ
 const NODE_HEIGHT = 60;
+// ノード同士の横方向の間隔
 const HORIZONTAL_GAP = 40;
+// 階層ごとの縦方向の間隔
 const VERTICAL_GAP = 80;
 
 type TreeNode = TodoTreeItemType & { children: number[] };
@@ -25,15 +29,24 @@ function buildChildrenMap(items: TodoTreeItemType[]): Map<number, TreeNode> {
 }
 
 /** サブツリーが占める列幅（葉=1、内部ノード=子の合計） */
-function getSubtreeWidth(id: number, map: Map<number, TreeNode>): number {
+function getSubtreeWidth(id: number, map: Map<number, TreeNode>, widthCache: Map<number, number>,): number {
+
+    const cache = widthCache.get(id);
+    if (cache !== undefined) {
+        return cache;
+    }
+
     const node = map.get(id);
     if (!node || node.children.length === 0) {
         return 1;
     }
-    return node.children.reduce(
-        (sum, childId) => sum + getSubtreeWidth(childId, map),
+    const width = node.children.reduce(
+        (sum, childId) => sum + getSubtreeWidth(childId, map, widthCache),
         0
     );
+
+    widthCache.set(id, width);
+    return width;
 }
 
 /** 各ノードの座標を再帰的に計算 */
@@ -42,9 +55,10 @@ function computePositions(
     depth: number,
     xOffset: number,
     map: Map<number, TreeNode>,
-    result: Map<number, { x: number; y: number }>
+    result: Map<number, { x: number; y: number }>,
+    widthCache: Map<number, number>,
 ): void {
-    const subtreeWidth = getSubtreeWidth(id, map);
+    const subtreeWidth = getSubtreeWidth(id, map, widthCache);
     const x = (xOffset + subtreeWidth / 2) * (NODE_WIDTH + HORIZONTAL_GAP) - NODE_WIDTH / 2;
     const y = depth * (NODE_HEIGHT + VERTICAL_GAP);
     result.set(id, { x, y });
@@ -56,8 +70,8 @@ function computePositions(
 
     let childOffset = xOffset;
     for (const childId of node.children) {
-        computePositions(childId, depth + 1, childOffset, map, result);
-        childOffset += getSubtreeWidth(childId, map);
+        computePositions(childId, depth + 1, childOffset, map, result, widthCache);
+        childOffset += getSubtreeWidth(childId, map, widthCache);
     }
 }
 
@@ -100,15 +114,15 @@ export function useTodoTree() {
             return { nodes: [], edges: [] };
         }
 
-        const map = buildChildrenMap(items);
         const root = items.find((item) => item.parentId === null);
-
         if (!root) {
             return { nodes: [], edges: [] };
         }
 
+        const map = buildChildrenMap(items);
         const positions = new Map<number, { x: number; y: number }>();
-        computePositions(root.id, 0, 0, map, positions);
+        const widthCache = new Map<number, number>();
+        computePositions(root.id, 0, 0, map, positions, widthCache);
 
         const nodes: Node[] = items.map((item) => ({
             id: String(item.id),

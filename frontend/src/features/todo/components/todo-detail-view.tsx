@@ -109,7 +109,7 @@ export function TodoDetailView(props: PropsType) {
                 <button
                     type="button"
                     onClick={onClickTree}
-                    className="hidden sm:flex items-center gap-1 text-base text-cyan-600 hover:text-cyan-700 mr-4"
+                    className="hidden sm:flex items-center gap-1 text-base text-cyan-600 hover:text-cyan-700 mr-6"
                 >
                     <TbBinaryTree className="size-4" />
                     <span>タスクツリーを表示</span>
