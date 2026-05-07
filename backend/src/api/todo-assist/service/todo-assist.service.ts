@@ -1,12 +1,5 @@
-import { z } from "zod";
 import { TodoAssistSchemaType } from "../schema";
-
-const TodoAssistResultSchema = z.object({
-    title: z.string().transform(v => v.slice(0, 200)),
-    content: z.string().transform(v => v.slice(0, 2000)),
-});
-
-export type TodoAssistResult = z.infer<typeof TodoAssistResultSchema>;
+import { TodoAssistResultSchema, TodoAssistResultSchemaType } from "../schema/todo-assist-result-schema";
 
 const OUTPUT_CHECK_SYSTEM_PROMPT = `あなたはコンテンツ安全チェッカーです。
 入力されたテキストをタスク管理ツールのAI出力として評価し、「safe」または「unsafe」のみを返してください。
@@ -91,7 +84,7 @@ export class TodoAssistService {
      * AI出力の内容をAIで安全チェックする
      * @returns true: safe / false: unsafe（AI呼び出し失敗時はthrow）
      */
-    async checkOutput(result: TodoAssistResult): Promise<boolean> {
+    async checkOutput(result: TodoAssistResultSchemaType): Promise<boolean> {
         const userMessage = `title: ${result.title}\ncontent: ${result.content}`;
         const aiResponse = await this.ai.run("@cf/meta/llama-3-8b-instruct", {
             messages: [
@@ -112,7 +105,7 @@ export class TodoAssistService {
     /**
      * AI生テキストをパース・検証して返す
      */
-    parseAiResponse(raw: string): TodoAssistResult {
+    parseAiResponse(raw: string): TodoAssistResultSchemaType {
         const jsonText = raw.replace(/```json\s*/gi, "").replace(/```/g, "").trim();
 
         let parsed: unknown;
