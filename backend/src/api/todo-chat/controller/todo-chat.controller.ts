@@ -31,15 +31,6 @@ const todoChat = new Hono<AppEnv>().post(
         // AIテキストを出力
         const message = await service.chat(userMessage);
 
-        // AI出力の安全チェック
-        const isSafe = await service.checkOutput(message);
-        if (!isSafe) {
-            return c.json(
-                { message: "回答を生成しました。", data: { message: "その質問にはお答えできません。" } },
-                HTTP_STATUS.OK
-            );
-        }
-
         return c.json({ message: "回答を生成しました。", data: message }, HTTP_STATUS.OK);
     }
 );

@@ -13,6 +13,7 @@ type Props = {
     side?: Side;
     closeOnOverlayClick?: boolean;
     closeOnEscape?: boolean;
+    className?: string;
 };
 
 const sideClasses: Record<Side, string> = {
@@ -31,6 +32,7 @@ export function Drawer({
     side = "right",
     closeOnOverlayClick = true,
     closeOnEscape = true,
+    className,
 }: Props) {
     const handleKeyDown = useCallback(
         (event: KeyboardEvent) => {
@@ -86,7 +88,8 @@ export function Drawer({
             <div
                 className={cn(
                     "fixed z-10 bg-white shadow-xl p-6",
-                    sideClasses[side]
+                    sideClasses[side],
+                    className
                 )}
                 onClick={handleContentClick}
             >
@@ -135,7 +138,7 @@ export function Drawer({
                 )}
 
                 {/* Body */}
-                <div>{children}</div>
+                <div className="flex-1 min-h-0">{children}</div>
             </div>
         </div>,
         document.body

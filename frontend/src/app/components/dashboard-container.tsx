@@ -1,5 +1,6 @@
 import { Dashboard } from "@/components";
 import { paths } from "@/config/paths";
+import { TodoChatContainer } from "./todo-chat-container";
 import { useAppNavigation } from "@/hooks/use-app-navigation";
 import { usePermission } from "@/hooks/use-permission";
 import { HiOutlineArchiveBoxXMark, HiOutlineChartBar, HiOutlineClipboardDocumentList, HiOutlineDocumentPlus, HiOutlineHome, HiOutlineKey, HiOutlineShieldCheck, HiOutlineSquares2X2, HiOutlineTrash, HiOutlineUser, HiOutlineUserMinus, HiOutlineUserPlus } from 'react-icons/hi2';
@@ -131,14 +132,17 @@ export function DashboardContainer() {
     }
 
     return (
-        <Dashboard
-            navigationList={navigationList}
-            loginUser={loginUser}
-            moveUserInfoUpdate={moveUserInfoUpdate}
-            movePasswordUpdate={movePasswordUpdate}
-            logout={logout}
-        >
-            <Outlet />
-        </Dashboard>
+        <>
+            <Dashboard
+                navigationList={navigationList}
+                loginUser={loginUser}
+                moveUserInfoUpdate={moveUserInfoUpdate}
+                movePasswordUpdate={movePasswordUpdate}
+                logout={logout}
+            >
+                <Outlet />
+            </Dashboard>
+            <TodoChatContainer />
+        </>
     );
 }
