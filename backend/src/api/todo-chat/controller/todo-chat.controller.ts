@@ -29,21 +29,18 @@ const todoChat = new Hono<AppEnv>().post(
         const userMessage = service.buildUserMessage(c.req.valid("json"));
 
         // AIテキストを出力
-        const rawText = await service.create(userMessage);
-
-        // 出力テキストをパース
-        const chated = service.parseAiResponse(rawText);
+        const message = await service.chat(userMessage);
 
         // AI出力の安全チェック
-        const isSafe = await service.checkOutput(chated);
+        const isSafe = await service.checkOutput(message);
         if (!isSafe) {
             return c.json(
-                { message: "回答を生成しました。", data: { title: "", content: "その質問にはお答えできません。" } },
+                { message: "回答を生成しました。", data: { message: "その質問にはお答えできません。" } },
                 HTTP_STATUS.OK
             );
         }
 
-        return c.json({ message: "回答を生成しました。", data: chated }, HTTP_STATUS.OK);
+        return c.json({ message: "回答を生成しました。", data: message }, HTTP_STATUS.OK);
     }
 );
 
