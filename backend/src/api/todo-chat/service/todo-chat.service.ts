@@ -50,7 +50,7 @@ const SYSTEM_PROMPT = `あなたはTodoアプリ専用のAIアシスタントで
 
 ## 出力ルール
 - 必ず日本語で返答すること
-- 1000文字以内で簡潔かつ実用的に回答すること
+- 500文字以内で簡潔かつ実用的に回答すること
 - Markdownや箇条書きは使用可能
 - コードブロックやJSON形式は使用しないこと
 
@@ -71,7 +71,7 @@ Todoアプリやタスク管理と無関係な内容には、
  */
 export class TodoChatService {
     // AIレスポンスの最大トークン数
-    static readonly MAX_TOKENS = 1024;
+    static readonly MAX_TOKENS = 512;
 
     constructor(private readonly ai: Ai) { }
 
@@ -91,7 +91,7 @@ export class TodoChatService {
             throw new Error("予期しないストリームレスポンスです");
         }
 
-        const message = { message: (aiResponse.response ?? "").slice(0, 1000) };
+        const message = { message: (aiResponse.response ?? "").slice(0, 500) };
         return message;
     }
 

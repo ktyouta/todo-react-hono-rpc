@@ -1,6 +1,6 @@
 import { Drawer } from '@/components/ui/drawer/drawer';
 import { Textarea } from '@/components/ui/textarea/textarea';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { HiArrowUp } from 'react-icons/hi2';
 import ReactMarkdown from 'react-markdown';
 
@@ -28,6 +28,18 @@ type PropsType = {
     onKeyDown(e: React.KeyboardEvent<HTMLTextAreaElement>): void;
 };
 
+function LoadingDots() {
+    // アニメーション用ドット数（1〜3をループ）
+    const [count, setCount] = useState(1);
+
+    useEffect(() => {
+        const id = setInterval(() => setCount(c => c === 3 ? 1 : c + 1), 400);
+        return () => clearInterval(id);
+    }, []);
+
+    return <span>{'.'.repeat(count)}</span>;
+}
+
 export function TodoChatDrawer(props: PropsType) {
     // メッセージ末尾へのスクロール用ref
     const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -51,15 +63,15 @@ export function TodoChatDrawer(props: PropsType) {
             onClose={props.onClose}
             title="AIアシスタント"
             side="right"
-            closeOnOverlayClick={false}
-            className="w-[90vw] max-w-xl flex flex-col"
+            widthClassName="w-[90vw] lg:w-[35vw] lg:max-w-[760px]"
+            className="flex flex-col"
         >
             <div className="h-full flex flex-col">
                 {/* メッセージ一覧 */}
                 <div className="flex-1 overflow-y-auto space-y-3 mb-3">
                     {props.messages.length === 0 && (
-                        <p className="text-sm text-gray-400 text-center mt-8">
-                            Todoアプリの使い方や<br />タスク管理について質問してください。
+                        <p className="text-sm lg:text-base text-gray-400 text-center mt-8">
+                            アプリの使い方や<br />タスク管理について質問してください。
                         </p>
                     )}
                     {props.messages.map((msg, index) => (
@@ -68,11 +80,11 @@ export function TodoChatDrawer(props: PropsType) {
                             className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
                         >
                             <div
-                                className={`max-w-[85%] px-3 py-2 rounded-lg text-sm break-words ${msg.role === 'user'
-                                        ? 'bg-cyan-500 text-white whitespace-pre-wrap'
-                                        : msg.isError
-                                            ? 'bg-red-50 text-red-600 border border-red-200 whitespace-pre-wrap'
-                                            : 'bg-gray-100 text-gray-800'
+                                className={`max-w-[85%] px-3 py-2 rounded-lg text-sm lg:text-base break-words ${msg.role === 'user'
+                                    ? 'bg-cyan-500 text-white whitespace-pre-wrap'
+                                    : msg.isError
+                                        ? 'bg-red-50 text-red-600 border border-red-200 whitespace-pre-wrap'
+                                        : 'bg-gray-100 text-gray-800'
                                     }`}
                             >
                                 {msg.role === 'ai' && !msg.isError ? (
@@ -98,8 +110,8 @@ export function TodoChatDrawer(props: PropsType) {
                     ))}
                     {props.isLoading && (
                         <div className="flex justify-start">
-                            <div className="bg-gray-100 text-gray-500 px-3 py-2 rounded-lg text-sm">
-                                ...
+                            <div className="bg-gray-100 text-gray-500 px-3 py-2 rounded-lg text-sm lg:text-base min-w-[36px]">
+                                <LoadingDots />
                             </div>
                         </div>
                     )}

@@ -13,14 +13,15 @@ type Props = {
     side?: Side;
     closeOnOverlayClick?: boolean;
     closeOnEscape?: boolean;
+    widthClassName?: string;
     className?: string;
 };
 
 const sideClasses: Record<Side, string> = {
     top: "inset-x-0 top-0 border-b animate-slide-in-from-top",
     bottom: "inset-x-0 bottom-0 border-t animate-slide-in-from-bottom",
-    left: "inset-y-0 left-0 h-full w-3/4 max-w-sm border-r animate-slide-in-from-left",
-    right: "inset-y-0 right-0 h-full w-3/4 max-w-sm border-l animate-slide-in-from-right",
+    left: "inset-y-0 left-0 h-full border-r animate-slide-in-from-left",
+    right: "inset-y-0 right-0 h-full border-l animate-slide-in-from-right",
 };
 
 export function Drawer({
@@ -32,6 +33,7 @@ export function Drawer({
     side = "right",
     closeOnOverlayClick = true,
     closeOnEscape = true,
+    widthClassName,
     className,
 }: Props) {
     const handleKeyDown = useCallback(
@@ -89,6 +91,7 @@ export function Drawer({
                 className={cn(
                     "fixed z-10 bg-white shadow-xl p-6",
                     sideClasses[side],
+                    widthClassName ?? "w-3/4 max-w-sm",
                     className
                 )}
                 onClick={handleContentClick}
