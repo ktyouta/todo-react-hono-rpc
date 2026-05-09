@@ -9,4 +9,5 @@ import { API_ENDPOINT } from '@backend/constant';
  */
 export const apiPaths = {
     refresh: API_ENDPOINT.REFRESH,
+    todoChat: API_ENDPOINT.TODO_CHAT,
 } as const;

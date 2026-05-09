@@ -1,4 +1,4 @@
-import { TodoChatSchemaType } from "../schema";
+import { TodoChatSchemaType, WorkersAiSseSchema } from "../schema";
 
 const SYSTEM_PROMPT = `あなたはTodoアプリ専用のAIアシスタントです。
 
@@ -76,23 +76,77 @@ export class TodoChatService {
     constructor(private readonly ai: Ai) { }
 
     /**
-     * Workers AIを呼び出してAI生テキストを返す
+     * Workers AIをストリーミングモードで呼び出してReadableStreamを返す
      */
-    async chat(userMessage: string) {
-        const aiResponse = await this.ai.run("@cf/meta/llama-3-8b-instruct", {
+    async chatStream(userMessage: string): Promise<ReadableStream> {
+        const stream = await this.ai.run("@cf/meta/llama-3-8b-instruct", {
             messages: [
                 { role: "system", content: SYSTEM_PROMPT },
                 { role: "user", content: userMessage },
             ],
             max_tokens: TodoChatService.MAX_TOKENS,
+            stream: true,
         });
 
-        if (aiResponse instanceof ReadableStream) {
-            throw new Error("予期しないストリームレスポンスです");
+        if (!(stream instanceof ReadableStream)) {
+            throw new Error("ストリームレスポンスが取得できませんでした");
         }
 
-        const message = { message: (aiResponse.response ?? "").slice(0, 500) };
-        return message;
+        return stream;
+    }
+
+    /**
+     * Workers AI SSE（data: {"response":"..."}）を独自 SSE（data: {"token":"..."}）に変換する TransformStream を返す
+     */
+    createSseTransformStream(): TransformStream<Uint8Array, Uint8Array> {
+        const encoder = new TextEncoder();
+        const decoder = new TextDecoder();
+        let buffer = "";
+
+        return new TransformStream<Uint8Array, Uint8Array>({
+            transform: (chunk, controller) => {
+                buffer += decoder.decode(chunk, { stream: true });
+                const lines = buffer.split("\n");
+                buffer = lines.pop() ?? "";
+                for (const line of lines) {
+                    this.enqueueParsedLine(line, controller, encoder);
+                }
+            },
+            flush: (controller) => {
+                this.enqueueParsedLine(buffer, controller, encoder);
+            },
+        });
+    }
+
+    /**
+     * SSE 1行をパースしてコントローラーにエンキューする（transform・flush の共通処理）
+     */
+    private enqueueParsedLine(
+        line: string,
+        controller: TransformStreamDefaultController<Uint8Array>,
+        encoder: TextEncoder,
+    ) {
+        const trimmed = line.trim();
+        if (!trimmed.startsWith("data: ")) {
+            return;
+        }
+
+        const data = trimmed.slice(6);
+        if (data === "[DONE]") {
+            controller.enqueue(encoder.encode("data: [DONE]\n\n"));
+            return;
+        }
+
+        try {
+            const result = WorkersAiSseSchema.safeParse(JSON.parse(data));
+            if (result.success && result.data.response) {
+                controller.enqueue(
+                    encoder.encode(`data: ${JSON.stringify({ token: result.data.response })}\n\n`)
+                );
+            }
+        } catch {
+            // JSON.parse 失敗は無視
+        }
     }
 
     /**

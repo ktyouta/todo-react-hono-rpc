@@ -20,8 +20,10 @@ type PropsType = {
     messages: ChatMessage[];
     // 入力値
     inputValue: string;
-    // ローディングフラグ
+    // ローディングドット表示フラグ（最初のトークン到着前）
     isLoading: boolean;
+    // ストリーミング中フラグ（フォーム無効化用）
+    isStreaming: boolean;
     onClose(): void;
     onInputChange(value: string): void;
     onSend(): void;
@@ -52,7 +54,9 @@ export function TodoChatDrawer(props: PropsType) {
 
     useEffect(() => {
         const el = textareaRef.current;
-        if (!el) return;
+        if (!el) {
+            return;
+        }
         el.style.height = 'auto';
         el.style.height = `${el.scrollHeight}px`;
     }, [props.inputValue]);
@@ -68,7 +72,7 @@ export function TodoChatDrawer(props: PropsType) {
         >
             <div className="h-full flex flex-col">
                 {/* メッセージ一覧 */}
-                <div className="flex-1 overflow-y-auto space-y-3 mb-3">
+                <div className="flex-1 overflow-y-auto space-y-3 mb-3 pr-2">
                     {props.messages.length === 0 && (
                         <p className="text-sm lg:text-base text-gray-400 text-center mt-8">
                             アプリの使い方や<br />タスク管理について質問してください。
@@ -125,7 +129,7 @@ export function TodoChatDrawer(props: PropsType) {
                         onChange={(e) => props.onInputChange(e.target.value)}
                         onKeyDown={props.onKeyDown}
                         placeholder="質問を入力"
-                        disabled={props.isLoading}
+                        disabled={props.isStreaming}
                         disableAutoResize
                         rows={1}
                         className="flex-1 resize-none min-h-[unset] overflow-hidden"
@@ -133,7 +137,7 @@ export function TodoChatDrawer(props: PropsType) {
                     <button
                         type="button"
                         onClick={props.onSend}
-                        disabled={props.isLoading || !props.inputValue.trim()}
+                        disabled={props.isStreaming || !props.inputValue.trim()}
                         aria-label="送信"
                         className="flex items-center justify-center w-9 h-9 rounded-lg bg-cyan-500 text-white shadow-md [@media(hover:hover)]:hover:bg-cyan-600 transition-colors disabled:opacity-40 disabled:cursor-not-allowed flex-shrink-0"
                     >

@@ -1,32 +1,119 @@
-import { rpc } from '@/lib/rpc-client';
-import { useMutation } from '@tanstack/react-query';
-import type { InferRequestType, InferResponseType } from 'hono/client';
+import { apiPaths } from '@/config/api-paths';
+import { env } from '@/config/env';
+import { getAccessToken, handleRefresh } from '@/lib/refresh-handler';
+import { z } from 'zod';
 
-const endpoint = rpc.api.v1["todo-chat"].$post;
+const SseTokenSchema = z.object({
+    token: z.string(),
+});
 
-export type TodoChatResponseType = InferResponseType<typeof endpoint, 200>;
-type RequestType = InferRequestType<typeof endpoint>['json'];
-
-type PropsType = {
-    onSuccess: (response: TodoChatResponseType) => void;
-    onError: () => void;
+type StreamCallbacks = {
+    onToken: (token: string) => void;
+    onDone: () => void;
+    onError: (error: Error) => void;
+    signal: AbortSignal;
 };
 
-export function useTodoChatMutation(props: PropsType) {
-    return useMutation({
-        mutationFn: async (data: RequestType) => {
-            const res = await endpoint({ json: data });
-            if (!res.ok) {
-                const error = await res.json();
-                throw new Error(Array.isArray(error.message) ? error.message.join(', ') : error.message);
+/**
+ * AIチャットのストリーミングリクエスト
+ * ストリームは RPC で実現できないため fetch を直接使用
+ */
+export async function streamTodoChat(message: string, callbacks: StreamCallbacks): Promise<void> {
+    const { onToken, onDone, onError, signal } = callbacks;
+
+    async function doFetch(accessToken: string | null): Promise<Response> {
+        const headers: HeadersInit = { 'Content-Type': 'application/json' };
+        if (accessToken) {
+            headers['Authorization'] = `Bearer ${accessToken}`;
+        }
+        return fetch(`${env.API_URL}${apiPaths.todoChat}`, {
+            method: 'POST',
+            headers,
+            body: JSON.stringify({ message }),
+            credentials: 'include',
+            signal,
+        });
+    }
+
+    let response: Response;
+    try {
+        response = await doFetch(getAccessToken());
+    } catch (error) {
+        if (error instanceof Error) {
+            if (error.name === 'AbortError') {
+                return;
             }
-            return res.json() as Promise<TodoChatResponseType>;
-        },
-        onSuccess: (response) => {
-            props.onSuccess(response);
-        },
-        onError: () => {
-            props.onError();
-        },
-    });
+            onError(error);
+        }
+        return;
+    }
+
+    // 401 の場合はリフレッシュしてリトライ
+    if (response.status === 401) {
+        try {
+            const newToken = await handleRefresh();
+            response = await doFetch(newToken);
+        } catch {
+            onError(new Error('認証エラーが発生しました'));
+            return;
+        }
+    }
+
+    if (!response.ok) {
+        onError(new Error('AIの応答取得に失敗しました'));
+        return;
+    }
+
+    const reader = response.body?.getReader();
+    if (!reader) {
+        onError(new Error('ストリームの取得に失敗しました'));
+        return;
+    }
+
+    const decoder = new TextDecoder();
+    // チャンク境界をまたぐ場合に備えてバッファリング
+    let buffer = '';
+
+    try {
+        while (true) {
+            const { done, value } = await reader.read();
+            if (done) {
+                break;
+            }
+
+            buffer += decoder.decode(value, { stream: true });
+            const lines = buffer.split('\n');
+            buffer = lines.pop() ?? '';
+
+            for (const line of lines) {
+                const trimmed = line.trim();
+                if (!trimmed.startsWith('data: ')) {
+                    continue;
+                }
+
+                const data = trimmed.slice(6);
+                if (data === '[DONE]') {
+                    onDone();
+                    return;
+                }
+
+                try {
+                    const result = SseTokenSchema.safeParse(JSON.parse(data));
+                    if (result.success) {
+                        onToken(result.data.token);
+                    }
+                } catch {
+                    // JSON.parse 失敗は無視
+                }
+            }
+        }
+        onDone();
+    } catch (error) {
+        if (error instanceof Error) {
+            if (error.name === 'AbortError') {
+                return;
+            }
+            onError(error);
+        }
+    }
 }

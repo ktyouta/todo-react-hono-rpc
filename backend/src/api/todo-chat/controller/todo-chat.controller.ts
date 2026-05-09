@@ -28,10 +28,16 @@ const todoChat = new Hono<AppEnv>().post(
         // メッセージ作成
         const userMessage = service.buildUserMessage(c.req.valid("json"));
 
-        // AIテキストを出力
-        const message = await service.chat(userMessage);
+        // Workers AI ストリームを取得し、独自 SSE 形式に変換して返す
+        const aiStream = await service.chatStream(userMessage);
 
-        return c.json({ message: "回答を生成しました。", data: message }, HTTP_STATUS.OK);
+        return c.body(aiStream.pipeThrough(service.createSseTransformStream()), {
+            headers: {
+                "Content-Type": "text/event-stream",
+                "Cache-Control": "no-cache",
+                "Connection": "keep-alive",
+            },
+        });
     }
 );
 
