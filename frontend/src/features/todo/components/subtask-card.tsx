@@ -1,6 +1,7 @@
 import { Badge } from "@/components/ui/badge/badge";
-import { CATEGORY_COLOR_MAP, PRIORITY_COLOR_MAP, STATUS_COLOR_MAP } from "@/constants/task-attribute-colors";
+import { CATEGORY_COLOR_MAP } from "@/constants/task-attribute-colors";
 import { getFormatDatetime } from "@/utils/date-util";
+import { getPriorityBadgeColor, getStatusBadgeColor } from "@/utils/task-attribute-colors";
 import { dateColorMap, getDueDateStatus } from "@/utils/due-date-status";
 import { SubtaskListDataType } from "../api/get-subtask-list";
 
@@ -26,11 +27,11 @@ export function SubtaskCard({ entry, onClick }: PropsType) {
                 </div>
                 <div className="flex items-center gap-1.5">
                     <span className="text-gray-400">ステータス</span>
-                    <Badge label={entry.statusName} bgColor={entry.statusId != null ? STATUS_COLOR_MAP[entry.statusId] : undefined} />
+                    <Badge label={entry.statusName} bgColor={getStatusBadgeColor(entry.statusId)} />
                 </div>
                 <div className="flex items-center gap-1.5">
                     <span className="text-gray-400">優先度</span>
-                    <Badge label={entry.priorityName} bgColor={entry.priorityId != null ? PRIORITY_COLOR_MAP[entry.priorityId] : undefined} />
+                    <Badge label={entry.priorityName} bgColor={getPriorityBadgeColor(entry.priorityId)} />
                 </div>
                 {entry.dueDate && (() => {
                     const status = getDueDateStatus(entry.dueDate);

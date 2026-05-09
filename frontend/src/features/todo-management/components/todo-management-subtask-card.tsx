@@ -1,6 +1,6 @@
 import { Badge } from "@/components/ui/badge/badge";
-import { PRIORITY_COLOR_MAP, STATUS_COLOR_MAP } from "@/constants/task-attribute-colors";
 import { getFormatDatetime } from "@/utils/date-util";
+import { getPriorityBadgeColor, getStatusBadgeColor } from "@/utils/task-attribute-colors";
 import { dateColorMap, getDueDateStatus } from "@/utils/due-date-status";
 import { ManagementSubtaskListDataType } from "../api/get-todo-management-subtask-list";
 
@@ -25,11 +25,11 @@ export function TodoManagementSubtaskCard({ entry, onClick }: PropsType) {
             <div className="flex flex-wrap gap-x-4 gap-y-2 mt-3 pt-3 border-t border-gray-100 text-xs">
                 <div className="flex items-center gap-1.5">
                     <span className="text-gray-400">ステータス</span>
-                    <Badge label={entry.statusName} bgColor={entry.statusId != null ? STATUS_COLOR_MAP[entry.statusId] : undefined} />
+                    <Badge label={entry.statusName} bgColor={getStatusBadgeColor(entry.statusId)} />
                 </div>
                 <div className="flex items-center gap-1.5">
                     <span className="text-gray-400">優先度</span>
-                    <Badge label={entry.priorityName} bgColor={entry.priorityId != null ? PRIORITY_COLOR_MAP[entry.priorityId] : undefined} />
+                    <Badge label={entry.priorityName} bgColor={getPriorityBadgeColor(entry.priorityId)} />
                 </div>
                 {entry.dueDate && (
                     <div>

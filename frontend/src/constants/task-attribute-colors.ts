@@ -1,3 +1,5 @@
+export const NONE_BADGE_COLOR = 'bg-[#b0b4bc]';
+
 export const STATUS_COLOR_MAP: Record<number, string> = {
     1: 'bg-gray-500',   // 未着手
     2: 'bg-blue-500',   // 着手中

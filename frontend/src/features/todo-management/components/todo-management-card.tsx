@@ -1,7 +1,8 @@
 import { Badge } from "@/components/ui/badge/badge";
 import { Checkbox } from "@/components/ui/checkbox/checkbox";
-import { CATEGORY_COLOR_MAP, PRIORITY_COLOR_MAP, STATUS_COLOR_MAP } from "@/constants/task-attribute-colors";
+import { CATEGORY_COLOR_MAP } from "@/constants/task-attribute-colors";
 import { getFormatDatetime } from "@/utils/date-util";
+import { getPriorityBadgeColor, getStatusBadgeColor } from "@/utils/task-attribute-colors";
 import { dateColorMap, getDueDateStatus } from "@/utils/due-date-status";
 import { TaskManagementListReturnType } from "../api/get-todo-management-list";
 
@@ -45,13 +46,13 @@ export function TodoManagementCard({ entry, onClick, isBulkMode = false, isSelec
                 {entry.statusName && (
                     <div className="flex items-center gap-1.5">
                         <span className="text-gray-400">ステータス</span>
-                        <Badge label={entry.statusName} bgColor={entry.statusId != null ? STATUS_COLOR_MAP[entry.statusId] : undefined} />
+                        <Badge label={entry.statusName} bgColor={getStatusBadgeColor(entry.statusId)} />
                     </div>
                 )}
                 {entry.priorityName && (
                     <div className="flex items-center gap-1.5">
                         <span className="text-gray-400">優先度</span>
-                        <Badge label={entry.priorityName} bgColor={entry.priorityId != null ? PRIORITY_COLOR_MAP[entry.priorityId] : undefined} />
+                        <Badge label={entry.priorityName} bgColor={getPriorityBadgeColor(entry.priorityId)} />
                     </div>
                 )}
                 {entry.dueDate && (() => {

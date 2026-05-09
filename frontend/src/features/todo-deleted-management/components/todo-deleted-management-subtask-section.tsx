@@ -1,7 +1,7 @@
 import { Pagination, Table } from "@/components";
 import { Badge } from "@/components/ui/badge/badge";
-import { PRIORITY_COLOR_MAP, STATUS_COLOR_MAP } from "@/constants/task-attribute-colors";
 import { TableProps } from "@/components/ui/table/table";
+import { getPriorityBadgeColor, getStatusBadgeColor } from "@/utils/task-attribute-colors";
 import { TodoDeletedSubtaskListDataType } from "../api/get-todo-deleted-subtask-list";
 import { getFormatDatetime } from "@/utils/date-util";
 import { TodoDeletedManagementSubtaskCard } from "./todo-deleted-management-subtask-card";
@@ -17,8 +17,8 @@ type PropsType = {
 const columns: TableProps<TodoDeletedSubtaskListDataType[number]>['columns'] = [
     { title: 'ID', field: 'id', className: 'w-[6%] whitespace-nowrap pl-4' },
     { title: 'タイトル', field: 'title', Cell: ({ entry }) => <span className="whitespace-nowrap">{entry.title}</span> },
-    { title: 'ステータス', field: 'statusName', className: 'w-[12%] whitespace-nowrap', Cell: ({ entry }) => <Badge label={entry.statusName} bgColor={entry.statusId != null ? STATUS_COLOR_MAP[entry.statusId] : undefined} /> },
-    { title: '優先度', field: 'priorityName', className: 'w-[10%] whitespace-nowrap', Cell: ({ entry }) => <Badge label={entry.priorityName} bgColor={entry.priorityId != null ? PRIORITY_COLOR_MAP[entry.priorityId] : undefined} /> },
+    { title: 'ステータス', field: 'statusName', className: 'w-[12%] whitespace-nowrap', Cell: ({ entry }) => <Badge label={entry.statusName} bgColor={getStatusBadgeColor(entry.statusId)} /> },
+    { title: '優先度', field: 'priorityName', className: 'w-[10%] whitespace-nowrap', Cell: ({ entry }) => <Badge label={entry.priorityName} bgColor={getPriorityBadgeColor(entry.priorityId)} /> },
     { title: '期限日', field: 'dueDate', className: 'w-[10%] whitespace-nowrap', Cell: ({ entry }) => <span>{entry.dueDate ?? '—'}</span> },
     { title: '登録日', field: 'createdAt', className: 'w-[9%] whitespace-nowrap hidden md:table-cell', Cell: ({ entry }) => <span>{getFormatDatetime(new Date(entry.createdAt), 'yyyy-MM-dd')}</span> },
     { title: '更新日', field: 'updatedAt', className: 'w-[9%] whitespace-nowrap hidden md:table-cell', Cell: ({ entry }) => <span>{getFormatDatetime(new Date(entry.updatedAt), 'yyyy-MM-dd')}</span> },
