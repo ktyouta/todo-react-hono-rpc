@@ -1,4 +1,4 @@
-import { Breadcrumb, Button, Dialog, LoadingOverlay } from "@/components";
+import { Breadcrumb, Button, CopyButton, Dialog, LoadingOverlay } from "@/components";
 import { paths } from "@/config/paths";
 import { CATEGORY_ID } from "@/constants/master";
 import { CategoryReturnType } from "@/features/api/get-category";
@@ -130,8 +130,9 @@ export function TodoDetailView(props: PropsType) {
             {/* コンテンツ */}
             <div className="w-full pt-7 sm:pt-[1px] text-[15px] flex-1">
                 <div className="w-full p-3 sm:p-[20px] border border-[#c0c0c0] rounded mt-3 sm:mt-[20px] bg-white">
-                    <div className="mb-3">
+                    <div className="mb-3 flex items-center justify-between">
                         <p className="text-base text-gray-500">{task.categoryName}内容</p>
+                        <CopyButton text={task.content ?? ""} />
                     </div>
                     <p className={`w-full min-h-[450px] text-lg whitespace-pre-wrap leading-relaxed break-words ${task.content ? "text-gray-800" : "text-gray-400"}`}>
                         {task.content ?? "なし"}

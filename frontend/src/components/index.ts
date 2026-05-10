@@ -17,4 +17,5 @@ export { Textarea } from './ui/textarea/textarea';
 export { Textbox } from './ui/textbox/textbox';
 export { Pagination } from './ui/pagination/pagination';
 export { Breadcrumb } from './ui/breadcrumb/breadcrumb';
+export { CopyButton } from './ui/copy-button/copy-button';
 
