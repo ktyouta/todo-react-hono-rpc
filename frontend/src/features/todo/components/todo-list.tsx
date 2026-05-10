@@ -2,13 +2,14 @@ import { LoadingOverlay, Pagination, Table } from "@/components";
 import { Badge } from "@/components/ui/badge/badge";
 import { Checkbox } from "@/components/ui/checkbox/checkbox";
 import { TableProps } from "@/components/ui/table/table";
+import { STATUS_ID } from "@/constants/master";
 import { CATEGORY_COLOR_MAP } from "@/constants/task-attribute-colors";
-import { getPriorityBadgeColor, getStatusBadgeColor } from "@/utils/task-attribute-colors";
 import { CategoryReturnType } from "@/features/api/get-category";
 import { PriorityReturnType } from "@/features/api/get-priority";
 import { StatusReturnType } from "@/features/api/get-status";
 import { getFormatDatetime } from "@/utils/date-util";
 import { getDueDateStatus } from "@/utils/due-date-status";
+import { getPriorityBadgeColor, getStatusBadgeColor } from "@/utils/task-attribute-colors";
 import { HiOutlineArchiveBoxXMark, HiOutlineStar, HiStar } from "react-icons/hi2";
 import { TaskListDataType } from "../api/get-todo-list";
 import { UseTodoBulkReturn } from "../hooks/use-todo-bulk";
@@ -90,13 +91,16 @@ export function TodoList(props: PropsType) {
         { title: '優先度', field: 'priorityName', className: 'w-[9%] whitespace-nowrap', Cell: ({ entry }) => <Badge label={entry.priorityName} bgColor={getPriorityBadgeColor(entry.priorityId)} /> },
         {
             title: '期限日', field: 'dueDate', className: 'w-[9%] whitespace-nowrap', Cell: ({ entry }) => {
-                if (!entry.dueDate) {
+                const dateStr = entry.dueDate;
+                if (!dateStr) {
                     return <span>—</span>;
                 }
 
-                const status = getDueDateStatus(entry.dueDate);
-                const dateStr = entry.dueDate;
+                if (entry.statusId === STATUS_ID.COMPLETED) {
+                    return <span>{dateStr}</span>;
+                }
 
+                const status = getDueDateStatus(dateStr);
                 if (status === 'overdue') {
                     return <span className="text-red-600">{dateStr}</span>;
                 }

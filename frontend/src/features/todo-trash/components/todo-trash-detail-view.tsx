@@ -1,7 +1,6 @@
 import { Button, CopyButton, Dialog, LoadingOverlay } from "@/components";
 import { CATEGORY_ID } from "@/constants/master";
 import { getFormatDatetime } from "@/utils/date-util";
-import { getDueDateStatus } from "@/utils/due-date-status";
 import { HiArrowLeft } from "react-icons/hi2";
 import { TodoTrashReturnType } from "../api/get-todo-trash";
 import { TodoTrashSubtaskSectionContainer } from "./todo-trash-subtask-section-container";
@@ -35,9 +34,6 @@ export function TodoTrashDetailView(props: PropsType) {
         onConfirmDelete,
         isLoading,
     } = props;
-
-    // 期限ステータス
-    const dueDateStatus = getDueDateStatus(task.dueDate);
 
     return (
         <div className="w-full min-h-full flex flex-col pb-4">
@@ -109,7 +105,7 @@ export function TodoTrashDetailView(props: PropsType) {
                             </div>
                             <div className="flex flex-1 items-center gap-2 sm:max-w-[48%]">
                                 <span className="whitespace-nowrap w-[5em] text-gray-500 text-base">期限日</span>
-                                <span className={`flex-1 px-3 py-2 bg-gray-50 border border-[#e0e0e0] rounded text-lg ${dueDateStatus === 'overdue' ? 'text-red-600' : dueDateStatus === 'warning' ? 'text-amber-500' : ''}`}>
+                                <span className="flex-1 px-3 py-2 bg-gray-50 border border-[#e0e0e0] rounded text-lg">
                                     {task.dueDate ? task.dueDate : `なし`}
                                 </span>
                             </div>

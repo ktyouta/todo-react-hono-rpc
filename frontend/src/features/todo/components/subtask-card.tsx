@@ -1,4 +1,5 @@
 import { Badge } from "@/components/ui/badge/badge";
+import { STATUS_ID } from "@/constants/master";
 import { CATEGORY_COLOR_MAP } from "@/constants/task-attribute-colors";
 import { getFormatDatetime } from "@/utils/date-util";
 import { getPriorityBadgeColor, getStatusBadgeColor } from "@/utils/task-attribute-colors";
@@ -34,12 +35,21 @@ export function SubtaskCard({ entry, onClick }: PropsType) {
                     <Badge label={entry.priorityName} bgColor={getPriorityBadgeColor(entry.priorityId)} />
                 </div>
                 {entry.dueDate && (() => {
-                    const status = getDueDateStatus(entry.dueDate);
+                    const dateStr = entry.dueDate;
+                    if (entry.statusId === STATUS_ID.COMPLETED) {
+                        return (
+                            <div>
+                                <span className="text-gray-400">期限日</span>
+                                <span className="ml-1.5 text-gray-500">{dateStr}</span>
+                            </div>
+                        );
+                    }
+                    const status = getDueDateStatus(dateStr);
                     const dateColor = dateColorMap[status];
                     return (
                         <div>
                             <span className="text-gray-400">期限日</span>
-                            <span className={`ml-1.5 ${dateColor}`}>{entry.dueDate}</span>
+                            <span className={`ml-1.5 ${dateColor}`}>{dateStr}</span>
                         </div>
                     );
                 })()}

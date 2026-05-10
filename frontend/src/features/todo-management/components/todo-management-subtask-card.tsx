@@ -1,6 +1,7 @@
 import { Badge } from "@/components/ui/badge/badge";
 import { getFormatDatetime } from "@/utils/date-util";
 import { getPriorityBadgeColor, getStatusBadgeColor } from "@/utils/task-attribute-colors";
+import { STATUS_ID } from "@/constants/master";
 import { dateColorMap, getDueDateStatus } from "@/utils/due-date-status";
 import { ManagementSubtaskListDataType } from "../api/get-todo-management-subtask-list";
 
@@ -10,9 +11,6 @@ type PropsType = {
 };
 
 export function TodoManagementSubtaskCard({ entry, onClick }: PropsType) {
-    const status = getDueDateStatus(entry.dueDate);
-    const dateColor = dateColorMap[status];
-
     return (
         <div
             onClick={onClick}
@@ -31,12 +29,25 @@ export function TodoManagementSubtaskCard({ entry, onClick }: PropsType) {
                     <span className="text-gray-400">優先度</span>
                     <Badge label={entry.priorityName} bgColor={getPriorityBadgeColor(entry.priorityId)} />
                 </div>
-                {entry.dueDate && (
-                    <div>
-                        <span className="text-gray-400">期限日</span>
-                        <span className={`ml-1.5 ${dateColor}`}>{entry.dueDate}</span>
-                    </div>
-                )}
+                {entry.dueDate && (() => {
+                    const dateStr = entry.dueDate;
+                    if (entry.statusId === STATUS_ID.COMPLETED) {
+                        return (
+                            <div>
+                                <span className="text-gray-400">期限日</span>
+                                <span className="ml-1.5 text-gray-500">{dateStr}</span>
+                            </div>
+                        );
+                    }
+                    const status = getDueDateStatus(dateStr);
+                    const dateColor = dateColorMap[status];
+                    return (
+                        <div>
+                            <span className="text-gray-400">期限日</span>
+                            <span className={`ml-1.5 ${dateColor}`}>{dateStr}</span>
+                        </div>
+                    );
+                })()}
                 <div>
                     <span className="text-gray-400">登録日</span>
                     <span className="ml-1.5 text-gray-500">{getFormatDatetime(new Date(entry.createdAt), 'yyyy-MM-dd')}</span>

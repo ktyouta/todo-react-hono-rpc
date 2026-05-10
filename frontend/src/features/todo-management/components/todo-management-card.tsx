@@ -3,6 +3,7 @@ import { Checkbox } from "@/components/ui/checkbox/checkbox";
 import { CATEGORY_COLOR_MAP } from "@/constants/task-attribute-colors";
 import { getFormatDatetime } from "@/utils/date-util";
 import { getPriorityBadgeColor, getStatusBadgeColor } from "@/utils/task-attribute-colors";
+import { STATUS_ID } from "@/constants/master";
 import { dateColorMap, getDueDateStatus } from "@/utils/due-date-status";
 import { TaskManagementListReturnType } from "../api/get-todo-management-list";
 
@@ -56,10 +57,17 @@ export function TodoManagementCard({ entry, onClick, isBulkMode = false, isSelec
                     </div>
                 )}
                 {entry.dueDate && (() => {
-                    const status = getDueDateStatus(entry.dueDate);
                     const dateStr = entry.dueDate;
+                    if (entry.statusId === STATUS_ID.COMPLETED) {
+                        return (
+                            <div>
+                                <span className="text-gray-400">期限日</span>
+                                <span className="ml-1.5 text-gray-500">{dateStr}</span>
+                            </div>
+                        );
+                    }
+                    const status = getDueDateStatus(dateStr);
                     const dateColor = dateColorMap[status];
-
                     return (
                         <div>
                             <span className="text-gray-400">期限日</span>

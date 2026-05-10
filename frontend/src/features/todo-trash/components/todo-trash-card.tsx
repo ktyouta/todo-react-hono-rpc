@@ -1,6 +1,5 @@
 import { Checkbox } from "@/components/ui/checkbox/checkbox";
 import { getFormatDatetime } from "@/utils/date-util";
-import { dateColorMap, getDueDateStatus } from "@/utils/due-date-status";
 import { TodoTrashListReturnType } from "../api/get-todo-trash-list";
 
 type PropsType = {
@@ -44,18 +43,12 @@ export function TodoTrashCard({ entry, onClick, isBulkMode = false, isSelected =
                     <span className="text-gray-400">優先度</span>
                     <span className="ml-1.5 text-gray-500">{entry.priorityName}</span>
                 </div>
-                {entry.dueDate && (() => {
-                    const status = getDueDateStatus(entry.dueDate);
-                    const dateStr = entry.dueDate;
-                    const dateColor = dateColorMap[status];
-
-                    return (
-                        <div>
-                            <span className="text-gray-400">期限日</span>
-                            <span className={`ml-1.5 ${dateColor}`}>{dateStr}</span>
-                        </div>
-                    );
-                })()}
+                {entry.dueDate && (
+                    <div>
+                        <span className="text-gray-400">期限日</span>
+                        <span className="ml-1.5 text-gray-500">{entry.dueDate}</span>
+                    </div>
+                )}
                 <div>
                     <span className="text-gray-400">親タスクID</span>
                     <span className="ml-1.5 text-gray-500">{entry.parentId ?? `-`}</span>

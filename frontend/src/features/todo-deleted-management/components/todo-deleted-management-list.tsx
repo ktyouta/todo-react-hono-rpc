@@ -9,7 +9,6 @@ import { UserManagementListReturnType } from "@/features/api/get-user-list";
 import { CATEGORY_COLOR_MAP } from "@/constants/task-attribute-colors";
 import { getFormatDatetime } from "@/utils/date-util";
 import { getPriorityBadgeColor, getStatusBadgeColor } from "@/utils/task-attribute-colors";
-import { getDueDateStatus } from "@/utils/due-date-status";
 import { HiOutlineArchiveBoxXMark } from "react-icons/hi2";
 import { TodoDeletedManagementListReturnType } from "../api/get-todo-deleted-management-list";
 import { UseTodoDeletedManagementBulkReturn } from "../hooks/use-todo-deleted-management-bulk";
@@ -84,15 +83,7 @@ export function TodoDeletedManagementList(props: PropsType) {
                 if (!entry.dueDate) {
                     return <span>—</span>;
                 }
-                const status = getDueDateStatus(entry.dueDate);
-                const dateStr = entry.dueDate;
-                if (status === 'overdue') {
-                    return <span className="text-red-600">{dateStr}</span>;
-                }
-                if (status === 'warning') {
-                    return <span className="text-amber-500">{dateStr}</span>;
-                }
-                return <span>{dateStr}</span>;
+                return <span>{entry.dueDate}</span>;
             }
         },
         {

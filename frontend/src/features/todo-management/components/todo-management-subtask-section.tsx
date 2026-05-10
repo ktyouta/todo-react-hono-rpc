@@ -1,5 +1,6 @@
 import { Pagination, Table } from "@/components";
 import { Badge } from "@/components/ui/badge/badge";
+import { STATUS_ID } from "@/constants/master";
 import { CATEGORY_COLOR_MAP } from "@/constants/task-attribute-colors";
 import { TableProps } from "@/components/ui/table/table";
 import { getPriorityBadgeColor, getStatusBadgeColor } from "@/utils/task-attribute-colors";
@@ -27,6 +28,10 @@ const columns: TableProps<ManagementSubtaskListDataType[number]>['columns'] = [
         title: '期限日', field: 'dueDate', className: 'w-[9%] whitespace-nowrap', Cell: ({ entry }) => {
             if (!entry.dueDate) {
                 return <span>—</span>;
+            }
+
+            if (entry.statusId === STATUS_ID.COMPLETED) {
+                return <span>{entry.dueDate}</span>;
             }
 
             const status = getDueDateStatus(entry.dueDate);

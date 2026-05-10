@@ -1,10 +1,11 @@
 import { Button, Pagination, Table } from "@/components";
 import { Badge } from "@/components/ui/badge/badge";
-import { CATEGORY_COLOR_MAP } from "@/constants/task-attribute-colors";
 import { TableProps } from "@/components/ui/table/table";
-import { getPriorityBadgeColor, getStatusBadgeColor } from "@/utils/task-attribute-colors";
+import { STATUS_ID } from "@/constants/master";
+import { CATEGORY_COLOR_MAP } from "@/constants/task-attribute-colors";
 import { getFormatDatetime } from "@/utils/date-util";
 import { getDueDateStatus } from "@/utils/due-date-status";
+import { getPriorityBadgeColor, getStatusBadgeColor } from "@/utils/task-attribute-colors";
 import { SubtaskListDataType } from "../api/get-subtask-list";
 import { SubtaskCard } from "./subtask-card";
 
@@ -26,13 +27,16 @@ const columns: TableProps<SubtaskListDataType[number]>['columns'] = [
     { title: '優先度', field: 'priorityName', className: 'w-[9%] whitespace-nowrap', Cell: ({ entry }) => <Badge label={entry.priorityName} bgColor={getPriorityBadgeColor(entry.priorityId)} /> },
     {
         title: '期限日', field: 'dueDate', className: 'w-[9%] whitespace-nowrap', Cell: ({ entry }) => {
-            if (!entry.dueDate) {
+            const dateStr = entry.dueDate;
+            if (!dateStr) {
                 return <span>—</span>;
             }
 
-            const status = getDueDateStatus(entry.dueDate);
-            const dateStr = entry.dueDate;
+            if (entry.statusId === STATUS_ID.COMPLETED) {
+                return <span>{dateStr}</span>;
+            }
 
+            const status = getDueDateStatus(dateStr);
             if (status === 'overdue') {
                 return <span className="text-red-600">{dateStr}</span>;
             }

@@ -1,6 +1,6 @@
 import { Breadcrumb, Button, CopyButton, Dialog, LoadingOverlay } from "@/components";
 import { paths } from "@/config/paths";
-import { CATEGORY_ID } from "@/constants/master";
+import { CATEGORY_ID, STATUS_ID } from "@/constants/master";
 import { CategoryReturnType } from "@/features/api/get-category";
 import { PriorityReturnType } from "@/features/api/get-priority";
 import { StatusReturnType } from "@/features/api/get-status";
@@ -42,7 +42,7 @@ export function TodoDetailView(props: PropsType) {
         isLoading,
     } = props;
 
-    const dueDateStatus = getDueDateStatus(task.dueDate);
+    const dueDateStatus = task.statusId === STATUS_ID.COMPLETED ? 'normal' : getDueDateStatus(task.dueDate);
 
     return (
         <div className="w-full min-h-full flex flex-col pb-4">

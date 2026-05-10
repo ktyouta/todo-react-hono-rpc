@@ -6,6 +6,7 @@ import { CategoryReturnType } from "@/features/api/get-category";
 import { PriorityReturnType } from "@/features/api/get-priority";
 import { StatusReturnType } from "@/features/api/get-status";
 import { UserManagementListReturnType } from "@/features/api/get-user-list";
+import { STATUS_ID } from "@/constants/master";
 import { CATEGORY_COLOR_MAP } from "@/constants/task-attribute-colors";
 import { getFormatDatetime } from "@/utils/date-util";
 import { getPriorityBadgeColor, getStatusBadgeColor } from "@/utils/task-attribute-colors";
@@ -55,6 +56,9 @@ const baseColumns: TableProps<TaskManagementListReturnType['list'][number]>['col
         title: '期限日', field: 'dueDate', className: 'w-[10%] whitespace-nowrap', Cell: ({ entry }) => {
             if (!entry.dueDate) {
                 return <span>—</span>;
+            }
+            if (entry.statusId === STATUS_ID.COMPLETED) {
+                return <span>{entry.dueDate}</span>;
             }
             const status = getDueDateStatus(entry.dueDate);
             const dateStr = entry.dueDate;
