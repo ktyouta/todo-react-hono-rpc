@@ -48,43 +48,46 @@ export function TodoDetailView(props: PropsType) {
         <div className="w-full min-h-full flex flex-col pb-4">
             {/* ナビゲーション */}
             <div className="flex items-center mb-5">
-                {task.parentId ? (
-                    <Breadcrumb
-                        items={[
-                            { label: "タスク一覧", href: paths.todo.path },
-                            ...task.ancestors.map((a) => ({
-                                label: a.title,
-                                href: paths.todoDetail.getHref(a.id),
-                            })),
-                        ]}
-                    />
-                ) : (
+                <div className="flex-1 min-w-0">
+                    {task.parentId ? (
+                        <Breadcrumb
+                            items={[
+                                { label: "タスク一覧", href: paths.todo.path },
+                                ...task.ancestors.map((a) => ({
+                                    label: a.title,
+                                    href: paths.todoDetail.getHref(a.id),
+                                })),
+                            ]}
+                        />
+                    ) : (
+                        <button
+                            type="button"
+                            onClick={onClickBack}
+                            className="flex items-center gap-1 text-sm text-gray-500 hover:text-gray-700"
+                        >
+                            <HiArrowLeft />
+                            <span>一覧に戻る</span>
+                        </button>
+                    )}
+                </div>
+                {/* SP: ツリーを見る（アイコンのみ）＋編集ボタン */}
+                <div className="shrink-0 flex items-center gap-2 sm:hidden ml-2">
                     <button
                         type="button"
-                        onClick={onClickBack}
-                        className="flex items-center gap-1 text-sm text-gray-500 hover:text-gray-700"
+                        onClick={onClickTree}
+                        className="flex items-center bg-[#fcfdfd] border border-gray-300 text-sm text-gray-600 hover:bg-gray-200 rounded px-2 py-2.5"
                     >
-                        <HiArrowLeft />
-                        <span>一覧に戻る</span>
+                        <TbBinaryTree className="size-4" />
                     </button>
-                )}
-                <div className="flex-1" />
-                {/* SP: ツリーを見る（アイコンのみ） */}
-                <button
-                    type="button"
-                    onClick={onClickTree}
-                    className="flex items-center sm:hidden bg-[#fcfdfd] border border-gray-300 text-sm text-gray-600 hover:bg-gray-200 rounded px-2 py-2.5 mr-2"
-                >
-                    <TbBinaryTree className="size-4" />
-                </button>
-                <Button
-                    colorType={"blue"}
-                    sizeType={"large"}
-                    className="px-4 sm:hidden"
-                    onClick={onClickEdit}
-                >
-                    編集
-                </Button>
+                    <Button
+                        colorType={"blue"}
+                        sizeType={"large"}
+                        className="px-4"
+                        onClick={onClickEdit}
+                    >
+                        編集
+                    </Button>
+                </div>
             </div>
 
             {/* ヘッダー */}

@@ -66,28 +66,29 @@ export function TodoManagementDetailEdit(props: PropsType) {
         <div className="w-full min-h-full flex flex-col pb-4">
             {/* ナビゲーション */}
             <div className="flex items-center mb-5">
-                {task.parentId ? (
-                    <Breadcrumb
-                        items={[
-                            { label: "タスク管理", href: paths.todoManagement.path },
-                            ...task.ancestors.map((a) => ({
-                                label: a.title,
-                                href: paths.todoManagementDetail.getHref(a.id),
-                            })),
-                        ]}
-                    />
-                ) : (
-                    <button
-                        type="button"
-                        onClick={onClickBack}
-                        className="flex items-center gap-1 text-sm text-gray-500 hover:text-gray-700"
-                    >
-                        <HiArrowLeft />
-                        <span>一覧に戻る</span>
-                    </button>
-                )}
-                <div className="flex-1" />
-                <div className="flex gap-2 sm:hidden">
+                <div className="flex-1 min-w-0">
+                    {task.parentId ? (
+                        <Breadcrumb
+                            items={[
+                                { label: "タスク管理", href: paths.todoManagement.path },
+                                ...task.ancestors.map((a) => ({
+                                    label: a.title,
+                                    href: paths.todoManagementDetail.getHref(a.id),
+                                })),
+                            ]}
+                        />
+                    ) : (
+                        <button
+                            type="button"
+                            onClick={onClickBack}
+                            className="flex items-center gap-1 text-sm text-gray-500 hover:text-gray-700"
+                        >
+                            <HiArrowLeft />
+                            <span>一覧に戻る</span>
+                        </button>
+                    )}
+                </div>
+                <div className="shrink-0 flex items-center gap-2 sm:hidden ml-2">
                     <Button
                         colorType={"red"}
                         sizeType={"large"}
