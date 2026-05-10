@@ -7,6 +7,7 @@ import { StatusReturnType } from "@/features/api/get-status";
 import { getFormatDatetime } from "@/utils/date-util";
 import { getDueDateStatus } from "@/utils/due-date-status";
 import { HiArrowLeft } from "react-icons/hi2";
+import { TbBinaryTree } from "react-icons/tb";
 import { TaskManagementReturnType } from "../api/get-todo-management";
 import { TodoManagementSubtaskSectionContainer } from "./todo-management-subtask-section-container";
 
@@ -17,6 +18,7 @@ type PropsType = {
     priorityList: PriorityReturnType;
     isDeleteDialogOpen: boolean;
     onClickBack: () => void;
+    onClickTree: () => void;
     onClickEdit: () => void;
     onClickDelete: () => void;
     onCancelDelete: () => void;
@@ -30,6 +32,7 @@ export function TodoManagementDetailView(props: PropsType) {
         task,
         isDeleteDialogOpen,
         onClickBack,
+        onClickTree,
         onClickEdit,
         onClickDelete,
         onCancelDelete,
@@ -66,7 +69,15 @@ export function TodoManagementDetailView(props: PropsType) {
                         </button>
                     )}
                 </div>
-                <div className="shrink-0 sm:hidden ml-2">
+                {/* SP: ツリーを見る（アイコンのみ）＋編集ボタン */}
+                <div className="shrink-0 flex items-center gap-2 sm:hidden ml-2">
+                    <button
+                        type="button"
+                        onClick={onClickTree}
+                        className="flex items-center bg-[#fcfdfd] border border-gray-300 text-sm text-gray-600 hover:bg-gray-200 rounded px-2 py-2.5"
+                    >
+                        <TbBinaryTree className="size-4" />
+                    </button>
                     <Button
                         colorType={"blue"}
                         sizeType={"large"}
@@ -84,6 +95,15 @@ export function TodoManagementDetailView(props: PropsType) {
                     {task.title}
                 </span>
                 <div className="flex-1" />
+                {/* PC: ツリーを見る（アイコン+テキスト） */}
+                <button
+                    type="button"
+                    onClick={onClickTree}
+                    className="hidden sm:flex items-center gap-1 text-base text-cyan-600 hover:text-cyan-700 mr-6"
+                >
+                    <TbBinaryTree className="size-4" />
+                    <span>タスクツリーを表示</span>
+                </button>
                 <Button
                     colorType={"blue"}
                     sizeType={"large"}

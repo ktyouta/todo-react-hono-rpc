@@ -15,6 +15,7 @@ import { TodoDeletedManagementPage } from '@/features/todo-deleted-management/co
 import { TodoManagementDetailPage } from '@/features/todo-management/components/todo-management-detail-page';
 import { TodoManagementLayout } from '@/features/todo-management/components/todo-management-layout';
 import { TodoManagementPage } from '@/features/todo-management/components/todo-management-page';
+import { TodoManagementTreePage } from '@/features/todo-management/components/todo-management-tree-page';
 import { TodoTrashDetailPage } from '@/features/todo-trash/components/todo-trash-detail-page';
 import { TodoTrashLayout } from '@/features/todo-trash/components/todo-trash-layout';
 import { TodoTrashPage } from '@/features/todo-trash/components/todo-trash-page';
@@ -169,6 +170,13 @@ const routerList = [
                                         path: paths.todoManagementDetail.path,
                                         element: (
                                             <TodoManagementDetailPage />
+                                        )
+                                    },
+                                    {
+                                        // タスク管理ツリービュー
+                                        path: paths.todoManagementTree.path,
+                                        element: (
+                                            <TodoManagementTreePage />
                                         )
                                     },
                                 ]

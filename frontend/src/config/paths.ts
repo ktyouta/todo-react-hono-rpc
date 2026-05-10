@@ -91,4 +91,8 @@ export const paths = {
         path: '/todo/:id/tree',
         getHref: (id: number) => `/todo/${id}/tree`,
     },
+    todoManagementTree: {
+        path: '/todo-management/:id/tree',
+        getHref: (id: number) => `/todo-management/${id}/tree`,
+    },
 } as const;

@@ -96,6 +96,13 @@ export function useTodoManagementDetail() {
     }
 
     /**
+     * タスクツリーへ遷移
+     */
+    function onClickTree() {
+        navigate(paths.todoManagementTree.getHref(Number(taskId)));
+    }
+
+    /**
      * 編集ボタン押下
      */
     function onClickEdit() {
@@ -225,6 +232,7 @@ export function useTodoManagementDetail() {
         isEditMode,
         isDeleteDialogOpen: deleteDialog.flag,
         onClickBack,
+        onClickTree,
         onClickEdit,
         onClickCancel,
         clickSave,
