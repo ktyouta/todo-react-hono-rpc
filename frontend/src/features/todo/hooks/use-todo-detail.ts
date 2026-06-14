@@ -152,6 +152,7 @@ export function useTodoDetail() {
             content: task.content ?? "",
             category: task.categoryId,
             status: task.statusId ?? undefined,
+            priority: task.priorityId ?? undefined,
             dueDate: task.dueDate ?? null,
         });
         setIsEditMode(true);
