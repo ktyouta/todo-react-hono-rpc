@@ -22,11 +22,11 @@ tools: Read, Glob, Grep, Bash
 
 ```bash
 # 型チェック（静的解析の一環として）
-npm run typecheck --prefix /c/RPC/todo-react-hono-rpc/frontend
+npm run typecheck --prefix frontend
 
 # パッケージの脆弱性確認（読み取りのみ）
-npm audit --prefix /c/RPC/todo-react-hono-rpc/frontend 2>&1 | head -50
-npm audit --prefix /c/RPC/todo-react-hono-rpc/backend 2>&1 | head -50
+npm audit --prefix frontend 2>&1 | head -50
+npm audit --prefix backend 2>&1 | head -50
 ```
 
 ## セキュリティ分析ワークフロー

@@ -20,13 +20,13 @@ tools: Bash, Read, Grep, Glob
 
 ```bash
 # ルートから両方実行
-npm run test --prefix /c/RPC/todo-react-hono-rpc
+npm run test
 
 # フロントエンドのみ
-npm run test --prefix /c/RPC/todo-react-hono-rpc/frontend
+npm run test --prefix frontend
 
 # バックエンドのみ
-npm run test --prefix /c/RPC/todo-react-hono-rpc/backend
+npm run test --prefix backend
 ```
 
 ## 実行ワークフロー

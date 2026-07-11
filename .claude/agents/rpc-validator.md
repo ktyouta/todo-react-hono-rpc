@@ -20,7 +20,7 @@ tools: Read, Glob, Grep, Bash
 
 ```bash
 # 型チェックのみ（ビルドは不可）
-npm run typecheck --prefix /c/RPC/todo-react-hono-rpc/frontend
+npm run typecheck --prefix frontend
 ```
 
 ## 検証ワークフロー
