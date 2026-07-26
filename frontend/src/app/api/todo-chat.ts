@@ -15,6 +15,16 @@ type StreamCallbacks = {
 };
 
 /**
+ * ベースURLとパスを、スラッシュの重複なく結合する
+ * @param base
+ * @param path
+ * @returns
+ */
+function joinUrl(base: string, path: string): string {
+    return `${base.replace(/\/+$/, '')}${path}`;
+}
+
+/**
  * AIチャットのストリーミングリクエスト
  * ストリームは RPC で実現できないため fetch を直接使用
  */
@@ -26,7 +36,7 @@ export async function streamTodoChat(message: string, callbacks: StreamCallbacks
         if (accessToken) {
             headers['Authorization'] = `Bearer ${accessToken}`;
         }
-        return fetch(`${env.API_URL}${apiPaths.todoChat}`, {
+        return fetch(joinUrl(env.API_URL, apiPaths.todoChat), {
             method: 'POST',
             headers,
             body: JSON.stringify({ message }),
