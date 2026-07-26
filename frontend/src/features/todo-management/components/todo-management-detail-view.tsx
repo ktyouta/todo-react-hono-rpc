@@ -74,7 +74,7 @@ export function TodoManagementDetailView(props: PropsType) {
                     <button
                         type="button"
                         onClick={onClickTree}
-                        className="flex items-center bg-[#fcfdfd] border border-gray-300 text-sm text-gray-600 hover:bg-gray-200 rounded px-2 py-2.5"
+                        className="flex items-center justify-center h-11 w-11 bg-[#fcfdfd] border border-gray-300 text-sm text-gray-600 hover:bg-gray-200 rounded"
                     >
                         <TbBinaryTree className="size-4" />
                     </button>

@@ -23,8 +23,8 @@ export default defineConfig({
         navigateFallbackDenylist: [/^\/api\//],
       },
       manifest: {
-        name: 'Todoリスト',
-        short_name: 'Todoリスト',
+        name: 'タスクノート',
+        short_name: 'タスクノート',
         description: 'React + Hono + RPC を用いたTodoアプリ',
         start_url: '/',
         display: 'standalone',

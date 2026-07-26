@@ -104,7 +104,7 @@ export function Dashboard(props: PropsType) {
                         <LuMenu className='h-6 w-6' />
                     </button>
                     <span className='text-[26px] font-bold text-gray-800 tracking-wide inline-block flex-1'>
-                        Todoリスト
+                        タスクノート
                     </span>
                     {/* ユーザーアイコン */}
                     <div className='flex items-center relative'

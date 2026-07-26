@@ -75,7 +75,7 @@ export function TodoDetailView(props: PropsType) {
                     <button
                         type="button"
                         onClick={onClickTree}
-                        className="flex items-center bg-[#fcfdfd] border border-gray-300 text-sm text-gray-600 hover:bg-gray-200 rounded px-2 py-2.5"
+                        className="flex items-center justify-center h-11 w-11 bg-[#fcfdfd] border border-gray-300 text-sm text-gray-600 hover:bg-gray-200 rounded"
                     >
                         <TbBinaryTree className="size-4" />
                     </button>
@@ -134,7 +134,7 @@ export function TodoDetailView(props: PropsType) {
                         <p className="text-base text-gray-500">{task.categoryName}内容</p>
                         <CopyButton text={task.content ?? ""} />
                     </div>
-                    <p className={`w-full min-h-[450px] text-lg whitespace-pre-wrap leading-relaxed break-words ${task.content ? "text-gray-800" : "text-gray-400"}`}>
+                    <p className={`w-full min-h-[450px] text-base sm:text-lg whitespace-pre-wrap leading-relaxed break-words ${task.content ? "text-gray-800" : "text-gray-400"}`}>
                         {task.content ?? "なし"}
                     </p>
                     {task.parentId !== null && (
