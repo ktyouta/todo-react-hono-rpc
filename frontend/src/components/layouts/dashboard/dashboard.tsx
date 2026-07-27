@@ -94,7 +94,7 @@ export function Dashboard(props: PropsType) {
             */}
             <div className='flex flex-col flex-1 min-w-0 lg:pl-0'>
                 {/* ヘッダー */}
-                <header className='sticky top-0 z-20 md:relative h-14 bg-white border-b border-gray-200 flex items-center pl-6 pr-4 sm:pr-[70px]'>
+                <header className='sticky top-0 z-20 md:relative h-14 bg-white border-b border-gray-200 flex items-center justify-between pl-6 pr-4 sm:pr-[70px]'>
                     {/* ハンバーガーメニュー (モバイルのみ) */}
                     <button
                         className="lg:hidden mr-3 text-gray-600 hover:text-gray-800"
@@ -103,8 +103,8 @@ export function Dashboard(props: PropsType) {
                     >
                         <LuMenu className='h-6 w-6' />
                     </button>
-                    <span className='text-[26px] font-bold text-gray-800 tracking-wide inline-block flex-1'>
-                        タスクノート
+                    <span className='hidden sm:inline-block text-[24px] font-bold text-gray-800 tracking-wide flex-1'>
+                        TaskNote
                     </span>
                     {/* ユーザーアイコン */}
                     <div className='flex items-center relative'
@@ -152,7 +152,7 @@ export function Dashboard(props: PropsType) {
                     </main>
                 </div>
                 <footer className='h-10 flex items-center pl-6'>
-                    <span className='text-xs text-gray-400'>© 2026 Todo App. All rights reserved.</span>
+                    <span className='text-xs text-gray-400'>© 2026 TaskNote. All rights reserved.</span>
                 </footer>
             </div>
         </div>
