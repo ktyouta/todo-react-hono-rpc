@@ -94,7 +94,7 @@ export function Dashboard(props: PropsType) {
             */}
             <div className='flex flex-col flex-1 min-w-0 lg:pl-0'>
                 {/* ヘッダー */}
-                <header className='sticky top-0 z-20 md:relative h-14 bg-white border-b border-gray-200 flex items-center justify-between pl-6 pr-4 sm:pr-[70px]'>
+                <header className='sticky top-0 z-20 md:relative h-14 bg-white border-b border-gray-200 flex items-center pl-6 pr-4 sm:pr-[70px]'>
                     {/* ハンバーガーメニュー (モバイルのみ) */}
                     <button
                         className="lg:hidden mr-3 text-gray-600 hover:text-gray-800"
@@ -103,14 +103,14 @@ export function Dashboard(props: PropsType) {
                     >
                         <LuMenu className='h-6 w-6' />
                     </button>
-                    <span className='hidden sm:inline-block text-[24px] font-bold text-gray-800 tracking-wide flex-1'>
+                    <span className='inline-block text-[18px] sm:text-[24px] font-bold text-gray-800 tracking-wide flex-1'>
                         TaskNote
                     </span>
                     {/* ユーザーアイコン */}
                     <div className='flex items-center relative'
                         onClick={() => { setIsUserMenuOpen(true) }}
                     >
-                        <span className='mr-[10px] text-[18px] cursor-pointer'>
+                        <span className='mr-[10px] text-base sm:text-[18px] cursor-pointer'>
                             {props.loginUser.name}
                         </span>
                         <HiOutlineUserCircle className="size-8 cursor-pointer mr-[12px]" />
