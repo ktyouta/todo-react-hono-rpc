@@ -1,6 +1,5 @@
 import { Dashboard } from "@/components";
 import { paths } from "@/config/paths";
-import { TodoChatContainer } from "./todo-chat-container";
 import { useAppNavigation } from "@/hooks/use-app-navigation";
 import { usePermission } from "@/hooks/use-permission";
 import { HiOutlineArchiveBoxXMark, HiOutlineChartBar, HiOutlineClipboardDocumentList, HiOutlineDocumentPlus, HiOutlineHome, HiOutlineKey, HiOutlineShieldCheck, HiOutlineSquares2X2, HiOutlineTrash, HiOutlineUser, HiOutlineUserMinus, HiOutlineUserPlus } from 'react-icons/hi2';
@@ -8,6 +7,7 @@ import { Navigate, Outlet } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useLogoutMutation } from "../api/logout";
 import { LoginUserContext, SetLoginUserContext } from "./login-user-provider";
+import { TodoChatContainer } from "./todo-chat-container";
 
 export function DashboardContainer() {
     // ログインユーザー情報
@@ -131,6 +131,13 @@ export function DashboardContainer() {
         mutation.mutate();
     }
 
+    /**
+     * ホーム画面遷移
+     */
+    function moveHome() {
+        appNavigate(paths.todo.path);
+    }
+
     return (
         <>
             <Dashboard
@@ -139,6 +146,7 @@ export function DashboardContainer() {
                 moveUserInfoUpdate={moveUserInfoUpdate}
                 movePasswordUpdate={movePasswordUpdate}
                 logout={logout}
+                moveHome={moveHome}
             >
                 <Outlet />
             </Dashboard>

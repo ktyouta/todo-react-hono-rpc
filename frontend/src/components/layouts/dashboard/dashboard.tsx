@@ -17,6 +17,7 @@ type PropsType = {
     moveUserInfoUpdate(): void;
     movePasswordUpdate(): void;
     logout(): void;
+    moveHome: () => void;
 }
 
 export function Dashboard(props: PropsType) {
@@ -103,7 +104,9 @@ export function Dashboard(props: PropsType) {
                     >
                         <LuMenu className='h-6 w-6' />
                     </button>
-                    <span className='inline-block text-[18px] sm:text-[24px] font-bold text-gray-800 tracking-wide flex-1'>
+                    <span className='inline-block text-[18px] sm:text-[24px] font-bold text-gray-800 tracking-wide flex-1 cursor-pointer'
+                        onClick={props.moveHome}
+                    >
                         TaskNote
                     </span>
                     {/* ユーザーアイコン */}
