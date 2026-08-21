@@ -62,7 +62,7 @@ export function TodoManagementDetailView(props: PropsType) {
                         <button
                             type="button"
                             onClick={onClickBack}
-                            className="flex items-center gap-1 text-sm text-gray-500 hover:text-gray-700"
+                            className="flex items-center gap-1 text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
                         >
                             <HiArrowLeft />
                             <span>一覧に戻る</span>
@@ -74,7 +74,7 @@ export function TodoManagementDetailView(props: PropsType) {
                     <button
                         type="button"
                         onClick={onClickTree}
-                        className="flex items-center justify-center h-11 w-11 bg-[#fcfdfd] border border-gray-300 text-sm text-gray-600 hover:bg-gray-200 rounded"
+                        className="flex items-center justify-center h-11 w-11 bg-[#fcfdfd] border border-gray-300 text-sm text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700 rounded"
                     >
                         <TbBinaryTree className="size-4" />
                     </button>
@@ -91,7 +91,7 @@ export function TodoManagementDetailView(props: PropsType) {
 
             {/* ヘッダー */}
             <div className="flex items-center pr-[10px]">
-                <span className="text-2xl font-semibold">
+                <span className="text-2xl font-semibold dark:text-gray-100">
                     {task.title}
                 </span>
                 <div className="flex-1" />
@@ -99,7 +99,7 @@ export function TodoManagementDetailView(props: PropsType) {
                 <button
                     type="button"
                     onClick={onClickTree}
-                    className="hidden sm:flex items-center gap-1 text-base text-cyan-600 hover:text-cyan-700 mr-6"
+                    className="hidden sm:flex items-center gap-1 text-base text-cyan-600 hover:text-cyan-700 dark:text-cyan-400 dark:hover:text-cyan-300 mr-6"
                 >
                     <TbBinaryTree className="size-4" />
                     <span>タスクツリーを表示</span>
@@ -116,74 +116,74 @@ export function TodoManagementDetailView(props: PropsType) {
 
             {/* コンテンツ */}
             <div className="w-full pt-7 sm:pt-[1px] text-[15px] flex-1">
-                <div className="w-full p-3 sm:p-[20px] border border-[#c0c0c0] rounded mt-3 sm:mt-[20px] bg-white">
+                <div className="w-full p-3 sm:p-[20px] border border-[#c0c0c0] dark:border-gray-600 rounded mt-3 sm:mt-[20px] bg-white dark:bg-gray-800">
                     <div className="mb-3 flex items-center justify-between">
-                        <p className="text-base text-gray-500">{task.categoryName}内容</p>
+                        <p className="text-base text-gray-500 dark:text-gray-400">{task.categoryName}内容</p>
                         <CopyButton text={task.content ?? ""} />
                     </div>
-                    <p className={`w-full min-h-[450px] text-lg whitespace-pre-wrap leading-relaxed break-words ${task.content ? "text-gray-800" : "text-gray-400"}`}>
+                    <p className={`w-full min-h-[450px] text-lg whitespace-pre-wrap leading-relaxed break-words ${task.content ? "text-gray-800 dark:text-gray-100" : "text-gray-400 dark:text-gray-500"}`}>
                         {task.content ?? "なし"}
                     </p>
                     {task.parentId !== null && (
-                        <div className="flex flex-col sm:flex-row gap-4 sm:gap-[3%] pt-[20px] mt-[20px] border-t border-[#e8e8e8]">
+                        <div className="flex flex-col sm:flex-row gap-4 sm:gap-[3%] pt-[20px] mt-[20px] border-t border-[#e8e8e8] dark:border-gray-700">
                             <div className="flex flex-1 items-center gap-2">
-                                <span className="whitespace-nowrap w-[5em] text-gray-500 text-base">親タスク</span>
-                                <span className="flex-1 px-3 py-2 bg-gray-50 border border-[#e0e0e0] rounded text-lg break-words">
+                                <span className="whitespace-nowrap w-[5em] text-gray-500 dark:text-gray-400 text-base">親タスク</span>
+                                <span className="flex-1 px-3 py-2 bg-gray-50 border border-[#e0e0e0] dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100 rounded text-lg break-words">
                                     {task.parentTitle}
                                 </span>
                             </div>
                         </div>
                     )}
-                    <div className="flex flex-col sm:flex-row gap-4 sm:gap-[3%] pt-[20px] mt-[20px] border-t border-[#e8e8e8]">
+                    <div className="flex flex-col sm:flex-row gap-4 sm:gap-[3%] pt-[20px] mt-[20px] border-t border-[#e8e8e8] dark:border-gray-700">
                         <div className="flex flex-1 items-center gap-2 sm:max-w-[48%]">
-                            <span className="whitespace-nowrap w-[5em] text-gray-500 text-base">ユーザー</span>
-                            <span className="flex-1 px-3 py-2 bg-gray-50 border border-[#e0e0e0] rounded text-lg">
+                            <span className="whitespace-nowrap w-[5em] text-gray-500 dark:text-gray-400 text-base">ユーザー</span>
+                            <span className="flex-1 px-3 py-2 bg-gray-50 border border-[#e0e0e0] dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100 rounded text-lg">
                                 {task.userName}
                             </span>
                         </div>
                         <div className="flex flex-1 items-center gap-2 sm:max-w-[48%]">
-                            <span className="whitespace-nowrap w-[5em] text-gray-500 text-base">カテゴリ</span>
-                            <span className="flex-1 px-3 py-2 bg-gray-50 border border-[#e0e0e0] rounded text-lg">
+                            <span className="whitespace-nowrap w-[5em] text-gray-500 dark:text-gray-400 text-base">カテゴリ</span>
+                            <span className="flex-1 px-3 py-2 bg-gray-50 border border-[#e0e0e0] dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100 rounded text-lg">
                                 {task.categoryName}
                             </span>
                         </div>
                     </div>
                     {task.statusId !== null && (
-                        <div className="flex flex-col sm:flex-row gap-4 sm:gap-[3%] pt-[20px] mt-[20px] border-t border-[#e8e8e8]">
+                        <div className="flex flex-col sm:flex-row gap-4 sm:gap-[3%] pt-[20px] mt-[20px] border-t border-[#e8e8e8] dark:border-gray-700">
                             <div className="flex flex-1 items-center gap-2 sm:max-w-[48%]">
-                                <span className="whitespace-nowrap w-[5em] text-gray-500 text-base">ステータス</span>
-                                <span className="flex-1 px-3 py-2 bg-gray-50 border border-[#e0e0e0] rounded text-lg">
+                                <span className="whitespace-nowrap w-[5em] text-gray-500 dark:text-gray-400 text-base">ステータス</span>
+                                <span className="flex-1 px-3 py-2 bg-gray-50 border border-[#e0e0e0] dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100 rounded text-lg">
                                     {task.statusName}
                                 </span>
                             </div>
                         </div>
                     )}
                     {task.categoryId !== CATEGORY_ID.MEMO && (
-                        <div className="flex flex-col sm:flex-row gap-4 sm:gap-[3%] pt-[20px] mt-[20px] border-t border-[#e8e8e8]">
+                        <div className="flex flex-col sm:flex-row gap-4 sm:gap-[3%] pt-[20px] mt-[20px] border-t border-[#e8e8e8] dark:border-gray-700">
                             <div className="flex flex-1 items-center gap-2 sm:max-w-[48%]">
-                                <span className="whitespace-nowrap w-[5em] text-gray-500 text-base">優先度</span>
-                                <span className="flex-1 px-3 py-2 bg-gray-50 border border-[#e0e0e0] rounded text-lg">
+                                <span className="whitespace-nowrap w-[5em] text-gray-500 dark:text-gray-400 text-base">優先度</span>
+                                <span className="flex-1 px-3 py-2 bg-gray-50 border border-[#e0e0e0] dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100 rounded text-lg">
                                     {task.priorityName}
                                 </span>
                             </div>
                             <div className="flex flex-1 items-center gap-2 sm:max-w-[48%]">
-                                <span className="whitespace-nowrap w-[5em] text-gray-500 text-base">期限日</span>
-                                <span className={`flex-1 px-3 py-2 bg-gray-50 border border-[#e0e0e0] rounded text-lg ${dueDateStatus === 'overdue' ? 'text-red-600' : dueDateStatus === 'warning' ? 'text-amber-500' : ''}`}>
+                                <span className="whitespace-nowrap w-[5em] text-gray-500 dark:text-gray-400 text-base">期限日</span>
+                                <span className={`flex-1 px-3 py-2 bg-gray-50 border border-[#e0e0e0] dark:bg-gray-700 dark:border-gray-600 rounded text-lg ${dueDateStatus === 'overdue' ? 'text-red-600 dark:text-red-400' : dueDateStatus === 'warning' ? 'text-amber-500 dark:text-amber-400' : 'dark:text-gray-100'}`}>
                                     {task.dueDate ? task.dueDate : `なし`}
                                 </span>
                             </div>
                         </div>
                     )}
-                    <div className="mt-[20px] pt-[20px] border-t border-[#e8e8e8] flex flex-col sm:flex-row gap-4 sm:gap-[3%]">
+                    <div className="mt-[20px] pt-[20px] border-t border-[#e8e8e8] dark:border-gray-700 flex flex-col sm:flex-row gap-4 sm:gap-[3%]">
                         <div className="flex flex-1 items-center gap-2 sm:max-w-[48%]">
-                            <span className="whitespace-nowrap w-[5em] text-gray-500 text-base">登録日</span>
-                            <span className="flex-1 px-3 py-2 text-base text-gray-700">
+                            <span className="whitespace-nowrap w-[5em] text-gray-500 dark:text-gray-400 text-base">登録日</span>
+                            <span className="flex-1 px-3 py-2 text-base text-gray-700 dark:text-gray-300">
                                 {getFormatDatetime(new Date(task.createdAt), 'yyyy-MM-dd HH:mm:ss')}
                             </span>
                         </div>
                         <div className="flex flex-1 items-center gap-2 sm:max-w-[48%]">
-                            <span className="whitespace-nowrap w-[5em] text-gray-500 text-base">更新日</span>
-                            <span className="flex-1 px-3 py-2 text-base text-gray-700">
+                            <span className="whitespace-nowrap w-[5em] text-gray-500 dark:text-gray-400 text-base">更新日</span>
+                            <span className="flex-1 px-3 py-2 text-base text-gray-700 dark:text-gray-300">
                                 {getFormatDatetime(new Date(task.updatedAt), 'yyyy-MM-dd HH:mm:ss')}
                             </span>
                         </div>
@@ -195,11 +195,11 @@ export function TodoManagementDetailView(props: PropsType) {
             <TodoManagementSubtaskSectionContainer />
 
             {/* 削除エリア */}
-            <div className="mt-8 sm:mt-[60px] pt-4 sm:pt-[30px] border-t border-gray-200">
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 p-3 sm:p-5 border border-red-200 rounded bg-red-50">
+            <div className="mt-8 sm:mt-[60px] pt-4 sm:pt-[30px] border-t border-gray-200 dark:border-gray-700">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 p-3 sm:p-5 border border-red-200 dark:border-red-800 rounded bg-red-50 dark:bg-red-900/20">
                     <div>
-                        <p className="text-sm font-medium text-red-700">{`${task.categoryName}の削除`}</p>
-                        <p className="text-sm text-gray-500 mt-1">{`この${task.categoryName}を削除します。削除後は元に戻せません。`}</p>
+                        <p className="text-sm font-medium text-red-700 dark:text-red-400">{`${task.categoryName}の削除`}</p>
+                        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{`この${task.categoryName}を削除します。削除後は元に戻せません。`}</p>
                     </div>
                     <Button
                         colorType={"red"}
@@ -220,11 +220,11 @@ export function TodoManagementDetailView(props: PropsType) {
                 size="small"
             >
                 <div className="space-y-4">
-                    <p className="text-gray-700">
+                    <p className="text-gray-700 dark:text-gray-300">
                         {`この${task.categoryName}を削除しますか？`}<br />
                         この操作は取り消せません。
                         {task.subtaskCount > 0 && (
-                            <><br /><span className="text-red-600">※{task.subtaskCount}件のサブタスクも削除されます</span></>
+                            <><br /><span className="text-red-600 dark:text-red-400">※{task.subtaskCount}件のサブタスクも削除されます</span></>
                         )}
                     </p>
                     <div className="flex justify-end gap-2">

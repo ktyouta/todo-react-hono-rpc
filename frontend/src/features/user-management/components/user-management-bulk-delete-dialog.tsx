@@ -19,7 +19,7 @@ export function UserManagementBulkDeleteDialog({
     return (
         <Dialog isOpen={isOpen} onClose={onClose} title="ユーザーを削除" size="small">
             <div className="flex flex-col gap-5">
-                <p className="text-sm text-gray-700">
+                <p className="text-sm text-gray-700 dark:text-gray-300">
                     {selectedCount}件のユーザーを削除します。
                     <br />
                     削除後は削除済みユーザー一覧から復元できます。
@@ -30,7 +30,7 @@ export function UserManagementBulkDeleteDialog({
                         sizeType="medium"
                         onClick={onClose}
                         disabled={isLoading}
-                        className="px-4 h-9 py-0 bg-[#fcfdfd] border border-gray-300 text-sm text-gray-600 hover:bg-gray-200"
+                        className="px-4 h-9 py-0 bg-[#fcfdfd] border border-gray-300 text-sm text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700"
                     >
                         キャンセル
                     </Button>

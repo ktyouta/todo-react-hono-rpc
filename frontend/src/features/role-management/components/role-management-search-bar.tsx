@@ -14,10 +14,10 @@ export function RoleManagementSearchBar({ searchCondition, onChange, onSearch, o
     const isEmpty = searchCondition.name === '';
 
     return (
-        <div className="pb-4 border-b border-gray-300 mb-3 sm:mb-6">
+        <div className="pb-4 border-b border-gray-300 dark:border-gray-700 mb-3 sm:mb-6">
             <div className="flex flex-col sm:flex-row gap-2">
                 <div className="relative flex-1">
-                    <HiMagnifyingGlass className="absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-400 size-4 pointer-events-none" />
+                    <HiMagnifyingGlass className="absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 size-4 pointer-events-none" />
                     <Textbox
                         value={searchCondition.name}
                         onChange={(e) => onChange({ ...searchCondition, name: e.target.value })}
@@ -32,7 +32,7 @@ export function RoleManagementSearchBar({ searchCondition, onChange, onSearch, o
                         sizeType="small"
                         onClick={onClear}
                         disabled={isEmpty}
-                        className="px-3 h-9 py-0 bg-[#fcfdfd] border border-gray-300 text-sm text-gray-600 hover:bg-gray-200 whitespace-nowrap disabled:opacity-70 disabled:hover:bg-[#fcfdfd]"
+                        className="px-3 h-9 py-0 bg-[#fcfdfd] border border-gray-300 text-sm text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700 whitespace-nowrap disabled:opacity-70 disabled:hover:bg-[#fcfdfd]"
                     >
                         クリア
                     </Button>

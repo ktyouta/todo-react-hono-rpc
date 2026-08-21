@@ -6,7 +6,7 @@ type PropsType = Pick<AdminDashboardStatsType, 'userStats' | 'userByRole'>;
 export function AdminDashboardUserSection({ userStats, userByRole }: PropsType) {
     return (
         <section>
-            <h2 className="text-base font-semibold text-gray-700 mb-3 pl-2 border-l-[3px] border-cyan-400">ユーザー概況</h2>
+            <h2 className="text-base font-semibold text-gray-700 dark:text-gray-300 mb-3 pl-2 border-l-[3px] border-cyan-400">ユーザー概況</h2>
             <div className="flex flex-col gap-3">
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                     <StatCard value={userStats.total} label="総ユーザー数" />

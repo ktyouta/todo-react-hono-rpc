@@ -60,7 +60,7 @@ export function SubtaskSection(props: PropsType) {
         <div className="mt-8 sm:mt-[50px]">
             {/* ヘッダー */}
             <div className="flex items-center mb-3 pr-1">
-                <span className="font-semibold text-base text-gray-700">サブタスク</span>
+                <span className="font-semibold text-base text-gray-700 dark:text-gray-300">サブタスク</span>
                 <div className="flex-1" />
                 <Button
                     colorType={"blue"}
@@ -73,22 +73,22 @@ export function SubtaskSection(props: PropsType) {
             </div>
 
             {isLoading ? (
-                <div className="py-6 text-center text-sm text-gray-400">読み込み中...</div>
+                <div className="py-6 text-center text-sm text-gray-400 dark:text-gray-500">読み込み中...</div>
             ) : subtasks.length === 0 ? (
-                <div className="py-6 text-center text-sm text-gray-400">サブタスクはありません</div>
+                <div className="py-6 text-center text-sm text-gray-400 dark:text-gray-500">サブタスクはありません</div>
             ) : (
                 <>
                     {/* PC: テーブル表示 */}
-                    <div className="hidden sm:block border border-gray-200 rounded overflow-hidden">
+                    <div className="hidden sm:block border border-gray-200 dark:border-gray-700 rounded overflow-hidden">
                         <Table
                             data={subtasks}
                             columns={columns}
                             className="text-[16px] min-w-[700px]
-                                    [&_thead]:bg-gray-200/70
+                                    [&_thead]:bg-gray-200/70 dark:[&_thead]:bg-gray-800/70
                                       [&_thead_tr]:border-b
-                                    [&_thead_tr]:border-gray-400/60
+                                    [&_thead_tr]:border-gray-400/60 dark:[&_thead_tr]:border-gray-600
                                       [&_thead_tr]:hover:bg-transparent"
-                            rowClassName="h-[50px] border-gray-300/80 bg-white/50 cursor-pointer"
+                            rowClassName="h-[50px] border-gray-300/80 bg-white/50 dark:border-gray-700 dark:bg-gray-800/50 cursor-pointer"
                             onRowClick={(entry) => onClickSubtask(entry.id)}
                         />
                     </div>

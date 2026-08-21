@@ -32,15 +32,15 @@ export function TodoImportDialog({ isOpen, isLoading, result, file, isDragging, 
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50" onClick={onClose}>
-            <div className="bg-white rounded-lg w-full max-w-[90vw] h-[95vh] flex flex-col shadow-xl mx-4" onClick={(event: React.MouseEvent) => { event.stopPropagation() }}>
+            <div className="bg-white dark:bg-gray-800 rounded-lg w-full max-w-[90vw] h-[95vh] flex flex-col shadow-xl mx-4" onClick={(event: React.MouseEvent) => { event.stopPropagation() }}>
 
-                <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200">
-                    <h2 className="text-lg font-semibold text-gray-800">CSVインポート</h2>
+                <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+                    <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100">CSVインポート</h2>
                     <button
                         type="button"
                         onClick={onClose}
                         disabled={isLoading}
-                        className="text-gray-400 hover:text-gray-600 disabled:opacity-50"
+                        className="text-gray-400 hover:text-gray-600 disabled:opacity-50 dark:text-gray-500 dark:hover:text-gray-300"
                     >
                         <HiOutlineXMark className="size-6" />
                     </button>

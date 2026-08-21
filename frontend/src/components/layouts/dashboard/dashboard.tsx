@@ -1,7 +1,7 @@
 import { LoginUserType } from '@/app/api/verify';
 import { cn } from '@/utils/cn';
 import { ReactNode, useState } from 'react';
-import { HiOutlineUserCircle } from 'react-icons/hi2';
+import { HiOutlineMoon, HiOutlineSun, HiOutlineUserCircle } from 'react-icons/hi2';
 import { IoTriangle } from "react-icons/io5";
 import { LuMenu } from "react-icons/lu";
 import { NavLink } from 'react-router-dom';
@@ -18,6 +18,8 @@ type PropsType = {
     movePasswordUpdate(): void;
     logout(): void;
     moveHome: () => void;
+    theme: 'light' | 'dark';
+    toggleTheme(): void;
 }
 
 export function Dashboard(props: PropsType) {
@@ -31,7 +33,7 @@ export function Dashboard(props: PropsType) {
     const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
 
     return (
-        <div className='w-full min-h-screen flex bg-gray-100'>
+        <div className='w-full min-h-screen flex bg-gray-100 dark:bg-gray-900'>
 
             {/* オーバーレイ背景 (lg未満・サイドバー展開時のみ表示) */}
             {isSidebarOpen && (
@@ -48,7 +50,7 @@ export function Dashboard(props: PropsType) {
             */}
             <nav
                 className={cn(
-                    'flex flex-col overflow-hidden bg-cyan-500 shadow-md transition-all duration-300',
+                    'flex flex-col overflow-hidden bg-cyan-500 dark:bg-cyan-900 shadow-md transition-all duration-300',
                     'fixed inset-y-0 left-0 z-40',
                     'lg:relative lg:inset-auto lg:z-auto',
                     isSidebarOpen ? 'w-60' : 'w-0 lg:w-20',
@@ -95,16 +97,16 @@ export function Dashboard(props: PropsType) {
             */}
             <div className='flex flex-col flex-1 min-w-0 lg:pl-0'>
                 {/* ヘッダー */}
-                <header className='sticky top-0 z-20 md:relative h-14 bg-white border-b border-gray-200 flex items-center pl-6 pr-4 sm:pr-[70px]'>
+                <header className='sticky top-0 z-20 md:relative h-14 bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700 flex items-center pl-6 pr-4 sm:pr-[70px]'>
                     {/* ハンバーガーメニュー (モバイルのみ) */}
                     <button
-                        className="lg:hidden mr-3 text-gray-600 hover:text-gray-800"
+                        className="lg:hidden mr-3 text-gray-600 hover:text-gray-800 dark:text-gray-300 dark:hover:text-white"
                         onClick={() => setIsSidebarOpen(true)}
                         aria-label="メニューを開く"
                     >
                         <LuMenu className='h-6 w-6' />
                     </button>
-                    <span className='inline-block text-[18px] sm:text-[24px] font-bold text-gray-800 tracking-wide flex-1 cursor-pointer'
+                    <span className='inline-block text-[18px] sm:text-[24px] font-bold text-gray-800 dark:text-gray-100 tracking-wide flex-1 cursor-pointer'
                         onClick={props.moveHome}
                     >
                         TaskNote
@@ -113,27 +115,36 @@ export function Dashboard(props: PropsType) {
                     <div className='flex items-center relative'
                         onClick={() => { setIsUserMenuOpen(true) }}
                     >
-                        <span className='mr-[10px] text-base sm:text-[18px] cursor-pointer'>
+                        <span className='mr-[10px] text-base sm:text-[18px] cursor-pointer dark:text-gray-100'>
                             {props.loginUser.name}
                         </span>
-                        <HiOutlineUserCircle className="size-8 cursor-pointer mr-[12px]" />
-                        <IoTriangle className={`size-4 cursor-pointer ${isUserMenuOpen ? 'rotate-0' : 'rotate-180'}`} />
+                        <HiOutlineUserCircle className="size-8 cursor-pointer mr-[12px] dark:text-gray-100" />
+                        <IoTriangle className={`size-4 cursor-pointer dark:text-gray-100 ${isUserMenuOpen ? 'rotate-0' : 'rotate-180'}`} />
                         {/* ユーザーメニュー */}
                         {
                             isUserMenuOpen &&
-                            <div className='w-64 absolute top-12 right-0 text-sm rounded-lg bg-white border border-gray-200 shadow-lg z-20 py-2'>
-                                <button className='block w-full text-left px-5 py-3 text-gray-700 hover:bg-gray-100 transition-colors'
+                            <div className='w-64 absolute top-12 right-0 text-sm rounded-lg bg-white border border-gray-200 shadow-lg z-20 py-2 dark:bg-gray-800 dark:border-gray-700'>
+                                <button className='block w-full text-left px-5 py-3 text-gray-700 hover:bg-gray-100 transition-colors dark:text-gray-200 dark:hover:bg-gray-700'
                                     onClick={props.moveUserInfoUpdate}
                                 >
                                     ユーザー情報更新
                                 </button>
-                                <button className='block w-full text-left px-5 py-3 text-gray-700 hover:bg-gray-100 transition-colors'
+                                <button className='block w-full text-left px-5 py-3 text-gray-700 hover:bg-gray-100 transition-colors dark:text-gray-200 dark:hover:bg-gray-700'
                                     onClick={props.movePasswordUpdate}
                                 >
                                     パスワード更新
                                 </button>
-                                <div className='border-t border-gray-200 my-2' />
-                                <button className='block w-full text-left px-5 py-3 text-gray-700 hover:bg-gray-100 transition-colors'
+                                <button className='flex w-full items-center justify-between text-left px-5 py-3 text-gray-700 hover:bg-gray-100 transition-colors dark:text-gray-200 dark:hover:bg-gray-700'
+                                    onClick={(e) => { e.stopPropagation(); props.toggleTheme(); }}
+                                >
+                                    <span>ダークモード</span>
+                                    {props.theme === 'dark'
+                                        ? <HiOutlineMoon className="size-5" />
+                                        : <HiOutlineSun className="size-5" />
+                                    }
+                                </button>
+                                <div className='border-t border-gray-200 my-2 dark:border-gray-700' />
+                                <button className='block w-full text-left px-5 py-3 text-gray-700 hover:bg-gray-100 transition-colors dark:text-gray-200 dark:hover:bg-gray-700'
                                     onClick={props.logout}
                                 >
                                     ログアウト
@@ -155,7 +166,7 @@ export function Dashboard(props: PropsType) {
                     </main>
                 </div>
                 <footer className='h-10 flex items-center pl-6'>
-                    <span className='text-xs text-gray-400'>© 2026 TaskNote. All rights reserved.</span>
+                    <span className='text-xs text-gray-400 dark:text-gray-500'>© 2026 TaskNote. All rights reserved.</span>
                 </footer>
             </div>
         </div>

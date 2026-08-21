@@ -23,6 +23,7 @@ export const Select = React.forwardRef<HTMLSelectElement, Props>(
                 {...props}
                 className={cn(
                     "border border-[#767676] rounded ",
+                    "dark:bg-gray-800 dark:border-gray-600 dark:text-gray-100",
                     "focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent",
                     className
                 )}

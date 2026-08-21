@@ -7,11 +7,16 @@ import { Navigate, Outlet } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useLogoutMutation } from "../api/logout";
 import { LoginUserContext, SetLoginUserContext } from "./login-user-provider";
+import { SetThemeContext, ThemeContext } from "./theme-provider";
 import { TodoChatContainer } from "./todo-chat-container";
 
 export function DashboardContainer() {
     // ログインユーザー情報
     const loginUser = LoginUserContext.useCtx();
+    // テーマ
+    const theme = ThemeContext.useCtx();
+    // テーマ(setter)
+    const setTheme = SetThemeContext.useCtx();
     // タスク管理パーミッション
     const hasTaskManagement = usePermission('task_management');
     // 削除タスク管理パーミッション
@@ -138,6 +143,13 @@ export function DashboardContainer() {
         appNavigate(paths.todo.path);
     }
 
+    /**
+     * テーマ切り替え
+     */
+    function toggleTheme() {
+        setTheme(theme === 'dark' ? 'light' : 'dark');
+    }
+
     return (
         <>
             <Dashboard
@@ -147,6 +159,8 @@ export function DashboardContainer() {
                 movePasswordUpdate={movePasswordUpdate}
                 logout={logout}
                 moveHome={moveHome}
+                theme={theme}
+                toggleTheme={toggleTheme}
             >
                 <Outlet />
             </Dashboard>

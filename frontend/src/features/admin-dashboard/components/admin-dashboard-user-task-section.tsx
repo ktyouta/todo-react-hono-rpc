@@ -24,7 +24,7 @@ const columns: TableProps<UserTaskStatRow>['columns'] = [
         Cell: ({ entry }) => {
             const rate = entry.taskCount === 0 ? 0 : Math.round((entry.doneCount / entry.taskCount) * 100);
             return (
-                <span className={`block ${rate === 100 ? 'text-emerald-500 font-semibold' : 'text-gray-700'}`}>
+                <span className={`block ${rate === 100 ? 'text-emerald-500 font-semibold' : 'text-gray-700 dark:text-gray-300'}`}>
                     {rate}%
                 </span>
             );
@@ -35,7 +35,7 @@ const columns: TableProps<UserTaskStatRow>['columns'] = [
         field: 'overdueCount',
         className: 'w-[15%] whitespace-nowrap pr-4',
         Cell: ({ entry }) => {
-            const overCountStyle = entry.overdueCount > 0 ? "text-red-500 font-semibold" : "";
+            const overCountStyle = entry.overdueCount > 0 ? "text-red-500 dark:text-red-400 font-semibold" : "";
             return (
                 <span className={`block ${overCountStyle}`}> {entry.overdueCount}</span >
             );
@@ -50,18 +50,18 @@ export function AdminDashboardUserTaskSection({ userTaskStats }: PropsType) {
 
     return (
         <section>
-            <h2 className="text-base font-semibold text-gray-700 mb-3 pl-2 border-l-[3px] border-cyan-400">ユーザー別タスク状況</h2>
+            <h2 className="text-base font-semibold text-gray-700 dark:text-gray-300 mb-3 pl-2 border-l-[3px] border-cyan-400">ユーザー別タスク状況</h2>
             {/* テーブル表示: lg 以上 */}
-            <div className="hidden lg:block border border-gray-300/90 rounded-md overflow-hidden">
+            <div className="hidden lg:block border border-gray-300/90 dark:border-gray-700 rounded-md overflow-hidden">
                 <Table
                     data={tableData}
                     columns={columns}
                     className="text-[17px] min-w-[700px]
-                        [&_thead]:bg-gray-200/70
+                        [&_thead]:bg-gray-200/70 dark:[&_thead]:bg-gray-800/70
                         [&_thead_tr]:border-b
-                        [&_thead_tr]:border-gray-400/60
+                        [&_thead_tr]:border-gray-400/60 dark:[&_thead_tr]:border-gray-600
                         [&_thead_tr]:hover:bg-transparent"
-                    rowClassName="h-[50px] border-gray-300/80 bg-white/50"
+                    rowClassName="h-[50px] border-gray-300/80 bg-white/50 dark:border-gray-700 dark:bg-gray-800/50"
                 />
             </div>
             {/* カード表示: lg 未満 */}

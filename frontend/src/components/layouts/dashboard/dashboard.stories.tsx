@@ -21,6 +21,9 @@ const meta: Meta<typeof Dashboard> = {
         moveUserInfoUpdate: () => { },
         movePasswordUpdate: () => { },
         logout: () => { },
+        moveHome: () => { },
+        theme: 'light',
+        toggleTheme: () => { },
     },
 };
 

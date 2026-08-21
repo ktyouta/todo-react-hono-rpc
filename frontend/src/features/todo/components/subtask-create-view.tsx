@@ -58,7 +58,7 @@ export function SubtaskCreateView(props: PropsType) {
                 <button
                     type="button"
                     onClick={onClickBack}
-                    className="flex items-center gap-1 text-sm text-gray-500 hover:text-gray-700"
+                    className="flex items-center gap-1 text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
                 >
                     <HiArrowLeft />
                     <span>親タスク詳細に戻る</span>
@@ -67,7 +67,7 @@ export function SubtaskCreateView(props: PropsType) {
 
             {/* ヘッダー */}
             <div className="flex items-center pr-[10px]">
-                <span className="font-bold text-[18px] sm:text-[22px]">
+                <span className="font-bold text-[18px] sm:text-[22px] dark:text-gray-100">
                     サブタスク作成
                 </span>
                 <div className="flex-1" />
@@ -94,7 +94,7 @@ export function SubtaskCreateView(props: PropsType) {
             {/* コンテンツ */}
             <div className="w-full pt-7 sm:pt-[50px] text-[15px] flex-1">
                 {Object.keys(errors).length > 0 && (
-                    <div className="flex items-center gap-2 px-3 py-2.5 mb-5 bg-red-50 border border-red-200 rounded text-sm text-red-600">
+                    <div className="flex items-center gap-2 px-3 py-2.5 mb-5 bg-red-50 border border-red-200 rounded text-sm text-red-600 dark:bg-red-900/30 dark:border-red-800 dark:text-red-400">
                         <span>入力内容にエラーがあります。確認してください。</span>
                     </div>
                 )}
@@ -105,16 +105,16 @@ export function SubtaskCreateView(props: PropsType) {
                         placeholder="タイトル"
                     />
                     {errors.title?.message && (
-                        <p className="text-red-500 pl-1 mt-2">{errors.title.message}</p>
+                        <p className="text-red-500 dark:text-red-400 pl-1 mt-2">{errors.title.message}</p>
                     )}
                 </div>
-                <div className="w-full p-3 sm:p-[20px] border border-[#c0c0c0] rounded mt-3 sm:mt-[20px] bg-white">
+                <div className="w-full p-3 sm:p-[20px] border border-[#c0c0c0] dark:border-gray-600 rounded mt-3 sm:mt-[20px] bg-white dark:bg-gray-800">
                     <Textarea
                         registration={register("content")}
                         className="w-full min-h-[450px] border-[#c0c0c0] text-base sm:text-[17px]"
                     />
                     {errors.content?.message && (
-                        <p className="text-red-500 pl-1 mt-2">{errors.content.message}</p>
+                        <p className="text-red-500 dark:text-red-400 pl-1 mt-2">{errors.content.message}</p>
                     )}
                     <div className="flex justify-end mt-2">
                         <Button
@@ -128,27 +128,27 @@ export function SubtaskCreateView(props: PropsType) {
                         </Button>
                     </div>
                     {assistResult && (
-                        <div className={`mt-3 p-3 border border-blue-200 rounded bg-blue-50 flex flex-col gap-3 relative transition-opacity duration-200 ${isAssistLoading ? "opacity-60 pointer-events-none" : ""}`}>
+                        <div className={`mt-3 p-3 border border-blue-200 rounded bg-blue-50 dark:border-blue-800 dark:bg-blue-900/20 flex flex-col gap-3 relative transition-opacity duration-200 ${isAssistLoading ? "opacity-60 pointer-events-none" : ""}`}>
                             {isAssistLoading && (
                                 <div className="absolute inset-0 flex items-center justify-center">
                                     <Spinner size={28} />
                                 </div>
                             )}
-                            <p className="text-base font-bold text-blue-600 mb-2">AI提案</p>
+                            <p className="text-base font-bold text-blue-600 dark:text-blue-400 mb-2">AI提案</p>
                             <div className="flex flex-col gap-5">
                                 {assistResult.canApply ? (
                                     <>
                                         <div>
-                                            <span className="text-base text-gray-500">タイトル</span>
-                                            <p className="text-base mt-0.5">{assistResult.data.title}</p>
+                                            <span className="text-base text-gray-500 dark:text-gray-400">タイトル</span>
+                                            <p className="text-base mt-0.5 dark:text-gray-100">{assistResult.data.title}</p>
                                         </div>
                                         <div>
-                                            <span className="text-base text-gray-500">詳細</span>
-                                            <p className="text-base mt-0.5 whitespace-pre-wrap">{assistResult.data.content}</p>
+                                            <span className="text-base text-gray-500 dark:text-gray-400">詳細</span>
+                                            <p className="text-base mt-0.5 whitespace-pre-wrap dark:text-gray-100">{assistResult.data.content}</p>
                                         </div>
                                     </>
                                 ) : (
-                                    <p className="text-base text-gray-600">{assistResult.data.content}</p>
+                                    <p className="text-base text-gray-600 dark:text-gray-300">{assistResult.data.content}</p>
                                 )}
                                 <div className="flex justify-end gap-2">
                                     <Button
@@ -172,38 +172,38 @@ export function SubtaskCreateView(props: PropsType) {
                             </div>
                         </div>
                     )}
-                    <div className="flex flex-col sm:flex-row gap-4 sm:gap-[3%] pt-[20px] mt-[15px] border-t border-[#e8e8e8]">
+                    <div className="flex flex-col sm:flex-row gap-4 sm:gap-[3%] pt-[20px] mt-[15px] border-t border-[#e8e8e8] dark:border-gray-700">
                         <div className="flex flex-1 items-center gap-2 sm:max-w-[48%]">
-                            <span className="whitespace-nowrap w-[5em] text-gray-500 text-base">カテゴリ</span>
+                            <span className="whitespace-nowrap w-[5em] text-gray-500 dark:text-gray-400 text-base">カテゴリ</span>
                             <Select
                                 registration={register("category", { valueAsNumber: true })}
                                 options={categoryList.map((c) => ({ value: String(c.id), label: c.name }))}
-                                className="flex-1 border border-[#c0c0c0] rounded px-3 py-2 bg-white text-base focus:outline-none focus:border-[#888]"
+                                className="flex-1 border border-[#c0c0c0] rounded px-3 py-2 bg-white dark:bg-gray-800 dark:border-gray-600 dark:text-gray-100 text-base focus:outline-none focus:border-[#888]"
                             />
                         </div>
                         {selectedCategoryId !== CATEGORY_ID.MEMO && (
                             <div className="flex flex-1 items-center gap-2 sm:max-w-[48%]">
-                                <span className="whitespace-nowrap w-[5em] text-gray-500 text-base">ステータス</span>
+                                <span className="whitespace-nowrap w-[5em] text-gray-500 dark:text-gray-400 text-base">ステータス</span>
                                 <Select
                                     registration={register("status", { valueAsNumber: true })}
                                     options={statusList.map((s) => ({ value: String(s.id), label: s.name }))}
-                                    className="flex-1 border border-[#c0c0c0] rounded px-3 py-2 bg-white text-base focus:outline-none focus:border-[#888]"
+                                    className="flex-1 border border-[#c0c0c0] rounded px-3 py-2 bg-white dark:bg-gray-800 dark:border-gray-600 dark:text-gray-100 text-base focus:outline-none focus:border-[#888]"
                                 />
                             </div>
                         )}
                     </div>
                     {selectedCategoryId !== CATEGORY_ID.MEMO && (
-                        <div className="flex flex-col sm:flex-row gap-4 sm:gap-[3%] pt-[20px] mt-[25px] border-t border-[#e8e8e8]">
+                        <div className="flex flex-col sm:flex-row gap-4 sm:gap-[3%] pt-[20px] mt-[25px] border-t border-[#e8e8e8] dark:border-gray-700">
                             <div className="flex flex-1 items-center gap-2 sm:max-w-[48%]">
-                                <span className="whitespace-nowrap w-[5em] text-gray-500 text-base">優先度</span>
+                                <span className="whitespace-nowrap w-[5em] text-gray-500 dark:text-gray-400 text-base">優先度</span>
                                 <Select
                                     registration={register("priority", { valueAsNumber: true })}
                                     options={priorityList.map((s) => ({ value: String(s.id), label: s.name }))}
-                                    className="flex-1 border border-[#c0c0c0] rounded px-3 py-2 bg-white text-base focus:outline-none focus:border-[#888]"
+                                    className="flex-1 border border-[#c0c0c0] rounded px-3 py-2 bg-white dark:bg-gray-800 dark:border-gray-600 dark:text-gray-100 text-base focus:outline-none focus:border-[#888]"
                                 />
                             </div>
                             <div className="flex flex-1 items-center gap-2 sm:max-w-[48%]">
-                                <span className="whitespace-nowrap w-[5em] text-gray-500 text-base">期限日</span>
+                                <span className="whitespace-nowrap w-[5em] text-gray-500 dark:text-gray-400 text-base">期限日</span>
                                 <Controller
                                     name="dueDate"
                                     control={control}

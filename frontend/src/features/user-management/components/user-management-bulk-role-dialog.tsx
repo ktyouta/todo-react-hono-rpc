@@ -30,11 +30,11 @@ export function UserManagementBulkRoleDialog({
     return (
         <Dialog isOpen={isOpen} onClose={onClose} title="ロールを一括変更" size="medium">
             <div className="flex flex-col gap-5">
-                <p className="text-sm text-gray-700">
+                <p className="text-sm text-gray-700 dark:text-gray-300">
                     {selectedCount}件のユーザーのロールを変更します。
                 </p>
                 <div className="flex flex-col gap-1">
-                    <label className="text-sm font-medium text-gray-700">変更するロール</label>
+                    <label className="text-sm font-medium text-gray-700 dark:text-gray-300">変更するロール</label>
                     <Select
                         options={roleList.map((role) => ({
                             value: String(role.id),
@@ -50,7 +50,7 @@ export function UserManagementBulkRoleDialog({
                     />
                 </div>
                 {errorMessage && (
-                    <p className="text-sm text-red-600">{errorMessage}</p>
+                    <p className="text-sm text-red-600 dark:text-red-400">{errorMessage}</p>
                 )}
                 <div className="flex justify-end gap-2">
                     <Button
@@ -58,7 +58,7 @@ export function UserManagementBulkRoleDialog({
                         sizeType="medium"
                         onClick={onClose}
                         disabled={isLoading}
-                        className="px-4 h-9 py-0 bg-[#fcfdfd] border border-gray-300 text-sm text-gray-600 hover:bg-gray-200"
+                        className="px-4 h-9 py-0 bg-[#fcfdfd] border border-gray-300 text-sm text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700"
                     >
                         キャンセル
                     </Button>

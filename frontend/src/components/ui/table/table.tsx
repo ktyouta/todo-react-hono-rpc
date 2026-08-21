@@ -48,7 +48,7 @@ const TableFooter = React.forwardRef<
   <tfoot
     ref={ref}
     className={cn(
-      'border-t bg-gray-50 font-medium [&>tr]:last:border-b-0',
+      'border-t bg-gray-50 dark:bg-gray-800 dark:border-gray-700 font-medium [&>tr]:last:border-b-0',
       className,
     )}
     {...props}
@@ -63,7 +63,7 @@ const TableRow = React.forwardRef<
   <tr
     ref={ref}
     className={cn(
-      'border-b transition-colors hover:bg-gray-50 data-[state=selected]:bg-gray-100',
+      'border-b transition-colors hover:bg-gray-50 data-[state=selected]:bg-gray-100 dark:border-gray-700 dark:hover:bg-gray-800 dark:data-[state=selected]:bg-gray-700',
       className,
     )}
     {...props}
@@ -78,7 +78,7 @@ const TableHead = React.forwardRef<
   <th
     ref={ref}
     className={cn(
-      'h-10 px-2 text-left align-middle font-medium text-gray-500 [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]',
+      'h-10 px-2 text-left align-middle font-medium text-gray-500 dark:text-gray-400 [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]',
       className,
     )}
     {...props}
@@ -93,7 +93,7 @@ const TableCell = React.forwardRef<
   <td
     ref={ref}
     className={cn(
-      'p-2 align-middle [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]',
+      'p-2 align-middle text-gray-800 dark:text-gray-100 [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]',
       className,
     )}
     {...props}
@@ -142,7 +142,7 @@ export function Table<Entry extends BaseEntity>({
 }: TableProps<Entry>) {
   if (!data?.length) {
     return (
-      <div className="flex h-80 flex-col items-center justify-center bg-white text-gray-500">
+      <div className="flex h-80 flex-col items-center justify-center bg-white text-gray-500 dark:bg-gray-800 dark:text-gray-400">
         <HiOutlineArchiveBoxXMark className="size-16" />
         <h4>No Entries Found</h4>
       </div>

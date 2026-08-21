@@ -30,7 +30,7 @@ export function RoleManagementDetailEdit(props: PropsType) {
                 <button
                     type="button"
                     onClick={onClickBack}
-                    className="flex items-center gap-1 text-sm text-gray-500 hover:text-gray-700"
+                    className="flex items-center gap-1 text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
                 >
                     <HiArrowLeft />
                     <span>一覧に戻る</span>
@@ -58,7 +58,7 @@ export function RoleManagementDetailEdit(props: PropsType) {
 
             {/* ヘッダー */}
             <div className="hidden sm:flex items-center pr-[10px] mb-10">
-                <span className="flex items-center gap-1 text-sm text-gray-400">
+                <span className="flex items-center gap-1 text-sm text-gray-400 dark:text-gray-500">
                     <HiPencil className="size-4" />
                     編集中
                 </span>
@@ -85,16 +85,16 @@ export function RoleManagementDetailEdit(props: PropsType) {
 
             {/* バリデーションエラーバナー */}
             {Object.keys(errors).length > 0 && (
-                <div className="flex items-center gap-2 px-3 py-2.5 mb-4 bg-red-50 border border-red-200 rounded text-sm text-red-600">
+                <div className="flex items-center gap-2 px-3 py-2.5 mb-4 bg-red-50 border border-red-200 rounded text-sm text-red-600 dark:bg-red-900/30 dark:border-red-800 dark:text-red-400">
                     <span>入力内容にエラーがあります。確認してください。</span>
                 </div>
             )}
 
             {/* ロール情報（名前・日付） */}
-            <div className="w-full p-3 sm:p-5 border border-[#c0c0c0] rounded bg-white mb-4 sm:mb-6">
-                <p className="text-base text-gray-500 font-medium mb-4">ロール情報</p>
+            <div className="w-full p-3 sm:p-5 border border-[#c0c0c0] dark:border-gray-600 rounded bg-white dark:bg-gray-800 mb-4 sm:mb-6">
+                <p className="text-base text-gray-500 dark:text-gray-400 font-medium mb-4">ロール情報</p>
                 <div className="flex items-center gap-7">
-                    <span className="whitespace-nowrap min-w-[6em] text-gray-500 text-base">ロール名</span>
+                    <span className="whitespace-nowrap min-w-[6em] text-gray-500 dark:text-gray-400 text-base">ロール名</span>
                     <Textbox
                         registration={register("name")}
                         className="w-full border-[#c0c0c0] text-base sm:text-[17px] sm:py-2 sm:h-auto"
@@ -104,23 +104,23 @@ export function RoleManagementDetailEdit(props: PropsType) {
                     />
                 </div>
                 {errors.name?.message && (
-                    <p className="text-red-500 pl-1 mt-2 text-sm">{errors.name.message}</p>
+                    <p className="text-red-500 dark:text-red-400 pl-1 mt-2 text-sm">{errors.name.message}</p>
                 )}
-                <div className="flex flex-col sm:flex-row gap-4 sm:gap-[3%] mt-[20px] pt-[20px] border-t border-[#e8e8e8]">
+                <div className="flex flex-col sm:flex-row gap-4 sm:gap-[3%] mt-[20px] pt-[20px] border-t border-[#e8e8e8] dark:border-gray-700">
                     <div className="flex flex-1 items-center gap-2">
-                        <span className="whitespace-nowrap w-[6em] text-gray-500 text-base">登録日</span>
-                        <span className="flex-1 px-3 py-2 text-base text-gray-700">{getFormatDatetime(new Date(role.createdAt), 'yyyy-MM-dd HH:mm:ss')}</span>
+                        <span className="whitespace-nowrap w-[6em] text-gray-500 dark:text-gray-400 text-base">登録日</span>
+                        <span className="flex-1 px-3 py-2 text-base text-gray-700 dark:text-gray-300">{getFormatDatetime(new Date(role.createdAt), 'yyyy-MM-dd HH:mm:ss')}</span>
                     </div>
                     <div className="flex flex-1 items-center gap-2">
-                        <span className="whitespace-nowrap w-[6em] text-gray-500 text-base">更新日</span>
-                        <span className="flex-1 px-3 py-2 text-base text-gray-700">{getFormatDatetime(new Date(role.updatedAt), 'yyyy-MM-dd HH:mm:ss')}</span>
+                        <span className="whitespace-nowrap w-[6em] text-gray-500 dark:text-gray-400 text-base">更新日</span>
+                        <span className="flex-1 px-3 py-2 text-base text-gray-700 dark:text-gray-300">{getFormatDatetime(new Date(role.updatedAt), 'yyyy-MM-dd HH:mm:ss')}</span>
                     </div>
                 </div>
             </div>
 
             {/* パーミッション */}
-            <div className="w-full p-3 sm:p-5 border border-[#c0c0c0] rounded bg-white mb-4 sm:mb-6">
-                <p className="text-base text-gray-500 font-medium mb-4">パーミッション</p>
+            <div className="w-full p-3 sm:p-5 border border-[#c0c0c0] dark:border-gray-600 rounded bg-white dark:bg-gray-800 mb-4 sm:mb-6">
+                <p className="text-base text-gray-500 dark:text-gray-400 font-medium mb-4">パーミッション</p>
                 <div>
                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-x-7 gap-y-5">
                         {permissionList.map((permission) => {
@@ -130,16 +130,16 @@ export function RoleManagementDetailEdit(props: PropsType) {
 
                             let labelClass = "flex items-center gap-2 px-3 py-2.5 border rounded transition-colors ";
                             if (isDisabled) {
-                                labelClass += "border-cyan-500 bg-cyan-50 text-cyan-700 cursor-not-allowed";
+                                labelClass += "border-cyan-500 bg-cyan-50 text-cyan-700 dark:bg-cyan-900/30 dark:text-cyan-300 cursor-not-allowed";
                             }
                             else if (isChecked) {
-                                labelClass += "border-cyan-500 bg-cyan-50 text-cyan-700 cursor-pointer";
+                                labelClass += "border-cyan-500 bg-cyan-50 text-cyan-700 dark:bg-cyan-900/30 dark:text-cyan-300 cursor-pointer";
                             }
                             else if (isRequired) {
-                                labelClass += "border-amber-400 bg-amber-50 cursor-pointer";
+                                labelClass += "border-amber-400 bg-amber-50 dark:bg-amber-900/20 dark:text-amber-300 cursor-pointer";
                             }
                             else {
-                                labelClass += "border-[#c0c0c0] bg-white hover:bg-gray-50 cursor-pointer";
+                                labelClass += "border-[#c0c0c0] bg-white hover:bg-gray-50 dark:bg-gray-800 dark:border-gray-600 dark:hover:bg-gray-700 dark:text-gray-300 cursor-pointer";
                             }
 
                             return (
@@ -156,7 +156,7 @@ export function RoleManagementDetailEdit(props: PropsType) {
                                     />
                                     <span className="text-sm break-words min-w-0 flex-1">{permission.screenName}</span>
                                     {isRequired && (
-                                        <span className="flex items-center gap-0.5 text-xs text-amber-600 whitespace-nowrap shrink-0">
+                                        <span className="flex items-center gap-0.5 text-xs text-amber-600 dark:text-amber-400 whitespace-nowrap shrink-0">
                                             <HiLockClosed className="size-4" />
                                             <span className="text-[14px]">
                                                 必須
@@ -168,7 +168,7 @@ export function RoleManagementDetailEdit(props: PropsType) {
                         })}
                     </div>
                     {errors.permissionIds?.message && (
-                        <p className="text-red-500 pl-1 mt-3 text-sm">{errors.permissionIds.message}</p>
+                        <p className="text-red-500 dark:text-red-400 pl-1 mt-3 text-sm">{errors.permissionIds.message}</p>
                     )}
                 </div>
             </div>
@@ -181,7 +181,7 @@ export function RoleManagementDetailEdit(props: PropsType) {
                 size="small"
             >
                 <div className="space-y-4">
-                    <p className="text-gray-700">{`「${role.name}」を更新しますか？`}</p>
+                    <p className="text-gray-700 dark:text-gray-300">{`「${role.name}」を更新しますか？`}</p>
                     <div className="flex justify-end gap-2">
                         <Button colorType="blue" sizeType="medium" onClick={onCancelSave}>
                             キャンセル

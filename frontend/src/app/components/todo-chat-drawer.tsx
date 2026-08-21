@@ -74,7 +74,7 @@ export function TodoChatDrawer(props: PropsType) {
                 {/* メッセージ一覧 */}
                 <div className="flex-1 overflow-y-auto space-y-3 mb-3 pr-2">
                     {props.messages.length === 0 && (
-                        <p className="text-sm lg:text-base text-gray-400 text-center mt-8">
+                        <p className="text-sm lg:text-base text-gray-400 dark:text-gray-500 text-center mt-8">
                             アプリの使い方や<br />タスク管理について質問してください。
                         </p>
                     )}
@@ -87,8 +87,8 @@ export function TodoChatDrawer(props: PropsType) {
                                 className={`max-w-[85%] px-3 py-2 rounded-lg text-sm lg:text-base break-words ${msg.role === 'user'
                                     ? 'bg-cyan-500 text-white whitespace-pre-wrap'
                                     : msg.isError
-                                        ? 'bg-red-50 text-red-600 border border-red-200 whitespace-pre-wrap'
-                                        : 'bg-gray-100 text-gray-800'
+                                        ? 'bg-red-50 text-red-600 border border-red-200 dark:bg-red-900/30 dark:text-red-400 dark:border-red-800 whitespace-pre-wrap'
+                                        : 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-100'
                                     }`}
                             >
                                 {msg.role === 'ai' && !msg.isError ? (
@@ -114,7 +114,7 @@ export function TodoChatDrawer(props: PropsType) {
                     ))}
                     {props.isLoading && (
                         <div className="flex justify-start">
-                            <div className="bg-gray-100 text-gray-500 px-3 py-2 rounded-lg text-sm lg:text-base min-w-[36px]">
+                            <div className="bg-gray-100 text-gray-500 dark:bg-gray-700 dark:text-gray-400 px-3 py-2 rounded-lg text-sm lg:text-base min-w-[36px]">
                                 <LoadingDots />
                             </div>
                         </div>
@@ -122,7 +122,7 @@ export function TodoChatDrawer(props: PropsType) {
                     <div ref={messagesEndRef} />
                 </div>
                 {/* 入力フォーム */}
-                <div className="flex gap-2 items-center border-t border-gray-200 pt-3">
+                <div className="flex gap-2 items-center border-t border-gray-200 dark:border-gray-700 pt-3">
                     <Textarea
                         ref={textareaRef}
                         value={props.inputValue}

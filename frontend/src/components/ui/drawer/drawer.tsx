@@ -18,10 +18,10 @@ type Props = {
 };
 
 const sideClasses: Record<Side, string> = {
-    top: "inset-x-0 top-0 border-b animate-slide-in-from-top",
-    bottom: "inset-x-0 bottom-0 border-t animate-slide-in-from-bottom",
-    left: "inset-y-0 left-0 h-full border-r animate-slide-in-from-left",
-    right: "inset-y-0 right-0 h-full border-l animate-slide-in-from-right",
+    top: "inset-x-0 top-0 border-b dark:border-gray-700 animate-slide-in-from-top",
+    bottom: "inset-x-0 bottom-0 border-t dark:border-gray-700 animate-slide-in-from-bottom",
+    left: "inset-y-0 left-0 h-full border-r dark:border-gray-700 animate-slide-in-from-left",
+    right: "inset-y-0 right-0 h-full border-l dark:border-gray-700 animate-slide-in-from-right",
 };
 
 export function Drawer({
@@ -89,7 +89,7 @@ export function Drawer({
             {/* Drawer Content */}
             <div
                 className={cn(
-                    "fixed z-10 bg-white shadow-xl p-6",
+                    "fixed z-10 bg-white dark:bg-gray-800 shadow-xl p-6",
                     sideClasses[side],
                     widthClassName ?? "w-3/4 max-w-sm",
                     className
@@ -100,7 +100,7 @@ export function Drawer({
                 <button
                     type="button"
                     onClick={onClose}
-                    className="absolute right-4 top-4 p-1 text-gray-400 hover:text-gray-600 rounded-full hover:bg-gray-100"
+                    className="absolute right-4 top-4 p-1 text-gray-400 hover:text-gray-600 rounded-full hover:bg-gray-100 dark:text-gray-500 dark:hover:text-gray-300 dark:hover:bg-gray-700"
                     aria-label="閉じる"
                 >
                     <svg
@@ -124,7 +124,7 @@ export function Drawer({
                         {title && (
                             <h2
                                 id="drawer-title"
-                                className="text-lg font-semibold text-gray-900"
+                                className="text-lg font-semibold text-gray-900 dark:text-gray-100"
                             >
                                 {title}
                             </h2>
@@ -132,7 +132,7 @@ export function Drawer({
                         {description && (
                             <p
                                 id="drawer-description"
-                                className="mt-1 text-sm text-gray-500"
+                                className="mt-1 text-sm text-gray-500 dark:text-gray-400"
                             >
                                 {description}
                             </p>

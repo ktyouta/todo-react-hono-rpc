@@ -53,14 +53,14 @@ export function RoleCreateForm(props: PropsType) {
             </div>
             <div className="w-full pt-7 sm:pt-[50px] text-[15px]">
                 {Object.keys(errors).length > 0 && (
-                    <div className="flex items-center gap-2 px-3 py-2.5 mb-5 bg-red-50 border border-red-200 rounded text-sm text-red-600">
+                    <div className="flex items-center gap-2 px-3 py-2.5 mb-5 bg-red-50 border border-red-200 rounded text-sm text-red-600 dark:bg-red-900/30 dark:border-red-800 dark:text-red-400">
                         <span>入力内容にエラーがあります。確認してください。</span>
                     </div>
                 )}
-                <div className="w-full p-3 sm:p-[20px] border border-[#c0c0c0] rounded bg-white flex flex-col gap-8">
+                <div className="w-full p-3 sm:p-[20px] border border-[#c0c0c0] dark:border-gray-600 rounded bg-white dark:bg-gray-800 flex flex-col gap-8">
                     {/* ロール名 */}
                     <div>
-                        <label className="block mb-2">
+                        <label className="block mb-2 dark:text-gray-300">
                             ロール名（1〜50文字）
                         </label>
                         <Textbox
@@ -71,12 +71,12 @@ export function RoleCreateForm(props: PropsType) {
                             autoComplete="off"
                         />
                         {errors.name?.message && (
-                            <p className="text-red-500 pl-1 mt-2">{errors.name.message}</p>
+                            <p className="text-red-500 dark:text-red-400 pl-1 mt-2">{errors.name.message}</p>
                         )}
                     </div>
                     {/* パーミッション */}
                     <div>
-                        <label className="block mb-2">
+                        <label className="block mb-2 dark:text-gray-300">
                             パーミッション
                         </label>
                         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-x-7 gap-y-5">
@@ -86,8 +86,8 @@ export function RoleCreateForm(props: PropsType) {
                                     <label
                                         key={permission.permissionId}
                                         className={`flex items-center gap-2 px-3 py-2.5 border rounded cursor-pointer transition-colors ${isChecked
-                                            ? "border-cyan-500 bg-cyan-50 text-cyan-700"
-                                            : "border-[#c0c0c0] bg-white hover:bg-gray-50"
+                                            ? "border-cyan-500 bg-cyan-50 text-cyan-700 dark:bg-cyan-900/30 dark:text-cyan-300"
+                                            : "border-[#c0c0c0] bg-white hover:bg-gray-50 dark:bg-gray-800 dark:border-gray-600 dark:hover:bg-gray-700 dark:text-gray-300"
                                             }`}
                                     >
                                         <input

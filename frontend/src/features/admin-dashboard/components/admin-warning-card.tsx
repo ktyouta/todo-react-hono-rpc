@@ -12,7 +12,7 @@ export function AdminWarningCard({ count, label, list, variant, colorClass }: Pr
     return (
         <div className={`border rounded-lg p-4 flex flex-col gap-3 ${colorClass.card}`}>
             <div>
-                <p className="text-base text-gray-500">{label}</p>
+                <p className="text-base text-gray-500 dark:text-gray-400">{label}</p>
                 <p className={`text-3xl font-bold ${colorClass.count}`}>{count}</p>
             </div>
             {list.length > 0 ? (
@@ -29,7 +29,7 @@ export function AdminWarningCard({ count, label, list, variant, colorClass }: Pr
                     ))}
                 </ul>
             ) : (
-                <p className="text-sm text-gray-500">該当なし</p>
+                <p className="text-sm text-gray-500 dark:text-gray-400">該当なし</p>
             )}
         </div>
     );

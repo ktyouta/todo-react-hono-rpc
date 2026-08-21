@@ -30,25 +30,25 @@ export function Login(props: PropsType) {
     } = props;
 
     return (
-        <div className="min-h-screen bg-gray-100 flex items-center justify-center px-4 py-8">
+        <div className="min-h-screen bg-gray-100 dark:bg-gray-900 flex items-center justify-center px-4 py-8">
             {isLoading && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/10">
                     <Spinner size={40} />
                 </div>
             )}
-            <div className="w-full max-w-lg bg-white rounded-xl shadow-lg p-8 sm:p-10">
-                <h1 className="text-2xl font-bold text-gray-800 text-center mb-8">
+            <div className="w-full max-w-lg bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 sm:p-10">
+                <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-100 text-center mb-8">
                     ログイン
                 </h1>
                 {errMessage && (
-                    <div className="bg-red-50 border border-red-200 text-red-600 text-sm rounded-lg p-4 mb-6">
+                    <div className="bg-red-50 border border-red-200 text-red-600 dark:bg-red-900/30 dark:border-red-800 dark:text-red-400 text-sm rounded-lg p-4 mb-6">
                         {errMessage}
                     </div>
                 )}
                 <div className="flex flex-col gap-6">
                     {/* ユーザー名 */}
                     <div>
-                        <label className="block text-base font-medium text-gray-700 mb-2">
+                        <label className="block text-base font-medium text-gray-700 dark:text-gray-300 mb-2">
                             ユーザー名
                         </label>
                         <Textbox
@@ -58,12 +58,12 @@ export function Login(props: PropsType) {
                             onKeyDown={handleKeyPress}
                         />
                         {errors.name?.message && (
-                            <p className="text-red-500 text-sm mt-2">{errors.name.message}</p>
+                            <p className="text-red-500 dark:text-red-400 text-sm mt-2">{errors.name.message}</p>
                         )}
                     </div>
                     {/* パスワード */}
                     <div>
-                        <label className="block text-base font-medium text-gray-700 mb-2">
+                        <label className="block text-base font-medium text-gray-700 dark:text-gray-300 mb-2">
                             パスワード
                         </label>
                         <Textbox
@@ -74,12 +74,12 @@ export function Login(props: PropsType) {
                             onKeyDown={handleKeyPress}
                         />
                         {errors.password?.message && (
-                            <p className="text-red-500 text-sm mt-2">{errors.password.message}</p>
+                            <p className="text-red-500 dark:text-red-400 text-sm mt-2">{errors.password.message}</p>
                         )}
                     </div>
                     <div>
                         <span
-                            className='text-blue-700 cursor-pointer'
+                            className='text-blue-700 dark:text-blue-400 cursor-pointer'
                             onClick={navigateSignup}
                         >
                             アカウント作成はこちらから

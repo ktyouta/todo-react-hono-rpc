@@ -39,8 +39,8 @@ export function DonutChart({ data }: PropsType) {
                             className="w-2.5 h-2.5 rounded-full shrink-0"
                             style={{ backgroundColor: item.color }}
                         />
-                        <span className="text-gray-500">{item.name}</span>
-                        <span className="font-medium text-gray-700">{item.value}件</span>
+                        <span className="text-gray-500 dark:text-gray-400">{item.name}</span>
+                        <span className="font-medium text-gray-700 dark:text-gray-300">{item.value}件</span>
                     </div>
                 ))}
             </div>

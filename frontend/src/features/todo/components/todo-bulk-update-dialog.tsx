@@ -30,7 +30,7 @@ type PropsType = {
     onConfirm: () => void;
 };
 
-const SELECT_CLASS = "flex-1 px-3 py-2 text-sm bg-white border-[#c0c0c0]";
+const SELECT_CLASS = "flex-1 px-3 py-2 text-sm bg-white border-[#c0c0c0] dark:bg-gray-800 dark:border-gray-600 dark:text-gray-100";
 
 export function TodoBulkUpdateDialog({
     isOpen,
@@ -60,7 +60,7 @@ export function TodoBulkUpdateDialog({
     return (
         <Dialog isOpen={isOpen} onClose={onClose} title="選択中のタスクを一括変更" size="medium">
             <div className="flex flex-col gap-5">
-                <p className="text-sm text-gray-600">{selectedCount}件のタスクを変更します。</p>
+                <p className="text-sm text-gray-600 dark:text-gray-300">{selectedCount}件のタスクを変更します。</p>
 
                 <div className="flex flex-col gap-3">
                     {/* カテゴリ */}
@@ -70,7 +70,7 @@ export function TodoBulkUpdateDialog({
                             onChange={onCategoryEnabledChange}
                             size="medium"
                         />
-                        <span className="text-sm text-gray-700 w-[4.5em] shrink-0">カテゴリ</span>
+                        <span className="text-sm text-gray-700 dark:text-gray-300 w-[4.5em] shrink-0">カテゴリ</span>
                         <Select
                             value={String(categoryId)}
                             onChange={(e) => onCategoryIdChange(Number(e.target.value))}
@@ -88,7 +88,7 @@ export function TodoBulkUpdateDialog({
                             disabled={isMemoSelected}
                             size="medium"
                         />
-                        <span className="text-sm text-gray-700 w-[4.5em] shrink-0">ステータス</span>
+                        <span className="text-sm text-gray-700 dark:text-gray-300 w-[4.5em] shrink-0">ステータス</span>
                         <Select
                             value={String(statusId)}
                             onChange={(e) => onStatusIdChange(Number(e.target.value))}
@@ -106,7 +106,7 @@ export function TodoBulkUpdateDialog({
                             disabled={isMemoSelected}
                             size="medium"
                         />
-                        <span className="text-sm text-gray-700 w-[4.5em] shrink-0">優先度</span>
+                        <span className="text-sm text-gray-700 dark:text-gray-300 w-[4.5em] shrink-0">優先度</span>
                         <Select
                             value={String(priorityId)}
                             onChange={(e) => onPriorityIdChange(Number(e.target.value))}
@@ -117,7 +117,7 @@ export function TodoBulkUpdateDialog({
                     </div>
                 </div>
 
-                <p className="text-xs text-gray-400">※チェックした項目のみ変更されます</p>
+                <p className="text-xs text-gray-400 dark:text-gray-500">※チェックした項目のみ変更されます</p>
 
                 <div className="flex justify-end gap-2">
                     <Button
@@ -125,7 +125,7 @@ export function TodoBulkUpdateDialog({
                         sizeType="medium"
                         onClick={onClose}
                         disabled={isLoading}
-                        className="px-4 h-9 py-0 bg-[#fcfdfd] border border-gray-300 text-sm text-gray-600 hover:bg-gray-200"
+                        className="px-4 h-9 py-0 bg-[#fcfdfd] border border-gray-300 text-sm text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700"
                     >
                         キャンセル
                     </Button>

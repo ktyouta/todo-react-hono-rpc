@@ -14,7 +14,7 @@ type PropsType = {
 export function DashboardOtherSection({ favorites, tasks, subTasks, memos, trash, noDueDate, noPriority, total }: PropsType) {
     return (
         <section>
-            <h2 className="text-base font-semibold text-gray-700 mb-3 pl-2 border-l-[3px] border-cyan-400">その他</h2>
+            <h2 className="text-base font-semibold text-gray-700 dark:text-gray-300 mb-3 pl-2 border-l-[3px] border-cyan-400">その他</h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                 <StatCard value={total} label="総数" />
                 <StatCard value={tasks} label="タスク" />

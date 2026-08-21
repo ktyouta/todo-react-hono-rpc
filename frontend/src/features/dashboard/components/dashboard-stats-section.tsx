@@ -8,7 +8,7 @@ type PropsType = Pick<DashboardStatsType, 'overdue' | 'dueToday' | 'dueSoon' | '
 export function DashboardStatsSection({ overdue, dueToday, dueSoon, overdueList, dueTodayList, dueSoonList, clickTask }: PropsType) {
     return (
         <section>
-            <h2 className="text-base font-semibold text-gray-700 mb-3 pl-2 border-l-[3px] border-cyan-400">スケジュール</h2>
+            <h2 className="text-base font-semibold text-gray-700 dark:text-gray-300 mb-3 pl-2 border-l-[3px] border-cyan-400">スケジュール</h2>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <WarningCard
                     count={overdue}
@@ -16,8 +16,8 @@ export function DashboardStatsSection({ overdue, dueToday, dueSoon, overdueList,
                     list={overdueList}
                     variant="red"
                     colorClass={{
-                        card: 'bg-red-50 border-red-200',
-                        count: 'text-red-600',
+                        card: 'bg-red-50 border-red-200 dark:bg-red-900/20 dark:border-red-800',
+                        count: 'text-red-600 dark:text-red-400',
                     }}
                     clickTask={clickTask}
                 />
@@ -27,8 +27,8 @@ export function DashboardStatsSection({ overdue, dueToday, dueSoon, overdueList,
                     list={dueTodayList}
                     variant="yellow"
                     colorClass={{
-                        card: 'bg-yellow-50 border-yellow-200',
-                        count: 'text-yellow-600',
+                        card: 'bg-yellow-50 border-yellow-200 dark:bg-yellow-900/20 dark:border-yellow-800',
+                        count: 'text-yellow-600 dark:text-yellow-400',
                     }}
                     clickTask={clickTask}
                 />
@@ -38,8 +38,8 @@ export function DashboardStatsSection({ overdue, dueToday, dueSoon, overdueList,
                     list={dueSoonList}
                     variant="blue"
                     colorClass={{
-                        card: 'bg-blue-50 border-blue-200',
-                        count: 'text-blue-600',
+                        card: 'bg-blue-50 border-blue-200 dark:bg-blue-900/20 dark:border-blue-800',
+                        count: 'text-blue-600 dark:text-blue-400',
                     }}
                     clickTask={clickTask}
                 />

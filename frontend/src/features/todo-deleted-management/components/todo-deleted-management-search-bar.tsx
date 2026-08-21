@@ -21,8 +21,8 @@ type PropsType = {
     onToggleBulkMode: () => void;
 };
 
-const LABEL_CLASS = "text-sm text-gray-500 whitespace-nowrap w-[5em]";
-const SELECT_CLASS = "flex-1 px-3 py-2 text-base bg-white border-[#c0c0c0]";
+const LABEL_CLASS = "text-sm text-gray-500 dark:text-gray-400 whitespace-nowrap w-[5em]";
+const SELECT_CLASS = "flex-1 px-3 py-2 text-base bg-white border-[#c0c0c0] dark:bg-gray-800 dark:border-gray-600 dark:text-gray-100";
 
 export function TodoDeletedManagementSearchBar({ searchCondition, onChange, onSearch, onClear, userList, categoryList, statusList, priorityList, handleKeyPress, onToggleBulkMode }: PropsType) {
 
@@ -40,12 +40,12 @@ export function TodoDeletedManagementSearchBar({ searchCondition, onChange, onSe
     const isEmpty = searchCondition.title === '' && activeCount === 0;
 
     return (
-        <div className="pb-4 border-b border-gray-300 mb-3 sm:mb-6">
+        <div className="pb-4 border-b border-gray-300 dark:border-gray-700 mb-3 sm:mb-6">
             {/* 常時表示エリア */}
             <div className="flex flex-col sm:flex-row gap-2">
                 {/* タイトル検索 */}
                 <div className="relative flex-1">
-                    <HiMagnifyingGlass className="absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-400 size-4 pointer-events-none" />
+                    <HiMagnifyingGlass className="absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 size-4 pointer-events-none" />
                     <Textbox
                         value={searchCondition.title}
                         onChange={(e) => onChange({ ...searchCondition, title: e.target.value })}
@@ -60,9 +60,9 @@ export function TodoDeletedManagementSearchBar({ searchCondition, onChange, onSe
                     <button
                         type="button"
                         onClick={() => setIsDetailOpen(!isDetailOpen)}
-                        className="relative sm:hidden flex items-center justify-center h-9 w-9 rounded border border-gray-300 bg-[#fcfdfd] hover:bg-gray-200 shrink-0"
+                        className="relative sm:hidden flex items-center justify-center h-9 w-9 rounded border border-gray-300 bg-[#fcfdfd] hover:bg-gray-200 dark:bg-gray-800 dark:border-gray-600 dark:hover:bg-gray-700 shrink-0"
                     >
-                        <MdFilterAlt className={`size-5 ${isDetailOpen || activeCount > 0 ? 'text-blue-500' : 'text-gray-500'}`} />
+                        <MdFilterAlt className={`size-5 ${isDetailOpen || activeCount > 0 ? 'text-blue-500' : 'text-gray-500 dark:text-gray-400'}`} />
                         {activeCount > 0 && (
                             <span className="absolute -top-1.5 -right-1.5 flex items-center justify-center w-4 h-4 rounded-full bg-blue-500 text-white text-[10px] font-medium leading-none">
                                 {activeCount}
@@ -74,7 +74,7 @@ export function TodoDeletedManagementSearchBar({ searchCondition, onChange, onSe
                         colorType="blue"
                         sizeType="small"
                         onClick={() => setIsDetailOpen(!isDetailOpen)}
-                        className="hidden sm:flex items-center gap-1.5 px-3 h-9 py-0 bg-[#fcfdfd] border border-gray-300 text-sm text-gray-600 hover:bg-gray-200 whitespace-nowrap"
+                        className="hidden sm:flex items-center gap-1.5 px-3 h-9 py-0 bg-[#fcfdfd] border border-gray-300 text-sm text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700 whitespace-nowrap"
                     >
                         <span>詳細フィルター</span>
                         {isDetailOpen
@@ -92,7 +92,7 @@ export function TodoDeletedManagementSearchBar({ searchCondition, onChange, onSe
                         sizeType="small"
                         onClick={onClear}
                         disabled={isEmpty}
-                        className="px-3 h-9 py-0 bg-[#fcfdfd] border border-gray-300 text-sm text-gray-600 hover:bg-gray-200 whitespace-nowrap disabled:opacity-70 disabled:hover:bg-[#fcfdfd]"
+                        className="px-3 h-9 py-0 bg-[#fcfdfd] border border-gray-300 text-sm text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700 whitespace-nowrap disabled:opacity-70 disabled:hover:bg-[#fcfdfd]"
                     >
                         クリア
                     </Button>
@@ -117,7 +117,7 @@ export function TodoDeletedManagementSearchBar({ searchCondition, onChange, onSe
 
             {/* 詳細フィルターパネル */}
             {isDetailOpen && (
-                <div className="mt-3 pt-3 border-t border-gray-100 flex flex-col gap-3">
+                <div className="mt-3 pt-3 border-t border-gray-100 dark:border-gray-700 flex flex-col gap-3">
                     {/* セレクト（ユーザー・カテゴリ・ステータス・優先度） */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
                         <div className="flex items-center gap-2">

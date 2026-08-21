@@ -41,8 +41,8 @@ export function Pagination({ currentPage, totalPages, onPageChange, className }:
                 className={cn(
                     "flex items-center justify-center w-9 h-9 rounded",
                     currentPage === 1
-                        ? "text-gray-300 cursor-not-allowed"
-                        : "text-gray-600 hover:bg-gray-100"
+                        ? "text-gray-300 cursor-not-allowed dark:text-gray-600"
+                        : "text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
                 )}
             >
                 <HiChevronLeft className="size-5" />
@@ -51,7 +51,7 @@ export function Pagination({ currentPage, totalPages, onPageChange, className }:
                 page === '...' ? (
                     <span
                         key={`ellipsis-${i}`}
-                        className="w-9 h-9 flex items-center justify-center text-gray-400 text-sm select-none"
+                        className="w-9 h-9 flex items-center justify-center text-gray-400 dark:text-gray-500 text-sm select-none"
                     >
                         ...
                     </span>
@@ -66,7 +66,7 @@ export function Pagination({ currentPage, totalPages, onPageChange, className }:
                             "w-9 h-9 rounded text-sm",
                             currentPage === page
                                 ? "bg-cyan-500 text-white font-medium"
-                                : "text-gray-600 hover:bg-gray-100"
+                                : "text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
                         )}
                     >
                         {page}
@@ -81,8 +81,8 @@ export function Pagination({ currentPage, totalPages, onPageChange, className }:
                 className={cn(
                     "flex items-center justify-center w-9 h-9 rounded",
                     currentPage === totalPages
-                        ? "text-gray-300 cursor-not-allowed"
-                        : "text-gray-600 hover:bg-gray-100"
+                        ? "text-gray-300 cursor-not-allowed dark:text-gray-600"
+                        : "text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
                 )}
             >
                 <HiChevronRight className="size-5" />

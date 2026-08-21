@@ -119,37 +119,37 @@ export function TodoImportDialogUpload({ isLoading, file, isDragging, isDescript
         <div className="flex-1 overflow-y-auto">
             <div className="px-6 py-6 flex flex-col gap-4 min-h-full">
             {/* 説明セクション */}
-            <div className="flex-none border border-gray-200 rounded-md">
+            <div className="flex-none border border-gray-200 dark:border-gray-700 rounded-md">
                 <button
                     type="button"
                     onClick={onToggleDescription}
-                    className="w-full flex items-center justify-between px-4 py-2.5 text-gray-700 bg-gray-50 hover:bg-gray-100 rounded-md"
+                    className="w-full flex items-center justify-between px-4 py-2.5 text-gray-700 bg-gray-50 hover:bg-gray-100 rounded-md dark:text-gray-300 dark:bg-gray-800 dark:hover:bg-gray-700"
                 >
                     <span className="font-medium">インポートについて</span>
                     <HiChevronDown className={`size-4 transition-transform duration-200 ${isDescriptionOpen ? 'rotate-180' : ''}`} />
                 </button>
                 {isDescriptionOpen && (
-                    <div className="border-t border-gray-200 px-4 pt-3 pb-4 flex flex-col gap-5">
-                        <p className="text-gray-600">
+                    <div className="border-t border-gray-200 dark:border-gray-700 px-4 pt-3 pb-4 flex flex-col gap-5">
+                        <p className="text-gray-600 dark:text-gray-300">
                             エクスポートしたCSVファイルを編集してインポートすることで、既存のタスクを一括更新できます。1回のインポートで<span className="font-medium">最大200件</span>まで対応しています。
                         </p>
                         <div className="flex flex-col">
-                            <p className="font-medium text-gray-700 mb-2">編集可能なカラム</p>
-                            <div className="border border-gray-200 rounded overflow-hidden">
+                            <p className="font-medium text-gray-700 dark:text-gray-300 mb-2">編集可能なカラム</p>
+                            <div className="border border-gray-200 dark:border-gray-700 rounded overflow-hidden">
                                 <table className="w-full">
-                                    <thead className="bg-gray-50">
+                                    <thead className="bg-gray-50 dark:bg-gray-800">
                                         <tr>
-                                            <th className="px-3 py-2 text-left text-gray-600 font-medium text-sm border-b border-gray-200 w-28">カラム名</th>
-                                            <th className="px-3 py-2 text-center text-gray-600 font-medium text-sm border-b border-gray-200 w-16">必須</th>
-                                            <th className="px-3 py-2 text-left text-gray-600 font-medium text-sm border-b border-gray-200">設定できる値</th>
+                                            <th className="px-3 py-2 text-left text-gray-600 dark:text-gray-300 font-medium text-sm border-b border-gray-200 dark:border-gray-700 w-28">カラム名</th>
+                                            <th className="px-3 py-2 text-center text-gray-600 dark:text-gray-300 font-medium text-sm border-b border-gray-200 dark:border-gray-700 w-16">必須</th>
+                                            <th className="px-3 py-2 text-left text-gray-600 dark:text-gray-300 font-medium text-sm border-b border-gray-200 dark:border-gray-700">設定できる値</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {columnGuide.map((row, i) => (
-                                            <tr key={row.name} className={i < columnGuide.length - 1 ? 'border-b border-gray-100' : ''}>
-                                                <td className="px-3 py-1.5 font-medium text-gray-700">{row.name}</td>
-                                                <td className="px-3 py-1.5 text-center text-gray-500">{row.required ? '○' : '—'}</td>
-                                                <td className="px-3 py-1.5 text-gray-600">{row.values}</td>
+                                            <tr key={row.name} className={i < columnGuide.length - 1 ? 'border-b border-gray-100 dark:border-gray-700' : ''}>
+                                                <td className="px-3 py-1.5 font-medium text-gray-700 dark:text-gray-300">{row.name}</td>
+                                                <td className="px-3 py-1.5 text-center text-gray-500 dark:text-gray-400">{row.required ? '○' : '—'}</td>
+                                                <td className="px-3 py-1.5 text-gray-600 dark:text-gray-300">{row.values}</td>
                                             </tr>
                                         ))}
                                     </tbody>
@@ -157,9 +157,9 @@ export function TodoImportDialogUpload({ isLoading, file, isDragging, isDescript
                             </div>
                         </div>
                         <div>
-                            <p className="font-medium text-gray-700 mb-1">変更禁止のカラム</p>
-                            <p className="text-gray-500">以下のカラムは参照用のため、値を変更しても無視されます。</p>
-                            <p className="text-gray-500">カテゴリ・ステータス・優先度（名前列）、作成日時、更新日時</p>
+                            <p className="font-medium text-gray-700 dark:text-gray-300 mb-1">変更禁止のカラム</p>
+                            <p className="text-gray-500 dark:text-gray-400">以下のカラムは参照用のため、値を変更しても無視されます。</p>
+                            <p className="text-gray-500 dark:text-gray-400">カテゴリ・ステータス・優先度（名前列）、作成日時、更新日時</p>
                         </div>
                     </div>
                 )}
@@ -168,49 +168,49 @@ export function TodoImportDialogUpload({ isLoading, file, isDragging, isDescript
             {/* メインエリア */}
             <div className="flex flex-col gap-4 flex-1 min-h-[150px]">
                 {isLoading ? (
-                    <div className="flex flex-col items-center justify-center flex-1 gap-3 text-gray-500">
+                    <div className="flex flex-col items-center justify-center flex-1 gap-3 text-gray-500 dark:text-gray-400">
                         <AiOutlineLoading3Quarters className="animate-spin size-8" />
                         <p>インポート中...</p>
                     </div>
                 ) : previewRows !== null ? (
                     // ファイル選択後：プレビューテーブル
                     <div className="flex flex-col flex-1 gap-4">
-                        <div className="flex-1 border border-gray-200 rounded-md overflow-auto">
+                        <div className="flex-1 border border-gray-200 dark:border-gray-700 rounded-md overflow-auto">
                             <Table
                                 data={previewRows}
                                 columns={previewColumns}
                                 className="text-[17px] min-w-[750px]
-                                                [&_thead]:bg-gray-50/90
+                                                [&_thead]:bg-gray-50/90 dark:[&_thead]:bg-gray-800/90
                                                 [&_thead_tr]:border-b
-                                                [&_thead_tr]:border-gray-400/60"
-                                rowClassName={(row) => `h-[50px] border-gray-300/80 ${row.hasError ? 'bg-red-50 hover:bg-red-50' : 'hover:bg-gray-50/50'}`}
+                                                [&_thead_tr]:border-gray-400/60 dark:[&_thead_tr]:border-gray-600"
+                                rowClassName={(row) => `h-[50px] border-gray-300/80 dark:border-gray-700 ${row.hasError ? 'bg-red-50 hover:bg-red-50 dark:bg-red-900/20 dark:hover:bg-red-900/20' : 'hover:bg-gray-50/50 dark:hover:bg-gray-800/50'}`}
                             />
                         </div>
 
                         {/* バリデーション結果 */}
                         {previewErrors.length === 0 ? (
-                            <div className="flex items-center gap-1.5 text-green-600 text-sm">
+                            <div className="flex items-center gap-1.5 text-green-600 dark:text-green-400 text-sm">
                                 <HiOutlineCheckCircle className="size-4 shrink-0" />
                                 <p>バリデーションエラーなし</p>
                             </div>
                         ) : (
                             <div className="flex-none">
-                                <p className="text-base text-red-600 mb-1.5 font-medium">バリデーションエラー（{previewErrors.length}件）</p>
-                                <div className="max-h-[380px] overflow-y-auto border border-red-100 rounded-md bg-red-50">
+                                <p className="text-base text-red-600 dark:text-red-400 mb-1.5 font-medium">バリデーションエラー（{previewErrors.length}件）</p>
+                                <div className="max-h-[380px] overflow-y-auto border border-red-100 dark:border-red-800 rounded-md bg-red-50 dark:bg-red-900/20">
                                     <table className="w-full text-sm">
-                                        <thead className="sticky top-0 bg-red-100">
+                                        <thead className="sticky top-0 bg-red-100 dark:bg-red-900/40">
                                             <tr>
-                                                <th className="px-3 py-2 text-left text-red-700 font-medium w-14 border-b border-red-200">行</th>
-                                                <th className="px-3 py-2 text-left text-red-700 font-medium w-14 border-b border-red-200">ID</th>
-                                                <th className="px-3 py-2 text-left text-red-700 font-medium border-b border-red-200">エラー内容</th>
+                                                <th className="px-3 py-2 text-left text-red-700 dark:text-red-400 font-medium w-14 border-b border-red-200 dark:border-red-800">行</th>
+                                                <th className="px-3 py-2 text-left text-red-700 dark:text-red-400 font-medium w-14 border-b border-red-200 dark:border-red-800">ID</th>
+                                                <th className="px-3 py-2 text-left text-red-700 dark:text-red-400 font-medium border-b border-red-200 dark:border-red-800">エラー内容</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             {previewErrors.map((error, i) => (
-                                                <tr key={i} className="border-t border-red-100">
-                                                    <td className="px-3 py-2 text-red-700">{error.rowNumber}</td>
-                                                    <td className="px-3 py-2 text-red-700">{error.id ?? '—'}</td>
-                                                    <td className="px-3 py-2 text-red-700">{error.message}</td>
+                                                <tr key={i} className="border-t border-red-100 dark:border-red-800">
+                                                    <td className="px-3 py-2 text-red-700 dark:text-red-400">{error.rowNumber}</td>
+                                                    <td className="px-3 py-2 text-red-700 dark:text-red-400">{error.id ?? '—'}</td>
+                                                    <td className="px-3 py-2 text-red-700 dark:text-red-400">{error.message}</td>
                                                 </tr>
                                             ))}
                                         </tbody>
@@ -221,15 +221,15 @@ export function TodoImportDialogUpload({ isLoading, file, isDragging, isDescript
 
                         {/* ファイル名 + アップロードボタン */}
                         <div className="flex-none flex items-center justify-between gap-3">
-                            <div className="flex items-center gap-2 bg-gray-50 border border-gray-200 rounded px-3 h-11 min-w-0 flex-1">
+                            <div className="flex items-center gap-2 bg-gray-50 border border-gray-200 rounded px-3 h-11 min-w-0 flex-1 dark:bg-gray-800 dark:border-gray-700">
                                 <HiOutlineDocument className="size-4 text-blue-400 shrink-0" />
-                                <p className="text-[17px] text-gray-700 truncate">{file?.name}</p>
+                                <p className="text-[17px] text-gray-700 dark:text-gray-300 truncate">{file?.name}</p>
                             </div>
                             <Button
                                 colorType="blue"
                                 sizeType="medium"
                                 onClick={onCancel}
-                                className="px-4 h-9 py-0 font-medium bg-[#fcfdfd] border border-gray-300 text-sm hover:bg-gray-200 text-gray-600 whitespace-nowrap shrink-0"
+                                className="px-4 h-9 py-0 font-medium bg-[#fcfdfd] border border-gray-300 text-sm hover:bg-gray-200 text-gray-600 whitespace-nowrap shrink-0 dark:bg-gray-800 dark:border-gray-600 dark:hover:bg-gray-700 dark:text-gray-300"
                             >
                                 キャンセル
                             </Button>
@@ -251,15 +251,15 @@ export function TodoImportDialogUpload({ isLoading, file, isDragging, isDescript
                             onDrop={onDrop}
                             onDragOver={onDragOver}
                             onDragLeave={onDragLeave}
-                            className={`border-2 border-dashed rounded-lg flex-1 flex flex-col items-center justify-center gap-3 transition-colors py-2 ${isDragging ? "border-blue-500 bg-blue-50" : "border-gray-300 hover:border-gray-400"}`}
+                            className={`border-2 border-dashed rounded-lg flex-1 flex flex-col items-center justify-center gap-3 transition-colors py-2 ${isDragging ? "border-blue-500 bg-blue-50 dark:bg-blue-900/20" : "border-gray-300 hover:border-gray-400 dark:border-gray-600 dark:hover:border-gray-500"}`}
                         >
-                            <MdOutlineUploadFile className="size-12 text-gray-400" />
-                            <p className="text-base text-gray-500">ここにCSVファイルをドロップ</p>
+                            <MdOutlineUploadFile className="size-12 text-gray-400 dark:text-gray-500" />
+                            <p className="text-base text-gray-500 dark:text-gray-400">ここにCSVファイルをドロップ</p>
                             <Button
                                 colorType="blue"
                                 sizeType="medium"
                                 onClick={(e) => { e.stopPropagation(); inputRef.current?.click(); }}
-                                className="px-4 h-9 py-0 bg-[#fcfdfd] border border-gray-300 text-base text-gray-600 hover:bg-gray-200"
+                                className="px-4 h-9 py-0 bg-[#fcfdfd] border border-gray-300 text-base text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700"
                             >
                                 ファイルを選択
                             </Button>

@@ -21,14 +21,14 @@ export function UserManagementActionBar({
     const hasSelection = selectedCount > 0;
 
     return (
-        <div className="pb-4 border-b border-gray-300 mb-3 sm:mb-6">
+        <div className="pb-4 border-b border-gray-300 dark:border-gray-700 mb-3 sm:mb-6">
             <div className="flex flex-wrap items-center gap-3">
                 <Checkbox
                     checked={isAllSelected}
                     onChange={onSelectAll}
                     size="medium"
                 />
-                <span className="text-sm text-gray-600 min-w-[5em]">
+                <span className="text-sm text-gray-600 dark:text-gray-300 min-w-[5em]">
                     {selectedCount}件選択中
                 </span>
                 <div className="flex flex-wrap items-center gap-2 ml-auto">
@@ -54,7 +54,7 @@ export function UserManagementActionBar({
                         colorType="blue"
                         sizeType="medium"
                         onClick={onCancel}
-                        className="h-9 py-0 px-3 bg-[#fcfdfd] border border-gray-300 text-sm text-gray-600 hover:bg-gray-200 whitespace-nowrap"
+                        className="h-9 py-0 px-3 bg-[#fcfdfd] border border-gray-300 text-sm text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700 whitespace-nowrap"
                     >
                         キャンセル
                     </Button>

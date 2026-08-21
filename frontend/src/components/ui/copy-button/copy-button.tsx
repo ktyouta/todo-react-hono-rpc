@@ -23,7 +23,7 @@ export function CopyButton({ text }: PropsType) {
         <button
             type="button"
             onClick={handleClick}
-            className="p-1.5 rounded text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors"
+            className="p-1.5 rounded text-gray-400 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-500 dark:hover:text-gray-300 dark:hover:bg-gray-700 transition-colors"
             aria-label="コピー"
         >
             {isCopied

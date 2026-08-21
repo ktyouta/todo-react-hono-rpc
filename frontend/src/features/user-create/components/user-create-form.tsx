@@ -34,7 +34,7 @@ export function UserCreateForm(props: PropsType) {
     return (
         <div className="w-full min-h-full">
             <div className="flex items-center pr-[10px]">
-                <span className="font-bold text-[18px] sm:text-[22px]">ユーザー作成</span>
+                <span className="font-bold text-[18px] sm:text-[22px] dark:text-gray-100">ユーザー作成</span>
                 <div className="flex-1" />
                 <div className="flex gap-2 sm:gap-3">
                     <Button
@@ -57,14 +57,14 @@ export function UserCreateForm(props: PropsType) {
             </div>
             <div className="w-full pt-7 sm:pt-[50px] text-[15px]">
                 {Object.keys(errors).length > 0 && (
-                    <div className="flex items-center gap-2 px-3 py-2.5 mb-5 bg-red-50 border border-red-200 rounded text-sm text-red-600">
+                    <div className="flex items-center gap-2 px-3 py-2.5 mb-5 bg-red-50 border border-red-200 rounded text-sm text-red-600 dark:bg-red-900/30 dark:border-red-800 dark:text-red-400">
                         <span>入力内容にエラーがあります。確認してください。</span>
                     </div>
                 )}
-                <div className="w-full p-3 sm:p-[20px] border border-[#c0c0c0] rounded bg-white flex flex-col gap-5">
+                <div className="w-full p-3 sm:p-[20px] border border-[#c0c0c0] dark:border-gray-600 rounded bg-white dark:bg-gray-800 flex flex-col gap-5">
                     {/* ユーザー名 */}
                     <div>
-                        <label className="block mb-2">
+                        <label className="block mb-2 dark:text-gray-200">
                             ユーザー名（3〜30文字）
                         </label>
                         <Textbox
@@ -75,12 +75,12 @@ export function UserCreateForm(props: PropsType) {
                             autoComplete="off"
                         />
                         {errors.name?.message && (
-                            <p className="text-red-500 pl-1 mt-2">{errors.name.message}</p>
+                            <p className="text-red-500 dark:text-red-400 pl-1 mt-2">{errors.name.message}</p>
                         )}
                     </div>
                     {/* 生年月日 */}
                     <div>
-                        <label className="block mb-2">
+                        <label className="block mb-2 dark:text-gray-200">
                             生年月日
                         </label>
                         <div className="flex items-center gap-2">
@@ -89,27 +89,27 @@ export function UserCreateForm(props: PropsType) {
                                 className="flex-1 h-10 px-3 rounded border-[#c0c0c0]"
                                 registration={register("birthday.year")}
                             />
-                            <span className="text-gray-600 shrink-0">年</span>
+                            <span className="text-gray-600 dark:text-gray-400 shrink-0">年</span>
                             <Select
                                 options={MONTH_LIST}
                                 className="flex-1 h-10 px-3 rounded border-[#c0c0c0]"
                                 registration={register("birthday.month")}
                             />
-                            <span className="text-gray-600 shrink-0">月</span>
+                            <span className="text-gray-600 dark:text-gray-400 shrink-0">月</span>
                             <Select
                                 options={getDayList(watch("birthday.year"), watch("birthday.month"))}
                                 className="flex-1 h-10 px-3 rounded border-[#c0c0c0]"
                                 registration={register("birthday.day")}
                             />
-                            <span className="text-gray-600 shrink-0">日</span>
+                            <span className="text-gray-600 dark:text-gray-400 shrink-0">日</span>
                         </div>
                         {errors.birthday?.message && (
-                            <p className="text-red-500 pl-1 mt-2">{errors.birthday.message}</p>
+                            <p className="text-red-500 dark:text-red-400 pl-1 mt-2">{errors.birthday.message}</p>
                         )}
                     </div>
                     {/* ロール */}
                     <div>
-                        <label className="block mb-2">
+                        <label className="block mb-2 dark:text-gray-200">
                             ロール
                         </label>
                         <div className="sm:max-w-xs">
@@ -127,12 +127,12 @@ export function UserCreateForm(props: PropsType) {
                             />
                         </div>
                         {errors.roleId?.message && (
-                            <p className="text-red-500 pl-1 mt-2">{errors.roleId.message}</p>
+                            <p className="text-red-500 dark:text-red-400 pl-1 mt-2">{errors.roleId.message}</p>
                         )}
                     </div>
                     {/* パスワード */}
                     <div>
-                        <label className="block mb-2">
+                        <label className="block mb-2 dark:text-gray-200">
                             パスワード（8文字以上、半角英数記号）
                         </label>
                         <Textbox
@@ -142,12 +142,12 @@ export function UserCreateForm(props: PropsType) {
                             autoComplete="off"
                         />
                         {errors.password?.message && (
-                            <p className="text-red-500 pl-1 mt-2">{errors.password.message}</p>
+                            <p className="text-red-500 dark:text-red-400 pl-1 mt-2">{errors.password.message}</p>
                         )}
                     </div>
                     {/* 確認用パスワード */}
                     <div>
-                        <label className="block mb-2">
+                        <label className="block mb-2 dark:text-gray-200">
                             確認用パスワード
                         </label>
                         <Textbox
@@ -157,7 +157,7 @@ export function UserCreateForm(props: PropsType) {
                             autoComplete="off"
                         />
                         {errors.confirmPassword?.message && (
-                            <p className="text-red-500 pl-1 mt-2">{errors.confirmPassword.message}</p>
+                            <p className="text-red-500 dark:text-red-400 pl-1 mt-2">{errors.confirmPassword.message}</p>
                         )}
                     </div>
                 </div>

@@ -31,24 +31,24 @@ export function UpdatePassword(props: PropsType) {
     } = { ...props };
 
     return (
-        <div className="min-h-screen bg-gray-100 flex items-center justify-center px-4 py-8">
+        <div className="min-h-screen bg-gray-100 dark:bg-gray-900 flex items-center justify-center px-4 py-8">
             {isLoading && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/10">
                     <Spinner size={40} />
                 </div>
             )}
-            <div className="w-full max-w-lg bg-white rounded-xl shadow-lg p-8 sm:p-10">
-                <h1 className="text-2xl font-bold text-gray-800 text-center mb-8">
+            <div className="w-full max-w-lg bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 sm:p-10">
+                <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-100 text-center mb-8">
                     パスワード変更
                 </h1>
                 {errMessage && (
-                    <div className="bg-red-50 border border-red-200 text-red-600 text-sm rounded-lg p-4 mb-6">
+                    <div className="bg-red-50 border border-red-200 text-red-600 dark:bg-red-900/30 dark:border-red-800 dark:text-red-400 text-sm rounded-lg p-4 mb-6">
                         {errMessage}
                     </div>
                 )}
                 <div className="flex flex-col gap-6">
                     <div>
-                        <label className="block text-base font-medium text-gray-700 mb-2">
+                        <label className="block text-base font-medium text-gray-700 dark:text-gray-300 mb-2">
                             現在のパスワード
                         </label>
                         <Textbox
@@ -58,11 +58,11 @@ export function UpdatePassword(props: PropsType) {
                             registration={register("nowPassword")}
                         />
                         {errors.nowPassword?.message && (
-                            <p className="text-red-500 text-sm mt-2">{errors.nowPassword.message}</p>
+                            <p className="text-red-500 dark:text-red-400 text-sm mt-2">{errors.nowPassword.message}</p>
                         )}
                     </div>
                     <div>
-                        <label className="block text-base font-medium text-gray-700 mb-2">
+                        <label className="block text-base font-medium text-gray-700 dark:text-gray-300 mb-2">
                             新しいパスワード
                         </label>
                         <Textbox
@@ -72,11 +72,11 @@ export function UpdatePassword(props: PropsType) {
                             registration={register("newPassword")}
                         />
                         {errors.newPassword?.message && (
-                            <p className="text-red-500 text-sm mt-2">{errors.newPassword.message}</p>
+                            <p className="text-red-500 dark:text-red-400 text-sm mt-2">{errors.newPassword.message}</p>
                         )}
                     </div>
                     <div>
-                        <label className="block text-base font-medium text-gray-700 mb-2">
+                        <label className="block text-base font-medium text-gray-700 dark:text-gray-300 mb-2">
                             確認用パスワード
                         </label>
                         <Textbox
@@ -86,13 +86,13 @@ export function UpdatePassword(props: PropsType) {
                             registration={register("confirmPassword")}
                         />
                         {errors.confirmPassword?.message && (
-                            <p className="text-red-500 text-sm mt-2">{errors.confirmPassword.message}</p>
+                            <p className="text-red-500 dark:text-red-400 text-sm mt-2">{errors.confirmPassword.message}</p>
                         )}
                     </div>
                     <div className="flex flex-col sm:flex-row gap-3 mt-4">
                         <button
                             type="button"
-                            className="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium py-3 px-4 rounded-lg transition-colors"
+                            className="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-700 dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-gray-200 font-medium py-3 px-4 rounded-lg transition-colors"
                             onClick={back}
                         >
                             戻る

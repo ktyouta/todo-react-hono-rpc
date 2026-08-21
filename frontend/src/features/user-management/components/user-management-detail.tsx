@@ -38,7 +38,7 @@ export function UserManagementDetail(props: PropsType) {
                 <button
                     type="button"
                     onClick={onClickBack}
-                    className="flex items-center gap-1 text-sm text-gray-500 hover:text-gray-700"
+                    className="flex items-center gap-1 text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
                 >
                     <HiArrowLeft />
                     <span>一覧に戻る</span>
@@ -46,45 +46,45 @@ export function UserManagementDetail(props: PropsType) {
             </div>
 
             {/* ユーザー情報（読み取り専用） */}
-            <div className="w-full p-3 sm:p-5 border border-[#c0c0c0] rounded bg-white mb-4 sm:mb-6">
-                <p className="text-base text-gray-500 font-medium mb-4">ユーザー情報</p>
+            <div className="w-full p-3 sm:p-5 border border-[#c0c0c0] dark:border-gray-600 rounded bg-white dark:bg-gray-800 mb-4 sm:mb-6">
+                <p className="text-base text-gray-500 dark:text-gray-400 font-medium mb-4">ユーザー情報</p>
                 <div className="flex flex-col sm:flex-row gap-4 sm:gap-[3%]">
                     <div className="flex flex-1 items-center gap-2">
-                        <span className="whitespace-nowrap w-[6em] text-gray-500 text-base">ユーザー名</span>
-                        <span className="flex-1 px-3 py-2 bg-gray-50 border border-[#e0e0e0] rounded text-lg">{user.name}</span>
+                        <span className="whitespace-nowrap w-[6em] text-gray-500 dark:text-gray-400 text-base">ユーザー名</span>
+                        <span className="flex-1 px-3 py-2 bg-gray-50 border border-[#e0e0e0] dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100 rounded text-lg">{user.name}</span>
                     </div>
                     <div className="flex flex-1 items-center gap-2">
-                        <span className="whitespace-nowrap w-[6em] text-gray-500 text-base">生年月日</span>
-                        <span className="flex-1 px-3 py-2 bg-gray-50 border border-[#e0e0e0] rounded text-lg">{`${user.birthday.slice(0, 4)}-${user.birthday.slice(4, 6)}-${user.birthday.slice(6, 8)}`}</span>
+                        <span className="whitespace-nowrap w-[6em] text-gray-500 dark:text-gray-400 text-base">生年月日</span>
+                        <span className="flex-1 px-3 py-2 bg-gray-50 border border-[#e0e0e0] dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100 rounded text-lg">{`${user.birthday.slice(0, 4)}-${user.birthday.slice(4, 6)}-${user.birthday.slice(6, 8)}`}</span>
                     </div>
                 </div>
-                <div className="flex flex-col sm:flex-row gap-4 sm:gap-[3%] mt-[20px] pt-[20px] border-t border-[#e8e8e8]">
+                <div className="flex flex-col sm:flex-row gap-4 sm:gap-[3%] mt-[20px] pt-[20px] border-t border-[#e8e8e8] dark:border-gray-700">
                     <div className="flex flex-1 items-center gap-2">
-                        <span className="whitespace-nowrap w-[6em] text-gray-500 text-base">ロール</span>
-                        <span className="flex-1 px-3 py-2 bg-gray-50 border border-[#e0e0e0] rounded text-lg">{user.roleName}</span>
+                        <span className="whitespace-nowrap w-[6em] text-gray-500 dark:text-gray-400 text-base">ロール</span>
+                        <span className="flex-1 px-3 py-2 bg-gray-50 border border-[#e0e0e0] dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100 rounded text-lg">{user.roleName}</span>
                     </div>
                     <div className="flex flex-1 items-center gap-2">
-                        <span className="whitespace-nowrap w-[6em] text-gray-500 text-base">最終ログイン</span>
-                        <span className="flex-1 px-3 py-2 bg-gray-50 border border-[#e0e0e0] rounded text-lg">
+                        <span className="whitespace-nowrap w-[6em] text-gray-500 dark:text-gray-400 text-base">最終ログイン</span>
+                        <span className="flex-1 px-3 py-2 bg-gray-50 border border-[#e0e0e0] dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100 rounded text-lg">
                             {user.lastLoginDate ? getFormatDatetime(new Date(user.lastLoginDate), 'yyyy-MM-dd HH:mm:ss') : 'なし'}
                         </span>
                     </div>
                 </div>
-                <div className="flex flex-col sm:flex-row gap-4 sm:gap-[3%] mt-[20px] pt-[20px] border-t border-[#e8e8e8]">
+                <div className="flex flex-col sm:flex-row gap-4 sm:gap-[3%] mt-[20px] pt-[20px] border-t border-[#e8e8e8] dark:border-gray-700">
                     <div className="flex flex-1 items-center gap-2">
-                        <span className="whitespace-nowrap w-[6em] text-gray-500 text-base">登録日</span>
-                        <span className="flex-1 px-3 py-2 text-base text-gray-700">{getFormatDatetime(new Date(user.createdAt), 'yyyy-MM-dd HH:mm:ss')}</span>
+                        <span className="whitespace-nowrap w-[6em] text-gray-500 dark:text-gray-400 text-base">登録日</span>
+                        <span className="flex-1 px-3 py-2 text-base text-gray-700 dark:text-gray-300">{getFormatDatetime(new Date(user.createdAt), 'yyyy-MM-dd HH:mm:ss')}</span>
                     </div>
                     <div className="flex flex-1 items-center gap-2">
-                        <span className="whitespace-nowrap w-[6em] text-gray-500 text-base">更新日</span>
-                        <span className="flex-1 px-3 py-2 text-base text-gray-700">{getFormatDatetime(new Date(user.updatedAt), 'yyyy-MM-dd HH:mm:ss')}</span>
+                        <span className="whitespace-nowrap w-[6em] text-gray-500 dark:text-gray-400 text-base">更新日</span>
+                        <span className="flex-1 px-3 py-2 text-base text-gray-700 dark:text-gray-300">{getFormatDatetime(new Date(user.updatedAt), 'yyyy-MM-dd HH:mm:ss')}</span>
                     </div>
                 </div>
             </div>
 
             {/* ロール変更 */}
-            <div className="w-full p-3 sm:p-5 border border-[#c0c0c0] rounded bg-white mb-4 sm:mb-6">
-                <p className="text-base text-gray-500 font-medium mb-4">ロール変更</p>
+            <div className="w-full p-3 sm:p-5 border border-[#c0c0c0] dark:border-gray-600 rounded bg-white dark:bg-gray-800 mb-4 sm:mb-6">
+                <p className="text-base text-gray-500 dark:text-gray-400 font-medium mb-4">ロール変更</p>
                 <div className="flex flex-col sm:flex-row sm:items-center gap-3">
                     <div className="w-full sm:flex-1 sm:max-w-xs">
                         <Controller
@@ -102,7 +102,7 @@ export function UserManagementDetail(props: PropsType) {
                             )}
                         />
                         {roleForm.formState.errors.roleId && (
-                            <p className="text-sm text-red-500 mt-1">{roleForm.formState.errors.roleId.message}</p>
+                            <p className="text-sm text-red-500 dark:text-red-400 mt-1">{roleForm.formState.errors.roleId.message}</p>
                         )}
                     </div>
                     <Button
@@ -118,8 +118,8 @@ export function UserManagementDetail(props: PropsType) {
             </div>
 
             {/* パスワードリセット */}
-            <div className="w-full p-3 sm:p-5 border border-[#c0c0c0] rounded bg-white mb-4 sm:mb-6">
-                <p className="text-base text-gray-500 font-medium mb-4">パスワードリセット</p>
+            <div className="w-full p-3 sm:p-5 border border-[#c0c0c0] dark:border-gray-600 rounded bg-white dark:bg-gray-800 mb-4 sm:mb-6">
+                <p className="text-base text-gray-500 dark:text-gray-400 font-medium mb-4">パスワードリセット</p>
                 <div className="flex flex-col sm:flex-row sm:items-center gap-3">
                     <div className="w-full sm:flex-1 sm:max-w-xs">
                         <Textbox
@@ -129,7 +129,7 @@ export function UserManagementDetail(props: PropsType) {
                             {...passwordForm.register('newPassword')}
                         />
                         {passwordForm.formState.errors.newPassword && (
-                            <p className="text-sm text-red-500 mt-1">{passwordForm.formState.errors.newPassword.message}</p>
+                            <p className="text-sm text-red-500 dark:text-red-400 mt-1">{passwordForm.formState.errors.newPassword.message}</p>
                         )}
                     </div>
                     <div className="w-full sm:flex-1 sm:max-w-xs">
@@ -140,7 +140,7 @@ export function UserManagementDetail(props: PropsType) {
                             {...passwordForm.register('confirmPassword')}
                         />
                         {passwordForm.formState.errors.confirmPassword && (
-                            <p className="text-sm text-red-500 mt-1">{passwordForm.formState.errors.confirmPassword.message}</p>
+                            <p className="text-sm text-red-500 dark:text-red-400 mt-1">{passwordForm.formState.errors.confirmPassword.message}</p>
                         )}
                     </div>
                     <Button
@@ -156,11 +156,11 @@ export function UserManagementDetail(props: PropsType) {
             </div>
 
             {/* 削除エリア */}
-            <div className="mt-4 sm:mt-8 pt-4 sm:pt-6 border-t border-gray-200">
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 p-3 sm:p-5 border border-red-200 rounded bg-red-50">
+            <div className="mt-4 sm:mt-8 pt-4 sm:pt-6 border-t border-gray-200 dark:border-gray-700">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 p-3 sm:p-5 border border-red-200 dark:border-red-800 rounded bg-red-50 dark:bg-red-900/20">
                     <div>
-                        <p className="text-sm font-medium text-red-700">ユーザーの削除</p>
-                        <p className="text-sm text-gray-500 mt-1">このユーザーを削除します。削除後は削除済みユーザー一覧から復元できます。</p>
+                        <p className="text-sm font-medium text-red-700 dark:text-red-400">ユーザーの削除</p>
+                        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">このユーザーを削除します。削除後は削除済みユーザー一覧から復元できます。</p>
                     </div>
                     <Button
                         colorType="red"
@@ -181,12 +181,12 @@ export function UserManagementDetail(props: PropsType) {
                 size="small"
             >
                 <div className="space-y-4">
-                    <p className="text-gray-700">
+                    <p className="text-gray-700 dark:text-gray-300">
                         {`${user.name} のロールを変更しますか？`}
                         {
                             user.id !== loginUser?.id &&
                             <>
-                                <br /><span className="text-red-600">※他ユーザーのロールを変更します</span>
+                                <br /><span className="text-red-600 dark:text-red-400">※他ユーザーのロールを変更します</span>
                             </>
                         }
                     </p>
@@ -209,12 +209,12 @@ export function UserManagementDetail(props: PropsType) {
                 size="small"
             >
                 <div className="space-y-4">
-                    <p className="text-gray-700">
+                    <p className="text-gray-700 dark:text-gray-300">
                         {`${user.name} のパスワードをリセットしますか？`}
                         {
                             user.id !== loginUser?.id &&
                             <>
-                                <br /><span className="text-red-600">※他のユーザーのパスワードを変更します</span>
+                                <br /><span className="text-red-600 dark:text-red-400">※他のユーザーのパスワードを変更します</span>
                             </>
                         }
                     </p>
@@ -237,7 +237,7 @@ export function UserManagementDetail(props: PropsType) {
                 size="small"
             >
                 <div className="space-y-4">
-                    <p className="text-gray-700">
+                    <p className="text-gray-700 dark:text-gray-300">
                         {`${user.name} を削除しますか？`}<br />
                         削除後は削除済みユーザー一覧から復元できます。
                     </p>

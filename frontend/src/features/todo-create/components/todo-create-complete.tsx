@@ -14,17 +14,17 @@ export function TodoCreateComplete(props: PropsType) {
     return (
         <div className="w-full min-h-full">
             <div className="flex items-center pr-[10px]">
-                <span className="font-bold text-[18px] sm:text-[22px]">
+                <span className="font-bold text-[18px] sm:text-[22px] dark:text-gray-100">
                     タスク作成
                 </span>
             </div>
             <div className="w-full pt-7 sm:pt-[50px]">
-                <div className="w-full p-5 sm:p-7 bg-gray-50 border border-gray-200 rounded-lg shadow-sm">
+                <div className="w-full p-5 sm:p-7 bg-gray-50 border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
                     <div className="flex items-center justify-center gap-2">
                         <HiCheckCircle className="text-cyan-500 text-[22px] sm:text-[24px]" />
-                        <span className="font-bold text-[18px] sm:text-[22px]">作成完了</span>
+                        <span className="font-bold text-[18px] sm:text-[22px] dark:text-gray-100">作成完了</span>
                     </div>
-                    <p className="mt-3 text-lg sm:text-xl font-medium text-gray-700 text-center break-all">
+                    <p className="mt-3 text-lg sm:text-xl font-medium text-gray-700 dark:text-gray-300 text-center break-all">
                         {createdTitle}
                     </p>
                 </div>

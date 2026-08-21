@@ -29,7 +29,7 @@ export function TodoTreeView({ treeData, onNodeClick, onClickBack }: PropsType) 
                     <button
                         type="button"
                         onClick={onClickBack}
-                        className="flex items-center gap-1 text-sm text-gray-600 hover:text-gray-800 bg-white border border-gray-200 rounded px-3 py-1.5 shadow-sm"
+                        className="flex items-center gap-1 text-sm text-gray-600 hover:text-gray-800 bg-white border border-gray-200 rounded px-3 py-1.5 shadow-sm dark:text-gray-300 dark:hover:text-gray-100 dark:bg-gray-800 dark:border-gray-700"
                     >
                         <HiArrowLeft />
                         <span>詳細に戻る</span>

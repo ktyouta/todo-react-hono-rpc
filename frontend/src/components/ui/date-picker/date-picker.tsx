@@ -39,8 +39,9 @@ export function DatePicker({ value, onChange, disabled, placeholder, className }
             wrapperClassName="flex-1"
             className={cn(
                 "w-full border border-[#c0c0c0] rounded px-3 py-2 text-base",
+                "dark:bg-gray-800 dark:border-gray-600 dark:text-gray-100",
                 "focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent",
-                "disabled:bg-gray-100 disabled:cursor-not-allowed disabled:text-gray-400",
+                "disabled:bg-gray-100 disabled:cursor-not-allowed disabled:text-gray-400 dark:disabled:bg-gray-700 dark:disabled:text-gray-500",
                 className
             )}
         />

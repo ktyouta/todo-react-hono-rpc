@@ -51,25 +51,25 @@ export function RoleManagementList(props: PropsType) {
                 onClear={clearSearchCondition}
                 handleKeyPress={handleKeyPress}
             />
-            <p className="text-sm text-gray-500 mb-3 text-right pr-2">全 {roleData.total} 件</p>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mb-3 text-right pr-2">全 {roleData.total} 件</p>
             <div className="flex-1">
                 {roleData.list.length === 0 ? (
                     <div className="flex h-80 flex-col items-center justify-center gap-3">
-                        <HiOutlineKey className="size-12 text-gray-300" />
-                        <p className="text-[17px] text-gray-400">ロールがありません</p>
+                        <HiOutlineKey className="size-12 text-gray-300 dark:text-gray-600" />
+                        <p className="text-[17px] text-gray-400 dark:text-gray-500">ロールがありません</p>
                     </div>
                 ) : (
                     <>
                         {/* テーブル表示: lg 以上 */}
-                        <div className="hidden lg:block border border-gray-200 rounded-md overflow-hidden">
+                        <div className="hidden lg:block border border-gray-200 dark:border-gray-700 rounded-md overflow-hidden">
                             <Table
                                 data={roleData.list}
                                 columns={columns}
                                 className="text-[17px] min-w-[700px]
-                                    [&_thead]:bg-gray-50/90
+                                    [&_thead]:bg-gray-50/90 dark:[&_thead]:bg-gray-800/90
                                     [&_thead_tr]:border-b
-                                    [&_thead_tr]:border-gray-400/60"
-                                rowClassName="h-[50px] border-gray-300/80 hover:bg-[#EFEFEF] cursor-pointer"
+                                    [&_thead_tr]:border-gray-400/60 dark:[&_thead_tr]:border-gray-600"
+                                rowClassName="h-[50px] border-gray-300/80 hover:bg-[#EFEFEF] dark:border-gray-700 dark:hover:bg-gray-700 cursor-pointer"
                                 onRowClick={onRowClick}
                             />
                         </div>
