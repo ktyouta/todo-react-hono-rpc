@@ -103,7 +103,7 @@ export function TodoDetailView(props: PropsType) {
                         className="sm:mr-5"
                     >
                         {task.isFavorite
-                            ? <HiStar className="size-7 text-amber-400" />
+                            ? <HiStar className="size-7 text-amber-400 dark:text-amber-500" />
                             : <HiOutlineStar className="size-7 text-gray-400 dark:text-gray-500" />
                         }
                     </button>

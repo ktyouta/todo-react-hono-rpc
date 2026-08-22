@@ -48,7 +48,7 @@ export function UserCreateForm(props: PropsType) {
                     <Button
                         colorType="green"
                         sizeType="large"
-                        className="px-4 sm:px-10 bg-cyan-500 hover:bg-cyan-600"
+                        className="px-4 sm:px-10 bg-cyan-500 hover:bg-cyan-600 dark:bg-cyan-900 dark:hover:bg-cyan-800"
                         onClick={clickCreate}
                     >
                         作成

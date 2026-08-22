@@ -75,7 +75,7 @@ export function TodoSearchBar({ searchCondition, onChange, onSearch, onClear, ca
                     >
                         <MdFilterAlt className={`size-5 ${isDetailOpen || activeCount > 0 ? 'text-blue-500' : 'text-gray-500 dark:text-gray-400'}`} />
                         {activeCount > 0 && (
-                            <span className="absolute -top-1.5 -right-1.5 flex items-center justify-center w-4 h-4 rounded-full bg-blue-500 text-white text-[10px] font-medium leading-none">
+                            <span className="absolute -top-1.5 -right-1.5 flex items-center justify-center w-4 h-4 rounded-full bg-blue-500 dark:bg-blue-800 text-white text-[10px] font-medium leading-none">
                                 {activeCount}
                             </span>
                         )}
@@ -94,7 +94,7 @@ export function TodoSearchBar({ searchCondition, onChange, onSearch, onClear, ca
                         }
                     </Button>
                     {activeCount > 0 && (
-                        <span className="hidden sm:inline-flex items-center justify-center w-5 h-5 rounded-full bg-blue-500 text-white text-xs font-medium shrink-0 leading-none">
+                        <span className="hidden sm:inline-flex items-center justify-center w-5 h-5 rounded-full bg-blue-500 dark:bg-blue-800 text-white text-xs font-medium shrink-0 leading-none">
                             {activeCount}
                         </span>
                     )}
@@ -162,7 +162,7 @@ export function TodoSearchBar({ searchCondition, onChange, onSearch, onClear, ca
                         colorType="green"
                         sizeType="medium"
                         onClick={onToggleBulkMode}
-                        className="px-3 h-9 py-0 bg-teal-500 hover:bg-teal-600 text-white font-medium whitespace-nowrap"
+                        className="px-3 h-9 py-0 bg-teal-500 hover:bg-teal-600 dark:bg-teal-800 dark:hover:bg-teal-700 text-white font-medium whitespace-nowrap"
                     >
                         一括操作
                     </Button>

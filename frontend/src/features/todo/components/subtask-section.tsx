@@ -65,7 +65,7 @@ export function SubtaskSection(props: PropsType) {
                 <Button
                     colorType={"blue"}
                     sizeType={"medium"}
-                    className="bg-blue-500 text-white rounded px-3 sm:px-4 py-1 sm:py-2 hover:bg-blue-600"
+                    className="bg-blue-500 dark:bg-blue-800 text-white rounded px-3 sm:px-4 py-1 sm:py-2 hover:bg-blue-600 dark:hover:bg-blue-700"
                     onClick={onClickAdd}
                 >
                     + 追加

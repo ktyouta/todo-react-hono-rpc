@@ -83,7 +83,7 @@ export function SubtaskCreateView(props: PropsType) {
                     <Button
                         colorType={"green"}
                         sizeType={"large"}
-                        className="px-4 sm:px-10 bg-cyan-500 hover:bg-cyan-600"
+                        className="px-4 sm:px-10 bg-cyan-500 hover:bg-cyan-600 dark:bg-cyan-900 dark:hover:bg-cyan-800"
                         onClick={clickCreate}
                     >
                         作成
@@ -162,7 +162,7 @@ export function SubtaskCreateView(props: PropsType) {
                                     <Button
                                         colorType="green"
                                         sizeType="medium"
-                                        className="bg-cyan-500 hover:bg-cyan-600 disabled:opacity-50"
+                                        className="bg-cyan-500 hover:bg-cyan-600 dark:bg-cyan-900 dark:hover:bg-cyan-800 disabled:opacity-50"
                                         disabled={!assistResult.canApply}
                                         onClick={applyAssist}
                                     >

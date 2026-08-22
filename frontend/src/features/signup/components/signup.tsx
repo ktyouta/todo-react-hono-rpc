@@ -159,7 +159,7 @@ export function Signup(props: PropsType) {
                         </button>
                         <button
                             type="button"
-                            className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg transition-colors"
+                            className="flex-1 bg-blue-600 hover:bg-blue-700 dark:bg-blue-900 dark:hover:bg-blue-800 text-white font-medium py-3 px-4 rounded-lg transition-colors"
                             onClick={handleConfirm}
                         >
                             登録

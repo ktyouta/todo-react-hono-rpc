@@ -125,8 +125,8 @@ export function TodoList(props: PropsType) {
                     className="flex items-center justify-center mx-auto"
                 >
                     {entry.isFavorite
-                        ? <HiStar className="size-5 text-amber-400" />
-                        : <HiOutlineStar className="size-5 text-gray-400" />
+                        ? <HiStar className="size-5 text-amber-400 dark:text-amber-500" />
+                        : <HiOutlineStar className="size-5 text-gray-400 dark:text-gray-500" />
                     }
                 </button>
             )

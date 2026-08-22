@@ -11,9 +11,9 @@ export type PropsType = Omit<ComponentPropsWithoutRef<"button">, "color"> & {
 };
 
 const colorClasses: Record<Color, string> = {
-    red: "bg-red-500 hover:bg-red-600",
-    blue: "bg-blue-500 hover:bg-blue-600",
-    green: "bg-green-500 hover:bg-green-600",
+    red: "bg-red-500 hover:bg-red-600 dark:bg-red-800 dark:hover:bg-red-700",
+    blue: "bg-blue-500 hover:bg-blue-600 dark:bg-blue-800 dark:hover:bg-blue-700",
+    green: "bg-green-500 hover:bg-green-600 dark:bg-green-800 dark:hover:bg-green-700",
 };
 
 const sizeClasses: Record<Size, string> = {

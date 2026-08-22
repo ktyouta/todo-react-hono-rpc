@@ -14,19 +14,19 @@ type PropsType = TaskListItem & { variant: TaskItemVariant } & {
 
 const variantStyles: Record<TaskItemVariant, { strip: string; border: string; dateBadge: string; idChip: string }> = {
     red: {
-        strip: 'bg-red-400',
+        strip: 'bg-red-400 dark:bg-red-700',
         border: 'border-red-100 dark:border-red-900/50',
         dateBadge: 'bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400',
         idChip: 'bg-gray-100 text-gray-500 dark:bg-gray-700 dark:text-gray-400',
     },
     yellow: {
-        strip: 'bg-amber-400',
+        strip: 'bg-amber-400 dark:bg-amber-700',
         border: 'border-amber-100 dark:border-amber-900/50',
         dateBadge: 'bg-amber-100 text-amber-600 dark:bg-amber-900/30 dark:text-amber-400',
         idChip: 'bg-gray-100 text-gray-500 dark:bg-gray-700 dark:text-gray-400',
     },
     blue: {
-        strip: 'bg-blue-400',
+        strip: 'bg-blue-400 dark:bg-blue-700',
         border: 'border-blue-100 dark:border-blue-900/50',
         dateBadge: 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400',
         idChip: 'bg-gray-100 text-gray-500 dark:bg-gray-700 dark:text-gray-400',

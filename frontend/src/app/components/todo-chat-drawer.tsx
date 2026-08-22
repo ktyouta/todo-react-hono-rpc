@@ -85,7 +85,7 @@ export function TodoChatDrawer(props: PropsType) {
                         >
                             <div
                                 className={`max-w-[85%] px-3 py-2 rounded-lg text-sm lg:text-base break-words ${msg.role === 'user'
-                                    ? 'bg-cyan-500 text-white whitespace-pre-wrap'
+                                    ? 'bg-cyan-500 dark:bg-cyan-900 text-white whitespace-pre-wrap'
                                     : msg.isError
                                         ? 'bg-red-50 text-red-600 border border-red-200 dark:bg-red-900/30 dark:text-red-400 dark:border-red-800 whitespace-pre-wrap'
                                         : 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-100'
@@ -139,7 +139,7 @@ export function TodoChatDrawer(props: PropsType) {
                         onClick={props.onSend}
                         disabled={props.isStreaming || !props.inputValue.trim()}
                         aria-label="送信"
-                        className="flex items-center justify-center w-9 h-9 rounded-lg bg-cyan-500 text-white shadow-md [@media(hover:hover)]:hover:bg-cyan-600 transition-colors disabled:opacity-40 disabled:cursor-not-allowed flex-shrink-0"
+                        className="flex items-center justify-center w-9 h-9 rounded-lg bg-cyan-500 dark:bg-cyan-900 text-white shadow-md [@media(hover:hover)]:hover:bg-cyan-600 dark:[@media(hover:hover)]:hover:bg-cyan-800 transition-colors disabled:opacity-40 disabled:cursor-not-allowed flex-shrink-0"
                     >
                         <HiArrowUp className="size-5" />
                     </button>

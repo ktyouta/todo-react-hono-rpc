@@ -100,8 +100,8 @@ function buildPreviewColumns(errorCellMap: Map<number, Set<number>>): TableProps
             Cell: ({ entry }) => isError(entry.id, COL.IS_FAVORITE)
                 ? <InvalidCell />
                 : (entry.isFavorite === '1'
-                    ? <HiStar className="size-5 text-amber-400 mx-auto" />
-                    : <HiOutlineStar className="size-5 text-gray-400 mx-auto" />)
+                    ? <HiStar className="size-5 text-amber-400 dark:text-amber-500 mx-auto" />
+                    : <HiOutlineStar className="size-5 text-gray-400 dark:text-gray-500 mx-auto" />)
         },
     ];
 }
