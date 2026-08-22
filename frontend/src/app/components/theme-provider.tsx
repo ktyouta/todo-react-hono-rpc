@@ -15,7 +15,7 @@ type PropsType = {
 }
 
 /**
- * localStorage からテーマ初期値を取得
+ * localStorage からテーマ初期値を取得（DBの値が確定するまでの暫定表示用キャッシュ）
  */
 function getInitialTheme(): ThemeType {
     const stored = localStorage.getItem(THEME_STORAGE_KEY);

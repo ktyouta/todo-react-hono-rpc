@@ -44,6 +44,7 @@ export class FrontUserLoginRepository implements IFrontUserLoginRepository {
         birthday: frontUserMaster.birthday,
         roleId: frontUserMaster.roleId,
         role: roleMaster.name,
+        darkMode: frontUserMaster.darkMode,
       })
       .from(frontUserMaster)
       .innerJoin(roleMaster, eq(frontUserMaster.roleId, roleMaster.id))

@@ -9,6 +9,7 @@ export type UserWithRole = {
     birthday: string;
     roleId: number;
     role: string;
+    darkMode: boolean;
 };
 
 

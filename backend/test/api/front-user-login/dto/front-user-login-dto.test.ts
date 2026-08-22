@@ -10,6 +10,7 @@ describe("FrontUserLoginResponseDto", () => {
       birthday: "19900101",
       roleId: 1,
       role: "user",
+      darkMode: false,
     };
     const accessToken = "test-access-token";
 
@@ -28,6 +29,7 @@ describe("FrontUserLoginResponseDto", () => {
       birthday: "19950515",
       roleId: 1,
       role: "user",
+      darkMode: false,
     };
     const accessToken = "another-access-token";
 

@@ -30,6 +30,7 @@ export function useSignup() {
                 name: data.user.name,
                 birthday: data.user.birthday,
                 role: data.user.role,
+                darkMode: data.user.darkMode,
                 permissions: data.user.permissions,
             });
             updateAccessToken(data.accessToken);

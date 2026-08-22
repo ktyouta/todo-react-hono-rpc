@@ -1,6 +1,6 @@
 import { Context, Hono } from "hono";
 import { cors } from "hono/cors";
-import { adminDashboardStats, category, frontUser, frontUserLogin, frontUserLogout, frontUserPassword, health, priority, refresh, roleManagement, sample, status, todo, todoAssist, todoBulkDelete, todoBulkUpdate, todoChat, todoDeleted, todoDeletedBulkRestore, todoDeletedRestore, todoDeletedSubtask, todoExport, todoFavorite, todoImport, todoManagement, todoManagementBulkDelete, todoManagementBulkUpdate, todoManagementExport, todoManagementImport, todoManagementSubtask, todoManagementTree, todoStats, todoSubtask, todoTrash, todoTrashBulkRestore, todoTrashRestore, todoTrashSubtask, todoTree, userDeleted, userDeletedBulkRestore, userDeletedRestore, userList, userManagement, userManagementBulkDelete, userManagementBulkRole, userManagementPassword, userManagementRole, verify } from "./api";
+import { adminDashboardStats, category, frontUser, frontUserLogin, frontUserLogout, frontUserPassword, frontUserTheme, health, priority, refresh, roleManagement, sample, status, todo, todoAssist, todoBulkDelete, todoBulkUpdate, todoChat, todoDeleted, todoDeletedBulkRestore, todoDeletedRestore, todoDeletedSubtask, todoExport, todoFavorite, todoImport, todoManagement, todoManagementBulkDelete, todoManagementBulkUpdate, todoManagementExport, todoManagementImport, todoManagementSubtask, todoManagementTree, todoStats, todoSubtask, todoTrash, todoTrashBulkRestore, todoTrashRestore, todoTrashSubtask, todoTree, userDeleted, userDeletedBulkRestore, userDeletedRestore, userList, userManagement, userManagementBulkDelete, userManagementBulkRole, userManagementPassword, userManagementRole, verify } from "./api";
 import { permissionList } from "./api/permission-list";
 import { roleList } from "./api/role-list";
 import {
@@ -54,6 +54,7 @@ const routes = app
   .route("/", verify)
   .route("/", frontUserLogout)
   .route("/", frontUserPassword)
+  .route("/", frontUserTheme)
   .route("/", category)
   .route("/", status)
   .route("/", priority)

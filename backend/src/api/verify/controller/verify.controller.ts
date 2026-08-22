@@ -57,6 +57,7 @@ const verify = new Hono<AppEnv>().get(
                         name: userInfo.name,
                         birthday: userInfo.birthday,
                         role: userInfo.role,
+                        darkMode: userInfo.darkMode,
                         permissions,
                     },
                 },

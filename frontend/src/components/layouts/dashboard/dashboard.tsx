@@ -135,7 +135,11 @@ export function Dashboard(props: PropsType) {
                                     パスワード更新
                                 </button>
                                 <button className='flex w-full items-center justify-between text-left px-5 py-3 text-gray-700 hover:bg-gray-100 transition-colors dark:text-gray-200 dark:hover:bg-gray-700'
-                                    onClick={(e) => { e.stopPropagation(); props.toggleTheme(); }}
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        props.toggleTheme();
+                                        setIsUserMenuOpen(false);
+                                    }}
                                 >
                                     <span>ダークモード</span>
                                     {props.theme === 'dark'

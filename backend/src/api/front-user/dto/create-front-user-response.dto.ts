@@ -10,6 +10,7 @@ type CreateFrontUserResponseType = {
     name: string;
     birthday: string;
     role: string;
+    darkMode: boolean;
     permissions: string[];
   };
 };
@@ -28,6 +29,8 @@ export class CreateFrontUserResponseDto {
         name: entity.frontUserName,
         birthday: entity.frontUserBirthday,
         role,
+        // 新規作成直後はスキーマのデフォルト値（false）で固定
+        darkMode: false,
         permissions,
       },
     };

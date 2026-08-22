@@ -3,6 +3,7 @@ export * from "./front-user";
 export * from "./front-user-login";
 export * from "./front-user-logout";
 export * from "./front-user-password";
+export * from "./front-user-theme";
 export * from "./health";
 export * from "./priority";
 export * from "./refresh";

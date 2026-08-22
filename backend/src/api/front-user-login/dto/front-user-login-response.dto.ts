@@ -10,6 +10,7 @@ export type FrontUserLoginResponseType = {
     name: string;
     birthday: string;
     role: string;
+    darkMode: boolean;
     permissions: string[];
   };
 };
@@ -28,6 +29,7 @@ export class FrontUserLoginResponseDto {
         name: userInfo.name,
         birthday: userInfo.birthday,
         role: userInfo.role,
+        darkMode: userInfo.darkMode,
         permissions,
       },
     };

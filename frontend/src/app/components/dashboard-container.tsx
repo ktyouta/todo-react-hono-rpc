@@ -6,6 +6,7 @@ import { HiOutlineArchiveBoxXMark, HiOutlineChartBar, HiOutlineClipboardDocument
 import { Navigate, Outlet } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useLogoutMutation } from "../api/logout";
+import { useUpdateThemeMutation } from "../api/update-theme";
 import { LoginUserContext, SetLoginUserContext } from "./login-user-provider";
 import { SetThemeContext, ThemeContext } from "./theme-provider";
 import { TodoChatContainer } from "./todo-chat-container";
@@ -111,6 +112,12 @@ export function DashboardContainer() {
             toast.error(`ログアウトに失敗しました。時間をおいて再度お試しください。`)
         }
     });
+    // ダークモード設定更新リクエスト
+    const updateThemeMutation = useUpdateThemeMutation({
+        onError: function (): void {
+            toast.error(`ダークモード設定の保存に失敗しました。時間をおいて再度お試しください。`);
+        }
+    });
 
     if (!loginUser) {
         return (
@@ -147,7 +154,18 @@ export function DashboardContainer() {
      * テーマ切り替え
      */
     function toggleTheme() {
-        setTheme(theme === 'dark' ? 'light' : 'dark');
+        const previousTheme = theme;
+        const nextTheme = theme === 'dark' ? 'light' : 'dark';
+        // 見た目を即時反映し、保存は裏で行う
+        setTheme(nextTheme);
+        updateThemeMutation.mutate(
+            { darkMode: nextTheme === 'dark' },
+            {
+                onSuccess: () => setLoginUser((e) => e ? { ...e, darkMode: nextTheme === 'dark' } : e),
+                // 保存に失敗した場合のみ見た目を元に戻す
+                onError: () => setTheme(previousTheme),
+            }
+        );
     }
 
     return (

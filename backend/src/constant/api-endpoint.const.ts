@@ -11,6 +11,7 @@ export const API_ENDPOINT = {
   VERIFY: "/api/v1/verify",
   LOGOUT: "/api/v1/frontuser-logout",
   FRONT_USER_PASSWORD: "/api/v1/frontuser-password/:userId",
+  FRONT_USER_THEME: "/api/v1/frontuser-theme",
   TODO: "/api/v1/todo",
   TODO_ID: "/api/v1/todo/:id",
   TODO_FAVORITE: "/api/v1/todo/:id/favorite",

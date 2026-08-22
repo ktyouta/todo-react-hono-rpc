@@ -81,6 +81,7 @@ export const frontUserMaster = sqliteTable("front_user_master", {
   birthday: text("birthday").notNull(),
   roleId: integer("role_id").notNull().references(() => roleMaster.id),
   lastLoginDate: text("last_login_date"),
+  darkMode: integer("dark_mode", { mode: "boolean" }).notNull().default(false),
   deleteFlg: integer("delete_flg", { mode: "boolean" }).notNull().default(false),
   createdAt: text("created_at").notNull(),
   updatedAt: text("updated_at").notNull(),

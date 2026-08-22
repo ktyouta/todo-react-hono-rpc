@@ -4,6 +4,7 @@ import { createCtx } from "@/utils/create-ctx";
 import { ReactNode, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { LoginUserType } from "../api/verify";
+import { SetThemeContext } from "./theme-provider";
 
 // ログインユーザー情報
 export const LoginUserContext = createCtx<LoginUserType | null>();
@@ -21,6 +22,15 @@ export function LoginUserProvider(props: PropsType) {
     const [loginUser, setLoginUser] = useState<LoginUserType | null>(props.loginUser);
     // ルーティング用
     const navigate = useNavigate();
+    // テーマ(setter)
+    const setTheme = SetThemeContext.useCtx();
+
+    // ログインユーザーのDB設定値でテーマを上書き（localStorageはDB確定までの暫定表示用）
+    useEffect(() => {
+        if (loginUser) {
+            setTheme(loginUser.darkMode ? 'dark' : 'light');
+        }
+    }, [loginUser?.darkMode, setTheme]);
 
     /**
      * ログイン画面に遷移

@@ -1,0 +1,1 @@
+ALTER TABLE `front_user_master` ADD `dark_mode` integer DEFAULT false NOT NULL;
