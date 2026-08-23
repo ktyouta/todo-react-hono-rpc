@@ -106,11 +106,13 @@ export function Dashboard(props: PropsType) {
                     >
                         <LuMenu className='h-6 w-6' />
                     </button>
-                    <span className='inline-block text-[18px] sm:text-[24px] font-bold text-gray-800 dark:text-gray-100 tracking-wide flex-1 cursor-pointer'
-                        onClick={props.moveHome}
-                    >
-                        TaskNote
-                    </span>
+                    <div className='flex-1'>
+                        <span className='inline-block text-[18px] sm:text-[24px] font-bold text-gray-800 dark:text-gray-100 tracking-wider cursor-pointer'
+                            onClick={props.moveHome}
+                        >
+                            TaskNote
+                        </span>
+                    </div>
                     {/* ユーザーアイコン */}
                     <div className='flex items-center relative'
                         onClick={() => { setIsUserMenuOpen(true) }}

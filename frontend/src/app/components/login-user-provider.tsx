@@ -25,7 +25,7 @@ export function LoginUserProvider(props: PropsType) {
     // テーマ(setter)
     const setTheme = SetThemeContext.useCtx();
 
-    // ログインユーザーのDB設定値でテーマを上書き（localStorageはDB確定までの暫定表示用）
+    // ログインユーザーのDB設定値でテーマを上書き
     useEffect(() => {
         if (loginUser) {
             setTheme(loginUser.darkMode ? 'dark' : 'light');

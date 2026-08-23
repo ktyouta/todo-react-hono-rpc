@@ -192,7 +192,7 @@ export function TodoDetailEdit(props: PropsType) {
                                     <Button
                                         colorType="green"
                                         sizeType="medium"
-                                        className="bg-gray-400 hover:bg-gray-500"
+                                        className="bg-gray-400 hover:bg-gray-500 dark:bg-gray-800 dark:hover:bg-gray-700 dark:border dark:border-gray-600"
                                         onClick={cancelAssist}
                                     >
                                         キャンセル

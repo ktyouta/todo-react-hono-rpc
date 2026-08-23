@@ -16,7 +16,7 @@ export function RoleManagementCard({ entry, onClick }: PropsType) {
                 <p className="text-[17px] font-medium text-gray-800 dark:text-gray-100 break-words min-w-0">{entry.name}</p>
                 <span className="text-xs text-gray-400 dark:text-gray-500 whitespace-nowrap shrink-0 mt-0.5">#{entry.id}</span>
             </div>
-            <div className="flex flex-wrap gap-x-4 gap-y-2 mt-3 pt-3 border-t border-gray-100 dark:border-gray-700 text-xs">
+            <div className="flex flex-wrap gap-x-4 gap-y-2 mt-3 pt-3 border-t border-gray-100 dark:border-gray-600 text-xs">
                 <div>
                     <span className="text-gray-400 dark:text-gray-500">登録日</span>
                     <span className="ml-1.5 text-gray-500 dark:text-gray-400">{getFormatDatetime(new Date(entry.createdAt), 'yyyy-MM-dd')}</span>
