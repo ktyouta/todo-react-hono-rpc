@@ -1,4 +1,4 @@
-import { and, eq, gte, isNull, like, lte, sql } from "drizzle-orm";
+import { and, desc, eq, gte, isNull, like, lte, sql } from "drizzle-orm";
 import type { Database } from "../../../infrastructure/db";
 import { categoryMaster, frontUserMaster, priorityMaster, statusMaster, taskTransaction } from "../../../infrastructure/db";
 import { GetTodoManagementListQuerySchemaType } from "../schema/get-todo-management-list-query.schema";
@@ -44,6 +44,7 @@ export class GetTodoManagementListRepository implements IGetTodoManagementListRe
             .leftJoin(priorityMaster, eq(taskTransaction.priorityId, priorityMaster.id))
             .leftJoin(frontUserMaster, eq(taskTransaction.userId, frontUserMaster.id))
             .where(and(...conditions))
+            .orderBy(desc(taskTransaction.updatedAt))
             .limit(GetTodoManagementListRepository.LIMIT)
             .offset((query.page - 1) * GetTodoManagementListRepository.LIMIT);
     }

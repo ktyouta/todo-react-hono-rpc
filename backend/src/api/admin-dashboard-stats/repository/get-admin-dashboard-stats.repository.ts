@@ -1,4 +1,5 @@
 import { and, asc, desc, eq, sql } from "drizzle-orm";
+import { StatusType } from "../../../domain";
 import type { Database } from "../../../infrastructure/db";
 import {
   frontUserMaster,
@@ -73,7 +74,7 @@ export class GetAdminDashboardStatsRepository implements IGetAdminDashboardStats
           highPriority: sql<number>`COUNT(CASE WHEN ${taskTransaction.deleteFlg} = 0 AND ${taskTransaction.categoryId} = 1 AND ${taskTransaction.priorityId} = 3 THEN 1 END)`,
           mediumPriority: sql<number>`COUNT(CASE WHEN ${taskTransaction.deleteFlg} = 0 AND ${taskTransaction.categoryId} = 1 AND ${taskTransaction.priorityId} = 2 THEN 1 END)`,
           lowPriority: sql<number>`COUNT(CASE WHEN ${taskTransaction.deleteFlg} = 0 AND ${taskTransaction.categoryId} = 1 AND ${taskTransaction.priorityId} = 1 THEN 1 END)`,
-          overdue: sql<number>`COUNT(CASE WHEN ${taskTransaction.deleteFlg} = 0 AND ${taskTransaction.categoryId} = 1 AND ${taskTransaction.dueDate} < date('now') AND ${taskTransaction.statusId} != 3 THEN 1 END)`,
+          overdue: sql<number>`COUNT(CASE WHEN ${taskTransaction.deleteFlg} = 0 AND ${taskTransaction.categoryId} = 1 AND ${taskTransaction.dueDate} < date('now') AND ${taskTransaction.statusId} != ${StatusType.completed} THEN 1 END)`,
           tasks: sql<number>`COUNT(CASE WHEN ${taskTransaction.deleteFlg} = 0 AND ${taskTransaction.categoryId} = 1 AND ${taskTransaction.parentId} IS NULL THEN 1 END)`,
           subTasks: sql<number>`COUNT(CASE WHEN ${taskTransaction.deleteFlg} = 0 AND ${taskTransaction.categoryId} = 1 AND ${taskTransaction.parentId} IS NOT NULL THEN 1 END)`,
           memos: sql<number>`COUNT(CASE WHEN ${taskTransaction.deleteFlg} = 0 AND ${taskTransaction.categoryId} = 2 THEN 1 END)`,
@@ -95,7 +96,7 @@ export class GetAdminDashboardStatsRepository implements IGetAdminDashboardStats
             eq(taskTransaction.deleteFlg, false),
             eq(taskTransaction.categoryId, 1),
             sql`${taskTransaction.dueDate} < date('now')`,
-            sql`${taskTransaction.statusId} != 3`,
+            sql`${taskTransaction.statusId} != ${StatusType.completed}`,
           ),
         )
         .orderBy(asc(taskTransaction.dueDate))
@@ -116,7 +117,7 @@ export class GetAdminDashboardStatsRepository implements IGetAdminDashboardStats
             eq(taskTransaction.deleteFlg, false),
             eq(taskTransaction.categoryId, 1),
             sql`${taskTransaction.dueDate} = date('now')`,
-            sql`${taskTransaction.statusId} != 3`,
+            sql`${taskTransaction.statusId} != ${StatusType.completed}`,
           ),
         )
         .orderBy(asc(taskTransaction.id))
@@ -138,7 +139,7 @@ export class GetAdminDashboardStatsRepository implements IGetAdminDashboardStats
             eq(taskTransaction.categoryId, 1),
             sql`${taskTransaction.dueDate} > date('now')`,
             sql`${taskTransaction.dueDate} <= date('now', '+7 days')`,
-            sql`${taskTransaction.statusId} != 3`,
+            sql`${taskTransaction.statusId} != ${StatusType.completed}`,
           ),
         )
         .orderBy(asc(taskTransaction.dueDate))
@@ -151,7 +152,7 @@ export class GetAdminDashboardStatsRepository implements IGetAdminDashboardStats
           userName: frontUserMaster.name,
           taskCount: sql<number>`COUNT(CASE WHEN ${taskTransaction.deleteFlg} = 0 AND ${taskTransaction.categoryId} = 1 THEN 1 END)`,
           doneCount: sql<number>`COUNT(CASE WHEN ${taskTransaction.deleteFlg} = 0 AND ${taskTransaction.categoryId} = 1 AND ${taskTransaction.statusId} = 3 THEN 1 END)`,
-          overdueCount: sql<number>`COUNT(CASE WHEN ${taskTransaction.deleteFlg} = 0 AND ${taskTransaction.categoryId} = 1 AND ${taskTransaction.dueDate} < date('now') AND ${taskTransaction.statusId} != 3 THEN 1 END)`,
+          overdueCount: sql<number>`COUNT(CASE WHEN ${taskTransaction.deleteFlg} = 0 AND ${taskTransaction.categoryId} = 1 AND ${taskTransaction.dueDate} < date('now') AND ${taskTransaction.statusId} != ${StatusType.completed} THEN 1 END)`,
         })
         .from(frontUserMaster)
         .leftJoin(taskTransaction, eq(taskTransaction.userId, frontUserMaster.id))

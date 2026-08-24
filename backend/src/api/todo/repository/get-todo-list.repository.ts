@@ -1,5 +1,5 @@
 import { and, asc, desc, eq, gte, isNull, like, lte, sql } from "drizzle-orm";
-import { FrontUserId, TaskSort, TaskSortType } from "../../../domain";
+import { FrontUserId, StatusType, TaskSort, TaskSortType } from "../../../domain";
 import type { Database } from "../../../infrastructure/db";
 import { categoryMaster, priorityMaster, statusMaster, taskTransaction } from "../../../infrastructure/db";
 import { GetTodoListQuerySchemaType } from "../schema/get-todo-list-query.schema";
@@ -53,7 +53,12 @@ export class GetTodoListRepository implements IGetTodoListRepository {
         .offset((query.page - 1) * GetTodoListRepository.LIMIT);
     }
 
+    // ソート未指定時は期限切れ・未完了のタスクを優先し、それ以外は更新日降順で表示
     return await baseQuery
+      .orderBy(
+        sql`CASE WHEN ${taskTransaction.dueDate} < date('now') AND ${taskTransaction.statusId} != ${StatusType.completed} THEN 0 ELSE 1 END`,
+        desc(taskTransaction.updatedAt),
+      )
       .limit(GetTodoListRepository.LIMIT)
       .offset((query.page - 1) * GetTodoListRepository.LIMIT);
   }
