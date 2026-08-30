@@ -67,7 +67,7 @@ export function TodoDeletedManagementDetailView(props: PropsType) {
 
             {/* ヘッダー */}
             <div className="flex items-center pr-[10px]">
-                <span className="text-2xl font-semibold dark:text-gray-100">
+                <span className="text-[21px] sm:text-2xl font-semibold dark:text-gray-100 break-words min-w-0">
                     {task.title}
                 </span>
             </div>

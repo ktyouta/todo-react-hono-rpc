@@ -16,7 +16,7 @@ type PropsType = {
 
 const columns: TableProps<TodoTrashSubtaskListDataType[number]>['columns'] = [
     { title: 'ID', field: 'id', className: 'w-[6%] whitespace-nowrap pl-4' },
-    { title: 'タイトル', field: 'title', Cell: ({ entry }) => <span className="whitespace-nowrap">{entry.title}</span> },
+    { title: 'タイトル', field: 'title', className: 'w-[35%]', Cell: ({ entry }) => <span className="block truncate" title={entry.title}>{entry.title}</span> },
     { title: 'ステータス', field: 'statusName', className: 'w-[12%] whitespace-nowrap', Cell: ({ entry }) => <Badge label={entry.statusName} bgColor={getStatusBadgeColor(entry.statusId)} /> },
     { title: '優先度', field: 'priorityName', className: 'w-[10%] whitespace-nowrap', Cell: ({ entry }) => <Badge label={entry.priorityName} bgColor={getPriorityBadgeColor(entry.priorityId)} /> },
     { title: '期限日', field: 'dueDate', className: 'w-[10%] whitespace-nowrap', Cell: ({ entry }) => <span>{entry.dueDate ?? '—'}</span> },
@@ -45,7 +45,7 @@ export function TodoTrashSubtaskSection(props: PropsType) {
                         <Table
                             data={subtasks}
                             columns={columns}
-                            className="text-[16px] min-w-[700px]
+                            className="text-[16px] min-w-[700px] table-fixed
                                 [&_thead]:bg-gray-200/70 dark:[&_thead]:bg-gray-800/70
                                 [&_thead_tr]:border-b
                                 [&_thead_tr]:border-gray-400/60 dark:[&_thead_tr]:border-gray-600

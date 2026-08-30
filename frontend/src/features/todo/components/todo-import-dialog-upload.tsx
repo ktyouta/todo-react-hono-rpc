@@ -70,10 +70,10 @@ function buildPreviewColumns(errorCellMap: Map<number, Set<number>>): TableProps
             Cell: ({ entry }) => isError(entry.id, COL.ID) ? <InvalidCell /> : <span>{entry.csvId}</span>
         },
         {
-            title: 'タイトル', field: 'title',
+            title: 'タイトル', field: 'title', className: 'w-[15%]',
             Cell: ({ entry }) => isError(entry.id, COL.TITLE)
                 ? <InvalidCell />
-                : <span className="whitespace-nowrap">{entry.title}</span>
+                : <span className="block truncate" title={entry.title}>{entry.title}</span>
         },
         {
             title: 'カテゴリ', field: 'categoryName', className: 'w-[10%] whitespace-nowrap',
@@ -179,7 +179,7 @@ export function TodoImportDialogUpload({ isLoading, file, isDragging, isDescript
                             <Table
                                 data={previewRows}
                                 columns={previewColumns}
-                                className="text-[17px] min-w-[750px]
+                                className="text-[17px] min-w-[750px] table-fixed
                                                 [&_thead]:bg-gray-50/90 dark:[&_thead]:bg-gray-800/90
                                                 [&_thead_tr]:border-b
                                                 [&_thead_tr]:border-gray-400/60 dark:[&_thead_tr]:border-gray-600"

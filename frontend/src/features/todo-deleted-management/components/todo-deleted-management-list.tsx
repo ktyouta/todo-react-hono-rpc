@@ -73,7 +73,7 @@ export function TodoDeletedManagementList(props: PropsType) {
             ),
         }] : []),
         { title: 'ID', field: 'id', className: 'w-[5%] whitespace-nowrap pl-4' },
-        { title: 'タイトル', field: 'title', Cell: ({ entry }) => <span className="whitespace-nowrap">{entry.title}</span> },
+        { title: 'タイトル', field: 'title', className: 'w-[15%]', Cell: ({ entry }) => <span className="block truncate" title={entry.title}>{entry.title}</span> },
         { title: 'ユーザー', field: 'userName', className: 'w-[10%] whitespace-nowrap' },
         { title: 'カテゴリ', field: 'categoryName', className: 'w-[9%] whitespace-nowrap', Cell: ({ entry }) => <Badge label={entry.categoryName} bgColor={CATEGORY_COLOR_MAP[entry.categoryId]} /> },
         { title: 'ステータス', field: 'statusName', className: 'w-[10%] whitespace-nowrap', Cell: ({ entry }) => <Badge label={entry.statusName} bgColor={getStatusBadgeColor(entry.statusId)} /> },
@@ -137,7 +137,7 @@ export function TodoDeletedManagementList(props: PropsType) {
                             <Table
                                 data={taskData.list}
                                 columns={columns}
-                                className="text-[17px] min-w-[1000px]
+                                className="text-[17px] min-w-[1000px] table-fixed
                                     [&_thead]:bg-gray-50/90 dark:[&_thead]:bg-gray-800/90
                                     [&_thead_tr]:border-b
                                     [&_thead_tr]:border-gray-400/60 dark:[&_thead_tr]:border-gray-600"

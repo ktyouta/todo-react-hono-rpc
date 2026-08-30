@@ -21,7 +21,7 @@ type PropsType = {
 
 const columns: TableProps<SubtaskListDataType[number]>['columns'] = [
     { title: 'ID', field: 'id', className: 'w-[6%] whitespace-nowrap pl-4' },
-    { title: 'タイトル', field: 'title', Cell: ({ entry }) => <span className="whitespace-nowrap">{entry.title}</span>, },
+    { title: 'タイトル', field: 'title', className: 'w-[30%]', Cell: ({ entry }) => <span className="block truncate" title={entry.title}>{entry.title}</span>, },
     { title: 'カテゴリ', field: 'categoryName', className: 'w-[9%] whitespace-nowrap', Cell: ({ entry }) => <Badge label={entry.categoryName} bgColor={CATEGORY_COLOR_MAP[entry.categoryId]} /> },
     { title: 'ステータス', field: 'statusName', className: 'w-[9%] whitespace-nowrap', Cell: ({ entry }) => <Badge label={entry.statusName} bgColor={getStatusBadgeColor(entry.statusId)} /> },
     { title: '優先度', field: 'priorityName', className: 'w-[9%] whitespace-nowrap', Cell: ({ entry }) => <Badge label={entry.priorityName} bgColor={getPriorityBadgeColor(entry.priorityId)} /> },
@@ -83,7 +83,7 @@ export function SubtaskSection(props: PropsType) {
                         <Table
                             data={subtasks}
                             columns={columns}
-                            className="text-[16px] min-w-[700px]
+                            className="text-[16px] min-w-[700px] table-fixed
                                     [&_thead]:bg-gray-200/70 dark:[&_thead]:bg-gray-800/70
                                       [&_thead_tr]:border-b
                                     [&_thead_tr]:border-gray-400/60 dark:[&_thead_tr]:border-gray-600

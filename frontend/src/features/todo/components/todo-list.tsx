@@ -85,7 +85,7 @@ export function TodoList(props: PropsType) {
             ),
         }] : []),
         { title: 'ID', field: 'id', className: 'w-[6%] whitespace-nowrap pl-4' },
-        { title: 'タイトル', field: 'title', Cell: ({ entry }) => <span className="whitespace-nowrap">{entry.title}</span> },
+        { title: 'タイトル', field: 'title', className: 'w-[25%]', Cell: ({ entry }) => <span className="block truncate" title={entry.title}>{entry.title}</span> },
         { title: 'カテゴリ', field: 'categoryName', className: 'w-[10%] whitespace-nowrap', Cell: ({ entry }) => <Badge label={entry.categoryName} bgColor={CATEGORY_COLOR_MAP[entry.categoryId]} /> },
         { title: 'ステータス', field: 'statusName', className: 'w-[10%] whitespace-nowrap', Cell: ({ entry }) => <Badge label={entry.statusName} bgColor={getStatusBadgeColor(entry.statusId)} /> },
         { title: '優先度', field: 'priorityName', className: 'w-[9%] whitespace-nowrap', Cell: ({ entry }) => <Badge label={entry.priorityName} bgColor={getPriorityBadgeColor(entry.priorityId)} /> },
@@ -180,7 +180,7 @@ export function TodoList(props: PropsType) {
                             <Table
                                 data={taskData.list}
                                 columns={columns}
-                                className="text-[17px] min-w-[1000px]
+                                className="text-[17px] min-w-[1000px] table-fixed
                                     [&_thead]:bg-gray-50/90 dark:[&_thead]:bg-gray-800/90
                                     [&_thead_tr]:border-b
                                     [&_thead_tr]:border-gray-400/60 dark:[&_thead_tr]:border-gray-600"
