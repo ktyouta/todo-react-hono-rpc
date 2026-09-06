@@ -1,4 +1,5 @@
 import { zValidator } from "@hono/zod-validator";
+import { and, eq, inArray } from "drizzle-orm";
 import { Hono } from "hono";
 import { API_ENDPOINT, HTTP_STATUS } from "../../../constant";
 import { CategoryType, TaskCategory, TaskContent, TaskId, TaskStatus, TaskTitle } from "../../../domain";
@@ -52,6 +53,9 @@ const createSubtask = new Hono<AppEnv>().post(
             return c.json({ message: "親タスクが存在しません。" }, HTTP_STATUS.NOT_FOUND);
         }
 
+        // 祖先タスクID一覧を取得
+        const ancestorIds = await service.findAncestorIds(parentTaskId);
+
         const taskTitle = new TaskTitle(body.title);
         const taskContent = new TaskContent(body.content);
         const taskCategory = new TaskCategory(body.category);
@@ -76,6 +80,15 @@ const createSubtask = new Hono<AppEnv>().post(
                 createdAt: now,
                 updatedAt: now,
             }),
+            // 祖先タスクの更新日時を追従
+            db.update(taskTransaction)
+                .set({ updatedAt: now })
+                .where(
+                    and(
+                        inArray(taskTransaction.id, ancestorIds),
+                        eq(taskTransaction.deleteFlg, false),
+                    )
+                ),
         ]);
 
         return c.json({ message: "サブタスクを追加しました。" }, HTTP_STATUS.CREATED);

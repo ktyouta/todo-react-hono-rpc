@@ -1,5 +1,5 @@
 import { zValidator } from "@hono/zod-validator";
-import { and, eq } from "drizzle-orm";
+import { and, eq, inArray } from "drizzle-orm";
 import { Hono } from "hono";
 import { API_ENDPOINT, HTTP_STATUS } from "../../../constant";
 import { CategoryType, TaskCategory, TaskContent, TaskId, TaskStatus, TaskTitle } from "../../../domain";
@@ -11,8 +11,10 @@ import type { AppEnv } from "../../../types";
 import { formatZodErrors } from "../../../util";
 import { UpdateTodoResponseDto } from "../dto/update-todo-response.dto";
 import { TaskEntity } from "../entity/task.entity";
+import { UpdateTodoRepository } from "../repository/update-todo.repository";
 import { TaskIdParamSchema } from "../schema/task-id-param.schema";
 import { UpdateTodoSchema } from "../schema/update-todo.schema";
+import { UpdateTodoService } from "../service/update-todo.service";
 
 
 /**
@@ -54,7 +56,12 @@ const updateTodo = new Hono<AppEnv>().patch(
             return c.json({ message: "認証エラー" }, HTTP_STATUS.UNAUTHORIZED);
         }
 
-        await db.batch([
+        // 祖先タスクID一覧を取得
+        const repository = new UpdateTodoRepository(db);
+        const service = new UpdateTodoService(repository);
+        const ancestorIds = await service.findAncestorIds(userId, taskId);
+
+        const statements = [
             db.update(taskTransaction)
                 .set({
                     title: taskEntity.taskTitle,
@@ -72,7 +79,22 @@ const updateTodo = new Hono<AppEnv>().patch(
                         eq(taskTransaction.deleteFlg, false)
                     )
                 ),
-        ]);
+            // 祖先タスクの更新日時を追従
+            ...(ancestorIds.length > 0
+                ? [
+                    db.update(taskTransaction)
+                        .set({ updatedAt: now })
+                        .where(
+                            and(
+                                inArray(taskTransaction.id, ancestorIds),
+                                eq(taskTransaction.deleteFlg, false),
+                            )
+                        ),
+                ]
+                : []),
+        ];
+
+        await db.batch(statements as [typeof statements[0], ...typeof statements[0][]]);
 
         const response = new UpdateTodoResponseDto(taskEntity);
         return c.json({ message: "タスクを更新しました。", data: response.value }, HTTP_STATUS.CREATED);

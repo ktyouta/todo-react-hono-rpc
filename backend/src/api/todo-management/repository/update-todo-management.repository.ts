@@ -1,26 +1,25 @@
 import { and, eq, sql } from "drizzle-orm";
-import { FrontUserId, TaskId } from "../../../domain";
+import { TaskId } from "../../../domain/task-id";
 import type { Database } from "../../../infrastructure/db";
 import { taskTransaction } from "../../../infrastructure/db";
-import type { IGetParentTaskRepository, ParentTaskItem } from "./get-parent-task.repository.interface";
+import type { IUpdateTodoManagementRepository, UpdateTodoManagementParentItem } from "./update-todo-management.repository.interface";
 
 /**
- * 親タスク取得リポジトリ実装
+ * タスク更新（管理者用）リポジトリ実装
  */
-export class GetParentTaskRepository implements IGetParentTaskRepository {
+export class UpdateTodoManagementRepository implements IUpdateTodoManagementRepository {
   constructor(private readonly db: Database) { }
 
   /**
-   * 親タスク取得（ルートタスクかつアクティブであることを確認）
+   * 更新対象タスクの親タスクIDを取得
    */
-  async find(userId: FrontUserId, parentTaskId: TaskId): Promise<ParentTaskItem | undefined> {
+  async findParentId(taskId: TaskId): Promise<UpdateTodoManagementParentItem | undefined> {
     return await this.db
-      .select({ id: taskTransaction.id })
+      .select({ parentId: taskTransaction.parentId })
       .from(taskTransaction)
       .where(
         and(
-          eq(taskTransaction.id, parentTaskId.value),
-          eq(taskTransaction.userId, userId.value),
+          eq(taskTransaction.id, taskId.value),
           eq(taskTransaction.deleteFlg, false),
         )
       )
@@ -30,12 +29,12 @@ export class GetParentTaskRepository implements IGetParentTaskRepository {
   /**
    * 祖先タスクID一覧を取得（親タスク自身からルートまで）
    */
-  async findAncestorIds(parentTaskId: number): Promise<number[]> {
+  async findAncestorIds(parentId: number): Promise<number[]> {
     const rows = await this.db.all<{ id: number }>(sql`
       WITH RECURSIVE ancestor_cte(id, parent_id, depth) AS (
         SELECT id, parent_id, 0
         FROM task_transaction
-        WHERE id = ${parentTaskId}
+        WHERE id = ${parentId}
         UNION ALL
         SELECT t.id, t.parent_id, a.depth + 1
         FROM task_transaction t

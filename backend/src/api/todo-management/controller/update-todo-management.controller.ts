@@ -1,5 +1,5 @@
 import { zValidator } from "@hono/zod-validator";
-import { and, eq } from "drizzle-orm";
+import { and, eq, inArray } from "drizzle-orm";
 import { Hono } from "hono";
 import { API_ENDPOINT, HTTP_STATUS } from "../../../constant";
 import { CategoryType, TaskCategory, TaskContent, TaskStatus, TaskTitle } from "../../../domain";
@@ -12,8 +12,10 @@ import type { AppEnv } from "../../../types";
 import { formatZodErrors } from "../../../util";
 import { UpdateTodoManagementResponseDto } from "../dto/update-todo-management-response.dto";
 import { TaskEntity } from "../entity/task.entity";
+import { UpdateTodoManagementRepository } from "../repository/update-todo-management.repository";
 import { TaskIdParamSchema } from "../schema/task-id-param.schema";
 import { UpdateTodoManagementSchema } from "../schema/update-todo-management.schema";
+import { UpdateTodoManagementService } from "../service/update-todo-management.service";
 
 /**
  * タスク更新（管理者用）
@@ -48,7 +50,12 @@ const updateTodoManagement = new Hono<AppEnv>().patch(
         const now = new Date().toISOString();
         const isMemo = taskEntity.category === CategoryType.memo;
 
-        await db.batch([
+        // 祖先タスクID一覧を取得
+        const repository = new UpdateTodoManagementRepository(db);
+        const service = new UpdateTodoManagementService(repository);
+        const ancestorIds = await service.findAncestorIds(taskId);
+
+        const statements = [
             db.update(taskTransaction)
                 .set({
                     title: taskEntity.taskTitle,
@@ -65,7 +72,22 @@ const updateTodoManagement = new Hono<AppEnv>().patch(
                         eq(taskTransaction.deleteFlg, false)
                     )
                 ),
-        ]);
+            // 祖先タスクの更新日時を追従
+            ...(ancestorIds.length > 0
+                ? [
+                    db.update(taskTransaction)
+                        .set({ updatedAt: now })
+                        .where(
+                            and(
+                                inArray(taskTransaction.id, ancestorIds),
+                                eq(taskTransaction.deleteFlg, false),
+                            )
+                        ),
+                ]
+                : []),
+        ];
+
+        await db.batch(statements as [typeof statements[0], ...typeof statements[0][]]);
 
         const response = new UpdateTodoManagementResponseDto(taskEntity);
         return c.json({ message: "タスクを更新しました。", data: response.value }, HTTP_STATUS.CREATED);
