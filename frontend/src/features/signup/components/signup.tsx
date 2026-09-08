@@ -62,7 +62,7 @@ export function Signup(props: PropsType) {
         <div className="min-h-screen bg-gray-100 dark:bg-gray-900 flex items-center justify-center px-4 py-8">
             {isLoading && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/10">
-                    <Spinner size={40} />
+                    <Spinner className="size-8 sm:size-10" />
                 </div>
             )}
             <div className="w-full max-w-lg bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 sm:p-10">

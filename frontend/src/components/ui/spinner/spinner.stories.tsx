@@ -6,9 +6,9 @@ const meta: Meta<typeof Spinner> = {
     component: Spinner,
     tags: ['autodocs'],
     argTypes: {
-        size: {
-            control: 'number',
-            description: 'スピナーのサイズ（px）',
+        className: {
+            control: 'text',
+            description: 'サイズ・色などを上書きする Tailwind クラス（例: "size-6 sm:size-7"）',
         },
     },
 };
@@ -23,18 +23,18 @@ export const Default: Story = {
 
 export const Small: Story = {
     args: {
-        size: 16,
+        className: 'size-4',
     },
 };
 
 export const Large: Story = {
     args: {
-        size: 48,
+        className: 'size-12',
     },
 };
 
-export const Custom: Story = {
+export const Responsive: Story = {
     args: {
-        size: 64,
+        className: 'size-6 sm:size-10',
     },
 };

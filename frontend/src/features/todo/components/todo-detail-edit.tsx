@@ -169,7 +169,7 @@ export function TodoDetailEdit(props: PropsType) {
                         <div className={`mt-3 p-3 border border-blue-200 rounded bg-blue-50 dark:border-blue-800 dark:bg-blue-900/20 flex flex-col gap-3 relative transition-opacity duration-200 ${isAssistLoading ? "opacity-60 pointer-events-none" : ""}`}>
                             {isAssistLoading && (
                                 <div className="absolute inset-0 flex items-center justify-center">
-                                    <Spinner size={28} />
+                                    <Spinner className="size-6 sm:size-7" />
                                 </div>
                             )}
                             <p className="text-base font-bold text-blue-600 dark:text-blue-400 mb-2">AI提案</p>
