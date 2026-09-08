@@ -1,5 +1,6 @@
 export { Dashboard } from './layouts/dashboard/dashboard';
 export { Errors } from './pages/errors/errors';
+export { InitialLoading } from './pages/initial-loading/initial-loading';
 export { Loading } from './pages/loading/loading';
 export { NotFound } from './pages/notfound/not-found';
 export { Button } from './ui/button/button';
