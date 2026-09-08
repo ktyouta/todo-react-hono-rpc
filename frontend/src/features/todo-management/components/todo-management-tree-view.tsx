@@ -1,3 +1,4 @@
+import { ThemeType } from "@/app/components/theme-provider";
 import { Background, Controls, Edge, Node, Panel, ReactFlow } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import { HiArrowLeft } from "react-icons/hi2";
@@ -6,9 +7,10 @@ type PropsType = {
     treeData: { nodes: Node[]; edges: Edge[]; }
     onNodeClick: (node: Node) => void;
     onClickBack: () => void;
+    theme: ThemeType;
 };
 
-export function TodoManagementTreeView({ treeData, onNodeClick, onClickBack }: PropsType) {
+export function TodoManagementTreeView({ treeData, onNodeClick, onClickBack, theme }: PropsType) {
 
     const { nodes, edges } = treeData;
 
@@ -18,6 +20,8 @@ export function TodoManagementTreeView({ treeData, onNodeClick, onClickBack }: P
                 nodes={nodes}
                 edges={edges}
                 onNodeClick={(_, node) => onNodeClick(node)}
+                colorMode={theme}
+                style={{ backgroundColor: "transparent" }}
                 fitView
                 fitViewOptions={{
                     maxZoom: 1.2,
@@ -35,7 +39,7 @@ export function TodoManagementTreeView({ treeData, onNodeClick, onClickBack }: P
                         <span>詳細に戻る</span>
                     </button>
                 </Panel>
-                <Background />
+                <Background bgColor="transparent" />
                 <Controls />
             </ReactFlow>
         </div>

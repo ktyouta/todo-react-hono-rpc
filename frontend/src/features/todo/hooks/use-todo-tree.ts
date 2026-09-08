@@ -1,3 +1,4 @@
+import { ThemeContext, ThemeType } from "@/app/components/theme-provider";
 import { paths } from "@/config/paths";
 import { Edge, Node } from "@xyflow/react";
 import React, { useMemo } from "react";
@@ -75,7 +76,7 @@ function computePositions(
     }
 }
 
-const baseNodeStyle: React.CSSProperties = {
+const nodeLayoutStyle: React.CSSProperties = {
     width: NODE_WIDTH,
     height: NODE_HEIGHT,
     borderRadius: 8,
@@ -85,16 +86,35 @@ const baseNodeStyle: React.CSSProperties = {
     fontSize: 14,
     cursor: "pointer",
     padding: "0 12px",
-    background: "#fff",
-    border: "1px solid #c0c0c0",
+};
+
+// テーマごとの非選択ノードのスタイル（背景色が固定だと文字色がテーマの継承色と同化するため、両方を明示指定する）
+const baseNodeStyleByTheme: Record<ThemeType, React.CSSProperties> = {
+    light: {
+        ...nodeLayoutStyle,
+        background: "#fff",
+        border: "1px solid #c0c0c0",
+        color: "#111827",
+    },
+    dark: {
+        ...nodeLayoutStyle,
+        background: "#1f2937",
+        border: "1px solid #4b5563",
+        color: "#f3f4f6",
+    },
 };
 
 const currentNodeStyle: React.CSSProperties = {
-    ...baseNodeStyle,
+    ...nodeLayoutStyle,
     background: "#ecfeff",
     border: "1px solid #06b6d4",
     color: "#0e7490",
 };
+
+/** ノードのスタイルを選択中かどうか・テーマに応じて決定する */
+function getNodeStyle(itemId: number, currentId: number, theme: ThemeType): React.CSSProperties {
+    return itemId === currentId ? currentNodeStyle : baseNodeStyleByTheme[theme];
+}
 
 
 export function useTodoTree() {
@@ -107,6 +127,8 @@ export function useTodoTree() {
     const items = data.data;
     // ルーティング用
     const navigate = useNavigate();
+    // テーマ状態
+    const theme = ThemeContext.useCtx();
 
     // ツリーデータ
     const treeData = useMemo(() => {
@@ -128,7 +150,7 @@ export function useTodoTree() {
             id: String(item.id),
             position: positions.get(item.id) ?? { x: 0, y: 0 },
             data: { label: `${item.title} #${item.id}` },
-            style: item.id === currentId ? currentNodeStyle : baseNodeStyle,
+            style: getNodeStyle(item.id, currentId, theme),
         }));
 
         const edges: Edge[] = items
@@ -141,7 +163,7 @@ export function useTodoTree() {
             }));
 
         return { nodes, edges };
-    }, [items, currentId]);
+    }, [items, currentId, theme]);
 
     /**
      * ノードクリック時にタスク詳細へ遷移
@@ -160,6 +182,7 @@ export function useTodoTree() {
     return {
         treeData,
         onNodeClick,
-        onClickBack
+        onClickBack,
+        theme,
     }
 }

@@ -3,7 +3,7 @@ import { ReactNode, useEffect, useState } from "react";
 
 const THEME_STORAGE_KEY = "theme";
 
-type ThemeType = 'light' | 'dark';
+export type ThemeType = 'light' | 'dark';
 
 // テーマ状態
 export const ThemeContext = createCtx<ThemeType>();
