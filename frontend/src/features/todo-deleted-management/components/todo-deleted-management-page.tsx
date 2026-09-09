@@ -6,7 +6,7 @@ import { TodoDeletedManagementListContainer } from "./todo-deleted-management-li
 export function TodoDeletedManagementPage() {
     return (
         <>
-            <Suspense fallback={<Loading />}>
+            <Suspense fallback={<Loading fullScreen={false} className="w-full min-h-full" />}>
                 <TodoDeletedManagementListContainer />
             </Suspense>
             <ScrollToTopButton />

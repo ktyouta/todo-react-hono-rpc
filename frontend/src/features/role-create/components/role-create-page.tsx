@@ -4,7 +4,7 @@ import { RoleCreateContainer } from "./role-create-container";
 
 export function RoleCreatePage() {
     return (
-        <Suspense fallback={<Loading />}>
+        <Suspense fallback={<Loading fullScreen={false} className="w-full min-h-full" />}>
             <RoleCreateContainer />
         </Suspense>
     );

@@ -13,7 +13,7 @@ export function SubtaskCreatePage() {
 
     return (
         <div className="w-full min-h-full">
-            <Suspense fallback={<Loading className="w-full min-h-full" />}>
+            <Suspense fallback={<Loading fullScreen={false} className="w-full min-h-full" />}>
                 <SubtaskCreateContainer />
             </Suspense>
         </div>

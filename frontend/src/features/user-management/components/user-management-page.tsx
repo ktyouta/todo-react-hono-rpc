@@ -6,7 +6,7 @@ import { UserManagementListContainer } from "./user-management-list-container";
 export function UserManagementPage() {
     return (
         <>
-            <Suspense fallback={<Loading />}>
+            <Suspense fallback={<Loading fullScreen={false} className="w-full min-h-full" />}>
                 <UserManagementListContainer />
             </Suspense>
             <ScrollToTopButton />

@@ -4,7 +4,7 @@ import { UserCreateContainer } from "./user-create-container";
 
 export function UserCreatePage() {
     return (
-        <Suspense fallback={<Loading />}>
+        <Suspense fallback={<Loading fullScreen={false} className="w-full min-h-full" />}>
             <UserCreateContainer />
         </Suspense>
     );

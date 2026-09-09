@@ -6,7 +6,7 @@ import { UserDeletedManagementListContainer } from "./user-deleted-management-li
 export function UserDeletedManagementPage() {
     return (
         <>
-            <Suspense fallback={<Loading />}>
+            <Suspense fallback={<Loading fullScreen={false} className="w-full min-h-full" />}>
                 <UserDeletedManagementListContainer />
             </Suspense>
             <ScrollToTopButton />

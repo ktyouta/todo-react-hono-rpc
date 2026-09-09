@@ -6,7 +6,7 @@ import { DashboardContentContainer } from './dashboard-content-container';
 export function DashboardPage() {
     return (
         <div className="w-full min-h-full">
-            <Suspense fallback={<Loading className="w-full min-h-full" />}>
+            <Suspense fallback={<Loading fullScreen={false} className="w-full min-h-full" />}>
                 <DashboardContentContainer />
             </Suspense>
             <ScrollToTopButton />

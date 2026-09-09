@@ -15,7 +15,7 @@ export function TodoDetailPage() {
     return (
         <div className="w-full min-h-full">
             <Suspense
-                fallback={<Loading className="w-full min-h-full" />}
+                fallback={<Loading fullScreen={false} className="w-full min-h-full" />}
             >
                 <TodoDetailContainer />
             </Suspense>

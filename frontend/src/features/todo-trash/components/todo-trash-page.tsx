@@ -6,7 +6,7 @@ import { TodoTrashListContainer } from "./todo-trash-list-container";
 export function TodoTrashPage() {
     return (
         <>
-            <Suspense fallback={<Loading />}>
+            <Suspense fallback={<Loading fullScreen={false} className="w-full min-h-full" />}>
                 <TodoTrashListContainer />
             </Suspense>
             <ScrollToTopButton />

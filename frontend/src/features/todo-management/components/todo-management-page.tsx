@@ -6,7 +6,7 @@ import { TodoManagementListContainer } from "./todo-management-list-container";
 export function TodoManagementPage() {
     return (
         <>
-            <Suspense fallback={<Loading />}>
+            <Suspense fallback={<Loading fullScreen={false} className="w-full min-h-full" />}>
                 <TodoManagementListContainer />
             </Suspense>
             <ScrollToTopButton />

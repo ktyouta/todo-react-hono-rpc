@@ -13,7 +13,7 @@ export function TodoTrashDetailPage() {
 
     return (
         <>
-            <Suspense fallback={<Loading />}>
+            <Suspense fallback={<Loading fullScreen={false} className="w-full min-h-full" />}>
                 <TodoTrashDetailContainer />
             </Suspense>
             <ScrollToTopButton />

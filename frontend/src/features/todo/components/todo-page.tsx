@@ -8,7 +8,7 @@ export function TodoPage() {
     return (
         <div className="w-full min-h-full">
             <Suspense
-                fallback={<Loading className="w-full min-h-full" />}
+                fallback={<Loading fullScreen={false} className="w-full h-full" />}
             >
                 <TodoListContainer />
             </Suspense>

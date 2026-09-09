@@ -6,7 +6,7 @@ import { RoleManagementListContainer } from "./role-management-list-container";
 export function RoleManagementPage() {
     return (
         <>
-            <Suspense fallback={<Loading />}>
+            <Suspense fallback={<Loading fullScreen={false} className="w-full min-h-full" />}>
                 <RoleManagementListContainer />
             </Suspense>
             <ScrollToTopButton />

@@ -13,7 +13,7 @@ export function TodoDeletedManagementDetailPage() {
 
     return (
         <>
-            <Suspense fallback={<Loading />}>
+            <Suspense fallback={<Loading fullScreen={false} className="w-full min-h-full" />}>
                 <TodoDeletedManagementDetailContainer />
             </Suspense>
             <ScrollToTopButton />

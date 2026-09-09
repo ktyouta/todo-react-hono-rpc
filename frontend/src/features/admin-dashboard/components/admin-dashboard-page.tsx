@@ -6,7 +6,7 @@ import { AdminDashboardContentContainer } from './admin-dashboard-content-contai
 export function AdminDashboardPage() {
     return (
         <div className="w-full min-h-full">
-            <Suspense fallback={<Loading className="w-full min-h-full" />}>
+            <Suspense fallback={<Loading fullScreen={false} className="w-full min-h-full" />}>
                 <AdminDashboardContentContainer />
             </Suspense>
             <ScrollToTopButton />
