@@ -8,7 +8,7 @@ import { RoleManagementDetailPage } from '@/features/role-management/components/
 import { RoleManagementLayout } from '@/features/role-management/components/role-management-layout';
 import { RoleManagementPage } from '@/features/role-management/components/role-management-page';
 import { SignupContainer } from '@/features/signup/components/signup-container';
-import { TodoCreateContainer } from '@/features/todo-create/components/create-todo-container';
+import { TodoCreatePage } from '@/features/todo-create/components/todo-create-page';
 import { TodoDeletedManagementDetailPage } from '@/features/todo-deleted-management/components/todo-deleted-management-detail-page';
 import { TodoDeletedManagementLayout } from '@/features/todo-deleted-management/components/todo-deleted-management-layout';
 import { TodoDeletedManagementPage } from '@/features/todo-deleted-management/components/todo-deleted-management-page';
@@ -127,7 +127,7 @@ const routerList = [
                         // todo作成
                         path: paths.todoCreate.path,
                         element: (
-                            <TodoCreateContainer />
+                            <TodoCreatePage />
                         )
                     },
                     {
