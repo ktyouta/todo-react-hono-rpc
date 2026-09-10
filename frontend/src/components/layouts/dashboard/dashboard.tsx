@@ -117,11 +117,11 @@ export function Dashboard(props: PropsType) {
                     <div className='flex items-center relative'
                         onClick={() => { setIsUserMenuOpen(true) }}
                     >
-                        <span className='mr-[10px] text-base sm:text-[18px] cursor-pointer dark:text-gray-100'>
+                        <span className='mr-[6px] sm:mr-[10px] text-base sm:text-[18px] cursor-pointer dark:text-gray-100'>
                             {props.loginUser.name}
                         </span>
-                        <HiOutlineUserCircle className="size-8 cursor-pointer mr-[12px] dark:text-gray-100" />
-                        <IoTriangle className={`size-4 cursor-pointer dark:text-gray-100 ${isUserMenuOpen ? 'rotate-0' : 'rotate-180'}`} />
+                        <HiOutlineUserCircle className="size-7 sm:size-8 cursor-pointer mr-[6px] sm:mr-[12px] dark:text-gray-100" />
+                        <IoTriangle className={`size-3 sm:size-4 cursor-pointer dark:text-gray-100 ${isUserMenuOpen ? 'rotate-0' : 'rotate-180'}`} />
                         {/* ユーザーメニュー */}
                         {
                             isUserMenuOpen &&
