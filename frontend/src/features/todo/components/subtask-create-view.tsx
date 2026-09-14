@@ -122,7 +122,7 @@ export function SubtaskCreateView(props: PropsType) {
                             sizeType="medium"
                             onClick={clickAssist}
                             disabled={!isAssistEnabled || isAssistLoading}
-                            className="disabled:opacity-70"
+                            className="disabled:opacity-70 py-2 sm:py-2.5 sm:px-5"
                         >
                             {isAssistLoading ? "生成中..." : "AIで整える"}
                         </Button>
