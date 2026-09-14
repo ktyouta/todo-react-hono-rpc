@@ -37,8 +37,8 @@ export function Login(props: PropsType) {
                 </div>
             )}
             <div className="w-full max-w-lg bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 sm:p-10">
-                <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-100 text-center mb-8">
-                    ログイン
+                <h1 className="text-[22px] leading-7 sm:text-[27px] sm:leading-8 font-bold text-gray-800 dark:text-gray-100 text-center mb-8">
+                    TaskNote
                 </h1>
                 {errMessage && (
                     <div className="bg-red-50 border border-red-200 text-red-600 dark:bg-red-900/30 dark:border-red-800 dark:text-red-400 text-sm rounded-lg p-4 mb-6">

@@ -38,7 +38,7 @@ export function UpdatePassword(props: PropsType) {
                 </div>
             )}
             <div className="w-full max-w-lg bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 sm:p-10">
-                <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-100 text-center mb-8">
+                <h1 className="text-xl sm:text-2xl font-bold text-gray-800 dark:text-gray-100 text-center mb-8">
                     パスワード変更
                 </h1>
                 {errMessage && (
@@ -89,7 +89,7 @@ export function UpdatePassword(props: PropsType) {
                             <p className="text-red-500 dark:text-red-400 text-sm mt-2">{errors.confirmPassword.message}</p>
                         )}
                     </div>
-                    <div className="flex flex-col sm:flex-row gap-3 mt-4">
+                    <div className="flex flex-row gap-3 mt-4">
                         <button
                             type="button"
                             className="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-700 dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-gray-200 font-medium py-3 px-4 rounded-lg transition-colors"
