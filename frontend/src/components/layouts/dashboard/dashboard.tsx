@@ -58,13 +58,17 @@ export function Dashboard(props: PropsType) {
                 style={{ paddingTop: 'max(env(safe-area-inset-top), 1.5rem)' }}
             >
                 {/* ハンバーガーボタン（常に固定） */}
-                <button
-                    onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-                    className={`shrink-0 flex items-center ${isSidebarOpen ? 'justify-end' : 'justify-center'} w-full px-6 py-3 text-white/80 hover:text-white mb-[45px]`}
-                    aria-label={isSidebarOpen ? 'サイドバーを閉じる' : 'サイドバーを開く'}
+                <div
+                    className={`shrink-0 flex items-center ${isSidebarOpen ? 'justify-end' : 'justify-center'} w-full px-6 py-3 text-white/80 mb-[45px]`}
                 >
-                    <LuMenu className='h-6 w-6' />
-                </button>
+                    <button
+                        onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+                        className='hover:text-white'
+                        aria-label={isSidebarOpen ? 'サイドバーを閉じる' : 'サイドバーを開く'}
+                    >
+                        <LuMenu className='h-6 w-6' />
+                    </button>
+                </div>
                 {/* メニューリスト（縦スクロール可能） */}
                 <div className='flex-1 overflow-y-auto pb-3'>
                     {
