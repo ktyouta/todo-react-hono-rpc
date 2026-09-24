@@ -11,9 +11,9 @@ import type { AppEnv } from "../../../types";
 import { formatZodErrors } from "../../../util";
 import { TaskEntity } from "../../todo/entity/task.entity";
 import { TaskIdParamSchema } from "../../todo/schema/task-id-param.schema";
-import { GetParentTaskRepository } from "../repository/get-parent-task.repository";
+import { CreateSubtaskRepository } from "../repository";
 import { CreateSubtaskSchema } from "../schema/create-subtask.schema";
-import { GetParentTaskService } from "../service/get-parent-task.service";
+import { CreateSubtaskService } from "../service";
 
 /**
  * サブタスク作成
@@ -45,8 +45,8 @@ const createSubtask = new Hono<AppEnv>().post(
 
         const parentTaskId = new TaskId(c.req.valid("param").id);
 
-        const repository = new GetParentTaskRepository(db);
-        const service = new GetParentTaskService(repository);
+        const repository = new CreateSubtaskRepository(db);
+        const service = new CreateSubtaskService(repository);
         const parentTask = await service.find(userId, parentTaskId);
 
         if (!parentTask) {

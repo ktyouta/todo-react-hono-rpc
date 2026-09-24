@@ -2,16 +2,19 @@ import { and, eq, sql } from "drizzle-orm";
 import { FrontUserId, TaskId } from "../../../domain";
 import type { Database } from "../../../infrastructure/db";
 import { taskTransaction } from "../../../infrastructure/db";
-import type { IGetParentTaskRepository, ParentTaskItem } from "./get-parent-task.repository.interface";
+import type { ICreateSubtaskRepository, ParentTaskItem } from "./create-subtask.repository.interface";
 
 /**
- * 親タスク取得リポジトリ実装
+ * サブタスク作成リポジトリ実装
  */
-export class GetParentTaskRepository implements IGetParentTaskRepository {
+export class CreateSubtaskRepository implements ICreateSubtaskRepository {
   constructor(private readonly db: Database) { }
 
   /**
-   * 親タスク取得（ルートタスクかつアクティブであることを確認）
+   * 親タスク取得（アクティブであることを確認）
+   * @param userId
+   * @param parentTaskId
+   * @returns
    */
   async find(userId: FrontUserId, parentTaskId: TaskId): Promise<ParentTaskItem | undefined> {
     return await this.db
@@ -29,6 +32,8 @@ export class GetParentTaskRepository implements IGetParentTaskRepository {
 
   /**
    * 祖先タスクID一覧を取得（親タスク自身からルートまで）
+   * @param parentTaskId
+   * @returns
    */
   async findAncestorIds(parentTaskId: number): Promise<number[]> {
     const rows = await this.db.all<{ id: number }>(sql`

@@ -6,9 +6,9 @@ import { authMiddleware } from "../../../middleware";
 import type { AppEnv } from "../../../types";
 import { formatZodErrors } from "../../../util";
 import { TaskIdParamSchema } from "../../todo/schema/task-id-param.schema";
-import { GetSubtaskListRepository } from "../repository/get-subtask-list.repository";
+import { GetSubtaskListRepository } from "../repository";
 import { GetSubtaskListQuerySchema } from "../schema/get-subtask-list-query.schema";
-import { GetSubtaskListService } from "../service/get-subtask-list.service";
+import { GetSubtaskListService } from "../service";
 
 /**
  * アクティブなサブタスク一覧取得

@@ -1,4 +1,4 @@
-import { and, eq, sql } from "drizzle-orm";
+import { and, asc, eq, sql } from "drizzle-orm";
 import { TaskId } from "../../../domain";
 import type { Database } from "../../../infrastructure/db";
 import { priorityMaster, statusMaster, taskTransaction } from "../../../infrastructure/db";
@@ -11,7 +11,7 @@ import type { DeletedSubtaskListItem, IGetTodoDeletedSubtaskListRepository } fro
 export class GetTodoDeletedSubtaskListRepository implements IGetTodoDeletedSubtaskListRepository {
 
     // 最大取得件数
-    static readonly LIMIT = 10;
+    static readonly LIMIT = 30;
 
     constructor(private readonly db: Database) { }
 
@@ -38,6 +38,7 @@ export class GetTodoDeletedSubtaskListRepository implements IGetTodoDeletedSubta
             .where(
                 eq(taskTransaction.parentId, parentTaskId.value)
             )
+            .orderBy(asc(taskTransaction.createdAt), asc(taskTransaction.id))
             .limit(GetTodoDeletedSubtaskListRepository.LIMIT)
             .offset((query.page - 1) * GetTodoDeletedSubtaskListRepository.LIMIT);
     }

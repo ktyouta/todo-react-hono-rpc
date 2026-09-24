@@ -1,4 +1,4 @@
-import { and, eq, sql } from "drizzle-orm";
+import { and, asc, eq, sql } from "drizzle-orm";
 import { FrontUserId, TaskId } from "../../../domain";
 import type { Database } from "../../../infrastructure/db";
 import { categoryMaster, priorityMaster, statusMaster, taskTransaction } from "../../../infrastructure/db";
@@ -10,7 +10,7 @@ import type { IGetSubtaskListRepository, SubtaskListItem } from "./get-subtask-l
  */
 export class GetSubtaskListRepository implements IGetSubtaskListRepository {
 
-  static readonly LIMIT = 10;
+  static readonly LIMIT = 30;
 
   constructor(private readonly db: Database) { }
 
@@ -47,6 +47,7 @@ export class GetSubtaskListRepository implements IGetSubtaskListRepository {
           eq(taskTransaction.parentId, parentTaskId.value),
         )
       )
+      .orderBy(asc(taskTransaction.createdAt), asc(taskTransaction.id))
       .limit(GetSubtaskListRepository.LIMIT)
       .offset((query.page - 1) * GetSubtaskListRepository.LIMIT);
   }
