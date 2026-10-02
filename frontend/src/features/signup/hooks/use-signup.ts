@@ -19,7 +19,7 @@ export function useSignup() {
     // 年リスト
     const yearCoomboList = useCreateYearList();
     // フォーム
-    const { register, handleSubmit, formState: { errors }, reset, watch } = useSignupForm();
+    const { register, handleSubmit, formState: { errors }, resetField, watch } = useSignupForm();
     // 登録リクエスト
     const postMutation = useSignupMutation({
         // 正常終了後の処理
@@ -42,10 +42,8 @@ export function useSignup() {
             //エラーメッセージを表示
             setErrMessage(message);
 
-            reset({
-                password: ``,
-                confirmPassword: ``,
-            });
+            resetField(`password`);
+            resetField(`confirmPassword`);
         },
     });
 
